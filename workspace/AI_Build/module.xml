@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+	<id>com.ils.ai</id>
+	<name>Application Installer</name>
+	<description></description>
+	<license>license.html</license>
+	<documentation>index.html</documentation>
+	<version>1.0.0.0</version>
+	<requiredignitionversion>7.8.0</requiredignitionversion>
+	<requiredframeworkversion>7</requiredframeworkversion>
+	
+
+
+
+		<!-- Load in our jars for each scope -->
+		<jar scope="G">applicationinstaller-gateway.jar</jar>
+		<jar scope="D">applicationinstaller-designer.jar.pack.gz</jar>
+		<jar scope="G">applicationinstaller-common.jar</jar>
+		<jar scope="DC">applicationinstaller-common.jar.pack.gz</jar>
+		<jar scope="DC">applicationinstaller-client.jar.pack.gz</jar>
+
+
+		<!-- Tell the Gateway and/or Designer where to find the hooks -->
+		<hook scope="G">com.ils..gateway.GatewayHook</hook>
+		<hook scope="C">com.ils..client.ClientHook</hook>
+		<hook scope="D">com.ils..designer.DesignerHook</hook>
+
+</module>
+
