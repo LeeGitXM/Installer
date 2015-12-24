@@ -7,6 +7,7 @@
 	<license>license.html</license>
 	<documentation>index.html</documentation>
 	<version>1.0.0.0</version>
+	<freemodule>true</freemodule>
 	<requiredignitionversion>7.8.0</requiredignitionversion>
 	<requiredframeworkversion>7</requiredframeworkversion>
 
@@ -17,7 +18,7 @@
 	<jar scope="D">mb-common.jar.pack.gz</jar>
 
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
-	<hook scope="G">com.ils.ai.gateway.MasterBuilderGatewayHook</hook>
-	<hook scope="D">com.ils.ai.designer.MasterBuilderDesignerHook</hook>
+	<hook scope="G">com.ils.mb.gateway.MasterBuilderGatewayHook</hook>
+	<hook scope="D">com.ils.mb.designer.MasterBuilderDesignerHook</hook>
 </module>
 

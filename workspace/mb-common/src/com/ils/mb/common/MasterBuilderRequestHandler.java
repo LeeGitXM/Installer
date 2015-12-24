@@ -28,18 +28,20 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 
 	// =============================== Master Builder Interface ===============================
 	/**
-	 * SPlaceholder.
+	 * Create a .modl file from the contents of a specified directory. 
+	 * Note: A .modl file is simply a .jar file.
+	 * @param sourceDirectory pre-existing directory containing contents
+	 *        of the module file.
+	 * @param destinationPath file to be created as a valid Ignition module.
 	 */
 	@Override
-	public void nop( ) {
+	public void createInstallerModule(String sourceDirectory,String destinationPath) {
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					MasterBuilderProperties.MODULE_ID, "nop");
-			log.debugf("%s.nop ...",TAG);
+					MasterBuilderProperties.MODULE_ID, "createInstallerModule",sourceDirectory,destinationPath);
 		}
 		catch(Exception ge) {
-			log.infof("%s.nop: GatewayException (%s)",TAG,ge.getMessage());
+			log.infof("%s.createInstallerModule: GatewayException (%s)",TAG,ge.getMessage());
 		}
 	}
-	
 }

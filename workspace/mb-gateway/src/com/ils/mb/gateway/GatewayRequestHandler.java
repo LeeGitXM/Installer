@@ -4,6 +4,7 @@
 package com.ils.mb.gateway;
 
 import com.ils.mb.common.MasterBuilderScriptingInterface;
+import com.ils.mb.gateway.jar.IgnitionModule;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -32,10 +33,18 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 
 	// =============================== Master Builder Interface ===============================
 	/**
-	 * Zero.
+	 * Create a .modl file from the contents of a specified directory. 
+	 * Note: A .modl file is simply a .jar file.
+	 * @param sourceDirectory pre-existing directory containing contents
+	 *        of the module file.
+	 * @param destinationPath file to be created as a valid Ignition module.
 	 */
 	@Override
-	public void nop() {}
+	public void createInstallerModule(String sourceDirectory,String destinationPath) {
+		// Run in the background
+		IgnitionModule module = new IgnitionModule(sourceDirectory,destinationPath);
+		new Thread(module).start();
+	}
 
 	
 }

@@ -17,9 +17,13 @@ public class MasterBuilderScriptFunctions   {
 	
 	// =============================== Master Builder Functions ==============================
 	/**
-	 * No-op.
+	 * Create a .modl file from the contents of a specified directory. 
+	 * Note: A .modl file is simply a .jar file.
+	 * @param sourceDirectory pre-existing directory containing contents
+	 *        of the module file.
+	 * @param destinationPath file to be created as a valid Ignition module.
 	 */
-	public static void nop( ) {
-		handler.nop();
+	public static void createInstallerModule(String sourceDirectory,String destinationPath) {
+		handler.createInstallerModule(sourceDirectory, destinationPath);
 	}
 }

@@ -1,5 +1,5 @@
 /**
- *   (c) 2014-2015  ILS Automation. All rights reserved.
+ *   (c) 2016  ILS Automation. All rights reserved.
  */
 package com.ils.mb.gateway;
 
@@ -24,12 +24,8 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 	}
 	
 	//========================== Master Buiukder Scripting Interface ======================
-	/**
-	 * Nothing.
-	 */
 	@Override
-	public void nop() {
-		log.infof("%s.nop ...",TAG);
-		requestHandler.nop();
+	public void createInstallerModule(String sourceDirectory,String destinationPath) {
+		requestHandler.createInstallerModule(sourceDirectory,destinationPath);
 	}
 }
