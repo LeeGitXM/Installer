@@ -1,7 +1,7 @@
 /**
  *   (c) 2014  ILS Automation. All rights reserved.
  */
-package com.ils.designer;
+package com.ils.mb.designer;
 
 
 import com.ils.mb.common.MasterBuilderProperties;
