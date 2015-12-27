@@ -43,6 +43,11 @@ public class MasterBuilderGatewayHook extends AbstractGatewayModuleHook   {
 	    this.dispatcher = new MasterBuilderRpcDispatcher(requestHandler);
 	    GatewayScriptFunctions.setRequestHandler(requestHandler);
 		log.infof("%s.startup: complete.",TAG);
+		
+		// These are all useful for paths into the installation area,
+		log.infof("HOOK: home directory: %s", context.getHome().getAbsolutePath());   // data
+		log.infof("HOOK: lib directory: %s", context.getLibDir().getAbsolutePath());  // lib
+		log.infof("HOOK: log directory: %s", context.getLogsDir().getAbsolutePath());  // log
 	}
 
 	@Override

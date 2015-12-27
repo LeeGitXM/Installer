@@ -3,7 +3,7 @@
 <module>
 	<id>com.ils.mb</id>
 	<name>MasterBuilder</name>
-	<description />
+	<description>Master Builder Module: ILS-Automation, for Application Installer construction.</description>
 	<license>license.html</license>
 	<documentation>index.html</documentation>
 	<version>1.0.0.0</version>
