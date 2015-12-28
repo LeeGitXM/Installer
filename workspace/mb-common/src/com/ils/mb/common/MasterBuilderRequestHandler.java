@@ -64,6 +64,22 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		return names;
 	}
 	/**
+	 * @return the value of a Java preference used by the framework.
+	 *         Execute this on the gateway (in case it's another machine).
+	 */
+	@Override
+	public String getPreference(String key) {
+		String value = "";
+		try {
+			value = (String) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					 MasterBuilderProperties.MODULE_ID, "getPreference",key);
+		}
+		catch(Exception ge) {
+			log.infof("%s.getPreference: GatewayException (%s)",TAG,ge.getMessage());
+		}
+		return value;
+	}
+	/**
 	 * @return a list of the names of projects currently loaded into the Gateway.
 	 */
 	@SuppressWarnings("unchecked")
@@ -77,5 +93,20 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 			log.infof("%s.getProjectNames: GatewayException (%s)",TAG,ge.getMessage());
 		}
 		return names;
+	}
+	/**
+	 * Set the value of a Java preference used by the master builder.
+	 * @param the value of a Java preference used by the builder.
+	 */
+	@Override
+	public void setPreference(String key,String value) {
+		if( value==null ) value="";
+		try {
+			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					 MasterBuilderProperties.MODULE_ID, "setPreference",key,value);
+		}
+		catch(Exception ge) {
+			log.infof("%s.setPreference: GatewayException (%s)",TAG,ge.getMessage());
+		}
 	}
 }

@@ -5,8 +5,10 @@ package com.ils.mb.gateway;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import com.ils.common.db.DBUtility;
+import com.ils.mb.common.MasterBuilderProperties;
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.ils.mb.gateway.jar.IgnitionModule;
 import com.inductiveautomation.ignition.common.project.Project;
@@ -28,7 +30,7 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 	private final LoggerEx log;
 	private final GatewayContext context;
 	private final DBUtility dbUtil;
-	
+	private final Preferences prefs;
 	/**
 	 * Constructor:
 	 */
@@ -36,7 +38,7 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
 		this.context = ctx;
 		this.dbUtil = new DBUtility(context);
-		
+		this.prefs = Preferences.userRoot().node(MasterBuilderProperties.PREFERENCES_NAME);
 	}
 
 	// =============================== Master Builder Interface ===============================
@@ -56,12 +58,22 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 	/**
 	 * @return a list of the names of currently connected data sources.
 	 */
+	@Override
 	public List<String> getDatabaseNames() {
 		return dbUtil.getDatasourceNames();
 	}
 	/**
+	 * @return the value of a Java preference used by the framework.
+	 *         Execute this locally.
+	 */
+	@Override
+	public String getPreference(String key) {
+		return prefs.get(key,"");
+	}
+	/**
 	 * @return a list of the names of projects currently loaded into the Gateway.
 	 */
+	@Override
 	public List<String> getProjectNames() {
 		List<String> result = new ArrayList<>();
 		List<Project> projects = context.getProjectManager().getProjectsFull(ProjectVersion.Staging);
@@ -69,5 +81,13 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 			result.add(proj.getName());
 		}
 		return result;
+	}
+	/**
+	 * Set the value of a Java preference used by the master builder.
+	 * @param the value of a Java preference used by the builder.
+	 */
+	@Override
+	public void setPreference(String key,String value) {
+		prefs.put(key,value);
 	}
 }

@@ -22,4 +22,18 @@ public class GatewayScriptFunctions   {
 	public static void createInstallerModule(String sourceDirectory,String destinationPath) {
 		handler.createInstallerModule(sourceDirectory, destinationPath);
 	}
+	/**
+	 * @return the value of a Java preference used by the framework.
+	 *         Execute this locally.
+	 */
+	public static String getPreference(String key) {
+		return handler.getPreference(key);
+	}
+	/**
+	 * Set the value of a Java preference used by the master builder.
+	 * @param the value of a Java preference used by the builder.
+	 */
+	public static void setPreference(String key,String value) {
+		handler.setPreference(key,value);
+	}
 }

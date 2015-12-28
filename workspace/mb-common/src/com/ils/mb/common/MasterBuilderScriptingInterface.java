@@ -23,7 +23,17 @@ public interface MasterBuilderScriptingInterface   {
 	 */
 	public List<String> getDatabaseNames();
 	/**
+	 * @return the value of a Java preference used by the framework.
+	 *         Execute this locally.
+	 */
+	public String getPreference(String key);
+	/**
 	 * @return a list of the names of projects currently loaded into the Gateway.
 	 */
 	public List<String> getProjectNames();
+	/**
+	 * Set the value of a Java preference used by the master builder.
+	 * @param the value of a Java preference used by the builder.
+	 */
+	public void setPreference(String key,String value);
 }

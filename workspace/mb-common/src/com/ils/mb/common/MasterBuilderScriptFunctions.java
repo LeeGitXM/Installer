@@ -35,9 +35,23 @@ public class MasterBuilderScriptFunctions   {
 		return handler.getDatabaseNames();
 	}
 	/**
+	 * @return the value of a Java preference used by the framework.
+	 *         Execute this locally.
+	 */
+	public static String getPreference(String key) {
+		return handler.getPreference(key);
+	}
+	/**
 	 * @return a list of the names of projects currently loaded into the Gateway.
 	 */
 	public static List<String> getProjectNames() {
 		return handler.getProjectNames();
+	}
+	/**
+	 * Set the value of a Java preference used by the master builder.
+	 * @param the value of a Java preference used by the builder.
+	 */
+	public static void setPreference(String key,String value) {
+		handler.setPreference(key,value);
 	}
 }

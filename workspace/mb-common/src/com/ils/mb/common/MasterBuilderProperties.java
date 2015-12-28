@@ -11,6 +11,7 @@ package com.ils.mb.common;
 public interface MasterBuilderProperties   {
 	public final static String MODULE_ID = "com.ils.mb";       // See module.xml
 	public final static String MODULE_NAME = "MasterBuilder";  // See module.xml
+	public final static String PREFERENCES_NAME = "MasterBuilder";  
 	public final static String SCRIPT_PACKAGE = "system.ils.mb";   // Python package scripting
 	public final static String TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";  // Format for writing timestamps
 }
