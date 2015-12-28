@@ -3,6 +3,8 @@
  */
 package com.ils.mb.common;
 
+import java.util.List;
+
 import com.ils.mb.common.MasterBuilderRequestHandler;
 
 
@@ -25,5 +27,17 @@ public class MasterBuilderScriptFunctions   {
 	 */
 	public static void createInstallerModule(String sourceDirectory,String destinationPath) {
 		handler.createInstallerModule(sourceDirectory, destinationPath);
+	}
+	/**
+	 * @return a list of the names of currently connected data sources.
+	 */
+	public static List<String> getDatabaseNames() {
+		return handler.getDatabaseNames();
+	}
+	/**
+	 * @return a list of the names of projects currently loaded into the Gateway.
+	 */
+	public static List<String> getProjectNames() {
+		return handler.getProjectNames();
 	}
 }

@@ -3,6 +3,8 @@
  */
 package com.ils.mb.gateway;
 
+import java.util.List;
+
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -27,5 +29,17 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 	@Override
 	public void createInstallerModule(String sourceDirectory,String destinationPath) {
 		requestHandler.createInstallerModule(sourceDirectory,destinationPath);
+	}
+	/**
+	 * @return a list of the names of currently connected data sources.
+	 */
+	public List<String> getDatabaseNames() {
+		return requestHandler.getDatabaseNames();
+	}
+	/**
+	 * @return a list of the names of projects currently loaded into the Gateway.
+	 */
+	public List<String> getProjectNames() {
+		return requestHandler.getProjectNames();
 	}
 }

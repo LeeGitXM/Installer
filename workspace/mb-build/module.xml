@@ -12,6 +12,7 @@
 	<requiredframeworkversion>7</requiredframeworkversion>
 
 	<!-- Load in our jars for each scope -->
+	<export scope="G">ils-common.jar</export>
 	<jar scope="G">mb-gateway.jar</jar>
 	<jar scope="D">mb-designer.jar.pack.gz</jar>
 	<jar scope="G">mb-common.jar</jar>

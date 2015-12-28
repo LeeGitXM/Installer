@@ -3,6 +3,7 @@
  */
 package com.ils.mb.common;
 
+import java.util.List;
 
 /**
  *  Define the methods available to Python scripting 
@@ -17,4 +18,12 @@ public interface MasterBuilderScriptingInterface   {
 	 * @param destinationPath file to be created as a valid Ignition module.
 	 */
 	public void createInstallerModule(String sourceDirectory,String destinationPath);
+	/**
+	 * @return a list of the names of currently connected data sources.
+	 */
+	public List<String> getDatabaseNames();
+	/**
+	 * @return a list of the names of projects currently loaded into the Gateway.
+	 */
+	public List<String> getProjectNames();
 }

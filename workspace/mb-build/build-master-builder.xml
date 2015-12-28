@@ -103,6 +103,7 @@
 
 		
 		<!-- Copy gateway jar -->
+		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${MBModule.name}_Gateway/dist/mb-gateway.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${MBModule.name}_Common/dist/mb-common.jar" todir="${build.dir}/temp_modl/" />
 		

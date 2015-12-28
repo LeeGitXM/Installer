@@ -4,6 +4,9 @@
  */
 package com.ils.mb.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnectionManager;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -43,5 +46,36 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		catch(Exception ge) {
 			log.infof("%s.createInstallerModule: GatewayException (%s)",TAG,ge.getMessage());
 		}
+	}
+	
+	/**
+	 * @return a list of the names of currently connected data sources.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getDatabaseNames() {
+		List<String> names = new ArrayList<>();
+		try {
+			names = (List<String>) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					 MasterBuilderProperties.MODULE_ID, "getDatabaseNames");
+		}
+		catch(Exception ge) {
+			log.infof("%s.getDatabaseNames: GatewayException (%s)",TAG,ge.getMessage());
+		}
+		return names;
+	}
+	/**
+	 * @return a list of the names of projects currently loaded into the Gateway.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getProjectNames() {
+		List<String> names = new ArrayList<>();
+		try {
+			names = (List<String>) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					 MasterBuilderProperties.MODULE_ID, "getProjectNames");
+		}
+		catch(Exception ge) {
+			log.infof("%s.getProjectNames: GatewayException (%s)",TAG,ge.getMessage());
+		}
+		return names;
 	}
 }

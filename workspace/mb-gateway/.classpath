@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Ignition-78"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mb-common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ILS_Common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

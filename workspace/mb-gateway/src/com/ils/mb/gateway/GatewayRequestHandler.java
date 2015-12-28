@@ -3,8 +3,14 @@
  */
 package com.ils.mb.gateway;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ils.common.db.DBUtility;
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.ils.mb.gateway.jar.IgnitionModule;
+import com.inductiveautomation.ignition.common.project.Project;
+import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -21,6 +27,7 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 	private final static String TAG = "GatewayRequestHandler";
 	private final LoggerEx log;
 	private final GatewayContext context;
+	private final DBUtility dbUtil;
 	
 	/**
 	 * Constructor:
@@ -28,6 +35,7 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 	public GatewayRequestHandler(GatewayContext ctx)  {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
 		this.context = ctx;
+		this.dbUtil = new DBUtility(context);
 		
 	}
 
@@ -45,6 +53,21 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 		IgnitionModule module = new IgnitionModule(sourceDirectory,destinationPath);
 		new Thread(module).start();
 	}
-
-	
+	/**
+	 * @return a list of the names of currently connected data sources.
+	 */
+	public List<String> getDatabaseNames() {
+		return dbUtil.getDatasourceNames();
+	}
+	/**
+	 * @return a list of the names of projects currently loaded into the Gateway.
+	 */
+	public List<String> getProjectNames() {
+		List<String> result = new ArrayList<>();
+		List<Project> projects = context.getProjectManager().getProjectsFull(ProjectVersion.Staging);
+		for( Project proj:projects) {
+			result.add(proj.getName());
+		}
+		return result;
+	}
 }
