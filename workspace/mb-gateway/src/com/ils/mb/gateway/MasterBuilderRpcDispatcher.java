@@ -25,7 +25,11 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 		this.requestHandler=grh;
 	}
 	
-	//========================== Master Buiukder Scripting Interface ======================
+	//========================== Master Builder Scripting Interface ======================
+	@Override
+	public void copyMasterToDirectory(String destinationPath) {
+		requestHandler.copyMasterToDirectory(destinationPath);
+	}
 	@Override
 	public void createInstallerModule(String sourceDirectory,String destinationPath) {
 		requestHandler.createInstallerModule(sourceDirectory,destinationPath);

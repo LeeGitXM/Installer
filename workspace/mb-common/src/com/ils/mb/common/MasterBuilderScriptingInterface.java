@@ -11,6 +11,14 @@ import java.util.List;
  */
 public interface MasterBuilderScriptingInterface   {
 	/**
+	 * Clear the destination directory, then copy the contents of the 
+	 * MasterBuilder module into it. The MasterBuilder contents are read
+	 * from the Ignition installation area. 
+	 * 
+	 * @param destinationPath directory to be created as a valid Ignition module.
+	 */
+	public void copyMasterToDirectory(String destinationPath);
+	/**
 	 * Create a .modl file from the contents of a specified directory. 
 	 * Note: A .modl file is simply a .jar file.
 	 * @param sourceDirectory pre-existing directory containing contents

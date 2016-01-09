@@ -31,6 +31,23 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 
 	// =============================== Master Builder Interface ===============================
 	/**
+	 * Clear the destination directory, then copy the contents of the 
+	 * MasterBuilder module into it. The MasterBuilder contents are read
+	 * from the Ignition installation area. 
+	 * 
+	 * @param destinationPath directory to be created as a valid Ignition module.
+	 */
+	@Override
+	public void copyMasterToDirectory(String destinationPath) {
+		try {
+			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					MasterBuilderProperties.MODULE_ID, "copyMasterToDirectory",destinationPath);
+		}
+		catch(Exception ge) {
+			log.infof("%s.copyMasterToDirectory: GatewayException (%s)",TAG,ge.getMessage());
+		}
+	}
+	/**
 	 * Create a .modl file from the contents of a specified directory. 
 	 * Note: A .modl file is simply a .jar file.
 	 * @param sourceDirectory pre-existing directory containing contents

@@ -11,6 +11,7 @@ import com.ils.common.db.DBUtility;
 import com.ils.mb.common.MasterBuilderProperties;
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.ils.mb.gateway.jar.IgnitionModule;
+import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnectionManager;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -42,6 +43,17 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 	}
 
 	// =============================== Master Builder Interface ===============================
+	/**
+	 * Clear the destination directory, then copy the contents of the 
+	 * MasterBuilder module into it. The MasterBuilder contents are read
+	 * from the Ignition installation area. 
+	 * 
+	 * @param destinationPath directory to be created as a valid Ignition module.
+	 */
+	@Override
+	public void copyMasterToDirectory(String destinationPath) {
+
+	}
 	/**
 	 * Create a .modl file from the contents of a specified directory. 
 	 * Note: A .modl file is simply a .jar file.

@@ -19,6 +19,9 @@ public class GatewayScriptFunctions   {
 	public static void setRequestHandler(GatewayRequestHandler h) { handler=h; }
 	
 	// =============================== Master Builder Functions ==============================
+	public static void copyMasterToDirectory(String destinationPath) {
+		handler.copyMasterToDirectory(destinationPath);
+	}
 	public static void createInstallerModule(String sourceDirectory,String destinationPath) {
 		handler.createInstallerModule(sourceDirectory, destinationPath);
 	}
