@@ -31,6 +31,21 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 
 	// =============================== Master Builder Interface ===============================
 	/**
+	 * Copy a file. Retain permissions.
+	 * @param sourcePath full path for the source file.
+	 * @param destinationPath full path for the destination file.
+	 */
+	@Override
+	public void copyFile(String sourcePath,String destinationPath) {
+		try {
+			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					MasterBuilderProperties.MODULE_ID, "copyFile",sourcePath,destinationPath);
+		}
+		catch(Exception ge) {
+			log.infof("%s.copyFile: GatewayException (%s)",TAG,ge.getMessage());
+		}
+	}
+	/**
 	 * Clear the destination directory, then copy the contents of the 
 	 * MasterBuilder module into it. The MasterBuilder contents are read
 	 * from the Ignition installation area. 

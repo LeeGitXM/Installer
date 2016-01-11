@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface MasterBuilderScriptingInterface   {
 	/**
+	 * Copy a file. Retain permissions.
+	 * @param sourcePath full path for the source file.
+	 * @param destinationPath full path for the destination file.
+	 */
+	public void copyFile(String sourcePath,String destinationPath);
+	/**
 	 * Clear the destination directory, then copy the contents of the 
 	 * MasterBuilder module into it. The MasterBuilder contents are read
 	 * from the Ignition installation area. 

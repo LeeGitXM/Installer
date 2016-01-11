@@ -2,7 +2,7 @@
  *   (c) 2016  ILS Automation. All rights reserved.
  *   @See http://stackoverflow.com/questions/1281229/how-to-use-jaroutputstream-to-create-a-jar-file 
  */
-package com.ils.mb.gateway.jar;
+package com.ils.mb.gateway;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -24,29 +24,35 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
  */
 public class IgnitionModule implements Runnable {
 	private final static String TAG = "IgnitionModule";
+	private final static int BUFFER_SIZE = 1024;
 	private final LoggerEx log;
+	private final GatewayRequestHandler requestHandler;
 	private final String indir;
 	private final String outpath;
 
-	public IgnitionModule(String in,String out ) {
+	public IgnitionModule(GatewayRequestHandler rh,String in,String out ) {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
+		this.requestHandler = rh;
 		this.indir = in;
 		this.outpath = out;
 	}
 
 	public void run()  {
+		String status = null;
 		Manifest manifest = new Manifest();
 		manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 		JarOutputStream target = null;
 		try {
 			target = new JarOutputStream(new FileOutputStream(outpath), manifest);
-			add(new File(indir), target);
+			addJarEntry(new File(indir), target);
 		}
 		catch( FileNotFoundException fnfe) {
-			log.warnf("%s.run: Failed to find input directory (%s)",TAG,fnfe.getLocalizedMessage());
+			status = String.format("%s.run: Failed to find input directory (%s)",TAG,fnfe.getLocalizedMessage());
+			log.warn(status);
 		}
 		catch( IOException ioe) {
-			log.warnf("%s.run: Failed to reading input (%s)",TAG,ioe.getLocalizedMessage());
+			status = String.format("%s.run: Failed to reading input (%s)",TAG,ioe.getLocalizedMessage());
+			log.warn(status);
 		}
 		finally {
 			if( target!=null ) {
@@ -56,6 +62,9 @@ public class IgnitionModule implements Runnable {
 				catch(IOException ignore) {}
 			}
 		}
+		
+		if( status==null ) requestHandler.pushStatus(String.format("Copied artifacts to %s",outpath),true);
+		else requestHandler.pushStatus(status,false);
 	}
 
 	/**
@@ -64,7 +73,7 @@ public class IgnitionModule implements Runnable {
 	 * @param target
 	 * @throws IOException
 	 */
-	private void add(File source, JarOutputStream target) throws IOException {
+	private void addJarEntry(File source, JarOutputStream target) throws IOException {
 		BufferedInputStream in = null;
 		try {
 			if (source.isDirectory()) {
@@ -78,7 +87,7 @@ public class IgnitionModule implements Runnable {
 					target.closeEntry();
 				}
 				for (File nestedFile: source.listFiles()) {
-					add(nestedFile, target);
+					addJarEntry(nestedFile, target);
 				}
 
 				return;
@@ -89,7 +98,7 @@ public class IgnitionModule implements Runnable {
 			target.putNextEntry(entry);
 			in = new BufferedInputStream(new FileInputStream(source));
 
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[BUFFER_SIZE];
 			while (true)   {
 				int count = in.read(buffer);
 				if (count == -1)

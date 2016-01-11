@@ -27,6 +27,10 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 	
 	//========================== Master Builder Scripting Interface ======================
 	@Override
+	public void copyFile(String sourcePath,String destinationPath) {
+		requestHandler.copyFile(sourcePath, destinationPath);
+	}
+	@Override
 	public void copyMasterToDirectory(String destinationPath) {
 		requestHandler.copyMasterToDirectory(destinationPath);
 	}

@@ -5,7 +5,9 @@ package com.ils.mb.common;
 
 import java.util.List;
 
-import com.ils.mb.common.MasterBuilderRequestHandler;
+import javax.swing.JTextField;
+
+import com.ils.mb.common.notification.NotificationHandler;
 
 
 /**
@@ -14,10 +16,28 @@ import com.ils.mb.common.MasterBuilderRequestHandler;
  *  
  */
 public class MasterBuilderScriptFunctions   {
-
+	private static NotificationHandler notificationHandler = null;
 	private static MasterBuilderRequestHandler handler = new MasterBuilderRequestHandler();
-	
-	// =============================== Master Builder Functions ==============================
+	// =============================== Master Builder Designer ===============================
+	public static void setNotificationHandler(NotificationHandler nh) {
+		notificationHandler = nh;
+	}
+	/**
+	 * Add a text field to the list of components that are updated via push notification
+	 * from the Gateway.
+	 */
+	public static void registerStatusReceiver(JTextField textField) {
+		if( notificationHandler!=null) notificationHandler.registerStatusReceiver(textField);
+	}
+	// =============================== Master Builder Interface ==============================
+	/**
+	 * Copy a file. Retain permissions.
+	 * @param sourcePath full path for the source file.
+	 * @param destinationPath full path for the destination file.
+	 */
+	public static void copyFile(String sourcePath,String destinationPath) {
+		handler.copyFile(sourcePath, destinationPath);
+	}
 	/**
 	 * Clear the destination directory, then copy the contents of the 
 	 * MasterBuilder module into it. The MasterBuilder contents are read

@@ -6,6 +6,8 @@ package com.ils.mb.designer;
 
 import com.ils.mb.common.MasterBuilderProperties;
 import com.ils.mb.common.MasterBuilderScriptFunctions;
+import com.ils.mb.common.notification.NotificationHandler;
+import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnectionManager;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.script.ScriptManager;
@@ -21,7 +23,7 @@ import com.inductiveautomation.ignition.designer.model.DesignerContext;
 public class MasterBuilderDesignerHook extends AbstractDesignerModuleHook  {
 	private final String TAG = "MasterBuilderDesignerHook";
 	private final LoggerEx log;
-	
+	private NotificationHandler notificationHandler = null;
 
 	/**
 	 * Constructor:
@@ -39,6 +41,9 @@ public class MasterBuilderDesignerHook extends AbstractDesignerModuleHook  {
 	@Override
 	public void startup(DesignerContext ctx, LicenseState activationState) throws Exception {
 		super.startup(ctx, activationState);
+		notificationHandler =new NotificationHandler(ctx);
+		GatewayConnectionManager.getInstance().addPushNotificationListener(notificationHandler);
+		MasterBuilderScriptFunctions.setNotificationHandler(notificationHandler);
 	}
 	
 	@Override
@@ -49,6 +54,7 @@ public class MasterBuilderDesignerHook extends AbstractDesignerModuleHook  {
 	@Override
 	public void shutdown() {
 		super.shutdown();
+		notificationHandler.clear();
 	}
 	
 }
