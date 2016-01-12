@@ -33,7 +33,7 @@ public class IgnitionModule implements Runnable {
 	public IgnitionModule(GatewayRequestHandler rh,String in,String out ) {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
 		this.requestHandler = rh;
-		this.indir = in;
+		this.indir = in.replace("\\", "/");
 		this.outpath = out;
 	}
 
@@ -44,7 +44,8 @@ public class IgnitionModule implements Runnable {
 		JarOutputStream target = null;
 		try {
 			target = new JarOutputStream(new FileOutputStream(outpath), manifest);
-			addJarEntry(new File(indir), target);
+			// We want the relative path, so record the original length 
+			addJarEntry(new File(indir), target,indir.length()+1 );
 		}
 		catch( FileNotFoundException fnfe) {
 			status = String.format("%s.run: Failed to find input directory (%s)",TAG,fnfe.getLocalizedMessage());
@@ -73,27 +74,29 @@ public class IgnitionModule implements Runnable {
 	 * @param target
 	 * @throws IOException
 	 */
-	private void addJarEntry(File source, JarOutputStream target) throws IOException {
+	private void addJarEntry(File source, JarOutputStream target,int len) throws IOException {
 		BufferedInputStream in = null;
 		try {
+			String subpath = source.getPath().replace("\\", "/");
+			if( len>=subpath.length() ) subpath = "";
+			else subpath = subpath.substring(len);
+			
 			if (source.isDirectory()) {
-				String name = source.getPath().replace("\\", "/");
-				if (!name.isEmpty()) {
-					if (!name.endsWith("/"))
-						name += "/";
-					JarEntry entry = new JarEntry(name);
+				if (!subpath.isEmpty()) {
+					if (!subpath.endsWith("/"))
+						subpath += "/";
+					JarEntry entry = new JarEntry(subpath);
 					entry.setTime(source.lastModified());
 					target.putNextEntry(entry);
 					target.closeEntry();
 				}
 				for (File nestedFile: source.listFiles()) {
-					addJarEntry(nestedFile, target);
+					addJarEntry(nestedFile, target,len);
 				}
-
 				return;
 			}
 
-			JarEntry entry = new JarEntry(source.getPath().replace("\\", "/"));
+			JarEntry entry = new JarEntry(subpath);
 			entry.setTime(source.lastModified());
 			target.putNextEntry(entry);
 			in = new BufferedInputStream(new FileInputStream(source));
