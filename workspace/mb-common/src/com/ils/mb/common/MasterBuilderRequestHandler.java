@@ -141,4 +141,19 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 			log.infof("%s.setPreference: GatewayException (%s)",TAG,ge.getMessage());
 		}
 	}
+	/**
+	 * Write a string to a file.
+	 * @param text the string to write.
+	 * @param destinationPath full path for the destination file.
+	 */
+	public void stringToFile(String text,String destinationPath) {
+		if( text==null ) text="";
+		try {
+			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					 MasterBuilderProperties.MODULE_ID, "stringToFile",text,destinationPath);
+		}
+		catch(Exception ge) {
+			log.infof("%s.stringToFile: GatewayException (%s)",TAG,ge.getMessage());
+		}
+	}
 }

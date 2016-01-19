@@ -18,6 +18,8 @@ import com.ils.mb.common.notification.NotificationHandler;
 public class MasterBuilderScriptFunctions   {
 	private static NotificationHandler notificationHandler = null;
 	private static MasterBuilderRequestHandler handler = new MasterBuilderRequestHandler();
+	private static RepositoryScriptingInterface hook = null;
+	
 	// =============================== Master Builder Designer ===============================
 	public static void setNotificationHandler(NotificationHandler nh) {
 		notificationHandler = nh;
@@ -83,5 +85,38 @@ public class MasterBuilderScriptFunctions   {
 	 */
 	public static void setPreference(String key,String value) {
 		handler.setPreference(key,value);
+	}
+	/**
+	 * Write a string to a file.
+	 * @param text the string to write.
+	 * @param destinationPath full path for the destination file.
+	 */
+	public static void stringToFile(String text,String destinationPath) {
+		handler.stringToFile(text, destinationPath);
+	}
+	// =============================== Repository Interface ==============================
+	/**
+	 * This must be executed before any other methods.
+	 */
+	public static void setHook(RepositoryScriptingInterface h) { hook = h; }
+	/**
+	 * Retrieve a value from the repository.
+	 * @return the value associated with the supplied key.
+	 */
+	public static Object retrieve(String key) {
+		return hook.retrieveFromRepository(key);
+	}
+
+	/**
+	 * Add or replace an entry in the save area (repository)
+	 */
+	public static void store(String key,Object value) {
+		hook.storeIntoRepository(key, value);
+	}
+	/**
+	 * Remove an entry from the repository
+	 */
+	public static void remove(String key) {
+		hook.removeFromRepository(key);
 	}
 }

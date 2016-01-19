@@ -50,4 +50,10 @@ public interface MasterBuilderScriptingInterface   {
 	 * @param the value of a Java preference used by the builder.
 	 */
 	public void setPreference(String key,String value);
+	/**
+	 * Write a string to a file.
+	 * @param text the string to write.
+	 * @param destinationPath full path for the destination file.
+	 */
+	public void stringToFile(String text,String destinationPath);
 }

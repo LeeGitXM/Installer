@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -78,4 +79,29 @@ public class FileUtility {
 			}
 		});
 	}
+	
+	/**
+	 * Write the text 
+	 * @param text
+	 * @param destination
+	 * @return error string. A null indicates success.
+	 */
+	public String stringToFile(String text,String destination) {
+		String error = null;
+		try {
+			Path destPath = Paths.get(destination);
+			destPath.getParent().toFile().mkdirs();   // Create any intervening directories
+			Files.write(destPath, text.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE);
+		}
+		catch( InvalidPathException ipe) {
+			error = String.format("%s.stringToFile: path %s is invalid (%s)",TAG,destination,ipe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( IOException ioe) {
+			error = String.format("%s.stringToFile: Exception writing to %s (%s)",TAG,destination,ioe.getLocalizedMessage());
+			log.info(error);
+		}
+		return error;
+	}
+
 }

@@ -68,4 +68,8 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 	public void setPreference(String key,String value) {
 		requestHandler.setPreference(key,value);
 	}
+	@Override
+	public void stringToFile(String text,String destinationPath) {
+		requestHandler.stringToFile(text, destinationPath);
+	}
 }

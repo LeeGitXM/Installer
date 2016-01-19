@@ -42,4 +42,8 @@ public class GatewayScriptFunctions   {
 	public static void setPreference(String key,String value) {
 		handler.setPreference(key,value);
 	}
+
+	public static void stringToFile(String text,String destinationPath) {
+		handler.stringToFile(text, destinationPath);
+	}
 }

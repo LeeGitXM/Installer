@@ -207,4 +207,9 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 			log.warnf("%s.pushStatus: Exception sending notification %s (%s)",TAG,message,ex.getMessage());
 		}
 	}
+	
+	@Override
+	public void stringToFile(String text,String destinationPath) {
+		fileUtil.stringToFile(text, destinationPath);
+	}
 }
