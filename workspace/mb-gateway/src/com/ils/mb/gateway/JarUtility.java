@@ -6,11 +6,13 @@ package com.ils.mb.gateway;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.CharBuffer;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -83,7 +85,37 @@ public class JarUtility {
 		}
 		return answer;
 	}
-	
+	/**
+	 * @param entryName is a path relative to the jar file
+	 * @return the contents of the file within the jar as a String
+	 */
+	public String readFileFromJar(String entryName,Path jarPath)  {
+		String result = "";
+		JarFile jar = null;
+		try {
+			
+			jar = new JarFile(jarPath.toFile());
+
+			JarEntry entry = jar.getJarEntry(entryName);
+			if( entry!=null ) {
+				InputStream is = jar.getInputStream(entry);
+				result =  stringFromInputStream(is,jarPath.toFile().length());
+			}
+		}
+		catch(IOException ioe) {
+			log.infof("%s.readFileFromJar: IO error reading %s (%s)",TAG,entryName,ioe.getLocalizedMessage());
+		}
+		finally {
+			if(jar!=null) {
+				try {
+					jar.close();
+				}
+				catch(IOException ignore) {}
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Iterate over the files in a jar and copy into a directory.
 	 * Make any intermediate directories required.
@@ -119,5 +151,30 @@ public class JarUtility {
 		catch(IOException ioe) {
 			log.infof("%s.unJarToDirectory: IO error converting %s from jar (%s)",TAG,jarPath.toString(),ioe.getLocalizedMessage());
 		}
+	}
+
+	// convert InputStream to String
+	private String stringFromInputStream(InputStream is,long len) {
+
+		BufferedReader br = null;
+		CharBuffer cbuffer = CharBuffer.allocate((int)len+1024);
+		try {
+			br = new BufferedReader(new InputStreamReader(is));
+			while(br.read(cbuffer)>=0 ) {
+				;
+			}
+		} 
+		catch (IOException ioe) {
+			log.infof("%s.stringFromInputStream: IO error (%s)",TAG,ioe.getLocalizedMessage());
+		} 
+		finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException ignore) {}
+			}
+		}
+
+		return cbuffer.toString();
 	}
 }

@@ -61,6 +61,13 @@ public class MasterBuilderScriptFunctions   {
 		handler.createInstallerModule(sourceDirectory, destinationPath);
 	}
 	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	public static void deleteDirectory(String path) {
+		handler.deleteDirectory(path);
+	}
+	/**
 	 * @return a list of the names of currently connected data sources.
 	 */
 	public static List<String> getDatabaseNames() {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+	<id>com.ils.ai</id>
+	<name>ApplicationInstaller</name>
+	<description>Application Installer Module: Sample Batch Expert Installer.</description>
+	<license>license.html</license>
+	<documentation>index.html</documentation>
+	<version>1.0.0.0</version>
+	<freemodule>true</freemodule>
+	<requiredignitionversion>7.8.0</requiredignitionversion>
+	<requiredframeworkversion>7</requiredframeworkversion>
+
+	<!-- Load in our jars for each scope -->
+	<export scope="G">ils-common.jar</export>
+	<jar scope="G">mb-gateway.jar</jar>
+	<jar scope="C">mb-client.jar.pack.gz</jar>
+	<jar scope="G">mb-common.jar</jar>
+	<jar scope="C">mb-common.jar.pack.gz</jar>
+
+	<!-- Tell the Gateway and/or Designer where to find the hooks -->
+	<hook scope="G">com.ils.mb.gateway.ApplicationInstallerGatewayHook</hook>
+	<hook scope="C">com.ils.mb.client.ApplicationInstallerClientHook</hook>
+</module>
+

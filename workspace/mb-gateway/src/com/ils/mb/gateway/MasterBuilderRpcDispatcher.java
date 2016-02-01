@@ -39,6 +39,13 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 		requestHandler.createInstallerModule(sourceDirectory,destinationPath);
 	}
 	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	public void deleteDirectory(String path) {
+		requestHandler.deleteDirectory(path);
+	}
+	/**
 	 * @return a list of the names of currently connected data sources.
 	 */
 	@Override

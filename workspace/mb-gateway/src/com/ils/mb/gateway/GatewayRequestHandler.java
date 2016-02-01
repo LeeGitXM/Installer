@@ -156,6 +156,21 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 		new Thread(module).start();
 	}
 	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	public void deleteDirectory(String stringpath) {
+		Path path = Paths.get(stringpath);
+		try {
+			fileUtil.deleteDirectory(path);
+		}
+		catch(IOException ioe) {
+			String status = String.format("%s.deleteDirectory: Unable to delete ... %s (%s)",TAG,stringpath,ioe.getLocalizedMessage());
+			log.info(status);
+			pushStatus(status,false);
+		}
+	}
+	/**
 	 * @return a list of the names of currently connected data sources.
 	 */
 	@Override

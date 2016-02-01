@@ -29,6 +29,13 @@ public class GatewayScriptFunctions   {
 		handler.createInstallerModule(sourceDirectory, destinationPath);
 	}
 	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	public static void deleteDirectory(String path) {
+		handler.deleteDirectory(path);
+	}
+	/**
 	 * @return the value of a Java preference used by the framework.
 	 *         Execute this locally.
 	 */

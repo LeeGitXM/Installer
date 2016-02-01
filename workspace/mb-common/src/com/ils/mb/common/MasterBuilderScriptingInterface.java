@@ -33,6 +33,11 @@ public interface MasterBuilderScriptingInterface   {
 	 */
 	public void createInstallerModule(String sourceDirectory,String destinationPath);
 	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	public void deleteDirectory(String path);
+	/**
 	 * @return a list of the names of currently connected data sources.
 	 */
 	public List<String> getDatabaseNames();

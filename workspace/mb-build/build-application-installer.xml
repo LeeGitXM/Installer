@@ -1,15 +1,16 @@
-<!-- Create a Master Builder module-->
-<project name="MasterBuilderModule" basedir="../" default="BuildAndInstallModule">
+<!-- Create a sample application installer. Normally this would be created as
+     a product of running the Master Builder. We use "Batch Expert+" as our example.
+-->
+<project name="ApplicationInstallerModule" basedir="../" default="BuildAndInstallModule">
 
 	<import file="${basedir}/mb-build/build.xml"/>
 
 	<property name="version.build" value="0" />	
-	<!-- Change version.beta value to "" for release builds -->
 	<property name="version.beta" value="-development" />		
 	<property name="MBModule.version" value="2.0.1.${version.build}" />
-	<property name="MBModule.name" value="MasterBuilder" />
+	<property name="MBModule.name" value="ApplicationInstaller" />
 	<property name="MBModule.release" value="0.1" />
-	<property name="MBModule.description" value="Master Builder for creating application installers" />
+	<property name="MBModule.description" value="Application Installer Master BuilderZZ Module" />
 	<property name="jar.dir" value="${git.repo}/external/lib" />
 	<property name="deploy.dir" value="${build.dir}/deploy" />
 	<property name="ant.build.javac.source" value="1.8"/>
@@ -17,20 +18,20 @@
 	
 	<!-- Common jar classpath -->
 	<!-- Both gateway, designer depend on the Common -->
-	<path id="MB_Common.classpath">
+	<path id="AI_Common.classpath">
 		<path refid="ignition.classpath" />
 		<path refid="external.classpath" />
 	</path>
 		
 	<!-- Gateway jar classpath -->
-	<path id="MB_Gateway.classpath">
-		<path refid="MB_Common.classpath" />
+	<path id="AI_Gateway.classpath">
+		<path refid="AI_Common.classpath" />
 		<fileset dir="${build.dir}/bin/${MBModule.name}_Common/dist/" includes="*.jar" />
 	</path>	
 
-	<!-- Designer jar classpath -->
-	<path id="MB_Designer.classpath">
-		<path refid="MB_Common.classpath" />
+	<!-- Client jar classpath -->
+	<path id="AI_Client.classpath">
+		<path refid="AI_Common.classpath" />
 		<fileset dir="${build.dir}/bin/${MBModule.name}_Common/dist/" includes="*.jar" />
 	</path>
 	
@@ -55,42 +56,33 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />	
 				
-		<!-- MB Common jar -->
+		<!-- AI Common jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${MBModule.name}_Common" />
 			<param name="sourceDirFolder" value="mb-common" />
 			<param name="jarName" value="mb-common" />
 			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="MB_Common.classpath"/>
+			<param name="module.build.classpath" value="AI_Common.classpath"/>
 		</antcall>
 		
 		
-		<!-- MB Gateway jar -->
+		<!-- AI Gateway jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${MBModule.name}_Gateway" />
 			<param name="sourceDirFolder" value="mb-gateway" />
 			<param name="jarName" value="mb-gateway" />
 			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="MB_Gateway.classpath"/>
+			<param name="module.build.classpath" value="AI_Gateway.classpath"/>
 		</antcall>
 
 		
-		<!-- MB Designer jar -->
-		<antcall target="MakeProject">
-			<param name="modName" value="${MBModule.name}_Designer" />
-			<param name="sourceDirFolder" value="mb-designer" />
-			<param name="jarName" value="mb-designer" />
-			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="MB_Designer.classpath"/>
-		</antcall>
-		
-		<!-- MB Client jar -->
+		<!-- AI Client jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${MBModule.name}_Client" />
 			<param name="sourceDirFolder" value="mb-client" />
 			<param name="jarName" value="mb-client" />
 			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="MB_Designer.classpath"/>
+			<param name="module.build.classpath" value="AI_Client.classpath"/>
 		</antcall>
 		
 		<!-- Create .modl file -->
@@ -99,15 +91,14 @@
 		<mkdir dir="${build.dir}/modules" />
 		
 
-		<copy file="${build.dir}/master-builder-module.xml" tofile="${build.dir}/temp_modl/module.xml" overwrite="true" />
+		<copy file="${build.dir}/application-installer-module.xml" tofile="${build.dir}/temp_modl/module.xml" overwrite="true" />
 
 		<replace file="${build.dir}/temp_modl/module.xml" token="@NAME@" value="${MBModule.name}" />
 		<replace file="${build.dir}/temp_modl/module.xml" token="@DESCRIPTION@" value="${MBModule.description}" />
 		<replace file="${build.dir}/temp_modl/module.xml" token="@VERSION@" value="${MBModule.version}" />
 
-		<!-- Pack200 and then copy the designer, client jars -->
-		<pack200 src="${build.dir}/bin/${MBModule.name}_Designer/dist/mb-designer.jar" destfile="${build.dir}/temp_modl/mb-designer.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
-		<pack200 src="${build.dir}/bin/${MBModule.name}_Designer/dist/mb-client.jar" destfile="${build.dir}/temp_modl/mb-client.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
+		<!-- Pack200 and then copy the common, client jars -->
+		<pack200 src="${build.dir}/bin/${MBModule.name}_Client/dist/mb-client.jar" destfile="${build.dir}/temp_modl/mb-client.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
 		<pack200 src="${build.dir}/bin/${MBModule.name}_Common/dist/mb-common.jar" destfile="${build.dir}/temp_modl/mb-common.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
 
 		
@@ -126,13 +117,13 @@
 		<!-- Echo the version into .version in the bundle and to be saved -->
 		<echo message="${MBModule.name}-${MBModule.version}:${MBModule.release}" file="${build.dir}/temp_modl/.version" append="false"/>
 		<echo message="${MBModule.name}-${MBModule.name}:${MBModule.release}" file="${build.dir}/.version" append="false"/>
-		<!-- Create and copy a .master-builder marker into the module -->
-		<echo message="${MBModule.name}-${MBModule.version}:${MBModule.release}" file="${build.dir}/temp_modl/.master-builder" append="false"/>
-		<echo message="${MBModule.name}-${MBModule.name}:${MBModule.release}" file="${build.dir}/.master-builder" append="false"/>
+		<!-- Create and copy a .application-installer marker into the module -->
+		<echo message="${MBModule.name}-${MBModule.version}:${MBModule.release}" file="${build.dir}/temp_modl/.application-installer" append="false"/>
+		<echo message="${MBModule.name}-${MBModule.name}:${MBModule.release}" file="${build.dir}/.application-installer" append="false"/>
 		
 		<!-- Copy the project into the bundle -->
 		<mkdir dir="${build.dir}/project" />
-		<copy file="${basedir}/../projects/MasterBuilder.proj/" todir="${build.dir}/temp_modl/project" />
+		<copy file="${basedir}/../projects/BatchExpertMockInstaller.proj/" tofile="${build.dir}/temp_modl/project/ApplicationInstaller.proj" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${MBModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />

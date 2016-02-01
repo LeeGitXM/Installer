@@ -79,7 +79,20 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 			log.infof("%s.createInstallerModule: GatewayException (%s)",TAG,ge.getMessage());
 		}
 	}
-	
+	/**
+	 * Delete a directory and all files underneath it.
+	 * @param path directory path.
+	 */
+	@Override
+	public void deleteDirectory(String path) {
+		try {
+			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					MasterBuilderProperties.MODULE_ID, "deleteDirectory",path);
+		}
+		catch(Exception ge) {
+			log.infof("%s.deleteDirectory: GatewayException (%s)",TAG,ge.getMessage());
+		}
+	}
 	/**
 	 * @return a list of the names of currently connected data sources.
 	 */

@@ -21,6 +21,7 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
 /**
  * Create an Ignition .modl from the contents of a specified directory.
  * The files must reside on the same system as the Ignition Gateway.
+ * 
  */
 public class IgnitionModule implements Runnable {
 	private final static String TAG = "IgnitionModule";
