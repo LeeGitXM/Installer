@@ -85,6 +85,15 @@
 			<param name="module.build.classpath" value="AI_Client.classpath"/>
 		</antcall>
 		
+		<!-- AI Designer jar -->
+		<antcall target="MakeProject">
+			<param name="modName" value="${MBModule.name}_Designer" />
+			<param name="sourceDirFolder" value="mb-designer" />
+			<param name="jarName" value="mb-designer" />
+			<param name="javacSource" value="1.8" />
+			<param name="module.build.classpath" value="AI_Client.classpath"/>
+		</antcall>
+		
 		<!-- Create .modl file -->
 		<echo message="Making ${MBModule.name} modl" />
 		<mkdir dir="${build.dir}/temp_modl" />
@@ -100,6 +109,7 @@
 		<!-- Pack200 and then copy the common, client jars -->
 		<pack200 src="${build.dir}/bin/${MBModule.name}_Client/dist/mb-client.jar" destfile="${build.dir}/temp_modl/mb-client.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
 		<pack200 src="${build.dir}/bin/${MBModule.name}_Common/dist/mb-common.jar" destfile="${build.dir}/temp_modl/mb-common.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
+		<pack200 src="${build.dir}/bin/${MBModule.name}_Designer/dist/mb-designer.jar" destfile="${build.dir}/temp_modl/mb-designer.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
 
 		
 		<!-- Copy gateway jar -->

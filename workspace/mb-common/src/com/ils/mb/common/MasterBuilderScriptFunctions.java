@@ -17,12 +17,15 @@ import com.ils.mb.common.notification.NotificationHandler;
  */
 public class MasterBuilderScriptFunctions   {
 	private static NotificationHandler notificationHandler = null;
-	private static MasterBuilderRequestHandler handler = new MasterBuilderRequestHandler();
+	private static MasterBuilderRequestHandler handler = null;
 	private static RepositoryScriptingInterface hook = null;
 	
 	// =============================== Master Builder Designer ===============================
 	public static void setNotificationHandler(NotificationHandler nh) {
 		notificationHandler = nh;
+	}
+	public static void setRequestHandler(MasterBuilderRequestHandler rh) {
+		handler = rh;
 	}
 	/**
 	 * Add a text field to the list of components that are updated via push notification

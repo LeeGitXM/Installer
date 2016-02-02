@@ -1,7 +1,7 @@
 /**
  *   (c) 2016  ILS Automation. All rights reserved.
  */
-package com.ils.mb.client;
+package com.ils.mb.designer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,25 +12,25 @@ import com.ils.mb.common.MasterBuilderScriptFunctions;
 import com.ils.mb.common.RepositoryScriptingInterface;
 import com.ils.mb.common.notification.NotificationHandler;
 import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnectionManager;
-import com.inductiveautomation.ignition.client.model.ClientContext;
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.script.ScriptManager;
-import com.inductiveautomation.vision.api.client.AbstractClientModuleHook;
+import com.inductiveautomation.ignition.designer.model.AbstractDesignerModuleHook;
+import com.inductiveautomation.ignition.designer.model.DesignerContext;
 
 /**
 /**
  * This version of the client hook is designed for use with an
  * application installer. It is NOT for use with the master builder.
  */
-public class ApplicationInstallerClientHook extends AbstractClientModuleHook implements RepositoryScriptingInterface  {
+public class ApplicationInstallerDesignerHook extends AbstractDesignerModuleHook implements RepositoryScriptingInterface  {
 	private NotificationHandler notificationHandler = null;
 	private final Map<String,Object> repository;
 
 	/**
 	 * Constructor:
 	 */
-	public ApplicationInstallerClientHook() {
+	public ApplicationInstallerDesignerHook() {
 		this.repository = new HashMap<>();
 	}
 	
@@ -41,7 +41,7 @@ public class ApplicationInstallerClientHook extends AbstractClientModuleHook imp
 	}
 	
 	@Override
-	public void startup(ClientContext ctx, LicenseState activationState) throws Exception {
+	public void startup(DesignerContext ctx, LicenseState activationState) throws Exception {
 		super.startup(ctx, activationState);
 		notificationHandler =new NotificationHandler(ctx);
 		GatewayConnectionManager.getInstance().addPushNotificationListener(notificationHandler);

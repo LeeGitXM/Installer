@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ils.mb.common.MasterBuilderProperties;
+import com.ils.mb.common.MasterBuilderRequestHandler;
 import com.ils.mb.common.MasterBuilderScriptFunctions;
 import com.ils.mb.common.RepositoryScriptingInterface;
 import com.ils.mb.common.notification.NotificationHandler;
@@ -15,8 +16,6 @@ import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnecti
 import com.inductiveautomation.ignition.common.expressions.ExpressionFunctionManager;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.script.ScriptManager;
-import com.inductiveautomation.ignition.common.util.LogUtil;
-import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.designer.model.AbstractDesignerModuleHook;
 import com.inductiveautomation.ignition.designer.model.DesignerContext;
 
@@ -47,6 +46,7 @@ public class MasterBuilderDesignerHook extends AbstractDesignerModuleHook implem
 		notificationHandler =new NotificationHandler(ctx);
 		GatewayConnectionManager.getInstance().addPushNotificationListener(notificationHandler);
 		MasterBuilderScriptFunctions.setNotificationHandler(notificationHandler);
+		MasterBuilderScriptFunctions.setRequestHandler(new MasterBuilderRequestHandler(MasterBuilderProperties.MODULE_ID));
 		MasterBuilderScriptFunctions.setHook(this);
 	}
 	

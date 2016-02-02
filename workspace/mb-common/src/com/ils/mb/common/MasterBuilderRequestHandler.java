@@ -21,12 +21,14 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
 public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterface {
 	private final static String TAG = "MasterBuilderRequestHandler";
 	private final LoggerEx log;
+	private final String moduleId;
 
 	/**
 	 * Constructor:
 	 */
-	public MasterBuilderRequestHandler()  {
+	public MasterBuilderRequestHandler(String mid)  {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
+		this.moduleId = mid;
 	}
 
 	// =============================== Master Builder Interface ===============================
@@ -39,7 +41,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 	public void copyFile(String sourcePath,String destinationPath) {
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					MasterBuilderProperties.MODULE_ID, "copyFile",sourcePath,destinationPath);
+					moduleId, "copyFile",sourcePath,destinationPath);
 		}
 		catch(Exception ge) {
 			log.infof("%s.copyFile: GatewayException (%s)",TAG,ge.getMessage());
@@ -56,7 +58,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 	public void copyMasterToDirectory(String destinationPath) {
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					MasterBuilderProperties.MODULE_ID, "copyMasterToDirectory",destinationPath);
+					moduleId, "copyMasterToDirectory",destinationPath);
 		}
 		catch(Exception ge) {
 			log.infof("%s.copyMasterToDirectory: GatewayException (%s)",TAG,ge.getMessage());
@@ -73,7 +75,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 	public void createInstallerModule(String sourceDirectory,String destinationPath) {
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					MasterBuilderProperties.MODULE_ID, "createInstallerModule",sourceDirectory,destinationPath);
+					moduleId, "createInstallerModule",sourceDirectory,destinationPath);
 		}
 		catch(Exception ge) {
 			log.infof("%s.createInstallerModule: GatewayException (%s)",TAG,ge.getMessage());
@@ -87,7 +89,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 	public void deleteDirectory(String path) {
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					MasterBuilderProperties.MODULE_ID, "deleteDirectory",path);
+					moduleId, "deleteDirectory",path);
 		}
 		catch(Exception ge) {
 			log.infof("%s.deleteDirectory: GatewayException (%s)",TAG,ge.getMessage());
@@ -101,7 +103,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		List<String> names = new ArrayList<>();
 		try {
 			names = (List<String>) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					 MasterBuilderProperties.MODULE_ID, "getDatabaseNames");
+					moduleId, "getDatabaseNames");
 		}
 		catch(Exception ge) {
 			log.infof("%s.getDatabaseNames: GatewayException (%s)",TAG,ge.getMessage());
@@ -117,7 +119,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		String value = "";
 		try {
 			value = (String) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					 MasterBuilderProperties.MODULE_ID, "getPreference",key);
+					moduleId, "getPreference",key);
 		}
 		catch(Exception ge) {
 			log.infof("%s.getPreference: GatewayException (%s)",TAG,ge.getMessage());
@@ -132,7 +134,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		List<String> names = new ArrayList<>();
 		try {
 			names = (List<String>) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					 MasterBuilderProperties.MODULE_ID, "getProjectNames");
+					moduleId, "getProjectNames");
 		}
 		catch(Exception ge) {
 			log.infof("%s.getProjectNames: GatewayException (%s)",TAG,ge.getMessage());
@@ -148,7 +150,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		if( value==null ) value="";
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					 MasterBuilderProperties.MODULE_ID, "setPreference",key,value);
+					moduleId, "setPreference",key,value);
 		}
 		catch(Exception ge) {
 			log.infof("%s.setPreference: GatewayException (%s)",TAG,ge.getMessage());
@@ -163,7 +165,7 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 		if( text==null ) text="";
 		try {
 			GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					 MasterBuilderProperties.MODULE_ID, "stringToFile",text,destinationPath);
+					moduleId, "stringToFile",text,destinationPath);
 		}
 		catch(Exception ge) {
 			log.infof("%s.stringToFile: GatewayException (%s)",TAG,ge.getMessage());

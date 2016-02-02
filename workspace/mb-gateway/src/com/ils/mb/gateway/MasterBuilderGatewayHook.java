@@ -6,9 +6,6 @@ package com.ils.mb.gateway;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -26,6 +23,9 @@ import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.project.ProjectManager;
 import com.inductiveautomation.ignition.gateway.project.records.ProjectRecord;
+import com.inductiveautomation.ignition.gateway.web.models.KeyValue;
+
+import simpleorm.dataset.SQuery;
 
 
 /**
@@ -145,12 +145,21 @@ public class MasterBuilderGatewayHook extends AbstractGatewayModuleHook   {
 	 */
 	private class ProjectRemover implements Runnable {
 		public void run() {
-			// Remove persistent project record
-			PersistenceInterface pi = context.getPersistenceInterface();
 			/*
+			// Remove persistent project record
+			try{ 
+				PersistenceInterface pi = context.getPersistenceInterface();
+				SQuery query = new SQuery(ProjectRecord.META).eq(ProjectRecord.Id, new Long(internalProject.getId()));
+				ProjectRecord pr = (ProjectRecord)pi.getSession().queryOne(query);
+				pi.notifyRecordDeleted(ProjectRecord.META, new KeyValue(pr));
+				pr.deleteRecord();
+			}
+			catch(Exception ex) {
+				log.infof("%s.shutdown: Exception deleting project (%s)",TAG,ex.getLocalizedMessage());
+			}
+			
 			ProjectRecord pr = (ProjectRecord)pi.find(ProjectRecord.META, internalProject.getId());
-			pr.deleteRecord();
-			pi.notifyRecordDeleted(ProjectRecord.MET, ProjectRecord.META, internalProject.getId()));
+			
 			Connection cxn = null;
 			try {
 				pi.getSession().getJdbcConnection();

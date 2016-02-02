@@ -3,7 +3,6 @@
  */
 package com.ils.mb.gateway;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -69,6 +68,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook  
 	public void shutdown() {
 		if( internalProject!=null ) {
 			// Remove persistent project record
+			/*
 			PersistenceInterface pi = context.getPersistenceInterface();
 			ProjectRecord pr = (ProjectRecord)pi.find(ProjectRecord.META, internalProject.getUuid());
 			if( pr!=null ) {
@@ -80,6 +80,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook  
 					log.infof("%s.shutdown: Exception deleting project (%s)",TAG,ex.getLocalizedMessage());
 				}
 			}
+			*/
 		}
 	}
 
