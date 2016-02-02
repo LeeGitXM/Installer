@@ -6,6 +6,7 @@ package com.ils.mb.gateway;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -18,14 +19,18 @@ import com.inductiveautomation.ignition.common.script.ScriptManager;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.clientcomm.ClientReqSession;
-import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistenceInterface;
+import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistenceSession;
+import com.inductiveautomation.ignition.gateway.localdb.persistence.RecordMeta;
 import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.project.ProjectManager;
+import com.inductiveautomation.ignition.gateway.project.records.ProjectChangeRecord;
 import com.inductiveautomation.ignition.gateway.project.records.ProjectRecord;
+import com.inductiveautomation.ignition.gateway.project.records.ProjectResourceRecord;
+import com.inductiveautomation.ignition.gateway.util.RecordInstanceForeignKey;
 import com.inductiveautomation.ignition.gateway.web.models.KeyValue;
 
-import simpleorm.dataset.SQuery;
+import simpleorm.dataset.SRecordInstance;
 
 
 /**
@@ -104,7 +109,7 @@ public class MasterBuilderGatewayHook extends AbstractGatewayModuleHook   {
 			InputStream projectReader = null;
 			JarFile jar = null;
 			try {
-				
+
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(PROJECT_PATH);
 				if( entry!=null ) {
@@ -138,55 +143,58 @@ public class MasterBuilderGatewayHook extends AbstractGatewayModuleHook   {
 			}
 		}
 	}	
-	
+
 	// ======================== Delete Project =============================
 	/**
 	 * Delete our internal project by deleting the persistent records.
 	 */
 	private class ProjectRemover implements Runnable {
 		public void run() {
-			/*
-			// Remove persistent project record
-			try{ 
-				PersistenceInterface pi = context.getPersistenceInterface();
-				SQuery query = new SQuery(ProjectRecord.META).eq(ProjectRecord.Id, new Long(internalProject.getId()));
-				ProjectRecord pr = (ProjectRecord)pi.getSession().queryOne(query);
-				pi.notifyRecordDeleted(ProjectRecord.META, new KeyValue(pr));
-				pr.deleteRecord();
-			}
-			catch(Exception ex) {
-				log.infof("%s.shutdown: Exception deleting project (%s)",TAG,ex.getLocalizedMessage());
-			}
-			
-			ProjectRecord pr = (ProjectRecord)pi.find(ProjectRecord.META, internalProject.getId());
-			
-			Connection cxn = null;
-			try {
-				pi.getSession().getJdbcConnection();
-				//pi.getSession().begin();
-				//Statement statement = cxn.createStatement();
-				String SQL = String.format("delete from project_resources where projectId=%d",internalProject.getId());
-				//statement.executeUpdate(SQL);
-				pi.getSession().rawUpdateDB(SQL);
-				pi.getSession().commit();
-				SQL = String.format("delete from projects where projects_Id=%d",internalProject.getId());
-				//statement.executeUpdate(SQL);
-				//statement.close();
-				pi.getSession().rawUpdateDB(SQL);
-				pi.getSession().commit();
-				//pi.getSession().detachFromThread();
-			}
-			catch(Exception sqle) {
-				log.infof("%s.shutdown: Exception deleting project (%s)",TAG,sqle.getLocalizedMessage());
-			}
-			finally {
-				try {
-					if( cxn!=null ) cxn.close();
-					internalProject = null;
+			Long projectId = new Long(internalProject.getId());
+			PersistenceSession session = context.getPersistenceInterface().getSession();
+			ProjectRecord toRemove = session.find(ProjectRecord.META,projectId);
+
+			// Close the session, as another session needs to be opened for the foreign key check
+			session.close();
+
+			// First, see if the project can be deleted and that there are no foreign key references.
+			List<RecordInstanceForeignKey> referencing = context.getSchemaUpdater().findReferencingRecords(toRemove);
+			StringBuilder sb = new StringBuilder();
+			for (RecordInstanceForeignKey rfk : referencing) {
+				SRecordInstance res = rfk.getRecord();
+				RecordMeta<?> meta = (RecordMeta<?>) res.getMeta();
+
+				// Project resource records and project change records will be deleted below before the project record
+				// is deleted. But any other foreign key should prevent the project record from being deleted.
+				if (!ProjectResourceRecord.META.equals(meta) && !ProjectChangeRecord.META.equals(meta)) {
+					String itemTypeName = meta.getTableName();
+					String itemName = RecordMeta.getRecordNameIfExists(rfk);
+					sb.append(itemTypeName).append(":");
+					sb.append(itemName).append(";");
 				}
-				catch(SQLException ignore) {}
 			}
-			*/
+			if (sb.length() > 0) {
+				log.warnf("%s.ProjectRemover: Unable to delete project due to presence of foreign keys (%s)",TAG, sb.toString());
+			} 
+			else {
+				// Open the session again
+				session = context.getPersistenceInterface().getSession();
+				toRemove = session.find(ProjectRecord.META, projectId);
+
+				// Delete associated resource records
+				session.rawUpdateDB("DELETE FROM " + ProjectResourceRecord.META.getTableName() + " WHERE "
+						+ ProjectResourceRecord.ProjectId.getColumnName() + "=?", projectId);
+
+				// Delete associated project change records
+				session.rawUpdateDB(
+						"DELETE FROM " + ProjectChangeRecord.META.getTableName() + " WHERE " + ProjectChangeRecord.ProjectId
+						.getColumnName() + "=?", projectId);
+
+				toRemove.deleteRecord();
+				session.commit();
+				session.close();
+			}
 		}
 	}
 }
+
