@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.swing.JTextField;
 
+import org.python.core.PyDictionary;
+
 import com.ils.mb.common.notification.NotificationHandler;
 
 
@@ -95,6 +97,13 @@ public class MasterBuilderScriptFunctions   {
 	 */
 	public static void setPreference(String key,String value) {
 		handler.setPreference(key,value);
+	}
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public static PyDictionary getProjectResource(String projectName,String type) {
+		return handler.getProjectResource(projectName, type);
 	}
 	/**
 	 * Write a string to a file.

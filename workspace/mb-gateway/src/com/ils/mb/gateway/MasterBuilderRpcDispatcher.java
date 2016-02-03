@@ -5,6 +5,8 @@ package com.ils.mb.gateway;
 
 import java.util.List;
 
+import org.python.core.PyDictionary;
+
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -66,6 +68,13 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 	@Override
 	public List<String> getProjectNames() {
 		return requestHandler.getProjectNames();
+	}
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public PyDictionary getProjectResource(String projectName,String type) {
+		return requestHandler.getProjectResource(projectName, type);
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

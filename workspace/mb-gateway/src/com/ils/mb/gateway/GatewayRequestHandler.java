@@ -17,11 +17,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
+import org.python.core.PyDictionary;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ils.common.db.DBUtility;
 import com.ils.mb.common.MasterBuilderProperties;
 import com.ils.mb.common.MasterBuilderScriptingInterface;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.Project;
+import com.inductiveautomation.ignition.common.project.ProjectResource;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -196,6 +202,41 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 			result.add(proj.getName());
 		}
 		return result;
+	}
+	@Override
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public PyDictionary getProjectResource(String projectName,String type) {
+		PyDictionary dict = new PyDictionary();
+		Project project = context.getProjectManager().getProject(projectName, ApplicationScope.ALL, ProjectVersion.Published);
+		if( project!=null )  {
+			List<ProjectResource> resources = project.getResources();
+			for(ProjectResource res:resources) {
+				if( res.getResourceType().equalsIgnoreCase(type)) {
+					byte[]bytes = res.getData();
+					ObjectMapper mapper = new ObjectMapper();
+					try {
+						dict = mapper.readValue(bytes,PyDictionary.class);
+					}
+					catch(JsonMappingException jme) {
+						log.warnf("%s.getProjectResource: Mapping exception getting %s.%s (%s)",TAG,projectName,type,jme.getMessage());
+					}
+					catch(JsonParseException jpe) {
+						log.warnf("%s.getProjectResource: Parse exception getting %s.%s (%s)",TAG,projectName,type,jpe.getMessage());
+					}
+					catch(IOException ioe) {
+						log.warnf("%s.getProjectResource: IOException getting %s.%s (%s)",TAG,projectName,type,ioe.getMessage());
+					}
+					break;
+				}
+			}
+		}
+		else {
+			log.warnf("%s.getProjectResource: Project %s not found",TAG,projectName);
+		}
+		return dict;
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

@@ -5,6 +5,8 @@ package com.ils.mb.common;
 
 import java.util.List;
 
+import org.python.core.PyDictionary;
+
 /**
  *  Define the methods available to Python scripting 
  *  in both designer and gateway scopes.
@@ -50,6 +52,11 @@ public interface MasterBuilderScriptingInterface   {
 	 * @return a list of the names of projects currently loaded into the Gateway.
 	 */
 	public List<String> getProjectNames();
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public PyDictionary getProjectResource(String projectName,String type);
 	/**
 	 * Set the value of a Java preference used by the master builder.
 	 * @param the value of a Java preference used by the builder.

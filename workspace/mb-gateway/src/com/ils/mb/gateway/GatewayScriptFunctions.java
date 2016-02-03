@@ -3,6 +3,8 @@
  */
 package com.ils.mb.gateway;
 
+import org.python.core.PyDictionary;
+
 import com.ils.mb.gateway.GatewayRequestHandler;
 
 
@@ -41,6 +43,13 @@ public class GatewayScriptFunctions   {
 	 */
 	public static String getPreference(String key) {
 		return handler.getPreference(key);
+	}
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public static PyDictionary getProjectResource(String projectName,String type) {
+		return handler.getProjectResource(projectName, type);
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

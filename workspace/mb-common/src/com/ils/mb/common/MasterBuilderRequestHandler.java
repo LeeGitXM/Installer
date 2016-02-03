@@ -7,6 +7,8 @@ package com.ils.mb.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.python.core.PyDictionary;
+
 import com.inductiveautomation.ignition.client.gateway_interface.GatewayConnectionManager;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -140,6 +142,22 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 			log.infof("%s.getProjectNames: GatewayException (%s)",TAG,ge.getMessage());
 		}
 		return names;
+	}
+	/**
+	 * The PyDictionary returned is directly convertible to a Python dictionary.
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	public PyDictionary getProjectResource(String projectName,String type) {
+		PyDictionary dict = new PyDictionary();
+		try {
+			dict = (PyDictionary) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					moduleId, "getProjectResource",projectName,type);
+		}
+		catch(Exception ge) {
+			log.infof("%s.getProjectResource: GatewayException (%s)",TAG,ge.getMessage());
+		}
+		return dict;
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.
