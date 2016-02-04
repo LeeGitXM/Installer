@@ -113,6 +113,9 @@
 		
 		<!-- Copy gateway jar -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
+		<copy file="${git.repo}/external/lib/jackson-annotations-2.2.3.jar" todir="${build.dir}/temp_modl/" />
+		<copy file="${git.repo}/external/lib/jackson-core-2.2.3.jar" todir="${build.dir}/temp_modl/" />
+		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${MBModule.name}_Gateway/dist/mb-gateway.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${MBModule.name}_Common/dist/mb-common.jar" todir="${build.dir}/temp_modl/" />
 		
@@ -142,5 +145,4 @@
 		<echo message="Installing ${MBModule.name} on Ignition Gateway." />
 		<postmodule posturl="${local.gateway.url}" modulefile="${build.dir}/modules/${MBModule.name}-module-unsigned.modl" />
 	</target>	
-
 </project>

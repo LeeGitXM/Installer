@@ -13,7 +13,6 @@ import java.util.jar.JarFile;
 import org.xml.sax.SAXException;
 
 import com.ils.mb.common.MasterBuilderProperties;
-import com.ils.mb.gateway.MasterBuilderGatewayHook.ProjectRemover;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.script.ScriptManager;

@@ -34,6 +34,7 @@
 	<!-- External jar classpath. This classpath includes the remaining jars needed to build the module. -->
 	<path id="external.classpath">
 		 <fileset dir="${git.repo}/external/lib" includes="jython*.jar" />
+		 <fileset dir="${git.repo}/external/lib" includes="jackson*.jar" />
 		 <fileset dir="${git.repo}/external/lib" includes="ils-common.jar" />
 		 <fileset dir="${git.repo}/external/lib" includes="log4j-*.jar" />
 	</path>
