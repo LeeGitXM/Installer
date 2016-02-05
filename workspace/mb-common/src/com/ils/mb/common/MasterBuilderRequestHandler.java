@@ -148,16 +148,35 @@ public class MasterBuilderRequestHandler implements MasterBuilderScriptingInterf
 	 * @return the named resource from the named project. The resource is 
 	 *         guaranteed to be a PyDictionary.
 	 */
-	public PyDictionary getProjectResource(String projectName,String type) {
+	public PyDictionary getDictionaryResource(String projectName,String type) {
 		PyDictionary dict = new PyDictionary();
 		try {
 			dict = (PyDictionary) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
-					moduleId, "getProjectResource",projectName,type);
+					moduleId, "getDictionaryResource",projectName,type);
 		}
 		catch(Exception ge) {
-			log.infof("%s.getProjectResource: GatewayException (%s)",TAG,ge.getMessage());
+			log.infof("%s.getDictionaryResource: GatewayException (%s)",TAG,ge.getMessage());
 		}
 		return dict;
+	}
+	/**
+	 * Return a named window resource from the named project. Window resources
+	 * are searched for the supplied name. If successful the returned string 
+	 * will be valid XML. Otherwise the string will be empty.
+	 * @param projectName
+	 * @param windowName
+	 * @return an XML string representing the window.
+	 */
+	public String getWindowResource(String projectName,String windowName) {
+		String xml = "";
+		try {
+			xml = (String) GatewayConnectionManager.getInstance().getGatewayInterface().moduleInvoke(
+					moduleId, "getWindowResource",projectName,windowName);
+		}
+		catch(Exception ge) {
+			log.infof("%s.getWindowResource: GatewayException (%s)",TAG,ge.getMessage());
+		}
+		return xml;
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

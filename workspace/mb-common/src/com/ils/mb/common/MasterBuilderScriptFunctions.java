@@ -99,11 +99,26 @@ public class MasterBuilderScriptFunctions   {
 		handler.setPreference(key,value);
 	}
 	/**
-	 * @return the named resource from the named project. The resource is 
-	 *         guaranteed to be a PyDictionary.
+	 * Return a resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary. Assume the resource type
+	 *         is sufficient to identify the resource.
+	 * @param projectName
+	 * @param resource type
+	 * @return the resource as a dictionary
 	 */
-	public static PyDictionary getProjectResource(String projectName,String type) {
-		return handler.getProjectResource(projectName, type);
+	public static PyDictionary getDictionaryResource(String projectName,String type) {
+		return handler.getDictionaryResource(projectName, type);
+	}
+	/**
+	 * Return a named window resource from the named project. Window resources
+	 * are searched for the supplied name. If successful the returned string 
+	 * will be valid XML. Otherwise the string will be empty.
+	 * @param projectName
+	 * @param windowName
+	 * @return an XML string representing the window.
+	 */
+	public static String getWindowResource(String projectName,String windowName) {
+		return handler.getWindowResource(projectName, windowName);
 	}
 	/**
 	 * Write a string to a file.

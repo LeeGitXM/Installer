@@ -70,11 +70,20 @@ public class MasterBuilderRpcDispatcher implements MasterBuilderScriptingInterfa
 		return requestHandler.getProjectNames();
 	}
 	/**
-	 * @return the named resource from the named project. The resource is 
-	 *         guaranteed to be a PyDictionary.
+	 * @return a resource from the named project identified by its type. 
+	 *         The resource is guaranteed to be a PyDictionary.
 	 */
-	public PyDictionary getProjectResource(String projectName,String type) {
-		return requestHandler.getProjectResource(projectName, type);
+	@Override
+	public PyDictionary getDictionaryResource(String projectName,String type) {
+		return requestHandler.getDictionaryResource(projectName, type);
+	}
+	/**
+	 * @return a resource from the named project identified by its type. 
+	 *         The resource is guaranteed to be a PyDictionary.
+	 */
+	@Override
+	public String getWindowResource(String projectName,String windowName) {
+		return requestHandler.getWindowResource(projectName, windowName);
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

@@ -203,12 +203,12 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 		}
 		return result;
 	}
-	@Override
 	/**
 	 * @return the named resource from the named project. The resource is 
 	 *         guaranteed to be a PyDictionary.
 	 */
-	public PyDictionary getProjectResource(String projectName,String type) {
+	@Override
+	public PyDictionary getDictionaryResource(String projectName,String type) {
 		PyDictionary dict = new PyDictionary();
 		Project project = context.getProjectManager().getProject(projectName, ApplicationScope.ALL, ProjectVersion.Published);
 		if( project!=null )  {
@@ -237,6 +237,42 @@ public class GatewayRequestHandler implements MasterBuilderScriptingInterface {
 			log.warnf("%s.getProjectResource: Project %s not found",TAG,projectName);
 		}
 		return dict;
+	}
+	/**
+	 * @return the named resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary.
+	 */
+	@Override
+	public String getWindowResource(String projectName,String windowName) {
+		String xml = "";
+		String resourceType = "window";
+		Project project = context.getProjectManager().getProject(projectName, ApplicationScope.ALL, ProjectVersion.Published);
+		if( project!=null )  {
+			List<ProjectResource> resources = project.getResources();
+			for(ProjectResource res:resources) {
+				if( res.getResourceType().equalsIgnoreCase("window")) {
+					byte[]bytes = res.getData();
+					ObjectMapper mapper = new ObjectMapper();
+					try {
+						xml = mapper.readValue(bytes,String.class);
+					}
+					catch(JsonMappingException jme) {
+						log.warnf("%s.getProjectResource: Mapping exception getting %s.%s (%s)",TAG,projectName,resourceType,jme.getMessage());
+					}
+					catch(JsonParseException jpe) {
+						log.warnf("%s.getProjectResource: Parse exception getting %s.%s (%s)",TAG,projectName,resourceType,jpe.getMessage());
+					}
+					catch(IOException ioe) {
+						log.warnf("%s.getProjectResource: IOException getting %s.%s (%s)",TAG,projectName,resourceType,ioe.getMessage());
+					}
+					break;
+				}
+			}
+		}
+		else {
+			log.warnf("%s.getProjectResource: Project %s not found",TAG,projectName);
+		}
+		return xml;
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.

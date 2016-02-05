@@ -6,6 +6,7 @@ package com.ils.mb.common;
 import java.util.List;
 
 import org.python.core.PyDictionary;
+import org.w3c.dom.Document;
 
 /**
  *  Define the methods available to Python scripting 
@@ -53,10 +54,23 @@ public interface MasterBuilderScriptingInterface   {
 	 */
 	public List<String> getProjectNames();
 	/**
-	 * @return the named resource from the named project. The resource is 
-	 *         guaranteed to be a PyDictionary.
+	 * Return a resource from the named project. The resource is 
+	 *         guaranteed to be a PyDictionary. Assume the resource type
+	 *         is sufficient to identify the resource.
+	 * @param projectName
+	 * @param resource type
+	 * @return the resource as a dictionary
 	 */
-	public PyDictionary getProjectResource(String projectName,String type);
+	public PyDictionary getDictionaryResource(String projectName,String type);
+	/**
+	 * Return a named window resource from the named project. Window resources
+	 * are searched for the supplied name. If successful the returned string 
+	 * will be valid XML. Otherwise the string will be empty.
+	 * @param projectName
+	 * @param windowName
+	 * @return an XML string representing the window.
+	 */
+	public String getWindowResource(String projectName,String windowName);
 	/**
 	 * Set the value of a Java preference used by the master builder.
 	 * @param the value of a Java preference used by the builder.

@@ -45,11 +45,18 @@ public class GatewayScriptFunctions   {
 		return handler.getPreference(key);
 	}
 	/**
-	 * @return the named resource from the named project. The resource is 
-	 *         guaranteed to be a PyDictionary.
+	 * @return a resource from the named project. The resource is 
+	 *         identified by type and guaranteed to be a PyDictionary.
 	 */
-	public static PyDictionary getProjectResource(String projectName,String type) {
-		return handler.getProjectResource(projectName, type);
+	public static PyDictionary getDictionaryResource(String projectName,String type) {
+		return handler.getDictionaryResource(projectName, type);
+	}
+	/**
+	 * @return the named window from the named project. The resource is 
+	 *         an XML document, but returned as a String.
+	 */
+	public static String getWindowResource(String projectName,String windowName) {
+		return handler.getWindowResource(projectName, windowName);
 	}
 	/**
 	 * Set the value of a Java preference used by the master builder.
