@@ -17,9 +17,4 @@ public interface MasterBuilderProperties   {
 	// These are possible keys for status notifications
 	public final static String FAIL_NOTIFICATION    = "FailureStatus";
 	public final static String SUCCESS_NOTIFICATION = "SuccessStatus";
-	// These variants are for the ApplicationInstaller module
-	public final static String AI_MODULE_ID = "com.ils.installer";       // See module.xml
-	public final static String AI_MODULE_NAME = "ApplicationInstaller";  // See module.xml
-	public final static String AI_PREFERENCES_NAME = "ApplicationInstaller";  
-	public final static String AI_SCRIPT_PACKAGE = "system.ils.installer";   // Python package scripting
 }

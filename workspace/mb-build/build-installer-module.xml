@@ -16,24 +16,13 @@
 	<property name="ant.build.javac.source" value="1.8"/>
 	<property name="ant.build.javac.target" value="1.8"/>
 	
-	<!-- Common jar classpath -->
-	<!-- Both gateway, designer depend on the Common -->
-	<path id="IM_Common.classpath">
-		<path refid="ignition.classpath" />
-		<path refid="external.classpath" />
-	</path>
-		
+
 	<!-- Gateway jar classpath -->
 	<path id="IM_Gateway.classpath">
-		<path refid="IM_Common.classpath" />
-		<fileset dir="${build.dir}/bin/${MBModule.name}_Common/dist/" includes="*.jar" />
+		<path refid="ignition.classpath" />
+		<path refid="external.classpath" />
 	</path>	
 
-	<!-- Client jar classpath -->
-	<path id="IM_Client.classpath">
-		<path refid="IM_Common.classpath" />
-		<fileset dir="${build.dir}/bin/${MBModule.name}_Common/dist/" includes="*.jar" />
-	</path>
 	
 	
 	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
@@ -56,16 +45,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />	
 				
-		<!-- InstallerModule Common jar -->
-		<antcall target="MakeProject">
-			<param name="modName" value="${MBModule.name}_Common" />
-			<param name="sourceDirFolder" value="InstallerModule-common" />
-			<param name="jarName" value="InstallerModule-common" />
-			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="IM_Common.classpath"/>
-		</antcall>
-		
-		
 		<!-- InstallerModule Gateway jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${MBModule.name}_Gateway" />
@@ -76,23 +55,6 @@
 		</antcall>
 
 		
-		<!-- InstallerModule Client jar -->
-		<antcall target="MakeProject">
-			<param name="modName" value="${MBModule.name}_Client" />
-			<param name="sourceDirFolder" value="InstallerModule-client" />
-			<param name="jarName" value="InstallerModule-client" />
-			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="IM_Client.classpath"/>
-		</antcall>
-		
-		<!-- InstallerModule Designer jar -->
-		<antcall target="MakeProject">
-			<param name="modName" value="${MBModule.name}_Designer" />
-			<param name="sourceDirFolder" value="InstallerModule-designer" />
-			<param name="jarName" value="InstallerModule-designer" />
-			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="IM_Client.classpath"/>
-		</antcall>
 		
 		<!-- Create .modl file -->
 		<echo message="Making ${MBModule.name} modl" />
@@ -106,19 +68,9 @@
 		<replace file="${build.dir}/temp_modl/module.xml" token="@DESCRIPTION@" value="${MBModule.description}" />
 		<replace file="${build.dir}/temp_modl/module.xml" token="@VERSION@" value="${MBModule.version}" />
 
-		<!-- Pack200 and then copy the common, client jars -->
-		<pack200 src="${build.dir}/bin/${MBModule.name}_Client/dist/InstallerModule-client.jar" destfile="${build.dir}/temp_modl/InstallerModule-client.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
-		<pack200 src="${build.dir}/bin/${MBModule.name}_Common/dist/InstallerModule-common.jar" destfile="${build.dir}/temp_modl/InstallerModule-common.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
-		<pack200 src="${build.dir}/bin/${MBModule.name}_Designer/dist/InstallerModule-designer.jar" destfile="${build.dir}/temp_modl/InstallerModule-designer.jar.pack.gz" gzipoutput="true" configfile="${p200props}" />
-
 		
 		<!-- Copy gateway jar -->
-		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-annotations-2.2.3.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-core-2.2.3.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${MBModule.name}_Gateway/dist/InstallerModule-gateway.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${build.dir}/bin/${MBModule.name}_Common/dist/InstallerModule-common.jar" todir="${build.dir}/temp_modl/" />
 		
 
 		<!-- Copy license file and javadoc into the bundle -->

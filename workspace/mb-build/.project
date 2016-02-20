@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>staging</name>
+			<type>2</type>
+			<location>/Users/chuckc/Development/ils/git/installer/staging</location>
+		</link>
+	</linkedResources>
 </projectDescription>

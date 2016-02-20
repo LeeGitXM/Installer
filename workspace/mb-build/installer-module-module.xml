@@ -3,25 +3,17 @@
 <module>
 	<id>com.ils.installermodule.InstallerModule</id>
 	<name>InstallerModule</name>
-	<description>Custom installer for Ignition application ---</description>
-	<license>license.html</license>
-	<documentation>index.html</documentation>
+	<description>Prototype installer for Ignition application ---</description>
 	<version>1.0.10.1</version>
 	<freemodule>true</freemodule>
 	<requiredignitionversion>7.8.0</requiredignitionversion>
 	<requiredframeworkversion>7</requiredframeworkversion>
 
 	<!-- Load in our jars for each scope -->
-	<export scope="G">ils-common.jar</export>
 	<jar scope="G">InstallerModule-gateway.jar</jar>
-	<jar scope="C">InstallerModule-client.jar.pack.gz</jar>
-	<jar scope="CD">InstallerModule-designer.jar.pack.gz</jar>
-	<jar scope="G">InstallerModule-common.jar</jar>
-	<jar scope="CD">InstallerModule-common.jar.pack.gz</jar>
 
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
 	<hook scope="G">com.ils.installermodule.gateway.GatewayHook</hook>
-	<hook scope="D">com.ils.installermodule.designer.DesignerHook</hook>
-	<hook scope="C">com.ils.installermodule.client.ClientHook</hook>
+
 </module>
 
