@@ -28,7 +28,6 @@
 	<!-- Gateway jar classpath -->
 	<path id="AI_Gateway.classpath">
 		<path refid="AI_Common.classpath" />
-		<fileset dir="${build.dir}/bin/${AIModule.name}_Common/dist/" includes="*.jar" />
 	</path>	
 
 	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
@@ -51,17 +50,8 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />	
 				
-		<!-- AI Common jar -->
-		<antcall target="MakeProject">
-			<param name="modName" value="${AIModule.name}_Common" />
-			<param name="sourceDirFolder" value="mb-common" />
-			<param name="jarName" value="mb-common" />
-			<param name="javacSource" value="1.8" />
-			<param name="module.build.classpath" value="AI_Common.classpath"/>
-		</antcall>
-		
-		
-		<!-- AI Gateway jar -->
+	
+		<!-- Application Installer Gateway jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${AIModule.name}_Gateway" />
 			<param name="sourceDirFolder" value="ApplicationInstaller-gateway" />
@@ -89,15 +79,11 @@
 		<copy file="${git.repo}/external/lib/jackson-core-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${AIModule.name}_Gateway/dist/ai-gateway.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${build.dir}/bin/${AIModule.name}_Common/dist/mb-common.jar" todir="${build.dir}/temp_modl/" />
 		
 
-		<!-- Copy license file and javadoc into the bundle -->
-		<mkdir dir="${build.dir}/doc" />
+		<!-- Copy license file into the bundle -->
 		<copy file="${build.dir}/license.html" todir="${build.dir}/temp_modl/" />
-		<copy todir="${build.dir}/temp_modl/doc">
-		    <fileset dir="${build.dir}/doc"/>
-		</copy>
+
 		<!-- Echo the version into .version in the bundle and to be saved -->
 		<echo message="${AIModule.name}-${AIModule.version}:${AIModule.release}" file="${build.dir}/temp_modl/.version" append="false"/>
 		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.version" append="false"/>
@@ -106,7 +92,8 @@
 		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.application-installer" append="false"/>
 		
 		<!-- Copy staged artifacts into the bundle -->
-		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/bom.xml" />
+		<mkdir dir="${build.dir}/artifacts" />
+		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />

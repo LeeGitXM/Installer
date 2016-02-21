@@ -1,9 +1,10 @@
 package com.ils.ai.gateway.panel;
 
+import org.apache.wicket.model.Model;
+
 import com.ils.ai.gateway.model.InstallerData;
 import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
-import org.apache.wicket.model.Model;
 
 /**
  * Created by travis.cox on 2/17/2016.

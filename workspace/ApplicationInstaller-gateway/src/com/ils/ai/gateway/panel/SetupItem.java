@@ -1,8 +1,8 @@
 package com.ils.ai.gateway.panel;
 
-import com.inductiveautomation.ignition.common.project.Project;
-
 import java.io.Serializable;
+
+import com.inductiveautomation.ignition.common.project.Project;
 
 /**
  * Created by travis.cox on 2/17/2016.

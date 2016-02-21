@@ -11,7 +11,7 @@ import com.inductiveautomation.ignition.gateway.web.components.LinkConfigMenuNod
 
 public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
 
-    public static final String ROOT_NODE = "ils";
+	public static final String ROOT_NODE = "ils";
     public static final String SETUP_NODE = "setup";
 
     private static ApplicationInstallerGatewayHook INSTANCE = null;
@@ -23,7 +23,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         this.context = gatewayContext;
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         handler.setContext(context);
-        BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstallerProperties");
+        BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
         LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
         rootNode.setPosition(700);
         LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", SetupPanel.class);
@@ -34,11 +34,11 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     public static ApplicationInstallerGatewayHook getInstance(){
         return INSTANCE;
     }
-
-    public GatewayContext getContext(){
-        return context;
+    
+    public GatewayContext getContext() {
+    	return this.context;
     }
-
+    
     @Override
     public void startup(LicenseState licenseState) {
 
@@ -55,10 +55,10 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
 
         if(uninstallModule) {
             try {
-                context.getModuleManager().uninstallModule(ApplicationInstallerProperties.MODULE_ID);
+                context.getModuleManager().uninstallModule(InstallerConstants.MODULE_ID);
             } 
             catch (Exception ignored) {}
-            //BundleUtil.get().removeBundle("ils");
+            BundleUtil.get().removeBundle("ils");
         }
     }
 }

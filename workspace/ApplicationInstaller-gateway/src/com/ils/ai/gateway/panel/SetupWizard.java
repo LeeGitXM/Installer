@@ -16,16 +16,15 @@ public class SetupWizard extends GatewayWizard {
 	private static final long serialVersionUID = 7625405250885635937L;
 
 	public SetupWizard(String id, IConfigPage configPage, Model<InstallerData> dataModel){
-        super(id, configPage, dataModel);
+		super(id, configPage, dataModel);
 
-        GatewayWizardModel wizardModel = new GatewayWizardModel(new WelcomeStep(dataModel));
-        this.init(wizardModel);
-    }
+		GatewayWizardModel wizardModel = new GatewayWizardModel(new WelcomeStep(dataModel));
+		this.init(wizardModel);
+	}
 
-    @Override
-    public void onFinish(IModel iModel, IConfigPage iConfigPage) {
-
-        ApplicationInstallerGatewayHook.getInstance().uninstallMenuNodes(true);
-        iConfigPage.setConfigPanel(new Success());
-    }
+	@Override
+	public void onFinish(IModel iModel, IConfigPage iConfigPage) {
+		iConfigPage.setConfigPanel(new Success());
+		ApplicationInstallerGatewayHook.getInstance().uninstallMenuNodes(true);
+	}
 }
