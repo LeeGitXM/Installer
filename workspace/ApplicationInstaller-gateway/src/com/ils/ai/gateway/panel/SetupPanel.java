@@ -1,5 +1,6 @@
-package com.ils.ai.setup;
+package com.ils.ai.gateway.panel;
 
+import com.ils.ai.gateway.model.InstallerData;
 import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
 import org.apache.wicket.model.Model;
@@ -16,7 +17,7 @@ public class SetupPanel extends ConfigPanel {
 
         this.configPage = configPage;
 
-        SetupWizard wizard = new SetupWizard("setupWizard", configPage, new Model<>(new SetupItem()));
+        SetupWizard wizard = new SetupWizard("setupWizard", configPage, new Model<>(new InstallerData()));
         add(wizard);
     }
 

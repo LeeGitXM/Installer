@@ -1,4 +1,4 @@
-package com.ils.ai.setup;
+package com.ils.ai.gateway.panel;
 
 import com.inductiveautomation.ignition.common.project.Project;
 

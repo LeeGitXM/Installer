@@ -1,9 +1,7 @@
 package com.ils.ai.gateway;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ils.ai.setup.SetupPanel;
+import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.panel.SetupPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
@@ -16,15 +14,15 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     public static final String ROOT_NODE = "ils";
     public static final String SETUP_NODE = "setup";
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    private static ApplicationInstallerGatewayHook INSTANCE;
-    private GatewayContext context;
+    private static ApplicationInstallerGatewayHook INSTANCE = null;
+    private GatewayContext context = null;
 
     @Override
     public void setup(GatewayContext gatewayContext) {
         INSTANCE = this;
         this.context = gatewayContext;
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+        handler.setContext(context);
         BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstallerProperties");
         LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
         rootNode.setPosition(700);
@@ -60,6 +58,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
                 context.getModuleManager().uninstallModule(ApplicationInstallerProperties.MODULE_ID);
             } 
             catch (Exception ignored) {}
+            //BundleUtil.get().removeBundle("ils");
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ils.ai.setup;
+package com.ils.ai.gateway.panel;
 
 import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;
 

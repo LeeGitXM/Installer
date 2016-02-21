@@ -19,10 +19,11 @@
 	<jar scope="G">jackson-databind-2.2.3.jar</jar>
 	<jar scope="D">mb-designer.jar.pack.gz</jar>
 	<jar scope="G">mb-common.jar</jar>
-	<jar scope="D">mb-common.jar.pack.gz</jar>
+	<jar scope="DC">mb-common.jar.pack.gz</jar>
 
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
 	<hook scope="G">com.ils.mb.gateway.MasterBuilderGatewayHook</hook>
 	<hook scope="D">com.ils.mb.designer.MasterBuilderDesignerHook</hook>
+	<hook scope="C">com.ils.mb.client.MasterBuilderClientHook</hook>
 </module>
 

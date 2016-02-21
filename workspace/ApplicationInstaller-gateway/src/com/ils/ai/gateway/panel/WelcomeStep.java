@@ -1,16 +1,19 @@
-package com.ils.ai.setup;
+package com.ils.ai.gateway.panel;
 
-import com.inductiveautomation.ignition.common.BundleUtil;
-import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.model.Model;
+
+import com.ils.ai.gateway.model.InstallerData;
+import com.inductiveautomation.ignition.common.BundleUtil;
+import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 
 /**
  * Created by travis.cox on 2/17/2016.
  */
 public class WelcomeStep extends GatewayWizardStep {
+	private static final long serialVersionUID = -3742149120641480873L;
 
-    public WelcomeStep(Model<SetupItem> dataModel){
+	public WelcomeStep(Model<InstallerData> dataModel){
         super(null, BundleUtil.get().getString("ils.welcome.title"), dataModel);
     }
 
@@ -21,7 +24,7 @@ public class WelcomeStep extends GatewayWizardStep {
 
     @Override
     public IDynamicWizardStep next() {
-        Model<SetupItem> defaultModel = (Model<SetupItem>) this.getDefaultModel();
+        Model<InstallerData> defaultModel = (Model<InstallerData>) this.getDefaultModel();
         return new SelectProject(defaultModel);
     }
 }

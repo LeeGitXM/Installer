@@ -1,11 +1,8 @@
-package com.ils.ai.setup;
+package com.ils.ai.gateway.panel;
 
-import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
-import com.inductiveautomation.ignition.common.BundleUtil;
-import com.inductiveautomation.ignition.common.project.Project;
-import com.inductiveautomation.ignition.common.project.ProjectVersion;
-import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -15,18 +12,23 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
+import com.ils.ai.gateway.model.InstallerData;
+import com.inductiveautomation.ignition.common.BundleUtil;
+import com.inductiveautomation.ignition.common.project.Project;
+import com.inductiveautomation.ignition.common.project.ProjectVersion;
+import com.inductiveautomation.ignition.gateway.model.GatewayContext;
+import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 
 /**
  * Created by travis.cox on 2/17/2016.
  */
 public class SelectProject extends GatewayWizardStep {
 
-    public SelectProject(Model<SetupItem> dataModel) {
+    public SelectProject(Model<InstallerData> dataModel) {
         super(null, BundleUtil.get().getString("ils.project.title"), dataModel);
 
-        Form<SetupItem> form = new Form<SetupItem>("submitForm", new CompoundPropertyModel<SetupItem>((SetupItem) dataModel.getObject()));
+        Form<InstallerData> form = new Form<InstallerData>("submitForm", new CompoundPropertyModel<InstallerData>((InstallerData) dataModel.getObject()));
 
         form.add(new Label("projectLabel", BundleUtil.get().getString("ils.project.title")));
         form.add(new DropDownChoice<Project>("project", new LoadableDetachableModel<List<Project>>() {
