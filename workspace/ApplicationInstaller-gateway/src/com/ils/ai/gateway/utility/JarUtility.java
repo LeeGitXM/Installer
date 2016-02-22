@@ -31,7 +31,7 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  * are typically designed to return an error string, where a null implies success.
  */
 public class JarUtility {
-	private final String TAG = "JarUtility";
+	private final String CLSS = "JarUtility";
 	private final LoggerEx log;
 	private final GatewayContext context;
 
@@ -42,7 +42,7 @@ public class JarUtility {
 	
 	/**
 	 * Search the modules that are installed into Ignition, looking
-	 * for containing a file with the indicated name.
+	 * for one containing a file with the indicated name.
 	 * @param marker name of file that denotes the correct module
 	 * @return a path to the module.
 	 */
@@ -51,7 +51,7 @@ public class JarUtility {
 		Path jarDirPath = Paths.get(context.getUserlibDir().getAbsolutePath(),"modules");
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(jarDirPath, "*.{jar,modl}")) {
 			for (Path entry: stream) {
-				log.infof("%s.internalModuleContaining: Inspecting %s ..",TAG,entry.toString());
+				log.infof("%s.internalModuleContaining: Inspecting %s ..",CLSS,entry.toString());
 				if(jarAtPathContains(entry,marker)) {
 					result=entry;
 					break;
@@ -59,10 +59,10 @@ public class JarUtility {
 			}
 		}
 		catch (DirectoryIteratorException die) {
-			log.infof("%s.internalModuleContaining: Error iterating %s (%s)",TAG,jarDirPath.toString(),die.getCause().getLocalizedMessage());
+			log.warnf("%s.internalModuleContaining: Error iterating %s (%s)",CLSS,jarDirPath.toString(),die.getCause().getLocalizedMessage());
 		}
 		catch (IOException ioe) {
-			log.infof("%s.internalModuleContaining: IO error iterating %s (%s)",TAG,jarDirPath.toString(),ioe.getLocalizedMessage());
+			log.warnf("%s.internalModuleContaining: IO error iterating %s (%s)",CLSS,jarDirPath.toString(),ioe.getLocalizedMessage());
 		}
 		return result;
 	}
@@ -81,7 +81,7 @@ public class JarUtility {
 			jar.close();
 		}
 		catch(IOException ioe) {
-			log.infof("%s.jarAtPathContains: IO error converting %s to jar (%s)",TAG,jarPath.toString(),ioe.getLocalizedMessage());
+			log.infof("%s.jarAtPathContains: IO error converting %s to jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
 		}
 		return answer;
 	}
@@ -99,11 +99,15 @@ public class JarUtility {
 			JarEntry entry = jar.getJarEntry(entryName);
 			if( entry!=null ) {
 				InputStream is = jar.getInputStream(entry);
-				result =  stringFromInputStream(is,jarPath.toFile().length());
+				result =  stringFromInputStream(is);
+				is.close();
+			}
+			else {
+				log.warnf("%s.readFileFromJar: %s not found in %s",CLSS,entryName,jarPath.toFile().getAbsolutePath());
 			}
 		}
 		catch(IOException ioe) {
-			log.infof("%s.readFileFromJar: IO error reading %s (%s)",TAG,entryName,ioe.getLocalizedMessage());
+			log.warnf("%s.readFileFromJar: IO error reading %s (%s)",CLSS,entryName,ioe.getLocalizedMessage());
 		}
 		finally {
 			if(jar!=null) {
@@ -149,32 +153,33 @@ public class JarUtility {
 			jar.close();
 		}
 		catch(IOException ioe) {
-			log.infof("%s.unJarToDirectory: IO error converting %s from jar (%s)",TAG,jarPath.toString(),ioe.getLocalizedMessage());
+			log.infof("%s.unJarToDirectory: IO error converting %s from jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
 		}
 	}
 
-	// convert InputStream to String
-	private String stringFromInputStream(InputStream is,long len) {
+	// convert InputStream to String. Input has line terminators
+	private String stringFromInputStream(InputStream in) {
 
-		BufferedReader br = null;
-		CharBuffer cbuffer = CharBuffer.allocate((int)len+1024);
-		try {
-			br = new BufferedReader(new InputStreamReader(is));
-			while(br.read(cbuffer)>=0 ) {
-				;
-			}
-		} 
-		catch (IOException ioe) {
-			log.infof("%s.stringFromInputStream: IO error (%s)",TAG,ioe.getLocalizedMessage());
-		} 
-		finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException ignore) {}
-			}
-		}
-
-		return cbuffer.toString();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+	    StringBuilder out = new StringBuilder();
+	    String newLine = System.getProperty("line.separator");
+	    String line;
+	    try {
+	    	while ((line = reader.readLine()) != null) {
+	    		out.append(line);
+	    		out.append(newLine);
+	    	}
+	    } 
+	    catch(IOException ioe) {
+	    	log.infof("%s.stringFromInputStream: IO error readinf from jar (%s)",CLSS,ioe.getLocalizedMessage());
+	    }
+	    finally {
+	    	try {
+	    		reader.close();
+	    	}
+	    	catch(IOException ignore) {}
+	    }
+	    return out.toString();
+		
 	}
 }

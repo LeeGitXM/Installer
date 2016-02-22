@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <installer>
 	<title>EMC Ignition Applications</title>
 	<description>Installer for EMC Ignition Applications.</description>
@@ -7,10 +6,7 @@
 	<property name="release">0.1r15</property>
 	<property name="date">Mar 17, 2016</property>
 	<property name="version">2</property>
-
-
 	<!-- These entries define the install panels -->
 	<panel type="backup"></panel>
-
 </installer>
 

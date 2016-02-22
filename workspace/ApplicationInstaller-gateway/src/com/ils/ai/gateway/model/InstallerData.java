@@ -4,6 +4,7 @@
 package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 
 import org.w3c.dom.Document;
 
@@ -17,6 +18,7 @@ import com.inductiveautomation.ignition.common.project.Project;
 public class InstallerData implements Serializable  {
 	private static final long serialVersionUID = -7650179030090459881L;
 	private Document bom = null;
+	private Path modulePath = null;
 	private Project project = null;
 
     
@@ -27,8 +29,10 @@ public class InstallerData implements Serializable  {
 
 	}
 	public Document getBillOfMaterials() {return bom;}
-	public void setBillOfMaterials(Document doc) {this.bom = doc;}
+	public Path getModulePath() {return this.modulePath;}
     public Project getProject() {return project;}
+    public void setBillOfMaterials(Document doc) {this.bom = doc;}
+    public void setModulePath(Path path) {this.modulePath = path;}
     public void setProject(Project project) {this.project = project;}
 }
 

@@ -4,6 +4,16 @@
  */
 package com.ils.ai.gateway.utility;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 
@@ -13,11 +23,32 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
  * are typically designed to return an error string, where a null implies success.
  */
 public class XMLUtility {
-	private final String TAG = "XMLUtility";
+	private final String CLSS = "XMLUtility";
 	private final LoggerEx log;
 
 	public XMLUtility() {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
+	}
+	
+	public Document documentFromBytes(byte[] bytes) {
+		Document xml = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    factory.setNamespaceAware(true);
+	    try {
+	    	DocumentBuilder builder = factory.newDocumentBuilder();
+	    	xml = builder.parse(new ByteArrayInputStream(bytes));
+	    }
+	    catch(ParserConfigurationException pce) {
+	    	log.warnf("%s.documentFromBytes: Failed to create builder (%s)",CLSS,pce.getLocalizedMessage());
+	    }
+	    catch(SAXException saxe) {
+	    	log.warnf("%s.documentFromBytes: Illegal XML document (%s)",CLSS,saxe.getLocalizedMessage());
+	    }
+	    catch(IOException ioe) {
+	    	log.warnf("%s.documentFromBytes: IOException parsing XML (%s)",CLSS,ioe.getLocalizedMessage());
+	    }
+	    
+	    return xml;
 	}
 
 }

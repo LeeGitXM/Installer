@@ -16,5 +16,6 @@ public interface InstallerConstants   {
 	public final static String TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";  // Format for writing timestamps
 	
 	// Properties that deal with the internals of the module
+	public final static String BOM_LOCATION = "artifacts/bom.xml";       // Location of bom within jar
 	public final static String MODULE_MARKER = ".application-installer"; // Name of file that marks the module as "the one"
 }
