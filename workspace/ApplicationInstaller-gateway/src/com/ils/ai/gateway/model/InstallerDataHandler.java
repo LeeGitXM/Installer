@@ -113,7 +113,15 @@ public class InstallerDataHandler {
 		}
 		return path;
 	}
-	
+	public int getStepCount(InstallerData model) {
+		int count = 0;
+		Document bom = getBillOfMaterials(model);
+		if( bom!=null ) { 
+			NodeList elements = bom.getElementsByTagName("panel");
+			count = elements.getLength();
+		}
+		return count;
+	}
 	/**
 	 * Read the title from the bill of materials.
 	 * @param model
@@ -141,7 +149,7 @@ public class InstallerDataHandler {
 		if( panelElement!=null ) {
 			NodeList elements = panelElement.getElementsByTagName("title");
 			int count = elements.getLength();
-			if( count>0 && panelIndex<count ) {
+			if( count>0  ) {
 				Node element = elements.item(0);
 				title = element.getTextContent();
 			}

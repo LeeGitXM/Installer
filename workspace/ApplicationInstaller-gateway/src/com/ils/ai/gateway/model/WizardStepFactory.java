@@ -5,7 +5,11 @@ package com.ils.ai.gateway.model;
 
 import org.apache.wicket.model.Model;
 
+import com.ils.ai.gateway.panel.BackupStep;
+import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.InstallWizardStep;
+import com.ils.ai.gateway.panel.LicenseStep;
+import com.ils.ai.gateway.panel.ModuleStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
 /**
@@ -23,9 +27,9 @@ public class WizardStepFactory  {
 		InstallWizardStep step = null;
 		switch( stepType)  {
 
-			case BACKUP:
+			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
 				break;
-			case CONCLUSION:
+			case CONCLUSION: step = new ConclusionStep(panelIndex,prior,title,model);
 				break;
 			case DATABASE:
 				break;
@@ -33,11 +37,11 @@ public class WizardStepFactory  {
 				break;
 			case ICONS:
 				break;
-			case LICENSE:
+			case LICENSE: step = new LicenseStep(panelIndex,prior,title,model);
 				break;
 			case MERGEPROJECT:
 				break;
-			case MODULE:
+			case MODULE: step = new ModuleStep(panelIndex,prior,title,model);
 				break;
 			case PROJECT:
 				break;

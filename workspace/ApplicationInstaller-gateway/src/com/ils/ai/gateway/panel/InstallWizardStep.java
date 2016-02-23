@@ -12,19 +12,20 @@ public class InstallWizardStep extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
 	private final int panelIndex;
 	private final InstallWizardStep prior;
-	private final InstallWizardStep next;
+	private final Model<InstallerData> dataModel;
 
-	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> dataModel) {
-        super(previous,title, dataModel);
+	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> model) {
+        super(previous,title, model);
         this.panelIndex = index;
         this.prior = previous;
-        this.next = InstallerDataHandler.getInstance().getWizardStep(panelIndex+1,this,dataModel);
+        this.dataModel = model;
+        
 	}
 
     
 	@Override
     public boolean isLastStep() {
-        return next==null;
+        return (panelIndex>=InstallerDataHandler.getInstance().getStepCount(dataModel.getObject()));
     }
 
     @Override
@@ -34,6 +35,6 @@ public class InstallWizardStep extends GatewayWizardStep {
     
     @Override
     public IDynamicWizardStep next() {
-        return next;
+    	return InstallerDataHandler.getInstance().getWizardStep(panelIndex+1,this,dataModel);
     }
 }

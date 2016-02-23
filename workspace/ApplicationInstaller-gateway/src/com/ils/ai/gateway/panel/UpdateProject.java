@@ -23,9 +23,9 @@ import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWiz
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class SelectProject extends GatewayWizardStep {
+public class UpdateProject extends GatewayWizardStep {
 
-    public SelectProject(Model<InstallerData> dataModel) {
+    public UpdateProject(Model<InstallerData> dataModel) {
         super(null, BundleUtil.get().getString("ils.project.title"), dataModel);
 
         Form<InstallerData> form = new Form<InstallerData>("submitForm", new CompoundPropertyModel<InstallerData>((InstallerData) dataModel.getObject()));

@@ -11,9 +11,20 @@
 	  <title>ILS Automation Installer for EMC Ignition Applications</title>
 	  <text>Welcome. blah, blah, blah.</text>
 	</panel>
+	<panel type="license">
+	  <title>End User License Agreement (EULA)</title>
+	  <text>This agreement covers ...</text>
+	  <location name="license">artifacts/license/license.html</location>
+	</panel>
 	<panel type="backup">
 	  <title>Archive into an Ignition Backup</title>
 	  <text>This is an optional step. The backup allows you to revert the previous state of the application.</text>
+	</panel>
+	<panel type="module">
+	  <title>Install Custom Modules</title>
+	  <text>This step installs the ILS-SFC and BLT modules.</text>
+	  <location name="ILS-SFC">artifacts/modules/ILS-SFC-module-signed.modl</location>
+	  <location name="BLT">artifacts/modules/BLT-module-signed.modl</location>
 	</panel>
 	<panel type="conclusion">
 	  <title>Installation Complete</title>

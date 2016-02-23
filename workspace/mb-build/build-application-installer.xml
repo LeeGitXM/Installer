@@ -94,6 +94,8 @@
 		<!-- Copy staged artifacts into the bundle -->
 		<mkdir dir="${build.dir}/artifacts" />
 		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
+		<mkdir dir="${build.dir}/artifacts/license" />
+		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />
