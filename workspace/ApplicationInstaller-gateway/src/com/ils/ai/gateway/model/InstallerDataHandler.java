@@ -5,6 +5,8 @@ package com.ils.ai.gateway.model;
 
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.wicket.model.Model;
 import org.w3c.dom.Document;
@@ -113,6 +115,28 @@ public class InstallerDataHandler {
 		}
 		return path;
 	}
+	
+	// Format the properties for display
+	public List<String> getProperties(InstallerData model) {
+		List<String> properties = new ArrayList<>();
+		Document bom = getBillOfMaterials(model);
+		if( bom!=null ) {
+			NodeList propertyNodes = bom.getElementsByTagName("property");
+			int count = propertyNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node propertyNode = propertyNodes.item(index);
+				String name = xmlUtil.attributeValue(propertyNode, "name");
+				String value = propertyNode.getTextContent();
+				String text = name +":"+"                      ";
+				text = text.substring(0,20)+value;
+				properties.add(text);
+				index++;
+			}
+		}
+		return properties;
+	}
+	
 	public int getStepCount(InstallerData model) {
 		int count = 0;
 		Document bom = getBillOfMaterials(model);
