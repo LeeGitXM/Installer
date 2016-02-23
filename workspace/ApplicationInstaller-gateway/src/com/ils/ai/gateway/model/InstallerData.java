@@ -21,7 +21,6 @@ public class InstallerData implements Serializable  {
 	private Path modulePath = null;
 	private Project project = null;
 
-    
 	/**
 	 * Constructor is private per Singleton pattern.
 	 */

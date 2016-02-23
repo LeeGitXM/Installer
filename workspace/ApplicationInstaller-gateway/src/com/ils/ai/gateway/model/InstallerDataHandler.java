@@ -6,11 +6,14 @@ package com.ils.ai.gateway.model;
 
 import java.nio.file.Path;
 
+import org.apache.wicket.model.Model;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ils.ai.gateway.InstallerConstants;
+import com.ils.ai.gateway.panel.InstallWizardStep;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
@@ -36,14 +39,14 @@ public class InstallerDataHandler {
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private XMLUtility xmlUtil = null;
-	private Path modulePath  = null;
+	private final WizardStepFactory stepFactory;
     
 	/**
 	 * Constructor is private per Singleton pattern.
 	 */
 	private InstallerDataHandler() {
 		log = LogUtil.getLogger(getClass().getPackage().getName());
-		
+		this.stepFactory = new WizardStepFactory();
 	}
 	
 
@@ -81,6 +84,25 @@ public class InstallerDataHandler {
 		return bom;
 	}
 	
+	public Element getPanelElement(int panelIndex,InstallerData model) {
+		Node panelElement = null;
+		Document bom = getBillOfMaterials(model);
+		if( bom!=null ) {
+			NodeList elements = bom.getElementsByTagName("panel");
+			int count = elements.getLength();
+			if( count>0 && panelIndex<count ) {
+				panelElement = elements.item(panelIndex);
+			}
+			else {
+				log.warnf("%s.getPanelElement: Insufficient panels in BOM (%d, need %d).",CLSS,count,panelIndex);
+			}
+		}
+		else {
+			log.warnf("%s.getPanelElement: Failed to read BOM from module.",CLSS);
+		}
+		return (Element)panelElement;
+	}
+	
 	public Path getPathToModule(InstallerData model) {
 		Path path = model.getModulePath();
 		if( path==null ) {
@@ -112,6 +134,44 @@ public class InstallerDataHandler {
 			title = "Missing bill of materials";
 		}
 		return title;
+	}
+	public String getStepTitle(int panelIndex,InstallerData model) {
+		String title = "-- no title --";    // If all else fails
+		Element panelElement = getPanelElement(panelIndex,model);
+		if( panelElement!=null ) {
+			NodeList elements = panelElement.getElementsByTagName("title");
+			int count = elements.getLength();
+			if( count>0 && panelIndex<count ) {
+				Node element = elements.item(0);
+				title = element.getTextContent();
+			}
+			else {
+				log.warnf("%s.getStepTitle: No title element in panel %d.",CLSS,count,panelIndex);
+			}
+		}
+		return title;
+	}
+	
+	public WizardStepType getStepType(int panelIndex,InstallerData model) {
+		WizardStepType type = WizardStepType.WELCOME;    // If all else fails
+		Node panelElement = getPanelElement(panelIndex,model);
+		if( panelElement!=null ) {
+			String name = xmlUtil.attributeValue(panelElement, "type");
+			try {
+				type = WizardStepType.valueOf(name.toUpperCase());
+			}
+			catch(IllegalArgumentException iae) {
+				log.warnf("%s.getStepType: Could not convert %s into a WizardStepType",CLSS,name);
+			}
+		}
+		return type;
+	}
+	
+	public InstallWizardStep getWizardStep(int index,InstallWizardStep prior,Model<InstallerData> dataModel) {
+		WizardStepType stepType = getStepType(index,dataModel.getObject());
+		String title = getStepTitle(index,dataModel.getObject());
+		InstallWizardStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
+		return step;
 	}
 	
 	/**

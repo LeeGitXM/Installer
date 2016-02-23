@@ -1,10 +1,12 @@
-package com.ils.ai.gateway.panel;
+package com.ils.ai.gateway;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
+import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.panel.InstallWizardStep;
+import com.ils.ai.gateway.panel.Success;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizard;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardModel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
@@ -12,13 +14,15 @@ import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class SetupWizard extends GatewayWizard {
+public class InstallWizard extends GatewayWizard {
 	private static final long serialVersionUID = 7625405250885635937L;
 
-	public SetupWizard(String id, IConfigPage configPage, Model<InstallerData> dataModel){
+	public InstallWizard(String id, IConfigPage configPage, Model<InstallerData> dataModel){
 		super(id, configPage, dataModel);
+        
+        InstallWizardStep step = InstallerDataHandler.getInstance().getWizardStep(0,null,dataModel);
 
-		GatewayWizardModel wizardModel = new GatewayWizardModel(new WelcomeStep(dataModel));
+		GatewayWizardModel wizardModel = new GatewayWizardModel(step);
 		this.init(wizardModel);
 	}
 

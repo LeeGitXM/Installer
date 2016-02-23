@@ -2,7 +2,7 @@ package com.ils.ai.gateway;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
-import com.ils.ai.gateway.panel.SetupPanel;
+import com.ils.ai.gateway.panel.ConfigurationPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -33,7 +33,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         BundleUtil.get().addReplacement("ils.menu.root", title);
         LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
         rootNode.setPosition(700);
-        LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", SetupPanel.class);
+        LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", ConfigurationPanel.class);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(null, rootNode);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(new String[]{ ROOT_NODE }, setupNode);
     }

@@ -12,6 +12,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -49,6 +51,14 @@ public class XMLUtility {
 	    }
 	    
 	    return xml;
+	}
+	
+	// =========================  Helper Functions ==============================
+	public String attributeValue(Node element,String name) {
+		String value = "";
+		NamedNodeMap attributes = element.getAttributes();
+		value = attributes.getNamedItem(name).getNodeValue();
+		return value;
 	}
 
 }

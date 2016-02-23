@@ -6,7 +6,18 @@
 	<property name="release">0.1r15</property>
 	<property name="date">Mar 17, 2016</property>
 	<property name="version">2</property>
-	<!-- These entries define the install panels -->
-	<panel type="backup"></panel>
+	<!-- These entries define the install panels and their order -->
+	<panel type="welcome">
+	  <title>ILS Automation Installer for EMC Ignition Applications</title>
+	  <text>Welcome. blah, blah, blah.</text>
+	</panel>
+	<panel type="backup">
+	  <title>Archive into an Ignition Backup</title>
+	  <text>This is an optional step. The backup allows you to revert the previous state of the application.</text>
+	</panel>
+	<panel type="conclusion">
+	  <title>Installation Complete</title>
+	  <text>Record the current version of EMC Ignition Applications in the Gateway internal database.</text>
+	</panel>
 </installer>
 
