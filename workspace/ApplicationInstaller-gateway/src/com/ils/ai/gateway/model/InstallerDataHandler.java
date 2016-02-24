@@ -23,6 +23,7 @@ import com.ils.common.db.DBUtility;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
+//import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
 
 /**
  *  This can be used to fetch information from the install bundle
@@ -64,11 +65,11 @@ public class InstallerDataHandler {
 		return instance;
 	}
 	/**
-	 * Perform a gateway backup.
+	 * Perform a gateway backup directed toward the supplied path.
 	 */
-	public void backup() {
+	public void backup(String path) {
 		if( context!=null ) {
-			
+			//BackupServlet.generateBackup();
 		}
 	}
 	/**

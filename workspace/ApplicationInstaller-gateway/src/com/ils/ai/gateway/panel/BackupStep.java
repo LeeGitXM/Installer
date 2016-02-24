@@ -28,7 +28,7 @@ public class BackupStep extends InstallWizardStep {
         add(new Label("preamble",preamble));
         
         
-        saveField = new FileUploadField("save");
+        saveField = new FileUploadField("saveField");
         Form<?> form = new Form<Void>("form") {
         	@Override
         	protected void onSubmit() {
