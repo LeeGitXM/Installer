@@ -63,7 +63,14 @@ public class InstallerDataHandler {
 		}
 		return instance;
 	}
-	
+	/**
+	 * Perform a gateway backup.
+	 */
+	public void backup() {
+		if( context!=null ) {
+			
+		}
+	}
 	/**
 	 * Search the installer module for the bill of materials.
 	 * We do not retain the document, we simply return it.

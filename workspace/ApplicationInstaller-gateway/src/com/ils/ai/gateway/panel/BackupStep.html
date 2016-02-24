@@ -6,7 +6,15 @@
 
 <wicket:panel>
 
-    <wicket:message key="ils.welcome.description"/>
+    <p wicket:id="preamble">should not appear</p>
+    
+    <form wicket:id="form">
+		<p>
+			<label>Select file :</label> 
+			<input wicket:id="saveField" size="40" type="file"/>
+			<input type="submit" value=save/>
+		</p>
+	</form>
     
 </wicket:panel>
 
