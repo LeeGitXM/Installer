@@ -19,13 +19,13 @@ public class InstallWizardStep extends GatewayWizardStep {
         this.panelIndex = index;
         this.prior = previous;
         this.dataModel = model;
-        
 	}
 
     
 	@Override
     public boolean isLastStep() {
-        return (panelIndex>=InstallerDataHandler.getInstance().getStepCount(dataModel.getObject()));
+       boolean last = panelIndex+1>=InstallerDataHandler.getInstance().getStepCount(dataModel.getObject());
+       return last;
     }
 
     @Override
@@ -35,6 +35,8 @@ public class InstallWizardStep extends GatewayWizardStep {
     
     @Override
     public IDynamicWizardStep next() {
-    	return InstallerDataHandler.getInstance().getWizardStep(panelIndex+1,this,dataModel);
+    	IDynamicWizardStep next = null;
+    	if( !isLastStep() ) next = InstallerDataHandler.getInstance().getWizardStep(panelIndex+1,this,dataModel);
+    	return next;
     }
 }

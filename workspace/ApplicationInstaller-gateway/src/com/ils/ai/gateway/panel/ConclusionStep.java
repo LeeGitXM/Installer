@@ -14,5 +14,6 @@ public class ConclusionStep extends InstallWizardStep {
 	public ConclusionStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        info("You have reached an informed conclusion");
     }
 }

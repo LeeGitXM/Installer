@@ -14,5 +14,6 @@ public class ModuleStep extends InstallWizardStep {
 	public ModuleStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        error("Some kind of error has occurred");
     }
 }

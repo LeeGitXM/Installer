@@ -19,8 +19,12 @@ public class WelcomeStep extends InstallWizardStep {
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        InstallerData data = dataModel.getObject();
+        String preamble = InstallerDataHandler.getInstance().getStepPreamble(index, data);
+        add(new Label("preamble",preamble));
+        
         RepeatingView listItems = new RepeatingView("properties");
-        List<String> properties = InstallerDataHandler.getInstance().getProperties(dataModel.getObject());
+        List<String> properties = InstallerDataHandler.getInstance().getProperties(data);
         for(String prop:properties) {
         	listItems.add(new Label(listItems.newChildId(), prop));
         }

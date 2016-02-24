@@ -70,17 +70,19 @@ public class InstallerDataHandler {
 	 * @return the bill of materials, an XML file.
 	 */
 	public Document getBillOfMaterials(InstallerData model) {
-		Document bom = null;
-		Path path = getPathToModule(model);
-		if( path!=null ) {
-			String contents = jarUtil.readFileFromJar(InstallerConstants.BOM_LOCATION,path);
-			if( contents!=null ) {
-				contents = contents.trim().replaceFirst("^([\\W]+)<","<");  // Get rid of any junk
-				log.infof("%s.getBillOfMaterials: Contents = \n%s\n.",CLSS,contents);
-				bom = xmlUtil.documentFromBytes(contents.getBytes());
-			}
-			else {
-				log.warnf("%s.getBillOfMaterials: Failed to read XML from module.",CLSS);
+		Document bom = model.getBillOfMaterials();
+		if( bom==null) {
+			Path path = getPathToModule(model);
+			if( path!=null ) {
+				String contents = jarUtil.readFileFromJar(InstallerConstants.BOM_LOCATION,path);
+				if( contents!=null ) {
+					contents = contents.trim().replaceFirst("^([\\W]+)<","<");  // Get rid of any junk
+					log.infof("%s.getBillOfMaterials: Contents = \n%s\n",CLSS,contents);
+					bom = xmlUtil.documentFromBytes(contents.getBytes());
+				}
+				else {
+					log.warnf("%s.getBillOfMaterials: Failed to read XML from module.",CLSS);
+				}
 			}
 		}
 		return bom;
@@ -166,6 +168,22 @@ public class InstallerDataHandler {
 			title = "Missing bill of materials";
 		}
 		return title;
+	}
+	public String getStepPreamble(int panelIndex,InstallerData model) {
+		String text = "";    // If all else fails
+		Element panelElement = getPanelElement(panelIndex,model);
+		if( panelElement!=null ) {
+			NodeList elements = panelElement.getElementsByTagName("preamble");
+			int count = elements.getLength();
+			if( count>0  ) {
+				Node element = elements.item(0);
+				text = element.getTextContent();
+			}
+			else {
+				log.warnf("%s.getStepTitle: No preamble element in panel %d.",CLSS,count,panelIndex);
+			}
+		}
+		return text;
 	}
 	public String getStepTitle(int panelIndex,InstallerData model) {
 		String title = "-- no title --";    // If all else fails

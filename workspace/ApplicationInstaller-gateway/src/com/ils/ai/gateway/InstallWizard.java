@@ -7,6 +7,8 @@ import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.panel.InstallWizardStep;
 import com.ils.ai.gateway.panel.Success;
+import com.inductiveautomation.ignition.common.util.LogUtil;
+import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizard;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardModel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
@@ -19,7 +21,7 @@ public class InstallWizard extends GatewayWizard {
 
 	public InstallWizard(String id, IConfigPage configPage, Model<InstallerData> dataModel){
 		super(id, configPage, dataModel);
-        
+		
         InstallWizardStep step = InstallerDataHandler.getInstance().getWizardStep(0,null,dataModel);
 
 		GatewayWizardModel wizardModel = new GatewayWizardModel(step);
