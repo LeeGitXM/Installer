@@ -31,8 +31,9 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         log.infof("%s.setup: Custom title = %s",CLSS,title);
         BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
         BundleUtil.get().addReplacement("ils.menu.root", title);
-        LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
-        rootNode.setPosition(700);
+     //   LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
+       // rootNode.setPosition(700);
+        InstallerLabelConfigMenuNode rootNode = new InstallerLabelConfigMenuNode(ROOT_NODE, title);
         LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", ConfigurationPanel.class);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(null, rootNode);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(new String[]{ ROOT_NODE }, setupNode);
