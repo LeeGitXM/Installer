@@ -24,7 +24,7 @@ public class BackupStep extends InstallWizardStep {
         super(index,previous, title, dataModel); 
        
         InstallerData data = dataModel.getObject();
-        String preamble = InstallerDataHandler.getInstance().getStepPreamble(index, data);
+        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
         

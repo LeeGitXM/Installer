@@ -6,7 +6,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;
 import com.inductiveautomation.ignition.gateway.web.models.IConfigMenuNode;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
-
+/**
+ * A label for the gateway configuration panel that uses a simple
+ * string rather than a resource bundle.
+ */
 public class InstallerLabelConfigMenuNode implements IConfigMenuNode {
 	private static final long serialVersionUID = -2640968227454231794L;
 	private String key, label;

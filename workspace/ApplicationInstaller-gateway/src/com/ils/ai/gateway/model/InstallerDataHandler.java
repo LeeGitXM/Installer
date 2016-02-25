@@ -4,6 +4,7 @@
 package com.ils.ai.gateway.model;
 
 
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,10 @@ import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
+import com.inductiveautomation.ignition.gateway.SRContext;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-//import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
+import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
+import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
 
 /**
  *  This can be used to fetch information from the install bundle
@@ -67,10 +70,38 @@ public class InstallerDataHandler {
 	/**
 	 * Perform a gateway backup directed toward the supplied path.
 	 */
-	public void backup(String path) {
+	public String backup(String path) {
+		String result = null;
 		if( context!=null ) {
-			//BackupServlet.generateBackup();
+			try {
+				OutputStream os = null;
+				BackupServlet.generateBackup((SRContext)context, os, BackupType.DATA_ONLY);
+			}
+			catch(Exception ex) {
+				result = String.format("InstallerDataHandler.backup: Backup failed with exception (%s)",ex.getMessage());
+			}
 		}
+		return result;
+	}
+	/**
+	 * @param model
+	 * @return a list of the names of the artifacts associated with this step
+	 */
+	public List<String> getArtifactNames(int panelIndex,InstallerData model) {
+		List<String> names = new ArrayList<>();
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int count = artifactNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node artifactNode = artifactNodes.item(index);
+				String name = xmlUtil.attributeValue(artifactNode, "name");
+				names.add(name);
+				index++;
+			}
+		}
+		return names;
 	}
 	/**
 	 * Search the installer module for the bill of materials.
@@ -127,8 +158,8 @@ public class InstallerDataHandler {
 	}
 	
 	// Format the properties for display
-	public List<String> getProperties(InstallerData model) {
-		List<String> properties = new ArrayList<>();
+	public List<PropertyItem> getProperties(InstallerData model) {
+		List<PropertyItem> properties = new ArrayList<>();
 		Document bom = getBillOfMaterials(model);
 		if( bom!=null ) {
 			NodeList propertyNodes = bom.getElementsByTagName("property");
@@ -138,9 +169,7 @@ public class InstallerDataHandler {
 				Node propertyNode = propertyNodes.item(index);
 				String name = xmlUtil.attributeValue(propertyNode, "name");
 				String value = propertyNode.getTextContent();
-				String text = name +":"+"                      ";
-				text = text.substring(0,20)+value;
-				properties.add(text);
+				properties.add(new PropertyItem(name,value));
 				index++;
 			}
 		}

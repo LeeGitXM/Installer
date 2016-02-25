@@ -3,11 +3,12 @@ package com.ils.ai.gateway.panel;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
-import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PropertyItem;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -20,15 +21,19 @@ public class WelcomeStep extends InstallWizardStep {
         super(index,previous, title, dataModel); 
         
         InstallerData data = dataModel.getObject();
-        String preamble = InstallerDataHandler.getInstance().getStepPreamble(index, data);
+        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
-        RepeatingView listItems = new RepeatingView("properties");
-        List<String> properties = InstallerDataHandler.getInstance().getProperties(data);
-        for(String prop:properties) {
-        	listItems.add(new Label(listItems.newChildId(), prop));
-        }
-        add(listItems);
+        List<PropertyItem> properties = handler.getProperties(data);
+        add(new ListView<PropertyItem>("properties", properties) {
+			private static final long serialVersionUID = -4610581829738917953L;
+
+			protected void populateItem(ListItem<PropertyItem> item) {
+                PropertyItem property = (PropertyItem) item.getModelObject();
+                item.add(new Label("name", property.getName()));
+                item.add(new Label("value", property.getValue()));
+            }
+        });
     }
 	
 }

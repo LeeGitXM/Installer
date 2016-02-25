@@ -21,12 +21,7 @@ public class InstallerData implements Serializable  {
 	private Path modulePath = null;
 	private Project project = null;
 
-	/**
-	 * Constructor is private per Singleton pattern.
-	 */
-	public InstallerData() {
 
-	}
 	public Document getBillOfMaterials() {return bom;}
 	public Path getModulePath() {return this.modulePath;}
     public Project getProject() {return project;}

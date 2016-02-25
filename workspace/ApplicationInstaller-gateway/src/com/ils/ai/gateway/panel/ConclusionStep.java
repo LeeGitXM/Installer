@@ -17,7 +17,7 @@ public class ConclusionStep extends InstallWizardStep {
         super(index,previous, title, dataModel); 
         
         InstallerData data = dataModel.getObject();
-        String preamble = InstallerDataHandler.getInstance().getStepPreamble(index, data);
+        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
         info("You have reached an informed conclusion");

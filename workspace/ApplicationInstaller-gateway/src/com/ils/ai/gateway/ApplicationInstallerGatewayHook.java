@@ -9,7 +9,6 @@ import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.inductiveautomation.ignition.gateway.web.components.LabelConfigMenuNode;
 import com.inductiveautomation.ignition.gateway.web.components.LinkConfigMenuNode;
 
 public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
@@ -30,9 +29,6 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         String title = handler.getTitle(new InstallerData());
         log.infof("%s.setup: Custom title = %s",CLSS,title);
         BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
-        BundleUtil.get().addReplacement("ils.menu.root", title);
-     //   LabelConfigMenuNode rootNode = new LabelConfigMenuNode(ROOT_NODE, "ils.menu.root");
-       // rootNode.setPosition(700);
         InstallerLabelConfigMenuNode rootNode = new InstallerLabelConfigMenuNode(ROOT_NODE, title);
         LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", ConfigurationPanel.class);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(null, rootNode);
@@ -66,7 +62,6 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
                 context.getModuleManager().uninstallModule(InstallerConstants.MODULE_ID);
             } 
             catch (Exception ignored) {}
-            // BundleUtil.get().removeBundle("ils");
         }
     }
 }
