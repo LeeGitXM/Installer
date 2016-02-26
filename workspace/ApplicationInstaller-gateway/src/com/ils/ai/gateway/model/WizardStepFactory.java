@@ -10,6 +10,7 @@ import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.InstallWizardStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
+import com.ils.ai.gateway.panel.UpdateProjectStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
 /**
@@ -35,15 +36,15 @@ public class WizardStepFactory  {
 				break;
 			case EXTERNAL:
 				break;
+			case GLOBAL:
+				break;
 			case ICONS:
 				break;
 			case LICENSE: step = new LicenseStep(panelIndex,prior,title,model);
 				break;
-			case MERGEPROJECT:
-				break;
 			case MODULE: step = new ModuleStep(panelIndex,prior,title,model);
 				break;
-			case PROJECT: step = new ModuleStep(panelIndex,prior,title,model);
+			case PROJECT: step = new UpdateProjectStep(panelIndex,prior,title,model);
 				break;
 			case PROPERTIES:
 				break;

@@ -70,12 +70,11 @@ public class InstallerDataHandler {
 	/**
 	 * Perform a gateway backup directed toward the supplied path.
 	 */
-	public String backup(String path) {
+	public String backup(OutputStream outstream,InstallerData model) {
 		String result = null;
 		if( context!=null ) {
 			try {
-				OutputStream os = null;
-				BackupServlet.generateBackup((SRContext)context, os, BackupType.DATA_ONLY);
+				BackupServlet.generateBackup((SRContext)context, outstream, BackupType.DATA_ONLY);
 			}
 			catch(Exception ex) {
 				result = String.format("InstallerDataHandler.backup: Backup failed with exception (%s)",ex.getMessage());

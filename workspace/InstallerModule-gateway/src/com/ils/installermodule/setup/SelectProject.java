@@ -54,12 +54,13 @@ public class SelectProject extends GatewayWizardStep {
 
     @Override
     public boolean isLastStep() {
-        return true;
+        return false;
     }
 
     @Override
     public IDynamicWizardStep next() {
-        return null;
+        Model<SetupItem> defaultModel = (Model<SetupItem>) this.getDefaultModel();
+        return new SelectFile(defaultModel);
     }
 
 }

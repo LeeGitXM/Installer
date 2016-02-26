@@ -13,9 +13,9 @@ public enum WizardStepType
             CONCLUSION,
             DATABASE,
             EXTERNAL,       // Python, jar files
+            GLOBAL,         // Global project
             ICONS, 
             LICENSE,
-            MERGEPROJECT,   // Merge with existing project
             MODULE,         // 
             PROPERTIES, 
             PROJECT,       // Replacement or global

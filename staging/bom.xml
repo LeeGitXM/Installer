@@ -31,9 +31,6 @@
 	  <artifact name="XOM Project" type="project" subtype="full">
 	  	  <location>artifacts/projects/XOM.proj</location>
 	  </artifact>
-	  <artifact name="XOM Project" type="project" subtype="partial">
-	  	<location>artifacts/modules/BLT-module-signed.modl</location>
-	  </artifact>
 	</panel>
 	<panel type="module">
 	  <title>Install Custom Modules</title>

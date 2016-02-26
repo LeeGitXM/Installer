@@ -1,5 +1,8 @@
 <project name="MasterBuilderBuild" basedir="../">
-	<property name="git.repo" value="${basedir}/../.." />
+	<!-- 
+	   -Dgit.repo="${env_var:GIT_REPO}"
+	   -Dsvn.repo="${env_var:SVN_REPO}"
+	-->
 	<property name="build.dir" value="${basedir}/mb-build" />
 	
 	<!-- Allows external ant tasks like <if> to be used -->

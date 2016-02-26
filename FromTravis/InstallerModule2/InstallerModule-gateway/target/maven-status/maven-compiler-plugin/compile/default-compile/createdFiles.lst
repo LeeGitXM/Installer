@@ -1,0 +1,13 @@
+com\ils\installermodule\setup\StyledPanel.class
+com\ils\installermodule\setup\Success.class
+com\ils\installermodule\setup\WelcomeStep.class
+com\ils\installermodule\setup\SelectFile$1.class
+com\ils\installermodule\setup\SelectProject$2.class
+com\ils\installermodule\setup\SetupItem.class
+com\ils\installermodule\setup\SetupPanel.class
+com\ils\installermodule\setup\SetupWizard.class
+com\ils\installermodule\GatewayHook.class
+com\ils\installermodule\setup\SelectFile.class
+com\ils\installermodule\setup\SelectProject.class
+com\ils\installermodule\setup\SelectProject$1.class
+com\ils\installermodule\setup\SelectFile$1$1.class

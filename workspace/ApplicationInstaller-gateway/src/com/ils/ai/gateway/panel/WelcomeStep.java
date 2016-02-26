@@ -32,6 +32,7 @@ public class WelcomeStep extends InstallWizardStep {
                 PropertyItem property = (PropertyItem) item.getModelObject();
                 item.add(new Label("name", property.getName()));
                 item.add(new Label("value", property.getValue()));
+                item.add(new Label("previous", property.getPrevious()));
             }
         });
     }

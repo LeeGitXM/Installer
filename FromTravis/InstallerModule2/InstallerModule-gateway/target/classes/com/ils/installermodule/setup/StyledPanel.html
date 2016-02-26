@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.sourceforge.net/">
+
+<body>
+
+<wicket:panel>
+    <br />
+
+    <table class="infotable" cellpadding="0" cellspacing="0">
+
+        <thead>
+        <tr>
+            <td colspan="2">Info Table</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td class="trow-title">Installer</td>
+            <td class="trow-body">Application Installers</td>
+        </tr><tr>
+            <td class="trow-title">Version</td>
+            <td class="trow-body">1.0</td>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        </tfoot>
+
+    </table>
+
+    <br />
+
+    <table class="actiontable" cellpadding="0" cellspacing="0">
+
+        <thead>
+        <tr>
+            <td>Name</td><td>Description</td><td class="last">Status</td>
+            <td class="action"></td>
+        </tr>
+        </thead>
+
+        <tbody id="actiontable-tbody">
+        <tr>
+            <td class="letterbreak first">Installer</td><td class="letterbreak">&nbsp;</td><td class="letterbreak last" id="id203">Valid</td>
+            <td class="action">
+                <ul testid="single-record-action-links">
+                    <li class="edit">
+                        <a href="#"><span>edit</span></a>
+                    </li><li class="delete">
+                    <a href="#"><span>delete</span></a>
+                </li>
+                </ul>
+                &nbsp;
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <br />
+
+    <div class="activation-choice">
+        <div style="padding-left: 40px; background: url(res/activate/cart.png) 0px 3px no-repeat;">
+            <h1>
+                <a href="#">
+                    Link
+                </a>
+            </h1>
+            <p>
+                <span>Here is some information</span>
+            </p>
+        </div>
+    </div>
+
+
+</wicket:panel>
+
+
+</body>
+</html>

@@ -11,9 +11,8 @@ import org.apache.wicket.model.Model;
  * Created by travis.cox on 2/17/2016.
  */
 public class SetupWizard extends GatewayWizard {
-	private static final long serialVersionUID = 7625405250885635937L;
 
-	public SetupWizard(String id, IConfigPage configPage, Model<SetupItem> dataModel){
+    public SetupWizard(String id, IConfigPage configPage, Model<SetupItem> dataModel){
         super(id, configPage, dataModel);
 
         GatewayWizardModel wizardModel = new GatewayWizardModel(new WelcomeStep(dataModel));
