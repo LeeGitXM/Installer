@@ -12,8 +12,9 @@ public class InstallWizardStep extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
 	private final int panelIndex;
 	private final InstallWizardStep prior;
-	protected final InstallerDataHandler handler;
 	private final Model<InstallerData> dataModel;
+	// Make transient so that class can be serialized
+	protected transient final InstallerDataHandler handler;
 
 	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> model) {
         super(previous,title, model);

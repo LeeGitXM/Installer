@@ -94,8 +94,13 @@
 		<!-- Copy staged artifacts into the bundle -->
 		<mkdir dir="${build.dir}/artifacts" />
 		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
+		<mkdir dir="${build.dir}/artifacts/doc" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNote.pdf" />
 		<mkdir dir="${build.dir}/artifacts/license" />
-		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
+		<mkdir dir="${build.dir}/artifacts/module" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/ILS-SFC-module-unsigned.modl" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />
