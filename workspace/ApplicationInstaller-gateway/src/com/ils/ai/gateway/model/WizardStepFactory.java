@@ -43,7 +43,7 @@ public class WizardStepFactory  {
 				break;
 			case MODULE: step = new ModuleStep(panelIndex,prior,title,model);
 				break;
-			case PROJECT:
+			case PROJECT: step = new ModuleStep(panelIndex,prior,title,model);
 				break;
 			case PROPERTIES:
 				break;

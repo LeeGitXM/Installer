@@ -9,7 +9,10 @@
 	<!-- These entries define the install panels and their order -->
 	<panel type="welcome">
 	  <title>ILS Automation Installer for EMC Ignition Applications</title>
-	  <preamble>Welcome. blah, blah, blah.</preamble>
+	  <preamble>Welcome to the ILS Automation installer for EMC Ignition Applications. The table below compares the existing installation of this product, if any, with the versions contained in this new installation.</preamble>
+	  <artifact name="notes" type="pdf">
+	  	 <location>artifacts/doc/ReleaseNotes.pdf</location>
+	  </artifact>
 	</panel>
 	<panel type="license">
 	  <title>End User License Agreement (EULA)</title>
@@ -20,15 +23,25 @@
 	</panel>
 	<panel type="backup">
 	  <title>Archive into an Ignition Backup</title>
-	  <preamble>This is an optional step. The backup allows you to revert the previous state of the application.</preamble>
+	  <preamble>This is an optional step. Once created, a backup allows you to revert the previous state of the application.</preamble>
+	</panel>
+	<panel type="project">
+	  <title>Install a New XOM Project or Merge Changes into an Existing Project</title>
+	  <preamble>If an existing XOM project is selected, then execution of this step will merge updates creating a new version of that project (the existing project will not be changed). If there is not an existing project, then a new project will be created.</preamble>
+	  <artifact name="XOM Project" type="project" subtype="full">
+	  	  <location>artifacts/projects/XOM.proj</location>
+	  </artifact>
+	  <artifact name="XOM Project" type="project" subtype="partial">
+	  	<location>artifacts/modules/BLT-module-signed.modl</location>
+	  </artifact>
 	</panel>
 	<panel type="module">
 	  <title>Install Custom Modules</title>
 	  <preamble>This step installs modules necessary for the EMC applications.</preamble>
-	  <artifact name="ILS-SFC" type="module">
+	  <artifact name="ILS-SFC Enhancements" type="module">
 	  	<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 	  </artifact>
-	  <artifact name="BLT" type="module">
+	  <artifact name="Block Language Toolkit" type="module">
 	  	<location>artifacts/modules/BLT-module-signed.modl</location>
 	  </artifact>
 	</panel>
