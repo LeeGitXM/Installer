@@ -38,14 +38,15 @@ public class BackupStep extends InstallWizardStep {
 					@Override
                     public void write(OutputStream output) throws IOException {
                         result = handler.backup(output,data);
-                        
+                        //if(result==null) BackupStep.this.info("Backup completed successfully");
+                        //else BackupStep.this.warn(result);
+                        System.out.println("BACKUPSTEP result:"+result);
                     }
                 };
                 
                 ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
-                if(result==null) info("Backup completed successfully");
-                else warn(result);
+                // Note: info() or warn() here causes exception on next page.
             }
         });
     }

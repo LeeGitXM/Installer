@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.CharBuffer;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -21,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import org.apache.wicket.util.io.IOUtils;
 
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -84,6 +85,40 @@ public class JarUtility {
 			log.infof("%s.jarAtPathContains: IO error converting %s to jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
 		}
 		return answer;
+	}
+	/**
+	 * @param entryName is a path relative to the jar file
+	 * @return the contents of the file within the jar as a byte array
+	 */
+	public byte[] readFileAsBytesFromJar(String entryName,Path jarPath)  {
+		byte[] bytes = new byte[0];
+		JarFile jar = null;
+		try {
+			
+			jar = new JarFile(jarPath.toFile());
+
+			JarEntry entry = jar.getJarEntry(entryName);
+			if( entry!=null ) {
+				InputStream is = jar.getInputStream(entry);
+				bytes =  IOUtils.toByteArray(is);
+				is.close();
+			}
+			else {
+				log.warnf("%s.readFileAsBytesFromJar: %s not found in %s",CLSS,entryName,jarPath.toFile().getAbsolutePath());
+			}
+		}
+		catch(IOException ioe) {
+			log.warnf("%s.readFileAsBytesFromJar: IO error reading %s (%s)",CLSS,entryName,ioe.getLocalizedMessage());
+		}
+		finally {
+			if(jar!=null) {
+				try {
+					jar.close();
+				}
+				catch(IOException ignore) {}
+			}
+		}
+		return bytes;
 	}
 	/**
 	 * @param entryName is a path relative to the jar file
@@ -180,6 +215,5 @@ public class JarUtility {
 	    	catch(IOException ignore) {}
 	    }
 	    return out.toString();
-		
 	}
 }

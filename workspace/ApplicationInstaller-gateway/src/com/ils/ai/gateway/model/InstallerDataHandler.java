@@ -103,6 +103,35 @@ public class InstallerDataHandler {
 		return names;
 	}
 	/**
+	 * @param model
+	 * @return a list of the names of the artifacts associated with this step
+	 */
+	public byte[] getArtifactAsBytes(int panelIndex,String artifactName,InstallerData model) {
+		byte[] bytes = null;
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+				if( artifactName.equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "name")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						String internalPath = locationNode.getTextContent();
+						Path path = getPathToModule(model);
+						bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		return bytes;
+	}
+	/**
 	 * Search the installer module for the bill of materials.
 	 * We do not retain the document, we simply return it.
 	 * @return the bill of materials, an XML file.
@@ -117,6 +146,12 @@ public class InstallerDataHandler {
 					contents = contents.trim().replaceFirst("^([\\W]+)<","<");  // Get rid of any junk
 					log.infof("%s.getBillOfMaterials: Contents = \n%s\n",CLSS,contents);
 					bom = xmlUtil.documentFromBytes(contents.getBytes());
+					if( bom!=null ) {
+						model.setBillOfMaterials(bom);
+					}
+					else {
+						log.warnf("%s.getBillOfMaterials: Failed to create XML document.",CLSS);
+					}
 				}
 				else {
 					log.warnf("%s.getBillOfMaterials: Failed to read XML from module.",CLSS);
@@ -151,6 +186,9 @@ public class InstallerDataHandler {
 			path = jarUtil.internalModuleContaining(InstallerConstants.MODULE_MARKER);
 			if( path==null ) {
 				log.warnf("%s.getPathToModule: Could not find path to module",CLSS);
+			}
+			else {
+				model.setModulePath(path);
 			}
 		}
 		return path;

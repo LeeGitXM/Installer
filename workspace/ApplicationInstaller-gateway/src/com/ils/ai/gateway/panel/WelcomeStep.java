@@ -52,10 +52,15 @@ public class WelcomeStep extends InstallWizardStep {
 
 					@Override
                     public void write(OutputStream output) throws IOException {
-                        String result = handler.backup(output,data);
-                        if(result==null) info("Backup completed successfully");
-                        else warn(result);
+                        byte[] bytes = handler.getArtifactAsBytes(index,"notes",data);
+                        if( bytes!=null ) {
+                        	output.write(bytes);
+                        }
                     }
+					@Override
+					public String getContentType () {
+						return "application/pdf";
+					}
                 };
                 
                 ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);

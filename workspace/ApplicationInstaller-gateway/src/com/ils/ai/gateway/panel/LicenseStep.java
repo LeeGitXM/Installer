@@ -26,29 +26,33 @@ public class LicenseStep extends InstallWizardStep {
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
-        // View release notes
+        // View license
         add(new Link<Void>("view") {
-			private static final long serialVersionUID = -1024177445288843210L;
+			private static final long serialVersionUID = -279565247005738138L;
 
 			@Override
-        	public void onClick() {
+            public void onClick() {
+				
+                AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
+					private static final long serialVersionUID = 1730037915972320415L;
 
-        		AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
-        			private static final long serialVersionUID = 3787754864513466176L;
-
-        			@Override
-        			public void write(OutputStream output) throws IOException {
-        				String result = handler.backup(output,data);
-        				output.flush();
-        				if(result==null) info("Backup completed successfully");
-        				else warn(result);
-        			}
-        			
-        		};
-
-        		ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
-        		getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
-        	}
+					@Override
+                    public void write(OutputStream output) throws IOException {
+                        byte[] bytes = handler.getArtifactAsBytes(index,"license",data);
+                        if( bytes!=null ) {
+                        	output.write(bytes);
+                        }
+                    }
+					
+					@Override
+					public String getContentType () {
+						return "text/html";
+					}
+                };
+                
+                ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
+                getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+            }
         });
         
     }

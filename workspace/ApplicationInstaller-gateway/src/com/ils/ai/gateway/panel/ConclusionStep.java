@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
-import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  * Created by travis.cox on 2/17/2016.
