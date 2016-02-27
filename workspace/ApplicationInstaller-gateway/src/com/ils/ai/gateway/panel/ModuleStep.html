@@ -1,24 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://wicket.sourceforge.net/">
+	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
 
-<wicket:panel>
+	<wicket:panel>
 
-    <p wicket:id="preamble">should not appear</p>
-    <br/>
-    
-<table>
-  <tr wicket:id="modules">
-    <td><span wicket:id="text"></span></td>
-  </tr>
-</table>
-    
-    <form>
-    	<input type="submit" wicket:id="doit" value="Load" />
-   </form>
-   
-</wicket:panel>
+		<p wicket:id="preamble">should not appear</p>
+		<br />
+		<div />
+		<table class="actiontable" cellpadding="0" cellspacing="0">
+			<thead>
+				<td class="last">Module</td>
+				<td class="action" />
+				<tr />
+			</thead>
+			<tbody id="actiontable-tbody">
+				<tr wicket:id="modules">
+					<td class="last"><span wicket:id="name" /></td>
+					<td class="action" />
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<form action="">
+				<input type="submit" wicket:id="install" value="Install Modules" />
+			</form>
+		</div>
+		<div />
+
+	</wicket:panel>
 </body>
 </html>

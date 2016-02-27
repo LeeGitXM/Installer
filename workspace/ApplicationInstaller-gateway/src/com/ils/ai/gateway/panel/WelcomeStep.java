@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -20,8 +22,9 @@ import com.ils.ai.gateway.model.PropertyItem;
  */
 public class WelcomeStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
+	private final CheckBox checkbox;
 	private static String fileName = "ReleaseNotes.pdf";
-
+	
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
@@ -40,6 +43,21 @@ public class WelcomeStep extends InstallWizardStep {
                 item.add(new Label("previous", property.getPrevious()));
             }
         });
+        
+        // Set whether or not to skip panels that are up-to-date
+        checkbox = new CheckBox("skip", Model.of(Boolean.FALSE));
+        Form<?> form = new Form<Void>("skipPanelsForm") {
+			private static final long serialVersionUID = -7113329313634987198L;
+
+			@Override
+			protected void onSubmit() {
+				boolean skip = checkbox.getModelObject().booleanValue();
+				data.setSkipCurrent(skip);
+			}
+		};
+		add(form);
+		form.add(checkbox);
+		
         // View release notes
         add(new Link<Void>("notes") {
 			private static final long serialVersionUID = -8430219201330058910L;

@@ -7,10 +7,19 @@
 	<wicket:panel>
 
 		<p wicket:id="preamble">should not appear</p>
-		<br/>
+		<br />
+		<div>
+			<form wicket:id="acceptForm" action="">
+				<p>
+					<label>Accept :</label> <input type="checkbox" wicket:id="accept" />
+				</p>
+			</form>
+		</div>
+		<br />
 		<div>
 			<input type="button" wicket:id="view" value="View License" />
 		</div>
+		<br />
 	</wicket:panel>
 </body>
 </html>

@@ -18,15 +18,17 @@ import com.inductiveautomation.ignition.common.project.Project;
 public class InstallerData implements Serializable  {
 	private static final long serialVersionUID = -7650179030090459881L;
 	private Document bom = null;
-	private Path modulePath = null;
+	private String modulePath = null;
 	private Project project = null;
-
+	private boolean skipCurrent = false;
 
 	public Document getBillOfMaterials() {return bom;}
-	public Path getModulePath() {return this.modulePath;}
+	public String getModulePath() {return this.modulePath;}
     public Project getProject() {return project;}
+    public boolean skipCurrent() { return skipCurrent; }
     public void setBillOfMaterials(Document doc) {this.bom = doc;}
-    public void setModulePath(Path path) {this.modulePath = path;}
+    public void setSkipCurrent(boolean flag) { this.skipCurrent = flag; }
+    public void setModulePath(String path) {this.modulePath = path;}
     public void setProject(Project project) {this.project = project;}
 }
 

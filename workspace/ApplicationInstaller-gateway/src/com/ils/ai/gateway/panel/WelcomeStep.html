@@ -3,8 +3,6 @@
 	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
-
-
 	<wicket:panel>
 		<p wicket:id="preamble">should not appear</p>
 		<br />
@@ -15,7 +13,7 @@
 						<td>Name</td>
 						<td>To be Installed</td>
 						<td class="last">Currently Installed</td>
-						<td class="action"></td>
+						<td class="action" />
 					</tr>
 				</thead>
 				<tbody id="actiontable-tbody">
@@ -23,13 +21,23 @@
 						<td><span wicket:id="name" /></td>
 						<td><span wicket:id="value" /></td>
 						<td class="last"><span wicket:id="previous" /></td>
-						<td class="action"></td>
+						<td class="action" />
 					</tr>
 				</tbody>
 			</table>
+			<br />
+			<div>
+				<form wicket:id="skipPanelsForm" action="">
+					<p>
+						<label>Skip Up-to-date Resources:</label> <input type="checkbox" wicket:id="skip" />
+					</p>
+				</form>
+			</div>
+			<br />
 			<div>
 				<input type="button" wicket:id="notes" value="View Release Notes" />
 			</div>
+			<br />
 		</div>
 	</wicket:panel>
 

@@ -6,6 +6,7 @@ package com.ils.ai.gateway.model;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +133,33 @@ public class InstallerDataHandler {
 		return bytes;
 	}
 	/**
+	 * @param model
+	 * @return the location string for a named artifact.
+	 */
+	public String getArtifactLocation(int panelIndex,String artifactName,InstallerData model) {
+		String internalPath = null;
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+				if( artifactName.equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "name")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						internalPath = locationNode.getTextContent();
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		return internalPath;
+	}
+	/**
 	 * Search the installer module for the bill of materials.
 	 * We do not retain the document, we simply return it.
 	 * @return the bill of materials, an XML file.
@@ -181,15 +209,19 @@ public class InstallerDataHandler {
 	}
 	
 	public Path getPathToModule(InstallerData model) {
-		Path path = model.getModulePath();
-		if( path==null ) {
+		Path path = null;
+		String pathString = model.getModulePath();
+		if( pathString==null ) {
 			path = jarUtil.internalModuleContaining(InstallerConstants.MODULE_MARKER);
 			if( path==null ) {
 				log.warnf("%s.getPathToModule: Could not find path to module",CLSS);
 			}
 			else {
-				model.setModulePath(path);
+				model.setModulePath(path.toString());
 			}
+		}
+		else {
+			path = Paths.get(pathString);
 		}
 		return path;
 	}
@@ -298,6 +330,26 @@ public class InstallerDataHandler {
 		return step;
 	}
 	
+	public String loadArtifactAsModule(int panelIndex,String artifactName,InstallerData model) {
+		String result = null;
+		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+		if( bytes!=null ) {
+			// If we have data, we had to have a path
+			String filename = getArtifactLocation(panelIndex,artifactName,model);
+			int pos = filename.lastIndexOf("/");
+			if (pos>0 ) filename = filename.substring(pos+1);
+			try {
+				context.getModuleManager().installModule(filename, bytes);
+			}
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s (%s)", filename,ex.getMessage());
+			}
+		}
+		else {
+			result = String.format( "Failed to find %s module in bundle",artifactName);
+		}
+		return result;
+	}
 	/**
 	 * This step is necessary before the instance is useful. Most other 
 	 * properties are initialized lazily.

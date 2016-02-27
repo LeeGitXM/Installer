@@ -29,13 +29,20 @@ public class ModuleStep extends InstallWizardStep {
 
 			protected void populateItem(ListItem<String> item) {
                 String text = (String) item.getModelObject();
-                item.add(new Label("text", text));
+                item.add(new Label("name", text));
             }
         });
         
-        add(new Button("doit") {
-            public void onSubmit() {
-                info("Doit was pressed!");
+        add(new Button("install") {
+			private static final long serialVersionUID = 4110778774811578782L;
+
+			public void onSubmit() {
+            	List<String> names = handler.getArtifactNames(index, data);
+            	for(String name:names) {
+            		String result = handler.loadArtifactAsModule(index,name,data);
+            		if( result==null ) info(String.format("Successfully loaded %s module", name));
+            		else warn(result);
+            	}
             }
         });
     }
