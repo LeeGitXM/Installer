@@ -27,6 +27,7 @@ public class BackupStep extends InstallWizardStep {
         
         add(new Link<Void>("backup") {
 			private static final long serialVersionUID = 1L;
+			String result = null;
 
 			@Override
             public void onClick() {
@@ -36,12 +37,15 @@ public class BackupStep extends InstallWizardStep {
 
 					@Override
                     public void write(OutputStream output) throws IOException {
-                        handler.backup(output,data);
+                        result = handler.backup(output,data);
+                        
                     }
                 };
                 
                 ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+                if(result==null) info("Backup completed successfully");
+                else warn(result);
             }
         });
     }

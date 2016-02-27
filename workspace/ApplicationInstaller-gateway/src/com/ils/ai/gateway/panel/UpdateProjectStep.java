@@ -3,7 +3,6 @@ package com.ils.ai.gateway.panel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -26,9 +25,13 @@ public class UpdateProjectStep extends InstallWizardStep {
 	public UpdateProjectStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
-		Form<InstallerData> form = new Form<InstallerData>("submitForm", new CompoundPropertyModel<InstallerData>((InstallerData) dataModel.getObject()));
+        InstallerData data = dataModel.getObject();
+        String preamble = handler.getStepPreamble(index, data);
+        add(new Label("preamble",preamble));
+        
+		Form<InstallerData> form = new Form<InstallerData>("submitForm", new CompoundPropertyModel<InstallerData>(data));
 
-		form.add(new Label("projectLabel", BundleUtil.get().getString("ils.project.title")));
+		form.add(new Label("projectLabel", BundleUtil.get().getString("ils.project.select")));
 		form.add(new DropDownChoice<Project>("project", new LoadableDetachableModel<List<Project>>() {
 			private static final long serialVersionUID = -4849880268083610852L;
 

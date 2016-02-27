@@ -16,7 +16,7 @@
 	</panel>
 	<panel type="license">
 	  <title>End User License Agreement (EULA)</title>
-	  <preamble>This agreement covers ...</preamble>
+	  <preamble>Click on the button below to view the license that specifies permissible use of the software to be installed.</preamble>
 	  <artifact name="license" type="html">
 	  	<location>artifacts/license/license.html</location>
 	  </artifact>
@@ -27,7 +27,7 @@
 	</panel>
 	<panel type="project">
 	  <title>Install a New XOM Project or Merge Changes into an Existing Project</title>
-	  <preamble>If an existing XOM project is selected, then execution of this step will merge updates creating a new version of that project (the existing project will not be changed). If there is not an existing project, then a new project will be created.</preamble>
+	  <preamble>If an existing XOM project is selected, then execution of this step will merge updates creating a new version of that project. The existing project will not be changed. If there is not an existing project, then a new project will be created.</preamble>
 	  <artifact name="XOM Project" type="project" subtype="full">
 	  	  <location>artifacts/projects/XOM.proj</location>
 	  </artifact>

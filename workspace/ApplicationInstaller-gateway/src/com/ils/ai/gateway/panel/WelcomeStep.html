@@ -13,21 +13,23 @@
 				<thead>
 					<tr>
 						<td>Name</td>
-						<td>Value</td>
-						<td>class="last" Existing</td>
-						<td class="action" />
-						<td />
+						<td>To be Installed</td>
+						<td class="last">Currently Installed</td>
+						<td class="action"></td>
 					</tr>
 				</thead>
 				<tbody id="actiontable-tbody">
 					<tr wicket:id="properties">
 						<td><span wicket:id="name" /></td>
 						<td><span wicket:id="value" /></td>
-						<td><span wicket:id="previous" /></td>
-						<td class="action" />
+						<td class="last"><span wicket:id="previous" /></td>
+						<td class="action"></td>
 					</tr>
 				</tbody>
 			</table>
+			<div>
+				<input type="button" wicket:id="notes" value="View Release Notes" />
+			</div>
 		</div>
 	</wicket:panel>
 
