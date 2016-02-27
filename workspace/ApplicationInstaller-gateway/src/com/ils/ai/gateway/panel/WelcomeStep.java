@@ -28,6 +28,7 @@ public class WelcomeStep extends InstallWizardStep {
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        final WelcomeStep thisStep = this;
         InstallerData data = dataModel.getObject();
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
@@ -52,6 +53,7 @@ public class WelcomeStep extends InstallWizardStep {
 			@Override
 			protected void onSubmit() {
 				boolean skip = checkbox.getModelObject().booleanValue();
+				thisStep.info(String.format("Skip up-to-date = %s",(skip?"TRUE":"FALSE")));
 				data.setSkipCurrent(skip);
 			}
 		};

@@ -16,7 +16,7 @@
 	</panel>
 	<panel type="license">
 	  <title>End User License Agreement (EULA)</title>
-	  <preamble>Click on the button below to view the license that specifies permissible use of the software to be installed.</preamble>
+	  <preamble>Click on the button below to view the license that specifies permissible use of the software to be installed. Select the checkbox to indicate acceptance of the terms.</preamble>
 	  <artifact name="license" type="html">
 	  	<location>artifacts/license/license.html</location>
 	  </artifact>
@@ -36,10 +36,10 @@
 	  <title>Install Custom Modules</title>
 	  <preamble>This step installs modules necessary for the EMC applications.</preamble>
 	  <artifact name="ILS-SFC Enhancements" type="module">
-	  	<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+	  	<location>artifacts/modules/ILS-SFC-module-unsigned.modl</location>
 	  </artifact>
 	  <artifact name="Block Language Toolkit" type="module">
-	  	<location>artifacts/modules/BLT-module-signed.modl</location>
+	  	<location>artifacts/modules/BLT-module-unsigned.modl</location>
 	  </artifact>
 	</panel>
 	<panel type="conclusion">

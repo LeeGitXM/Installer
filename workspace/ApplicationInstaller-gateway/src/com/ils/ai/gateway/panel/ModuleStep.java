@@ -19,6 +19,8 @@ public class ModuleStep extends InstallWizardStep {
 	public ModuleStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        final ModuleStep thisPage = this;
+        
         InstallerData data = dataModel.getObject();
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
@@ -40,8 +42,8 @@ public class ModuleStep extends InstallWizardStep {
             	List<String> names = handler.getArtifactNames(index, data);
             	for(String name:names) {
             		String result = handler.loadArtifactAsModule(index,name,data);
-            		if( result==null ) info(String.format("Successfully loaded %s module", name));
-            		else warn(result);
+            		if( result==null ) thisPage.info(String.format("Successfully loaded %s module", name));
+            		else thisPage.warn(result);
             	}
             }
         });

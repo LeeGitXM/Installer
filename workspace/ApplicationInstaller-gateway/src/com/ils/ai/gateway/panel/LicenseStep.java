@@ -25,23 +25,25 @@ public class LicenseStep extends InstallWizardStep {
 	public LicenseStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
+        final LicenseStep thisPage = this;
         InstallerData data = dataModel.getObject();
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
         // Accept license
-        checkbox = new CheckBox("accept", Model.of(Boolean.FALSE));
-        Form<?> form = new Form<Void>("acceptForm") {
-			private static final long serialVersionUID = -7113329313634987198L;
+        checkbox = new CheckBox("accept", Model.of(Boolean.FALSE)) {
+			private static final long serialVersionUID = -890605923748905601L;
 
+			protected boolean wantOnSelectionChangedNotifications() {
+        		return true;
+        	}
+			// We don't care what the value is. As long as they click on the box, we're good.
 			@Override
-			protected void onSubmit() {
-				accepted = checkbox.getModelObject().booleanValue();
-				if( accepted ) info("License accepted");
+			public void onSelectionChanged() {
+				thisPage.info(String.format("License terms have been accepted."));
 			}
-		};
-		add(form);
-		form.add(checkbox);
+        };
+        add(checkbox);
 		
         // View license
         add(new Link<Void>("view") {

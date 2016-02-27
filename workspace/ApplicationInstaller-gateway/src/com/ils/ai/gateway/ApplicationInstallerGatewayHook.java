@@ -2,6 +2,7 @@ package com.ils.ai.gateway;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.panel.ConfigurationPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -24,6 +25,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     public void setup(GatewayContext gatewayContext) {
         INSTANCE = this;
         this.context = gatewayContext;
+        PersistenceHandler.getInstance().setContext(context);
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         handler.setContext(context);
         String title = handler.getTitle(new InstallerData());

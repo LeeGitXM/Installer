@@ -75,10 +75,13 @@ public class InstallerDataHandler {
 		String result = null;
 		if( context!=null ) {
 			try {
-				BackupServlet.generateBackup((SRContext)context, outstream, BackupType.DATA_ONLY);
+				log.infof("%s.backup: starting backup ...",CLSS);
+				BackupServlet.generateBackup(SRContext.get(), outstream, BackupType.DATA_ONLY);
+				log.infof("%s.backup: completed backup.",CLSS);
 			}
 			catch(Exception ex) {
 				result = String.format("InstallerDataHandler.backup: Backup failed with exception (%s)",ex.getMessage());
+				log.warn(result);
 			}
 		}
 		return result;
@@ -109,6 +112,7 @@ public class InstallerDataHandler {
 	 */
 	public byte[] getArtifactAsBytes(int panelIndex,String artifactName,InstallerData model) {
 		byte[] bytes = null;
+		log.infof("%s.getArtifactAsBytes: panel %d, getting %s",CLSS,panelIndex,artifactName);
 		Element panel = getPanelElement(panelIndex,model);
 		if( panel!=null ) {
 			NodeList artifactNodes = panel.getElementsByTagName("artifact");
@@ -124,6 +128,10 @@ public class InstallerDataHandler {
 						String internalPath = locationNode.getTextContent();
 						Path path = getPathToModule(model);
 						bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
+						log.infof("%s.getArtifactAsBytes: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),bytes.length);
+					}
+					else {
+						log.warnf("%s.getArtifactAsBytes: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
 					}
 					break;
 				}
@@ -333,20 +341,23 @@ public class InstallerDataHandler {
 	public String loadArtifactAsModule(int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
-		if( bytes!=null ) {
+		if( bytes!=null && bytes.length>0 ) {
 			// If we have data, we had to have a path
 			String filename = getArtifactLocation(panelIndex,artifactName,model);
 			int pos = filename.lastIndexOf("/");
 			if (pos>0 ) filename = filename.substring(pos+1);
 			try {
-				context.getModuleManager().installModule(filename, bytes);
+				log.infof("%s.loadArtifactAsModule: Installing %d bytes as %s",CLSS,bytes.length,filename);
+				context.getModuleManager().installModule(filename, bytes);	
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s (%s)", filename,ex.getMessage());
+				log.warn(result);
 			}
 		}
 		else {
 			result = String.format( "Failed to find %s module in bundle",artifactName);
+			log.warn(result);
 		}
 		return result;
 	}
