@@ -10,9 +10,9 @@ import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWiz
 
 public class InstallWizardStep extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
-	private final int panelIndex;
-	private final InstallWizardStep prior;
-	private final Model<InstallerData> dataModel;
+	protected final int panelIndex;
+	protected final InstallWizardStep prior;
+	protected final Model<InstallerData> dataModel;
 	// Make transient so that class can be serialized
 	protected transient final InstallerDataHandler handler;
 

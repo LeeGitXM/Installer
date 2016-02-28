@@ -92,15 +92,17 @@
 		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.application-installer" append="false"/>
 		
 		<!-- Copy staged artifacts into the bundle -->
-		<mkdir dir="${build.dir}/artifacts" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts" />
 		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
-		<mkdir dir="${build.dir}/artifacts/doc" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNotes.pdf" />
-		<mkdir dir="${build.dir}/artifacts/license" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
-		<mkdir dir="${build.dir}/artifacts/module" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/modules" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/ILS-SFC-module-unsigned.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/project" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />

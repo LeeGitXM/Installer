@@ -8,9 +8,14 @@
 		<p wicket:id="preamble">should not appear</p>
 		<br />
 	
-			<form wicket:id="submitForm" action="">
+			<form wicket:id="mergeForm" action="">
 				<span wicket:id="projectLabel" class="label" />
 				<select name="project" wicket:id="project" />
+				<input type="submit" wicket:id="merge" value="Merge" />
+			</form>
+			<form wicket:id="newForm" action="">
+				<span wicket:id="newLabel" class="label" />
+				<input type="submit" wicket:id="new" value="Install New" />
 			</form>
 	
 	</wicket:panel>
