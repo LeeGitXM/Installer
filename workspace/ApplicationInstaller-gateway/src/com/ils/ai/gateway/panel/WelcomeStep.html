@@ -27,11 +27,14 @@
 			</table>
 			<br />
 			<div>
-				<form wicket:id="skipPanelsForm" action="">
-					<p>
-						<label>Skip Up-to-date Resources:</label> <input type="checkbox" wicket:id="skip" />
-					</p>
-				</form>
+				<table>
+					<tr>
+						<td><label>Skip Up-to-date Resources:</label> <input
+							type="checkbox" wicket:id="current" /></td>
+						<td><label>Skip Non-essential Resources:</label> <input
+							type="checkbox" wicket:id="essential" /></td>
+					</tr>
+				</table>
 			</div>
 			<br />
 			<div>

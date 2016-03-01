@@ -13,33 +13,35 @@ public class InstallWizardStep extends GatewayWizardStep {
 	protected final int panelIndex;
 	protected final InstallWizardStep prior;
 	protected final Model<InstallerData> dataModel;
-	// Make transient so that class can be serialized
-	protected transient final InstallerDataHandler handler;
+
 
 	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> model) {
-        super(previous,title, model);
-        this.panelIndex = index;
-        this.prior = previous;
-        this.dataModel = model;
-        this.handler = InstallerDataHandler.getInstance();
+		super(previous,title, model);
+		this.panelIndex = index;
+		this.prior = previous;
+		this.dataModel = model;
 	}
 
-    
-	@Override
-    public boolean isLastStep() {
-       boolean last = panelIndex+1>=handler.getStepCount(dataModel.getObject());
-       return last;
-    }
 
-    @Override
-    public IDynamicWizardStep previous() {
-        return prior;
-    }
-    
-    @Override
-    public IDynamicWizardStep next() {
-    	IDynamicWizardStep next = null;
-    	if( !isLastStep() ) next = handler.getWizardStep(panelIndex+1,this,dataModel);
-    	return next;
-    }
+	@Override
+	public boolean isLastStep() {
+		InstallerDataHandler handler = InstallerDataHandler.getInstance();
+		boolean last = panelIndex+1>=handler.getStepCount(dataModel.getObject());
+		return last;
+	}
+
+	@Override
+	public IDynamicWizardStep previous() {
+		return prior;
+	}
+
+	@Override
+	public IDynamicWizardStep next() {
+		IDynamicWizardStep next = null;
+		if( !isLastStep() ) {
+			InstallerDataHandler handler = InstallerDataHandler.getInstance();
+			next = handler.getWizardStep(panelIndex+1,this,dataModel);
+		}
+		return next;
+	}
 }

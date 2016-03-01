@@ -4,7 +4,6 @@
 package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 
 import org.w3c.dom.Document;
 
@@ -20,14 +19,17 @@ public class InstallerData implements Serializable  {
 	private Document bom = null;
 	private String modulePath = null;
 	private Project project = null;
-	private boolean skipCurrent = false;
+	private boolean ignoringOptional  = false;
+	private boolean ignoringCurrent   = false;   // Ignore artifacts that are up-to-date
 
 	public Document getBillOfMaterials() {return bom;}
 	public String getModulePath() {return this.modulePath;}
     public Project getProject() {return project;}
-    public boolean skipCurrent() { return skipCurrent; }
+    public boolean isIgnoringCurrent() { return ignoringCurrent; }
+    public boolean isIgnoringOptional() { return ignoringOptional; }
     public void setBillOfMaterials(Document doc) {this.bom = doc;}
-    public void setSkipCurrent(boolean flag) { this.skipCurrent = flag; }
+    public void setIgnoringCurrent(boolean flag) { this.ignoringCurrent = flag; }
+    public void setIgnoringOptional(boolean flag) { this.ignoringOptional = flag; }
     public void setModulePath(String path) {this.modulePath = path;}
     public void setProject(Project project) {this.project = project;}
 }

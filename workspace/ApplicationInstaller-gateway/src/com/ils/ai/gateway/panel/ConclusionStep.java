@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
+import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -16,6 +17,7 @@ public class ConclusionStep extends InstallWizardStep {
         super(index,previous, title, dataModel); 
         
         InstallerData data = dataModel.getObject();
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         

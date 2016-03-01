@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
+import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -27,6 +28,8 @@ public class UpdateProjectStep extends InstallWizardStep {
 		super(index,previous, title, dataModel);
 
         InstallerData data = dataModel.getObject();
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+        
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         

@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
+import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  */
@@ -22,6 +23,8 @@ public class ModuleStep extends InstallWizardStep {
         final ModuleStep thisPage = this;
         
         InstallerData data = dataModel.getObject();
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+        
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
@@ -37,11 +40,14 @@ public class ModuleStep extends InstallWizardStep {
         
         add(new Button("install") {
 			private static final long serialVersionUID = 4110778774811578782L;
-
+			
 			public void onSubmit() {
-            	List<String> names = handler.getArtifactNames(index, data);
+				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+            	List<String> names = dataHandler.getArtifactNames(index, data);
+            	
+            	
             	for(String name:names) {
-            		String result = handler.loadArtifactAsModule(index,name,data);
+            		String result = dataHandler.loadArtifactAsModule(index,name,data);
             		if( result==null ) thisPage.info(String.format("Successfully loaded %s module", name));
             		else thisPage.warn(result);
             	}

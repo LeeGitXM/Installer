@@ -7,32 +7,33 @@
 	<property name="date">Mar 17, 2016</property>
 	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
-	<panel type="welcome">
+	<!--  The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="True">
 	  <title>ILS Automation Installer for EMC Ignition Applications</title>
 	  <preamble>Welcome to the ILS Automation installer for EMC Ignition Applications. The table below compares the existing installation of this product, if any, with the versions contained in this new installation.</preamble>
 	  <artifact name="notes" type="pdf">
 	  	 <location>artifacts/doc/ReleaseNotes.pdf</location>
 	  </artifact>
 	</panel>
-	<panel type="license">
+	<panel type="license" essential="True" version="0">
 	  <title>End User License Agreement (EULA)</title>
 	  <preamble>Click on the button below to view the license that specifies permissible use of the software to be installed. Select the checkbox to indicate acceptance of the terms.</preamble>
 	  <artifact name="license" type="html">
 	  	<location>artifacts/license/license.html</location>
 	  </artifact>
 	</panel>
-	<panel type="backup">
+	<panel type="backup" essential="false" version="0">
 	  <title>Archive into an Ignition Backup</title>
 	  <preamble>This is an optional step. Once created, a backup allows you to revert the previous state of the application.</preamble>
 	</panel>
-	<panel type="project">
+	<panel type="project" subType="main" essential="True" version="0">
 	  <title>Install a New XOM Project or Merge Changes into an Existing Project</title>
 	  <preamble>If an existing XOM project is selected, then execution of this step will merge updates creating a new version of that project. The existing project will not be changed. If there is not an existing project, then a new project will be created.</preamble>
 	  <artifact name="XOM Project" type="project" subtype="full">
 	  	  <location>artifacts/projects/XOM.proj</location>
 	  </artifact>
 	</panel>
-	<panel type="module">
+	<panel type="module" essential="true" version="0">
 	  <title>Install Custom Modules</title>
 	  <preamble>This step installs modules necessary for the EMC applications.</preamble>
 	  <artifact name="ILS-SFC Enhancements" type="module">
@@ -42,7 +43,8 @@
 	  	<location>artifacts/modules/BLT-module-unsigned.modl</location>
 	  </artifact>
 	</panel>
-	<panel type="conclusion">
+	<!--  The conclusion panel must always be displayed, thus no version -->
+	<panel type="conclusion" essential="true">
 	  <title>Installation Complete</title>
 	  <preamble>Record the current version of EMC Ignition Applications in the Gateway internal database.</preamble>
 	</panel>

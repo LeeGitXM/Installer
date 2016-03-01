@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -15,6 +14,7 @@ import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
+import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 
 /**
@@ -22,7 +22,6 @@ import com.ils.ai.gateway.model.PropertyItem;
  */
 public class WelcomeStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
-	private final CheckBox checkbox;
 	private static String fileName = "ReleaseNotes.pdf";
 	
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
@@ -30,6 +29,8 @@ public class WelcomeStep extends InstallWizardStep {
         
         final WelcomeStep thisStep = this;
         InstallerData data = dataModel.getObject();
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+        
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
@@ -46,19 +47,46 @@ public class WelcomeStep extends InstallWizardStep {
         });
         
         // Set whether or not to skip panels that are up-to-date
-        checkbox = new CheckBox("skip", Model.of(Boolean.FALSE));
-        Form<?> form = new Form<Void>("skipPanelsForm") {
-			private static final long serialVersionUID = -7113329313634987198L;
+		// Accept license
+		CheckBox checkbox = new CheckBox("current", Model.of(Boolean.FALSE)) {
+			private static final long serialVersionUID = -890605923748905601L;
 
+			protected boolean wantOnSelectionChangedNotifications() {
+				return true;
+			}
+			// We don't care what the value is. As long as they click on the box, we're good.
+			// The value is "on" for selected, null for not.
 			@Override
-			protected void onSubmit() {
-				boolean skip = checkbox.getModelObject().booleanValue();
-				thisStep.info(String.format("Skip up-to-date = %s",(skip?"TRUE":"FALSE")));
-				data.setSkipCurrent(skip);
+			public void onSelectionChanged() {
+				if(getValue()==null) {
+					data.setIgnoringCurrent(false);
+				}
+				else {
+					data.setIgnoringCurrent(true);
+				}
 			}
 		};
-		add(form);
-		form.add(checkbox);
+		add(checkbox);
+		// Accept license
+		checkbox = new CheckBox("essential", Model.of(Boolean.FALSE)) {
+			private static final long serialVersionUID = -890605923748905601L;
+
+			protected boolean wantOnSelectionChangedNotifications() {
+				return true;
+			}
+			// We don't care what the value is. As long as they click on the box, we're good.
+			// The value is "on" for selected, null for not.
+			@Override
+			public void onSelectionChanged() {
+				if(getValue()==null) {
+					data.setIgnoringOptional(false);
+				}
+				else {
+					data.setIgnoringOptional(true);
+				}
+			}
+		};
+		add(checkbox);
 		
         // View release notes
         add(new Link<Void>("notes") {
@@ -72,7 +100,8 @@ public class WelcomeStep extends InstallWizardStep {
 
 					@Override
                     public void write(OutputStream output) throws IOException {
-                        byte[] bytes = handler.getArtifactAsBytes(index,"notes",data);
+						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+                        byte[] bytes = dataHandler.getArtifactAsBytes(index,"notes",data);
                         if( bytes!=null ) {
                         	output.write(bytes);
                         }

@@ -5,14 +5,14 @@ import java.io.OutputStream;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
-import com.inductiveautomation.ignition.common.util.LogUtil;
-import com.inductiveautomation.ignition.common.util.LoggerEx;
+import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -26,7 +26,8 @@ public class LicenseStep extends InstallWizardStep {
 		super(index,previous, title, dataModel); 	
 
 		InstallerData data = dataModel.getObject();
-
+		InstallerDataHandler handler = InstallerDataHandler.getInstance();
+		
 		String preamble = handler.getStepPreamble(panelIndex, data);
 		add(new Label("preamble",preamble));
 
@@ -38,10 +39,13 @@ public class LicenseStep extends InstallWizardStep {
 				return true;
 			}
 			// We don't care what the value is. As long as they click on the box, we're good.
+			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
-				System.out.println(String.format("%s.onSelectionChanged: %s","CheckBox",(this.getModel().getObject().booleanValue()?"TRUE":"FALSE")));
-				LicenseStep.this.info(String.format("License terms have been accepted."));
+				if(getValue()!=null) {
+					accepted = true;
+					LicenseStep.this.info(String.format("License terms have been accepted."));
+				}
 			}
 		};
 		add(checkbox);
@@ -57,7 +61,8 @@ public class LicenseStep extends InstallWizardStep {
 
 					@Override
 					public void write(OutputStream output) throws IOException {
-						byte[] bytes = handler.getArtifactAsBytes(panelIndex,"license",data);
+						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+						byte[] bytes = dataHandler.getArtifactAsBytes(panelIndex,"license",data);
 						if( bytes!=null ) {
 							output.write(bytes);
 						}
@@ -69,8 +74,8 @@ public class LicenseStep extends InstallWizardStep {
 					}
 				};
 
-				ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
-				getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+				ResourceStreamRequestHandler requestHandler = new ResourceStreamRequestHandler(rstream, fileName);
+				getRequestCycle().scheduleRequestHandlerAfterCurrent(requestHandler);
 			}
 		});
 	}
