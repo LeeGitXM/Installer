@@ -34,6 +34,8 @@ import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.Backu
  *  as the installation progresses. 
  *   
  *  This class is a singleton for easy access throughout the wizard screens.
+ *  WARNING: This class is not serializable and cannot be assigned as an 
+ *           instance variable for any pagoe or nested class within a page.
  */
 public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
@@ -233,8 +235,56 @@ public class InstallerDataHandler {
 		}
 		return path;
 	}
+
+	// Return attributes of a particular panel. When it is created, fill in attributes,
+	// else simply return the value from the map.
+	public PanelData getPanelData(int panelIndex,InstallerData model) {
+		Integer key = new Integer(panelIndex);
+		PanelData data = model.getPanelMap().get(key);
+		if( data==null ) {
+			data = new PanelData();
+			Element panelElement = getPanelElement(panelIndex,model);
+			this.type    = dataHandler.getStepType(index, dataModel.getObject());
+			this.version = dataHandler.getStepVersion(panelIndex,dataModel.getObject());
+			if( panelElement!=null ) {
+				String product = "UNKNOWN";
+				for(PropertyItem prop:getProperties(model)) {
+					if( prop.getName().equalsIgnoreCase("product")){
+							product = prop.getValue();
+							break;
+					}
+				}
+				String subtype = xmlUtil.attributeValue(panelElement, "subtype");
+				data.setCurrentVersion(PersistenceHandler.getInstance().getStepVersion(product,type,subtype));
+			}
+			model.getPanelMap().put(key,data);
+		}
+		
+		return data;
+	}
+
+	// Return property name value pairs associated with a particular panel
+	public List<PropertyItem> getPanelProperties(int panelIndex,InstallerData model) {
+		List<PropertyItem> properties = new ArrayList<>();
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList propertyNodes = panel.getElementsByTagName("property");
+			int count = propertyNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node propertyNode = propertyNodes.item(index);
+				String name = xmlUtil.attributeValue(propertyNode, "name");
+				String value = propertyNode.getTextContent();
+				properties.add(new PropertyItem(name,value));
+				index++;
+			}
+		}
+		return properties;
+	}
 	
-	// Format the properties for display
+
+
+	// Return property name value pairs
 	public List<PropertyItem> getProperties(InstallerData model) {
 		List<PropertyItem> properties = new ArrayList<>();
 		Document bom = getBillOfMaterials(model);
@@ -262,27 +312,7 @@ public class InstallerDataHandler {
 		}
 		return count;
 	}
-	/**
-	 * Read the title from the bill of materials.
-	 * @param model
-	 * @return
-	 */
-	public String getTitle(InstallerData model) {
-		String title = "No title in bill of materials";
-		Document bom = getBillOfMaterials(model);
-		if( bom!=null ) {
-			NodeList elements = bom.getElementsByTagName("title");
-			int count = elements.getLength();
-			if( count>0 ) {
-				Node element = elements.item(0);
-				title = element.getTextContent();
-			}
-		}
-		else {
-			title = "Missing bill of materials";
-		}
-		return title;
-	}
+	
 	public String getStepPreamble(int panelIndex,InstallerData model) {
 		String text = "";    // If all else fails
 		Element panelElement = getPanelElement(panelIndex,model);
@@ -299,6 +329,7 @@ public class InstallerDataHandler {
 		}
 		return text;
 	}
+
 	public String getStepTitle(int panelIndex,InstallerData model) {
 		String title = "-- no title --";    // If all else fails
 		Element panelElement = getPanelElement(panelIndex,model);
@@ -330,7 +361,43 @@ public class InstallerDataHandler {
 		}
 		return type;
 	}
-	
+	public int getStepVersion(int index,InstallerData model) {
+		Element panel = getPanelElement(index,model);
+		int version = -1;   // An error
+		if( panel!=null) {
+			String versString = xmlUtil.attributeValue(panel, "version");
+			if(versString!=null) {
+				try {
+					version = Integer.parseInt(versString);
+				}
+				catch(NumberFormatException nfe) {
+					log.warnf("%s.getStepVersion: Could not convert %s to int (%s)",CLSS,versString,nfe.getLocalizedMessage());
+				}
+			}
+		}
+		return version;
+	}
+	/**
+	 * Read the title from the bill of materials.
+	 * @param model
+	 * @return
+	 */
+	public String getTitle(InstallerData model) {
+		String title = "No title in bill of materials";
+		Document bom = getBillOfMaterials(model);
+		if( bom!=null ) {
+			NodeList elements = bom.getElementsByTagName("title");
+			int count = elements.getLength();
+			if( count>0 ) {
+				Node element = elements.item(0);
+				title = element.getTextContent();
+			}
+		}
+		else {
+			title = "Missing bill of materials";
+		}
+		return title;
+	}
 	public InstallWizardStep getWizardStep(int index,InstallWizardStep prior,Model<InstallerData> dataModel) {
 		WizardStepType stepType = getStepType(index,dataModel.getObject());
 		String title = getStepTitle(index,dataModel.getObject());

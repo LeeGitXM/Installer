@@ -4,6 +4,8 @@
 package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Document;
 
@@ -21,9 +23,11 @@ public class InstallerData implements Serializable  {
 	private Project project = null;
 	private boolean ignoringOptional  = false;
 	private boolean ignoringCurrent   = false;   // Ignore artifacts that are up-to-date
+	private final Map<Integer,PanelData> panelMap = new HashMap<>();
 
 	public Document getBillOfMaterials() {return bom;}
 	public String getModulePath() {return this.modulePath;}
+	public Map<Integer,PanelData> getPanelMap() { return panelMap; }
     public Project getProject() {return project;}
     public boolean isIgnoringCurrent() { return ignoringCurrent; }
     public boolean isIgnoringOptional() { return ignoringOptional; }

@@ -22,6 +22,7 @@ public enum WizardStepType
             SCANCLASS,
             SOURCE,
             TAGS,
+            TOOLIT,
             TRANSACTIONGROUPS,
             WELCOME
             ;

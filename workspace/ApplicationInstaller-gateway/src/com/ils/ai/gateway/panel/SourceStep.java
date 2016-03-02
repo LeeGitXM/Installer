@@ -17,11 +17,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class BackupStep extends InstallWizardStep {
+public class SourceStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ignition-backup.gwbk";
 
-	public BackupStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public SourceStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
         InstallerData data = dataModel.getObject();
@@ -48,8 +48,8 @@ public class BackupStep extends InstallWizardStep {
 						System.out.println("BACKUPSTEP Start to write ...");
                         result = dataHandler.backup(output,data);
                         System.out.println("BACKUPSTEP complete");
-                        if(result==null) BackupStep.this.info("Backup completed successfully");
-                        else BackupStep.this.warn(result);
+                        if(result==null) SourceStep.this.info("Backup completed successfully");
+                        else SourceStep.this.warn(result);
                         System.out.println("BACKUPSTEP result:"+result);
                     }
                 };
@@ -57,7 +57,7 @@ public class BackupStep extends InstallWizardStep {
                 System.out.println("BACKUPSTEP Starting ...");
                 ResourceStreamRequestHandler handle = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handle);
-                BackupStep.this.warn("DONE");
+                SourceStep.this.warn("DONE");
                 System.out.println("BACKUPSTEP DONE");
             }
         };

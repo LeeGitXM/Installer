@@ -4,36 +4,17 @@
 package com.ils.ai.gateway.model;
 
 
-import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.wicket.model.Model;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import com.ils.ai.gateway.InstallerConstants;
-import com.ils.ai.gateway.panel.InstallWizardStep;
-import com.ils.ai.gateway.utility.FileUtility;
-import com.ils.ai.gateway.utility.JarUtility;
-import com.ils.ai.gateway.utility.XMLUtility;
-import com.ils.common.db.DBUtility;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
-import com.inductiveautomation.ignition.gateway.SRContext;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
-import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
 
 /**
  *  This can be used to fetch information from the internal Ignition database. 
  *  We use a Persistent Object interface.
  *   
  *  This class is a singleton for easy access throughout the wizard screens.
+ *  WARNING: This class is not serializable and cannot be assigned as an 
+ *           instance variable for any pagoe or nested class within a page.
  */
 public class PersistenceHandler {
 	private final static String CLSS = "PersistenceHandler";
@@ -69,6 +50,85 @@ public class PersistenceHandler {
 	 */
 	public void setContext(GatewayContext ctx) { 
 		this.context=ctx;
+	}
+	
+	/**
+	 * @return the value of a product property. Keys are product name and property name.
+	 * On a failure to find the property, an empty string is returned.
+	 */
+	public String getProductProperty(String productName,String propertyName) {
+		String value = "";
+		try {
+			ProductPropertiesRecord record = context.getPersistenceInterface().find(ProductPropertiesRecord.META, productName,propertyName);
+			if( record!=null) value =  record.getValue();
+		}
+		catch(Exception ex) {
+			log.warnf("%s.getProductProperty: Exception retrieving %s (%s),",CLSS,propertyName,ex.getMessage());
+		}
+		return value;
+	}
+	
+	/**
+	 * Set the value of a product property. Keys are product name and property name.
+	 */
+	public void setProductProperty(String productName,String propertyName, String value) {
+		try {
+			ProductPropertiesRecord record = context.getPersistenceInterface().find(ProductPropertiesRecord.META, productName,propertyName);
+			if( record==null) record = context.getPersistenceInterface().createNew(ProductPropertiesRecord.META);
+			if( record!=null) {
+				record.setProductName(productName);
+				record.setPropertyName(propertyName);
+				record.setValue(value);
+				context.getPersistenceInterface().save(record);
+			}
+			else {
+				log.warnf("%s.setProductProperty: %s=%s - failed to create persistence record (%s)",CLSS,productName,propertyName,value,
+						ProductPropertiesRecord.META.quoteName);
+			} 
+		}
+		catch(Exception ex) {
+			log.warnf("%s.setProductProperty: Exception setting %s:%s=%s (%s),",CLSS,productName,propertyName,value,ex.getMessage());
+		}
+	}
+	/**
+	 * @return the current installed version of an installation step for a specified product.
+	 * Keys are product name, artifact type and artifact sub-type.
+	 * On a failure to find the version, return -1;.
+	 */
+	public int getStepVersion(String productName,String type,String subtype) {
+		int version = -1;
+		try {
+			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type,subtype);
+			if( record!=null) version =  record.getVersion();
+		}
+		catch(Exception ex) {
+			log.warnf("%s.getStepVersion: Exception retrieving %s:%s:%s (%s),",CLSS,productName,type,subtype,ex.getMessage());
+		}
+		return version;
+	}
+	
+	/**
+	 * Set the value of a product version. Keys are product name,artifact type and artifact sub-type..
+	 */
+	public void setStepVersion(String productName,String type,String subtype,int version)  {
+		try {
+			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type,subtype);
+			if( record==null) record = context.getPersistenceInterface().createNew(ProductVersionRecord.META);
+			if( record!=null) {
+				record.setProductName(productName);
+				record.setType(type);
+				record.setSubType(subtype);
+				record.setVersion(version);
+				context.getPersistenceInterface().save(record);
+			}
+			else {
+				log.warnf("%s.setStepVersion: %s:%s:%s=%d - failed to create persistence record (%s)",CLSS,productName,type,subtype,version,
+						ProductVersionRecord.META.quoteName);
+			} 
+		}
+		catch(Exception ex) {
+			log.warnf("%s.setStepVersion: Exception setting %s:%s=%s (%s),",CLSS,productName,type,subtype,version,ex.getMessage());
+		}
 	}
 }
 

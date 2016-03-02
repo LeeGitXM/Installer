@@ -54,6 +54,8 @@ public class WizardStepFactory  {
 				break;
 			case TAGS:
 				break;
+			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
+				break;
 			case TRANSACTIONGROUPS:
 				break;
 			case WELCOME: step = new WelcomeStep(panelIndex,prior,title,model);

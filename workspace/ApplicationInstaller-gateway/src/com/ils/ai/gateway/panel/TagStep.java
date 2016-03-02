@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.util.List;
@@ -21,10 +24,10 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class UpdateProjectStep extends InstallWizardStep {
+public class TagStep extends InstallWizardStep {
 	private Project existingProject = null;
 	
-	public UpdateProjectStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
+	public TagStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
         InstallerData data = dataModel.getObject();

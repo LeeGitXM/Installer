@@ -1,6 +1,3 @@
-/**
- * Copyright 2016. ILS Automation. All rights reserved.
- */
 package com.ils.ai.gateway.panel;
 
 import java.io.IOException;
@@ -20,12 +17,12 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class LicenseStep extends InstallWizardStep {
+public class DatabaseStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "license.html";
 	private boolean accepted = false;
 
-	public LicenseStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public DatabaseStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		InstallerData data = dataModel.getObject();
@@ -47,7 +44,7 @@ public class LicenseStep extends InstallWizardStep {
 			public void onSelectionChanged() {
 				if(getValue()!=null) {
 					accepted = true;
-					LicenseStep.this.info(String.format("License terms have been accepted."));
+					DatabaseStep.this.info(String.format("License terms have been accepted."));
 				}
 			}
 		};

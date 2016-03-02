@@ -2,7 +2,9 @@ package com.ils.ai.gateway.panel;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -15,6 +17,7 @@ import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 
 /**
@@ -23,11 +26,13 @@ import com.ils.ai.gateway.model.PropertyItem;
 public class WelcomeStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ReleaseNotes.pdf";
+	private final Map<String,String> propertyMap;
 	
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
-        final WelcomeStep thisStep = this;
+        this.propertyMap = new HashMap<>();
+        
         InstallerData data = dataModel.getObject();
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         
@@ -35,6 +40,23 @@ public class WelcomeStep extends InstallWizardStep {
         add(new Label("preamble",preamble));
         
         List<PropertyItem> properties = handler.getProperties(data);
+        // Get current values of the product properties.
+        PersistenceHandler dbHandler = PersistenceHandler.getInstance();
+        // For starters get the product name
+		String productName = "";
+		for(PropertyItem prop:properties) {
+			if(prop.getName().equalsIgnoreCase("product")) {
+				productName  = prop.getValue();
+				break;
+			};
+		}
+		if( !productName.isEmpty() ) {
+			for(PropertyItem prop:properties) {
+				 String val = dbHandler.getProductProperty(productName, prop.getName());
+				 if( val!= null) prop.setPrevious(val);
+			}
+		}
+        
         add(new ListView<PropertyItem>("properties", properties) {
 			private static final long serialVersionUID = -4610581829738917953L;
 
@@ -43,6 +65,7 @@ public class WelcomeStep extends InstallWizardStep {
                 item.add(new Label("name", property.getName()));
                 item.add(new Label("value", property.getValue()));
                 item.add(new Label("previous", property.getPrevious()));
+                
             }
         });
         
