@@ -395,10 +395,10 @@ public class InstallerDataHandler {
 
 	public int getStepVersion(int index,InstallerData model) {
 		Element panel = getPanelElement(index,model);
-		int version = -1;   // An error
+		int version = InstallerConstants.UNSET;   // An error
 		if( panel!=null) {
 			String versString = xmlUtil.attributeValue(panel, "version");
-			if(versString!=null) {
+			if(versString!=null && !versString.isEmpty()) {
 				try {
 					version = Integer.parseInt(versString);
 				}

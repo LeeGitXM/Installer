@@ -6,6 +6,7 @@ package com.ils.ai.gateway.panel;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.link.Link;
@@ -87,11 +88,17 @@ public class LicenseStep extends InstallWizardStep {
 			}
 		});
 	}
-
-
+	
 	@Override
-	protected void onBeforeRender() {
-		super.onBeforeRender();
+	public IDynamicWizardStep next() {
+		IDynamicWizardStep next = null;
+		if( !accepted ) {
+			InstallerDataHandler handler = InstallerDataHandler.getInstance();
+			next = handler.getWizardStep(panelIndex,this,dataModel);
+		}
+		else {
+			next = super.next();
+		}
+		return next;
 	}
-
 }
