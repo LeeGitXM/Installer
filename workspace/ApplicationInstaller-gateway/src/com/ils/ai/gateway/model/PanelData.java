@@ -5,9 +5,7 @@ package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
 
-import org.w3c.dom.Document;
-
-import com.inductiveautomation.ignition.common.project.Project;
+import com.ils.ai.gateway.InstallerConstants;
 
 /**
  *  This class maintains parameters for a single panel.
@@ -16,16 +14,23 @@ import com.inductiveautomation.ignition.common.project.Project;
  *  to populate.
  */
 public class PanelData implements Serializable  {
-	private static final long serialVersionUID = -7650179030090459881L;
-	protected FINAL int currentVersion;
-	protected final String subtype;
-	protected final WizardStepType type;     // Artifact type
-	protected final int version;
+	private static final long serialVersionUID = 7650179030090459881L;
+	private int currentVersion = InstallerConstants.UNSET;
+	private boolean mergable = false;   // Used only for projects
+	private String subtype = "";
+	private PanelType type = PanelType.CONCLUSION;     // Artifact type
+	private int version = InstallerConstants.UNSET;
 	
 	public int getCurrentVersion() {return currentVersion;}
+	public void setCurrentVersion(int vers) { this.currentVersion = vers; }
+	public boolean isMergable() { return mergable; }
+	public void setMergable(boolean flag) { this.mergable = flag; }
 	public String getSubtype() {return subtype;}
-	public WizardStepType getType() {return type;}
+	public void setSubtype(String st) { this.subtype = st; }
+	public PanelType getType() {return type;}
+	public void setType(PanelType typ) { this.type = typ; }
 	public int getVersion() {return version;}
+	public void setVersion(int vers) {this.version = vers; }
 
 
 }

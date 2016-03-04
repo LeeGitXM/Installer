@@ -10,7 +10,8 @@ import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.InstallWizardStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
-import com.ils.ai.gateway.panel.UpdateProjectStep;
+import com.ils.ai.gateway.panel.ToolkitStep;
+import com.ils.ai.gateway.panel.ProjectStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
 /**
@@ -24,7 +25,7 @@ public class WizardStepFactory  {
 	 * @param panelType
 	 * @return
 	 */
-	public InstallWizardStep createStep(int panelIndex,InstallWizardStep prior,WizardStepType stepType,String title,Model<InstallerData> model) {
+	public InstallWizardStep createStep(int panelIndex,InstallWizardStep prior,PanelType stepType,String title,Model<InstallerData> model) {
 		InstallWizardStep step = null;
 		switch( stepType)  {
 
@@ -36,15 +37,13 @@ public class WizardStepFactory  {
 				break;
 			case EXTERNAL:
 				break;
-			case GLOBAL:
-				break;
 			case ICONS:
 				break;
 			case LICENSE: step = new LicenseStep(panelIndex,prior,title,model);
 				break;
 			case MODULE: step = new ModuleStep(panelIndex,prior,title,model);
 				break;
-			case PROJECT: step = new UpdateProjectStep(panelIndex,prior,title,model);
+			case PROJECT: step = new ProjectStep(panelIndex,prior,title,model);
 				break;
 			case PROPERTIES:
 				break;

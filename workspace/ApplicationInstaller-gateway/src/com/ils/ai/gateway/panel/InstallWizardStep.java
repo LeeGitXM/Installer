@@ -6,6 +6,7 @@ package com.ils.ai.gateway.panel;
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.model.Model;
 
+import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PanelData;
@@ -14,7 +15,7 @@ import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWiz
 
 public class InstallWizardStep extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
-;
+	protected static final int UNSET = InstallerConstants.UNSET;  // For integer parameters that have no value.
 	protected final int panelIndex;
 	protected final InstallWizardStep prior;
 	protected final Model<InstallerData> dataModel;

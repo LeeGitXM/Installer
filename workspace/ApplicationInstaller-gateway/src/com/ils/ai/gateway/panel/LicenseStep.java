@@ -8,7 +8,6 @@ import java.io.OutputStream;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
@@ -16,6 +15,7 @@ import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PanelData;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -33,6 +33,15 @@ public class LicenseStep extends InstallWizardStep {
 		
 		String preamble = handler.getStepPreamble(panelIndex, data);
 		add(new Label("preamble",preamble));
+		
+		int vers = panelData.getCurrentVersion();
+		String current = "";
+		if(vers!=UNSET) current = String.valueOf(vers);
+		add(new Label("currentVersion",current));
+		vers = panelData.getVersion();
+		String future = "";
+		if( vers!=UNSET ) future = String.valueOf(vers);
+		add(new Label("futureVersion",future));
 
 		// Accept license
 		CheckBox checkbox = new CheckBox("accept", Model.of(Boolean.FALSE)) {

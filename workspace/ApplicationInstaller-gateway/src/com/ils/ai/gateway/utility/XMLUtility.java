@@ -57,7 +57,8 @@ public class XMLUtility {
 	public String attributeValue(Node element,String name) {
 		String value = "";
 		NamedNodeMap attributes = element.getAttributes();
-		value = attributes.getNamedItem(name).getNodeValue();
+		Node node = attributes.getNamedItem(name);
+		if( node!=null ) value = node.getNodeValue();
 		return value;
 	}
 

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import org.apache.wicket.model.Model;
 import org.w3c.dom.Document;
@@ -40,21 +41,25 @@ import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.Backu
 public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
 	private static final long serialVersionUID = -9021431638644580809L;
+	private static final String PREFERENCES_NAME = "InstallerPreferences";
 	private static InstallerDataHandler instance = null;
 	
 	private final LoggerEx log;
 	private GatewayContext context = null;
+	private final Preferences prefs;
 	private DBUtility dbUtil;
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private XMLUtility xmlUtil = null;
 	private final WizardStepFactory stepFactory;
+	
     
 	/**
 	 * Constructor is private per Singleton pattern.
 	 */
 	private InstallerDataHandler() {
 		log = LogUtil.getLogger(getClass().getPackage().getName());
+		this.prefs = Preferences.userRoot().node(PREFERENCES_NAME);
 		this.stepFactory = new WizardStepFactory();
 	}
 	
@@ -244,8 +249,7 @@ public class InstallerDataHandler {
 		if( data==null ) {
 			data = new PanelData();
 			Element panelElement = getPanelElement(panelIndex,model);
-			this.type    = dataHandler.getStepType(index, dataModel.getObject());
-			this.version = dataHandler.getStepVersion(panelIndex,dataModel.getObject());
+		
 			if( panelElement!=null ) {
 				String product = "UNKNOWN";
 				for(PropertyItem prop:getProperties(model)) {
@@ -254,7 +258,29 @@ public class InstallerDataHandler {
 							break;
 					}
 				}
+				PanelType type = PanelType.CONCLUSION;
+				String val = xmlUtil.attributeValue(panelElement, "type");
+				try {
+					type = PanelType.valueOf(val.toUpperCase());
+				}
+				catch(IllegalArgumentException iae) {
+					log.warnf("%s.getStepType: Could not convert %s into a WizardStepType",CLSS,val);
+				}
 				String subtype = xmlUtil.attributeValue(panelElement, "subtype");
+				int version = InstallerConstants.UNSET;  
+				String versString = xmlUtil.attributeValue(panelElement, "version");
+				if(versString!=null) {
+					try {
+						version = Integer.parseInt(versString);
+					}
+					catch(NumberFormatException nfe) {
+						log.warnf("%s.getStepVersion: Could not convert %s to int (%s)",CLSS,versString,nfe.getLocalizedMessage());
+					}
+				}
+				data.setType(type);
+				if(subtype==null) subtype = type.name();
+				data.setSubtype(subtype);
+				data.setVersion(version);
 				data.setCurrentVersion(PersistenceHandler.getInstance().getStepVersion(product,type,subtype));
 			}
 			model.getPanelMap().put(key,data);
@@ -282,21 +308,27 @@ public class InstallerDataHandler {
 		return properties;
 	}
 	
+	public String getPreference(String key) {
+		return prefs.get(key, "");
+	}
 
 
 	// Return property name value pairs
+	// We only want properties that are direct children
 	public List<PropertyItem> getProperties(InstallerData model) {
 		List<PropertyItem> properties = new ArrayList<>();
 		Document bom = getBillOfMaterials(model);
 		if( bom!=null ) {
-			NodeList propertyNodes = bom.getElementsByTagName("property");
-			int count = propertyNodes.getLength();
+			NodeList children = bom.getFirstChild().getChildNodes();
+			int count = children.getLength();
 			int index = 0;
 			while(index<count) {
-				Node propertyNode = propertyNodes.item(index);
-				String name = xmlUtil.attributeValue(propertyNode, "name");
-				String value = propertyNode.getTextContent();
-				properties.add(new PropertyItem(name,value));
+				Node propertyNode = children.item(index);
+				if( propertyNode.getNodeName().equalsIgnoreCase("property") ) {
+					String name = xmlUtil.attributeValue(propertyNode, "name");
+					String value = propertyNode.getTextContent();
+					properties.add(new PropertyItem(name,value));
+				}
 				index++;
 			}
 		}
@@ -346,14 +378,13 @@ public class InstallerDataHandler {
 		}
 		return title;
 	}
-	
-	public WizardStepType getStepType(int panelIndex,InstallerData model) {
-		WizardStepType type = WizardStepType.WELCOME;    // If all else fails
+	public PanelType getStepType(int panelIndex,InstallerData model) {
+		PanelType type = PanelType.WELCOME;    // If all else fails
 		Node panelElement = getPanelElement(panelIndex,model);
 		if( panelElement!=null ) {
 			String name = xmlUtil.attributeValue(panelElement, "type");
 			try {
-				type = WizardStepType.valueOf(name.toUpperCase());
+				type = PanelType.valueOf(name.toUpperCase());
 			}
 			catch(IllegalArgumentException iae) {
 				log.warnf("%s.getStepType: Could not convert %s into a WizardStepType",CLSS,name);
@@ -361,6 +392,7 @@ public class InstallerDataHandler {
 		}
 		return type;
 	}
+
 	public int getStepVersion(int index,InstallerData model) {
 		Element panel = getPanelElement(index,model);
 		int version = -1;   // An error
@@ -399,7 +431,7 @@ public class InstallerDataHandler {
 		return title;
 	}
 	public InstallWizardStep getWizardStep(int index,InstallWizardStep prior,Model<InstallerData> dataModel) {
-		WizardStepType stepType = getStepType(index,dataModel.getObject());
+		PanelType stepType = getStepType(index,dataModel.getObject());
 		String title = getStepTitle(index,dataModel.getObject());
 		InstallWizardStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
 		return step;
@@ -438,6 +470,10 @@ public class InstallerDataHandler {
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
 		this.xmlUtil  = new XMLUtility();
+	}
+	
+	public void setPreference(String key,String value) {
+		prefs.put(key,value);
 	}
 }
 

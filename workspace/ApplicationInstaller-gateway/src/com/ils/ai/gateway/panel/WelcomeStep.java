@@ -2,9 +2,7 @@ package com.ils.ai.gateway.panel;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -26,16 +24,14 @@ import com.ils.ai.gateway.model.PropertyItem;
 public class WelcomeStep extends InstallWizardStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ReleaseNotes.pdf";
-	private final Map<String,String> propertyMap;
+
 	
 	public WelcomeStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
-        this.propertyMap = new HashMap<>();
-        
         InstallerData data = dataModel.getObject();
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
         
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
         String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
@@ -71,8 +67,10 @@ public class WelcomeStep extends InstallWizardStep {
         
         // Set whether or not to skip panels that are up-to-date
 		// Accept license
-		CheckBox checkbox = new CheckBox("current", Model.of(Boolean.FALSE)) {
+        String current = handler.getPreference("currentCheckbox");
+		CheckBox checkbox = new CheckBox("current", (current.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
 			private static final long serialVersionUID = -890605923748905601L;
+			
 
 			protected boolean wantOnSelectionChangedNotifications() {
 				return true;
@@ -81,17 +79,22 @@ public class WelcomeStep extends InstallWizardStep {
 			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
+				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 				if(getValue()==null) {
 					data.setIgnoringCurrent(false);
+					dataHandler.setPreference("currentCheckbox","false");
 				}
 				else {
 					data.setIgnoringCurrent(true);
+					dataHandler.setPreference("currentCheckbox","true");
 				}
 			}
 		};
 		add(checkbox);
-		// Accept license
-		checkbox = new CheckBox("essential", Model.of(Boolean.FALSE)) {
+		
+		// Essential checkbox
+		String essential = handler.getPreference("essentialCheckbox");
+		checkbox = new CheckBox("essential", (essential.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
 			private static final long serialVersionUID = -890605923748905601L;
 
 			protected boolean wantOnSelectionChangedNotifications() {
@@ -101,11 +104,14 @@ public class WelcomeStep extends InstallWizardStep {
 			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
+				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 				if(getValue()==null) {
 					data.setIgnoringOptional(false);
+					dataHandler.setPreference("essentialCheckbox","false");
 				}
 				else {
 					data.setIgnoringOptional(true);
+					dataHandler.setPreference("essentialCheckbox","true");
 				}
 			}
 		};

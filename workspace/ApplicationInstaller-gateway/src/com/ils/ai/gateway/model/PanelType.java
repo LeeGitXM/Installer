@@ -7,13 +7,12 @@ package com.ils.ai.gateway.model;
  * This enumeration contains names of our repertoire of panel 
  * classes for the application installer.
  */
-public enum WizardStepType
+public enum PanelType
 {
             BACKUP,
             CONCLUSION,
             DATABASE,
             EXTERNAL,       // Python, jar files
-            GLOBAL,         // Global project
             ICONS, 
             LICENSE,
             MODULE,         // 
@@ -22,7 +21,7 @@ public enum WizardStepType
             SCANCLASS,
             SOURCE,
             TAGS,
-            TOOLIT,
+            TOOLKIT,
             TRANSACTIONGROUPS,
             WELCOME
             ;
@@ -33,7 +32,7 @@ public enum WizardStepType
   public static String names()
   {
     StringBuffer names = new StringBuffer();
-    for (WizardStepType type : WizardStepType.values()) {
+    for (PanelType type : PanelType.values()) {
       names.append(type.name()+", ");
     }
     return names.substring(0, names.length()-2);

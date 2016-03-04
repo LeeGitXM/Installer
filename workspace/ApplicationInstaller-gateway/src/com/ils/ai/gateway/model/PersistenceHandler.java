@@ -95,14 +95,14 @@ public class PersistenceHandler {
 	 * Keys are product name, artifact type and artifact sub-type.
 	 * On a failure to find the version, return -1;.
 	 */
-	public int getStepVersion(String productName,String type,String subtype) {
+	public int getStepVersion(String productName,PanelType type,String subtype) {
 		int version = -1;
 		try {
-			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type,subtype);
+			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type.name(),subtype);
 			if( record!=null) version =  record.getVersion();
 		}
 		catch(Exception ex) {
-			log.warnf("%s.getStepVersion: Exception retrieving %s:%s:%s (%s),",CLSS,productName,type,subtype,ex.getMessage());
+			log.warnf("%s.getStepVersion: Exception retrieving %s:%s:%s (%s),",CLSS,productName,type.name(),subtype,ex.getMessage());
 		}
 		return version;
 	}
@@ -110,13 +110,13 @@ public class PersistenceHandler {
 	/**
 	 * Set the value of a product version. Keys are product name,artifact type and artifact sub-type..
 	 */
-	public void setStepVersion(String productName,String type,String subtype,int version)  {
+	public void setStepVersion(String productName,PanelType type,String subtype,int version)  {
 		try {
-			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type,subtype);
+			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type.name(),subtype);
 			if( record==null) record = context.getPersistenceInterface().createNew(ProductVersionRecord.META);
 			if( record!=null) {
 				record.setProductName(productName);
-				record.setType(type);
+				record.setType(type.name());
 				record.setSubType(subtype);
 				record.setVersion(version);
 				context.getPersistenceInterface().save(record);
@@ -127,7 +127,7 @@ public class PersistenceHandler {
 			} 
 		}
 		catch(Exception ex) {
-			log.warnf("%s.setStepVersion: Exception setting %s:%s=%s (%s),",CLSS,productName,type,subtype,version,ex.getMessage());
+			log.warnf("%s.setStepVersion: Exception setting %s:%s=%s (%s),",CLSS,productName,type.name(),subtype,version,ex.getMessage());
 		}
 	}
 }

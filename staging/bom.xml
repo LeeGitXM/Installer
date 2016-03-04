@@ -32,7 +32,7 @@
 		<preamble>This is an optional step. Once created, a backup allows you
 			to revert the previous state of the application.</preamble>
 	</panel>
-	<panel type="project" subtype="main" essential="True" version="0">
+	<panel type="project" subtype="main" mergable="true" essential="True" version="0">
 		<title>Install a New XOM Project or Merge Changes into an Existing
 			Project</title>
 		<preamble>If an existing XOM project is selected, then execution of

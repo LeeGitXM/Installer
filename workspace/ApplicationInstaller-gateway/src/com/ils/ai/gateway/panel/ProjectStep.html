@@ -11,7 +11,7 @@
 		<table class="edittable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
-					<td>Project</td>
+					<td colspan="2">Project</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -20,9 +20,11 @@
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
 							<input type="submit" wicket:id="new" value="Install New" />
-							<span>Install a clean, un-configured project into the
-								gateway. The project will be assigned a name that avoids
-								conflicts with any existing projects.</span>
+							<p>
+								<span>Install a clean, un-configured project into the
+									gateway. The project will be assigned a name that avoids
+									conflicts with any existing projects.</span>
+							</p>
 						</form>
 					</td>
 				</tr>
@@ -30,10 +32,16 @@
 					<td class="trow-title">Merge with Existing Project</td>
 					<td class="trow-body">
 						<form wicket:id="mergeForm" action="">
-							<span class="label">Select project to update"</span>
-							<select name="project" wicket:id="project" />
+							<p>
+								<span class="label">Select project to update"</span>
+								<select name="project" wicket:id="project" />
+							</p>
+							<p />
 							<input type="submit" wicket:id="merge" value="Merge" />
-							<span>Merge new/modified project resources into the selected project.</span>
+							<p>
+								<span>Merge new/modified project resources into the
+									selected project.</span>
+							</p>
 						</form>
 					</td>
 				</tr>

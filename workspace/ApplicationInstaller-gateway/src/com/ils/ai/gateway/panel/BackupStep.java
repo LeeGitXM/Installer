@@ -48,8 +48,8 @@ public class BackupStep extends InstallWizardStep {
 						System.out.println("BACKUPSTEP Start to write ...");
                         result = dataHandler.backup(output,data);
                         System.out.println("BACKUPSTEP complete");
-                        if(result==null) BackupStep.this.info("Backup completed successfully");
-                        else BackupStep.this.warn(result);
+                        if(result==null) info("Backup completed successfully");
+                        else warn(result);
                         System.out.println("BACKUPSTEP result:"+result);
                     }
                 };
@@ -57,7 +57,8 @@ public class BackupStep extends InstallWizardStep {
                 System.out.println("BACKUPSTEP Starting ...");
                 ResourceStreamRequestHandler handle = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handle);
-                BackupStep.this.warn("DONE");
+                handle.detach(getRequestCycle());
+                BackupStep.this.warn("DONE"); // Works without getRequestCycle.scheduleAfter
                 System.out.println("BACKUPSTEP DONE");
             }
         };
