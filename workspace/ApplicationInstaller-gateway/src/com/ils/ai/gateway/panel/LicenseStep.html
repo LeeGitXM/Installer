@@ -11,11 +11,12 @@
 </head>
 <body>
 	<wicket:panel>
+		<p class="preamble" wicket:id="preamble">should not appear</p>
 		<div class="right">
 			<table class="vers">
 				<thead>
 					<tr>
-						<td class="vers-header"></td>
+						<td class="vers-header" />
 						<td class="vers-header">Installed</td>
 						<td class="vers-header">New</td>
 					</tr>
@@ -30,9 +31,8 @@
 			</table>
 		</div>
 		<br />
-		<p class="preamble" wicket:id="preamble">should not appear</p>
 		<br />
-
+		<br />
 		<div>
 			<label>Accept :</label> <input type="checkbox" wicket:id="accept" />
 		</div>
