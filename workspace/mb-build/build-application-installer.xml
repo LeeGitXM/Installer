@@ -101,6 +101,7 @@
 		<mkdir dir="${build.dir}/temp_modl/artifacts/modules" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/ILS-SFC-module-unsigned.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
+		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/TF-module-unsigned.modl" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/project" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
 		
@@ -108,7 +109,7 @@
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />
 	</target>
 	
-	<!-- Installs TF module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
+	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build" >
 		<echo message="Installing ${AIModule.name} on Ignition Gateway." />
 		<postmodule posturl="${local.gateway.url}" modulefile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" />

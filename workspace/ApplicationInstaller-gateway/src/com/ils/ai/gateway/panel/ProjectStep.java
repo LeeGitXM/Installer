@@ -27,10 +27,6 @@ public class ProjectStep extends InstallWizardStep {
 	public ProjectStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
-        InstallerData data = dataModel.getObject();
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        
-        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
 		// New Project form

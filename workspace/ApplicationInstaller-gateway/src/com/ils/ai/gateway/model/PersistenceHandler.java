@@ -4,6 +4,7 @@
 package com.ils.ai.gateway.model;
 
 
+import com.ils.ai.gateway.InstallerConstants;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -96,7 +97,7 @@ public class PersistenceHandler {
 	 * On a failure to find the version, return -1;.
 	 */
 	public int getStepVersion(String productName,PanelType type,String subtype) {
-		int version = -1;
+		int version = InstallerConstants.UNSET;
 		try {
 			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type.name(),subtype);
 			if( record!=null) version =  record.getVersion();

@@ -2,24 +2,23 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/">
-
 <body>
 	<wicket:panel>
 
 		<p wicket:id="preamble">should not appear</p>
 		<br />
-		<div>
+		<div style="indent: 2.5in;align:right">
 			<table class="actiontable" cellspacing="0" cellpadding="0">
 				<thead>
-					<tr>
-						<td colWidth="50">Installed</td>
-						<td colWidth="100" class="last">New</td>
+					<tr style="height:15px;min-width:15px;max-height:18px">
+						<td style="width:80px;font-size:10px;max-width:40px">Installed</td>
+						<td style="width:50px;font-size:10px;max-width:40px" class="last">New</td>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><label wicket:id="currentVersion" /></td>
-						<td class="last"><label wicket:id="futureVersion" /></td>
+					<tr style="height:10px;min-width:10px;max-height:12px">
+						<td style="font-size:9px"><label wicket:id="currentVersion" /></td>
+						<td style="font-size:9px" class="last"><label wicket:id="futureVersion" /></td>
 					</tr>
 				</tbody>
 			</table>

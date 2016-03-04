@@ -23,9 +23,6 @@ public class ConclusionStep extends InstallWizardStep {
 	public ConclusionStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
-		InstallerData data = dataModel.getObject();
-		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-		String preamble = handler.getStepPreamble(index, data);
 		add(new Label("preamble",preamble));
 
 		// Install properties into internal database

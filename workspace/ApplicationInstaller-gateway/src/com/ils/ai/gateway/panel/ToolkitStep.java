@@ -25,10 +25,6 @@ public class ToolkitStep extends InstallWizardStep {
 	public ToolkitStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
-		InstallerData data = dataModel.getObject();
-		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-		
-		String preamble = handler.getStepPreamble(panelIndex, data);
 		add(new Label("preamble",preamble));
 
 		// Install properties into internal database

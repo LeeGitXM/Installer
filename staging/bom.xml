@@ -18,7 +18,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
-	<panel type="license" essential="True" version="0">
+	<panel type="license" essential="True" version="1">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
@@ -27,7 +27,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="backup" essential="false" version="0">
+	<panel type="backup" essential="false">
 		<title>Archive into an Ignition Backup</title>
 		<preamble>This is an optional step. Once created, a backup allows you
 			to revert the previous state of the application.</preamble>
@@ -43,7 +43,7 @@
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
 	</panel>
-	<panel type="module" essential="true" version="0">
+	<panel type="module" essential="true" version="1" subtype="production">
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC
 			applications.</preamble>
@@ -52,6 +52,13 @@
 		</artifact>
 		<artifact name="Block Language Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-unsigned.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" essential="false" version="1" subtype="test">
+		<title>Install Module for Testing</title>
+		<preamble>This step installs the module that holds the testing framework.</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
 	</panel>
 	<panel type="toolkit" essential="true" version="0">

@@ -25,10 +25,6 @@ public class ExternalStep extends InstallWizardStep {
 	public ExternalStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
-		InstallerData data = dataModel.getObject();
-		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-		
-		String preamble = handler.getStepPreamble(panelIndex, data);
 		add(new Label("preamble",preamble));
 
 		// Accept license

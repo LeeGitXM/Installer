@@ -24,9 +24,6 @@ public class BackupStep extends InstallWizardStep {
 	public BackupStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
-        InstallerData data = dataModel.getObject();
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
         // Note: Tried as a "Link" class to same effect within a form and not. 

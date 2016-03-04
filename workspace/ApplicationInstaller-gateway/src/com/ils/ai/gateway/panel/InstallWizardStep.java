@@ -19,7 +19,9 @@ public class InstallWizardStep extends GatewayWizardStep {
 	protected final int panelIndex;
 	protected final InstallWizardStep prior;
 	protected final Model<InstallerData> dataModel;
+	protected final InstallerData data;
 	protected final PanelData panelData;
+	protected String preamble = "";
 
 
 	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> model) {
@@ -28,9 +30,12 @@ public class InstallWizardStep extends GatewayWizardStep {
 		this.prior = previous;
 		this.dataModel = model;
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-		this.panelData = dataHandler.getPanelData(panelIndex, dataModel.getObject());
+		this.data = dataModel.getObject();
+		this.panelData = dataHandler.getPanelData(panelIndex,data);
+		
+		// Retrieve some generic attributes ...
+		preamble = dataHandler.getStepPreamble(index, data);
 	}
-
 
 	@Override
 	public boolean isLastStep() {
@@ -38,6 +43,8 @@ public class InstallWizardStep extends GatewayWizardStep {
 		boolean last = panelIndex+1>=handler.getStepCount(dataModel.getObject());
 		return last;
 	}
+	
+	
 
 	@Override
 	public IDynamicWizardStep previous() {

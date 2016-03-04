@@ -22,12 +22,9 @@ public class ModuleStep extends InstallWizardStep {
         
         final ModuleStep thisPage = this;
         
-        InstallerData data = dataModel.getObject();
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        
-        String preamble = handler.getStepPreamble(index, data);
         add(new Label("preamble",preamble));
         
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
         List<String> modules = handler.getArtifactNames(index, data);
         add(new ListView<String>("modules", modules) {
 			private static final long serialVersionUID = 8682507940096836472L;
