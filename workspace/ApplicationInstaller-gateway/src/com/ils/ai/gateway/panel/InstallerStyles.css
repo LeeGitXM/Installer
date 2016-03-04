@@ -1,16 +1,20 @@
 /* Style sheet for the ILS Ignition Applications Installer 
-  Consider a color: 120,20,20
+  Consider a maroon color: 120,20,20
 */
-.right {
-	position: relative;
-	left: 600px;
-	width: 180px;
+.version-box {
+	float:right;
+	display:table;
 	border: 1px solid rgb(100,100,100);
-	margin-left: -50px;
+	border-collapse: collapse;
 }
 .preamble {
-	width:70%;
+	width:75%;
 	float: left;
+	display:block;
+}
+.spacer {
+	height:50px;
+	width:50px;
 }
 .vers {
 	border-style: solid;
@@ -18,7 +22,6 @@
 	border-color: black;
 	text-align:center;
 	padding: 0px 0px 0px 0px;
-	float:top;
 }
 
 table.vers {
