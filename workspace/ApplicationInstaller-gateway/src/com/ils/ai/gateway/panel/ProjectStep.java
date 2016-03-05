@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.Artifact;
@@ -26,6 +27,8 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  */
 public class ProjectStep extends InstallerStep {
 	private static final long serialVersionUID = 9066858944253432239L;
+	private Artifact selectedArtifact = null;
+	private Project selectedProject = null;
 	
 	public ProjectStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
@@ -36,9 +39,13 @@ public class ProjectStep extends InstallerStep {
 		
 	
 		// New Project form
-        Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
+		Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
+
+		ArtifactList artifacts = new ArtifactList("fullArtifacts", new PropertyModel<Artifact>(this, "selectedArtifact"), getFullArtifacts());
+		newProjectForm.add(artifacts);
+
         TextField<String> newname = new TextField<String>("newName", Model.of(""));
-        newProjectForm.add(new ArtifactList("fullProjects","full",newname));
+        
         newname.add(new ProjectNameValidator());
         newProjectForm.add(newname);
         newProjectForm.add(new Button("new") {
@@ -54,10 +61,11 @@ public class ProjectStep extends InstallerStep {
 		Form<InstallerData> mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
 		TextField<String> mergename = new TextField<String>("mergeName", Model.of(""));
 		mergeProjectForm.add(mergename);
-		mergeProjectForm.add(new ArtifactList("partialProjects","partial",mergename));
+		artifacts = new ArtifactList("partialArtifacts", new PropertyModel<Artifact>(this, "selectedArtifact"), getPartialArtifacts());
+		mergeProjectForm.add(artifacts);
 
-		 // The name of the dropdown must correspond to a getter in the model object.
-		mergeProjectForm.add(new ProjectList("project"));
+		ProjectList projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
+		mergeProjectForm.add(projects);
 		mergeProjectForm.add(new Button("merge") {
 			private static final long serialVersionUID = 4110778774811578782L;
 
@@ -71,7 +79,8 @@ public class ProjectStep extends InstallerStep {
 		Form<InstallerData> globalProjectForm = new Form<InstallerData>("globalForm", new CompoundPropertyModel<InstallerData>(data));
 		TextField<String> globalname = new TextField<String>("globalName", Model.of(""));
 		globalProjectForm.add(globalname);
-		globalProjectForm.add(new ArtifactList("globalProjects","global",globalname));
+		artifacts = new ArtifactList("globalArtifacts", new PropertyModel<Artifact>(this, "selectedArtifact"), getGlobalArtifacts());
+		globalProjectForm.add(artifacts);
 
 		globalProjectForm.add(new Button("mergeGlobal") {
 			private static final long serialVersionUID = 4110778774811578782L;
@@ -89,8 +98,8 @@ public class ProjectStep extends InstallerStep {
 		
 		// The filter is the value of the archive subtype to use
 		// We update the text field with a proposed name based on the selection.
-		public ArtifactList(String key,String filter,TextField<String> field) {
-			super(key,new ArtifactModel(filter));
+		public ArtifactList(String key,PropertyModel<Artifact>model,List<Artifact> list) {
+			super(key,model,list);
 		}
 		
 		@Override
@@ -101,6 +110,7 @@ public class ProjectStep extends InstallerStep {
 			super.onSelectionChanged(newSelection);
 		}
 	}
+	
 	public class ArtifactModel extends LoadableDetachableModel<List<Artifact>> {
 		private static final long serialVersionUID = 6862608433733880191L;
 		private final String filter;
@@ -119,9 +129,6 @@ public class ProjectStep extends InstallerStep {
 			}
 			return results;
 		}
-		public List<Artifact> getFullProjects() { return null; }
-		public List<Artifact> getPartialProjects() { return null; }
-		public List<Artifact> getGlobalProjects() { return null; }
 	}
 	public class ArtifactRenderer implements IChoiceRenderer<Artifact> {
 		private static final long serialVersionUID = -7461307371369030148L;
@@ -140,9 +147,10 @@ public class ProjectStep extends InstallerStep {
 	public class ProjectList extends DropDownChoice<Project> {
 		private static final long serialVersionUID = -6176535065911396528L;
 		
-		public ProjectList(String key) {
-			super(key,new ProjectModel(),new ProjectRenderer());
+		public ProjectList(String key,PropertyModel<Project>model,List<Project> list) {
+			super(key,model,list);
 		}
+		
 		@Override
 		public boolean wantOnSelectionChangedNotifications() { return true; }
 		
@@ -172,5 +180,43 @@ public class ProjectStep extends InstallerStep {
 		public String getIdValue(Project project, int i) {
 			return new Long(project.getId()).toString();
 		}
+	}
+	//===============================================================================
+	private List<Artifact> getFullArtifacts() {
+		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		List<Artifact> results = new ArrayList<>();
+		List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
+		for(Artifact art:artifacts) {
+			if(art.getSubtype().equalsIgnoreCase("full")) {
+				results.add(art);
+			}
+		}
+		return results;
+	}
+	private List<Artifact> getGlobalArtifacts() {
+		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		List<Artifact> results = new ArrayList<>();
+		List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
+		for(Artifact art:artifacts) {
+			if(art.getSubtype().equalsIgnoreCase("partial")) {
+				results.add(art);
+			}
+		}
+		return results;
+	}
+	private List<Artifact> getPartialArtifacts() {
+		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		List<Artifact> results = new ArrayList<>();
+		List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
+		for(Artifact art:artifacts) {
+			if(art.getSubtype().equalsIgnoreCase("global")) {
+				results.add(art);
+			}
+		}
+		return results;
+	}
+	private List<Project> getProjects() {
+		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
+		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
 	}
 }

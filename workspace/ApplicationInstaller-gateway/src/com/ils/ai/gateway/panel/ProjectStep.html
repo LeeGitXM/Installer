@@ -46,8 +46,8 @@
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
 							<p>
-								<span class="label">Select source project"</span> 
-								<select name="artifact" wicket:id="fullProjects" />
+								<span class="label">Select source project:  </span> 
+								<select name="name" wicket:id="fullArtifacts" />
 							</p>
 							<input wicket:id="newName" type="text" size="20" />
 							<p/>
@@ -66,13 +66,13 @@
 						<form wicket:id="mergeForm" action="">
 
 							<p>
-								<span class="label">Select source project"</span> <select
-									name="artifact" wicket:id="partialProjects" />
+								<span class="label">Select source project:  </span> <select
+									name="name" wicket:id="partialArtifacts" />
 							</p>
 							<input wicket:id="mergeName" type="text" size="20" />
 							<p>
 								<span class="label">Select project to update"</span> <select
-									name="project" wicket:id="project" />
+									name="name" wicket:id="projects" />
 							</p>
 							<p />
 							<input type="submit" wicket:id="merge" value="Merge" />
@@ -89,8 +89,8 @@
 						<form wicket:id="globalForm" action="">
 
 							<p>
-								<span class="label">Select source project"</span> <select
-									name="artifact" wicket:id="globalProjects" />
+								<span class="label">Select source project:  </span> 
+								<select name="artifact" wicket:id="globalArtifacts" />
 							</p>
 							<p />
 							<input type="submit" wicket:id="mergeGlobal" value="Merge" />

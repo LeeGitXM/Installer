@@ -44,17 +44,11 @@
 		<preamble>This page handles installation and updates for a variety of
 			projects within the Ignition Applications.
 			The main project is 'XOM'.
-			Artifacts are available that allow a clean,
-			new installation or,
-			alternatively, a
-			merge with an existing version that preserves user
-			modifications. The
-			DbManager project is a utility for
-			maintenance of
-			application databases. An finally, various migrated SFC projects
-			are
-			available for merging with
-			the global project.
+			Artifacts are available that allow a clean, new installation or,
+			alternatively, a merge with an existing version that preserves user
+			modifications. The DbManager project is a utility for maintenance of
+			application databases. Additionally, various migrated SFC projects are
+			available for merging with the global project.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM Project" type="project" subtype="full">

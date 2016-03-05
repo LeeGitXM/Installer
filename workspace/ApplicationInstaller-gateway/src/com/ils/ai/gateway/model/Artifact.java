@@ -5,8 +5,6 @@ package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
 
-import com.ils.ai.gateway.InstallerConstants;
-
 /**
  *  This class is a bean that contains information about an artifact.
  */
