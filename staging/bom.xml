@@ -67,7 +67,7 @@
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 		<artifact name="Sequential Function Charts" type="project"
-			subtype="partial">
+			subtype="global">
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
 	</panel>

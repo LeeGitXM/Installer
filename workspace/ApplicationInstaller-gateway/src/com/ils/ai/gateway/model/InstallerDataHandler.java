@@ -187,14 +187,28 @@ public class InstallerDataHandler {
 			int index = 0;
 			while(index<count) {
 				Node artifactNode = artifactNodes.item(index);
-				String name = xmlUtil.attributeValue(artifactNode, "name");
-				names.add(name);
+				Artifact artifact = new Artifact();
+				artifact.setName(xmlUtil.attributeValue(artifactNode, "name"));
+				artifact.setType(xmlUtil.attributeValue(artifactNode, "type"));
+				artifact.setSubtype(xmlUtil.attributeValue(artifactNode, "subtype"));
+				// Location is an element
+				NodeList locations = artifactNode.getChildNodes();
+				int nindex = 0;
+				int ncount = locations.getLength();
+				while(nindex<ncount) {
+					Node location = locations.item(nindex);
+					if( location.getNodeType()==Node.ELEMENT_NODE ) {
+						artifact.setLocation(location.getNodeValue());
+						break;
+					}
+					nindex++;
+				}
+				artifacts.add(artifact);
 				index++;
 			}
 		}
 		return artifacts;
 	}
-	/
 	/**
 	 * Search the installer module for the bill of materials.
 	 * We do not retain the document, we simply return it.
@@ -445,7 +459,7 @@ public class InstallerDataHandler {
 		int version = InstallerConstants.UNSET;   // An error
 		if( panel!=null) {
 			String versString = xmlUtil.attributeValue(panel, "version");
-			if(versString!=null && !versString.isEmpty()) {
+			if(versString!=null && (!versString.isEmpty()) ) {
 				try {
 					version = Integer.parseInt(versString);
 				}

@@ -26,7 +26,7 @@ public class ProductVersionRecord extends PersistentRecord {
 	public static final StringField ProductName = new StringField(META, "ProductName",primary );
 	public static final StringField Type = new StringField(META, "Type",primary );
 	public static final StringField SubType = new StringField(META, "SubType",primary );
-	public static final IntField Version = new IntField(META, "Version",secondary).setDefault(0);
+	public static final IntField Version = new IntField(META, "Version",secondary).setDefault(-2);
 	
 	public RecordMeta<?> getMeta() {return META; }
 	

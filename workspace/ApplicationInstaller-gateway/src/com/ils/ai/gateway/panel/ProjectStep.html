@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<p class="spacer" />
-		<p class="spacer"/>
+		<p class="spacer" />
 		<table class="edittable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
@@ -45,17 +45,17 @@
 					<td class="trow-title">Install new project</td>
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
+							<p>
+								<span class="label">Select source project"</span> 
+								<select name="artifact" wicket:id="fullProjects" />
+							</p>
 							<input wicket:id="newName" type="text" size="20" />
 							<p/>
-							<p>
-								<span class="label">Select source project"</span> <select
-									name="project" wicket:id="fullprojects" />
-							</p>
 							<input type="submit" wicket:id="new" value="Install New" />
 							<p>
 								<span>Install a clean, un-configured project into the
-									gateway. The chosen name cannot
-									conflict with any existing project. Repeat for every source project of interest.</span>
+									gateway. The chosen name cannot conflict with any existing
+									project. Repeat for every source project of interest.</span>
 							</p>
 						</form>
 					</td>
@@ -64,6 +64,11 @@
 					<td class="trow-title">Merge with Existing Project</td>
 					<td class="trow-body">
 						<form wicket:id="mergeForm" action="">
+
+							<p>
+								<span class="label">Select source project"</span> <select
+									name="artifact" wicket:id="partialProjects" />
+							</p>
 							<input wicket:id="mergeName" type="text" size="20" />
 							<p>
 								<span class="label">Select project to update"</span> <select
@@ -81,10 +86,14 @@
 				<tr>
 					<td class="trow-title">Merge with Global Project</td>
 					<td class="trow-body">
-						<form wicket:id="globalform" action="">
+						<form wicket:id="globalForm" action="">
 
+							<p>
+								<span class="label">Select source project"</span> <select
+									name="artifact" wicket:id="globalProjects" />
+							</p>
 							<p />
-							<input type="submit" wicket:id="mergeglobal" value="Merge" />
+							<input type="submit" wicket:id="mergeGlobal" value="Merge" />
 							<p>
 								<span>Merge new/modified project resources into the
 									global project.</span>
