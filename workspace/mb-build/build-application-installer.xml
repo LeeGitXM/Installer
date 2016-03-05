@@ -102,10 +102,16 @@
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/ILS-SFC-module-unsigned.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/TF-module-unsigned.modl" />
-		<mkdir dir="${build.dir}/temp_modl/artifacts/project" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/projects" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/DbManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DrierRegen.proj" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${build.dir}/temp_modl/artifacts/tags/connections.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/siteTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/siteTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/sqlTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/testTags.xml" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />

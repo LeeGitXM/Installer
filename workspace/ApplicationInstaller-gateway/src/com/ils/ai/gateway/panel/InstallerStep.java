@@ -10,6 +10,7 @@ import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PanelData;
+import com.ils.ai.gateway.model.PanelType;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 
 
@@ -24,7 +25,12 @@ public class InstallerStep extends GatewayWizardStep {
 	protected final Model<InstallerData> dataModel;
 	protected final InstallerData data;
 	protected final PanelData panelData;
+	protected final String product;
 	protected String preamble = "";
+	protected String subtype = "";
+	protected PanelType type = PanelType.CONCLUSION;
+	protected int futureVersion = InstallerConstants.UNSET;
+	
 	protected String currentVersionString = "";
 	protected String futureVersionString = "";
 
@@ -39,11 +45,14 @@ public class InstallerStep extends GatewayWizardStep {
 		this.panelData = dataHandler.getPanelData(panelIndex,data);
 		int vers = panelData.getCurrentVersion();
 		if(vers!=UNSET) currentVersionString = String.valueOf(vers);
-		vers = panelData.getVersion();
-		if( vers!=UNSET ) futureVersionString = String.valueOf(vers);
+		this.futureVersion = panelData.getVersion();
+		if( futureVersion!=UNSET ) futureVersionString = String.valueOf(futureVersion);
 		
 		// Retrieve some generic attributes ...
 		preamble = dataHandler.getStepPreamble(index, data);
+		product  = dataHandler.getProductName(data);
+		type     = dataHandler.getStepType(panelIndex, data);
+		subtype  = dataHandler.getStepSubtype(panelIndex, data);
 	}
 
 	@Override

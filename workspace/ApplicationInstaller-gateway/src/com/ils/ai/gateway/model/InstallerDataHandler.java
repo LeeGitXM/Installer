@@ -51,7 +51,7 @@ public class InstallerDataHandler {
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private XMLUtility xmlUtil = null;
-	private final WizardStepFactory stepFactory;
+	private final InstallerStepFactory stepFactory;
 	
     
 	/**
@@ -60,7 +60,7 @@ public class InstallerDataHandler {
 	private InstallerDataHandler() {
 		log = LogUtil.getLogger(getClass().getPackage().getName());
 		this.prefs = Preferences.userRoot().node(PREFERENCES_NAME);
-		this.stepFactory = new WizardStepFactory();
+		this.stepFactory = new InstallerStepFactory();
 	}
 	
 
@@ -174,6 +174,27 @@ public class InstallerDataHandler {
 		}
 		return internalPath;
 	}
+	/**
+	 * @param model
+	 * @return a list of the artifacts associated with this step
+	 */
+	public List<Artifact> getArtifacts(int panelIndex,InstallerData model) {
+		List<Artifact> artifacts = new ArrayList<>();
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int count = artifactNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node artifactNode = artifactNodes.item(index);
+				String name = xmlUtil.attributeValue(artifactNode, "name");
+				names.add(name);
+				index++;
+			}
+		}
+		return artifacts;
+	}
+	/
 	/**
 	 * Search the installer module for the bill of materials.
 	 * We do not retain the document, we simply return it.
@@ -312,6 +333,20 @@ public class InstallerDataHandler {
 	public String getPreference(String key) {
 		return prefs.get(key, "");
 	}
+	
+	public String getProductName(InstallerData model) {
+		String productName= model.getProductName();
+		if(productName==null || productName.isEmpty()) {
+			for(PropertyItem prop:getProperties(model)) {
+				if(prop.getName().equalsIgnoreCase("product")) {
+					productName  = prop.getValue();
+					model.setProductName(productName);
+					break;
+				};
+			}
+		}
+		return productName;
+	}
 
 
 	// Return property name value pairs
@@ -392,6 +427,17 @@ public class InstallerDataHandler {
 			}
 		}
 		return type;
+	}
+	public String getStepSubtype(int panelIndex,InstallerData model) {
+		String subtype = "";    // If all else fails, set to same as type
+		Node panelElement = getPanelElement(panelIndex,model);
+		if( panelElement!=null ) {
+			subtype = xmlUtil.attributeValue(panelElement, "subtype");
+			if(subtype==null || subtype.isEmpty() ) {
+				subtype = getStepType(panelIndex,model).name();
+			}
+		}
+		return subtype;
 	}
 
 	public int getStepVersion(int index,InstallerData model) {

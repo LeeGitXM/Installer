@@ -24,7 +24,8 @@
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
 			to indicate acceptance of the terms.
-			You must accept the license terms to proceed.
+			You must accept the license terms
+			to proceed.
 		</preamble>
 		<artifact name="license" type="html">
 			<location>artifacts/license/license.html</location>
@@ -36,16 +37,24 @@
 			to revert the previous state of the application.
 		</preamble>
 	</panel>
-	<panel type="project" subtype="main" essential="True"
-		version="0">
+	<panel type="project" subtype="main" essential="True" version="1">
 		<title>Install New XOM Projects or Merge Changes into Existing
 			Projects
 		</title>
-		<preamble>This page handles installation and updates for a variety of projects within the Ignition Applications.
-		The main project is 'XOM'. Artifacts are available that allow a clean, new installation or, alternatively, a
-		merge with an existing version that preserves user modifications. The DbManager project is a utility for
-		maintenance of application databases. An finally, various migrated SFC projects are available for merging with
-		the global project.
+		<preamble>This page handles installation and updates for a variety of
+			projects within the Ignition Applications.
+			The main project is 'XOM'.
+			Artifacts are available that allow a clean,
+			new installation or,
+			alternatively, a
+			merge with an existing version that preserves user
+			modifications. The
+			DbManager project is a utility for
+			maintenance of
+			application databases. An finally, various migrated SFC projects
+			are
+			available for merging with
+			the global project.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM Project" type="project" subtype="full">
@@ -57,8 +66,36 @@
 		<artifact name="DbManager Project" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
-		<artifact name="Sequential Function Charts" type="project" subtype="partial">
+		<artifact name="Sequential Function Charts" type="project"
+			subtype="partial">
 			<location>artifacts/projects/DrierRegen.proj</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed for the
+			production applications.
+		</preamble>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Tags Representing Connections" type="tag"
+			subtype="xml">
+			<location>artifacts/tags/connections.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+		<artifact name="Vistalon Site Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/siteTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="test" essential="False" version="1">
+		<title>Install Tags Definitions for Test</title>
+		<preamble>This page defines tags used for isolation mode testing.
+		</preamble>
+		<artifact name="Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" essential="true" version="1" subtype="production">
@@ -76,7 +113,8 @@
 	<panel type="module" essential="false" version="1" subtype="test">
 		<title>Install Module for Testing</title>
 		<preamble>This step installs the module that holds the testing
-			framework.</preamble>
+			framework.
+		</preamble>
 		<artifact name="Testing Framework" type="module">
 			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>

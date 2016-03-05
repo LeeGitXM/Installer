@@ -10,14 +10,15 @@ import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.InstallerStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
-import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.ProjectStep;
+import com.ils.ai.gateway.panel.TagStep;
+import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
 /**
  *  Given a panel type and data model, create the wizard step.
  */
-public class WizardStepFactory  {
+public class InstallerStepFactory  {
 
 
 	/**
@@ -51,7 +52,7 @@ public class WizardStepFactory  {
 				break;
 			case SOURCE:
 				break;
-			case TAGS:
+			case TAGS: step = new TagStep(panelIndex,prior,title,model);
 				break;
 			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
 				break;

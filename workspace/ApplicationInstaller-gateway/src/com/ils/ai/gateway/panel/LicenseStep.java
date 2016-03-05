@@ -16,6 +16,7 @@ import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -46,6 +47,7 @@ public class LicenseStep extends InstallerStep {
 				if(getValue()!=null) {
 					accepted = true;
 					LicenseStep.this.info(String.format("License terms have been accepted."));
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 				}
 			}
 		};
