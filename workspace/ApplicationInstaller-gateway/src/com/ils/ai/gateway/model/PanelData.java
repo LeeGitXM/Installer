@@ -16,15 +16,12 @@ import com.ils.ai.gateway.InstallerConstants;
 public class PanelData implements Serializable  {
 	private static final long serialVersionUID = 7650179030090459881L;
 	private int currentVersion = InstallerConstants.UNSET;
-	private boolean mergable = false;   // Used only for projects
 	private String subtype = "";
 	private PanelType type = PanelType.CONCLUSION;     // Artifact type
 	private int version = InstallerConstants.UNSET;
 	
 	public int getCurrentVersion() {return currentVersion;}
 	public void setCurrentVersion(int vers) { this.currentVersion = vers; }
-	public boolean isMergable() { return mergable; }
-	public void setMergable(boolean flag) { this.mergable = flag; }
 	public String getSubtype() {return subtype;}
 	public void setSubtype(String st) { this.subtype = st; }
 	public PanelType getType() {return type;}

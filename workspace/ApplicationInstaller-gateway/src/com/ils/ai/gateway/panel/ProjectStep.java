@@ -7,13 +7,13 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
-import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -21,30 +21,37 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ProjectStep extends InstallWizardStep {
+public class ProjectStep extends InstallerStep {
 	private Project existingProject = null;
 	
-	public ProjectStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
+	public ProjectStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
-        add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));
         
 		// New Project form
-        Form<InstallerData> form = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
-		form.add(new Button("new") {
+        Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
+        TextField<String> newname = new TextField<String>("newName", Model.of(""));
+        newProjectForm.add(newname);
+        
+        newProjectForm.add(new Button("new") {
 			private static final long serialVersionUID = 4110778774811578782L;
 
 			public void onSubmit() {
             	
             }
         });
-		add(form);
+		add(newProjectForm);
 		
         // Merge project form
-		 form = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
+		Form<InstallerData> mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
+		TextField<String> mergename = new TextField<String>("mergeName", Model.of(""));
+		mergeProjectForm.add(mergename);
 
 		 // The name of the dropdown must correspond to a getter in the model object.
-		 form.add(new DropDownChoice<Project>("project", new LoadableDetachableModel<List<Project>>() {
+		mergeProjectForm.add(new DropDownChoice<Project>("project", new LoadableDetachableModel<List<Project>>() {
 			private static final long serialVersionUID = -4849880268083610852L;
 
 			@Override
@@ -54,6 +61,8 @@ public class ProjectStep extends InstallWizardStep {
 			}
 		}, 
 		new IChoiceRenderer<Project>(){
+			private static final long serialVersionUID = 4630298960032443090L;
+
 			@Override
 			public Object getDisplayValue(Project project) {
 				existingProject = project;
@@ -65,14 +74,16 @@ public class ProjectStep extends InstallWizardStep {
 				return new Long(project.getId()).toString();
 			}
 		}));
-        form.add(new Button("merge") {
+		mergeProjectForm.add(new Button("merge") {
 			private static final long serialVersionUID = 4110778774811578782L;
 
 			public void onSubmit() {
             	
             }
         });
-		add(form);
+		add(mergeProjectForm);
+		
+		if(!panelData.isMergable() ) mergeProjectForm.setVisible(false);
 	}
 
 }

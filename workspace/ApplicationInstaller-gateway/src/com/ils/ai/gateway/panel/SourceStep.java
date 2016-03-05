@@ -17,11 +17,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class SourceStep extends InstallWizardStep {
+public class SourceStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ignition-backup.gwbk";
 
-	public SourceStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public SourceStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
         add(new Label("preamble",preamble));

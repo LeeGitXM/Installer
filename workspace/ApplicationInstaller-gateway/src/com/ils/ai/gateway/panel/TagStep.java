@@ -24,10 +24,10 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class TagStep extends InstallWizardStep {
+public class TagStep extends InstallerStep {
 	private Project existingProject = null;
 	
-	public TagStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel) {
+	public TagStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
         add(new Label("preamble",preamble));

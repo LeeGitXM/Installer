@@ -19,10 +19,10 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Take properties from the bill of materials and add to the internal database.
  */
-public class ToolkitStep extends InstallWizardStep {
+public class ToolkitStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
-	public ToolkitStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public ToolkitStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));

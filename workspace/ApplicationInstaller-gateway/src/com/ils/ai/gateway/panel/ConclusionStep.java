@@ -16,11 +16,11 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ConclusionStep extends InstallWizardStep {
+public class ConclusionStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ConclusionStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public ConclusionStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble));

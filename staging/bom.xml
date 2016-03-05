@@ -13,7 +13,8 @@
 		<preamble>Welcome to the ILS Automation installer for EMC Ignition
 			Applications. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
-			installation.</preamble>
+			installation.
+		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
@@ -22,9 +23,9 @@
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
-			to indicate acceptance of the terms. 
-			
-			You must accept the license terms to proceed.</preamble>
+			to indicate acceptance of the terms.
+			You must accept the license terms to proceed.
+		</preamble>
 		<artifact name="license" type="html">
 			<location>artifacts/license/license.html</location>
 		</artifact>
@@ -32,23 +33,39 @@
 	<panel type="backup" essential="false">
 		<title>Archive into an Ignition Backup</title>
 		<preamble>This is an optional step. Once created, a backup allows you
-			to revert the previous state of the application.</preamble>
+			to revert the previous state of the application.
+		</preamble>
 	</panel>
-	<panel type="project" subtype="main" mergable="true" essential="True" version="0">
-		<title>Install a New XOM Project or Merge Changes into an Existing
-			Project</title>
-		<preamble>If an existing XOM project is selected, then execution of
-			this step will merge updates creating a new version of that project.
-			The existing project will not be changed. If there is not an existing
-			project, then a new project will be created.</preamble>
+	<panel type="project" subtype="main" essential="True"
+		version="0">
+		<title>Install New XOM Projects or Merge Changes into Existing
+			Projects
+		</title>
+		<preamble>This page handles installation and updates for a variety of projects within the Ignition Applications.
+		The main project is 'XOM'. Artifacts are available that allow a clean, new installation or, alternatively, a
+		merge with an existing version that preserves user modifications. The DbManager project is a utility for
+		maintenance of application databases. An finally, various migrated SFC projects are available for merging with
+		the global project.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM Project" type="project" subtype="full">
 			<location>artifacts/projects/XOM.proj</location>
+		</artifact>
+		<artifact name="XOM Partial Project" type="project" subtype="partial">
+			<location>artifacts/projects/XOM.proj</location>
+		</artifact>
+		<artifact name="DbManager Project" type="project" subtype="full">
+			<location>artifacts/projects/DbManager.proj</location>
+		</artifact>
+		<artifact name="Sequential Function Charts" type="project" subtype="partial">
+			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
 	</panel>
 	<panel type="module" essential="true" version="1" subtype="production">
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC
-			applications.</preamble>
+			applications.
+		</preamble>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-unsigned.modl</location>
 		</artifact>
@@ -58,7 +75,8 @@
 	</panel>
 	<panel type="module" essential="false" version="1" subtype="test">
 		<title>Install Module for Testing</title>
-		<preamble>This step installs the module that holds the testing framework.</preamble>
+		<preamble>This step installs the module that holds the testing
+			framework.</preamble>
 		<artifact name="Testing Framework" type="module">
 			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
@@ -87,7 +105,8 @@
 	<panel type="conclusion" essential="true">
 		<title>Installation Complete</title>
 		<preamble>Record the current version of EMC Ignition Applications in
-			the Gateway internal database.</preamble>
+			the Gateway internal database.
+		</preamble>
 	</panel>
 </installer>
 

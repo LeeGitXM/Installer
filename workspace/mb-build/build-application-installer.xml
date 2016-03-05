@@ -104,6 +104,8 @@
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/TF-module-unsigned.modl" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/project" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/DbManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DrierRegen.proj" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${build.dir}/modules/${AIModule.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />

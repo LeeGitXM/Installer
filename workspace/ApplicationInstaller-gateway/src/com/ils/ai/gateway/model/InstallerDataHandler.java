@@ -18,7 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ils.ai.gateway.InstallerConstants;
-import com.ils.ai.gateway.panel.InstallWizardStep;
+import com.ils.ai.gateway.panel.InstallerStep;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
@@ -258,13 +258,14 @@ public class InstallerDataHandler {
 							break;
 					}
 				}
+
 				PanelType type = PanelType.CONCLUSION;
 				String val = xmlUtil.attributeValue(panelElement, "type");
 				try {
 					type = PanelType.valueOf(val.toUpperCase());
 				}
 				catch(IllegalArgumentException iae) {
-					log.warnf("%s.getStepType: Could not convert %s into a WizardStepType",CLSS,val);
+					log.warnf("%s.getStepType: Could not convert %s into a PanelType",CLSS,val);
 				}
 				String subtype = xmlUtil.attributeValue(panelElement, "subtype");
 				int version = InstallerConstants.UNSET;  
@@ -430,10 +431,10 @@ public class InstallerDataHandler {
 		}
 		return title;
 	}
-	public InstallWizardStep getWizardStep(int index,InstallWizardStep prior,Model<InstallerData> dataModel) {
+	public InstallerStep getWizardStep(int index,InstallerStep prior,Model<InstallerData> dataModel) {
 		PanelType stepType = getStepType(index,dataModel.getObject());
 		String title = getStepTitle(index,dataModel.getObject());
-		InstallWizardStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
+		InstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
 		return step;
 	}
 	

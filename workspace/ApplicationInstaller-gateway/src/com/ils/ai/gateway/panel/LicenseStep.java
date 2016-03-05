@@ -16,29 +16,21 @@ import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
-import com.ils.ai.gateway.model.PanelData;
 
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class LicenseStep extends InstallWizardStep {
+public class LicenseStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "license.html";
 	private boolean accepted = false;
 
-	public LicenseStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public LicenseStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));
-		
-		int vers = panelData.getCurrentVersion();
-		String current = "";
-		if(vers!=UNSET) current = String.valueOf(vers);
-		add(new Label("currentVersion",current));
-		vers = panelData.getVersion();
-		String future = "";
-		if( vers!=UNSET ) future = String.valueOf(vers);
-		add(new Label("futureVersion",future));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));
 
 		// Accept license
 		CheckBox checkbox = new CheckBox("accept", Model.of(Boolean.FALSE)) {

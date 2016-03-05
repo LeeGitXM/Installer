@@ -17,12 +17,12 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ScanclassStep extends InstallWizardStep {
+public class ScanclassStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "license.html";
 	private boolean accepted = false;
 
-	public ScanclassStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public ScanclassStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));

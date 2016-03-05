@@ -13,18 +13,23 @@ import com.ils.ai.gateway.model.PanelData;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 
 
-public class InstallWizardStep extends GatewayWizardStep {
+/**
+ * This class represents a panel in the Installer wizard.
+ */
+public class InstallerStep extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
 	protected static final int UNSET = InstallerConstants.UNSET;  // For integer parameters that have no value.
 	protected final int panelIndex;
-	protected final InstallWizardStep prior;
+	protected final InstallerStep prior;
 	protected final Model<InstallerData> dataModel;
 	protected final InstallerData data;
 	protected final PanelData panelData;
 	protected String preamble = "";
+	protected String currentVersionString = "";
+	protected String futureVersionString = "";
 
 
-	public InstallWizardStep(int index,InstallWizardStep previous,String title,Model<InstallerData> model) {
+	public InstallerStep(int index,InstallerStep previous,String title,Model<InstallerData> model) {
 		super(previous,title, model);
 		this.panelIndex = index;
 		this.prior = previous;
@@ -32,6 +37,10 @@ public class InstallWizardStep extends GatewayWizardStep {
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 		this.data = dataModel.getObject();
 		this.panelData = dataHandler.getPanelData(panelIndex,data);
+		int vers = panelData.getCurrentVersion();
+		if(vers!=UNSET) currentVersionString = String.valueOf(vers);
+		vers = panelData.getVersion();
+		if( vers!=UNSET ) futureVersionString = String.valueOf(vers);
 		
 		// Retrieve some generic attributes ...
 		preamble = dataHandler.getStepPreamble(index, data);

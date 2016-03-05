@@ -13,11 +13,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  */
-public class ModuleStep extends InstallWizardStep {
+public class ModuleStep extends InstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ModuleStep(int index,InstallWizardStep previous,String title, Model<InstallerData> dataModel){
+	public ModuleStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
         final ModuleStep thisPage = this;

@@ -1,13 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/">
-
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
 <body>
 
 	<wicket:panel>
-		<p wicket:id="preamble">should not appear</p>
-		<br />
-
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
+			<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="spacer" />
+		<p class="spacer"/>
 		<table class="edittable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
@@ -19,6 +45,8 @@
 					<td class="trow-title">Install new project</td>
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
+							<input wicket:id="newName" type="text" size="20" />
+							<p/>
 							<input type="submit" wicket:id="new" value="Install New" />
 							<p>
 								<span>Install a clean, un-configured project into the
@@ -32,9 +60,10 @@
 					<td class="trow-title">Merge with Existing Project</td>
 					<td class="trow-body">
 						<form wicket:id="mergeForm" action="">
+							<input wicket:id="mergeName" type="text" size="20" />
 							<p>
-								<span class="label">Select project to update"</span>
-								<select name="project" wicket:id="project" />
+								<span class="label">Select project to update"</span> <select
+									name="project" wicket:id="project" />
 							</p>
 							<p />
 							<input type="submit" wicket:id="merge" value="Merge" />
