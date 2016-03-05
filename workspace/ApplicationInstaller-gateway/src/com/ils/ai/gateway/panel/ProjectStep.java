@@ -99,7 +99,7 @@ public class ProjectStep extends InstallerStep {
 		// The filter is the value of the archive subtype to use
 		// We update the text field with a proposed name based on the selection.
 		public ArtifactList(String key,PropertyModel<Artifact>model,List<Artifact> list) {
-			super(key,model,list);
+			super(key,model,list,new ArtifactRenderer());
 		}
 		
 		@Override
@@ -111,25 +111,6 @@ public class ProjectStep extends InstallerStep {
 		}
 	}
 	
-	public class ArtifactModel extends LoadableDetachableModel<List<Artifact>> {
-		private static final long serialVersionUID = 6862608433733880191L;
-		private final String filter;
-		public ArtifactModel(String filt) {
-			this.filter = filt;
-		}
-		@Override
-		protected List<Artifact> load() {
-			InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-			List<Artifact> results = new ArrayList<>();
-			List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
-			for(Artifact art:artifacts) {
-				if(art.getSubtype().equalsIgnoreCase(filter)) {
-					results.add(art);
-				}
-			}
-			return results;
-		}
-	}
 	public class ArtifactRenderer implements IChoiceRenderer<Artifact> {
 		private static final long serialVersionUID = -7461307371369030148L;
 
@@ -148,7 +129,7 @@ public class ProjectStep extends InstallerStep {
 		private static final long serialVersionUID = -6176535065911396528L;
 		
 		public ProjectList(String key,PropertyModel<Project>model,List<Project> list) {
-			super(key,model,list);
+			super(key,model,list,new ProjectRenderer());
 		}
 		
 		@Override
@@ -159,15 +140,7 @@ public class ProjectStep extends InstallerStep {
 			super.onSelectionChanged(newSelection);
 		}
 	}
-	public class ProjectModel extends LoadableDetachableModel<List<Project>> {
-		private static final long serialVersionUID = 7242474148922232825L;
 
-		@Override
-		protected List<Project> load() {
-			GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-			return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
-		}
-	}
 	public class ProjectRenderer implements IChoiceRenderer<Project> {
 		private static final long serialVersionUID = 4630298960032443090L;
 
@@ -198,7 +171,7 @@ public class ProjectStep extends InstallerStep {
 		List<Artifact> results = new ArrayList<>();
 		List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
 		for(Artifact art:artifacts) {
-			if(art.getSubtype().equalsIgnoreCase("partial")) {
+			if(art.getSubtype().equalsIgnoreCase("global")) {
 				results.add(art);
 			}
 		}
@@ -209,7 +182,7 @@ public class ProjectStep extends InstallerStep {
 		List<Artifact> results = new ArrayList<>();
 		List<Artifact> artifacts = dataHandler.getArtifacts(panelIndex,data);
 		for(Artifact art:artifacts) {
-			if(art.getSubtype().equalsIgnoreCase("global")) {
+			if(art.getSubtype().equalsIgnoreCase("partial")) {
 				results.add(art);
 			}
 		}

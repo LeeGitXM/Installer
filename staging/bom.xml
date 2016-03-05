@@ -51,16 +51,16 @@
 			available for merging with the global project.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM Project" type="project" subtype="full">
+		<artifact name="XOM" type="project" subtype="full">
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
 		<artifact name="XOM Partial Project" type="project" subtype="partial">
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
-		<artifact name="DbManager Project" type="project" subtype="full">
+		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
-		<artifact name="Sequential Function Charts" type="project"
+		<artifact name="DrierRegen" type="project"
 			subtype="global">
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
