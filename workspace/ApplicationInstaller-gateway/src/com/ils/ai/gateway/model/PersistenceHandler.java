@@ -83,7 +83,7 @@ public class PersistenceHandler {
 				context.getPersistenceInterface().save(record);
 			}
 			else {
-				log.warnf("%s.setProductProperty: %s=%s - failed to create persistence record (%s)",CLSS,productName,propertyName,value,
+				log.warnf("%s.setProductProperty: %s.%s=%s - failed to create persistence record (%s)",CLSS,productName,propertyName,value,
 						ProductPropertiesRecord.META.quoteName);
 			} 
 		}
@@ -128,7 +128,7 @@ public class PersistenceHandler {
 			} 
 		}
 		catch(Exception ex) {
-			log.warnf("%s.setStepVersion: Exception setting %s:%s=%s (%s),",CLSS,productName,type.name(),subtype,version,ex.getMessage());
+			log.warnf("%s.setStepVersion: Exception setting %s:%s:%s=%d (%s),",CLSS,productName,type.name(),subtype,version,ex.getMessage());
 		}
 	}
 }

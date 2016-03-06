@@ -459,7 +459,7 @@ public class InstallerDataHandler {
 		int version = InstallerConstants.UNSET;   // An error
 		if( panel!=null) {
 			String versString = xmlUtil.attributeValue(panel, "version");
-			if(versString!=null && (!versString.isEmpty()) ) {
+			if(versString!=null && versString.trim().length()>0 ) {
 				try {
 					version = Integer.parseInt(versString);
 				}
