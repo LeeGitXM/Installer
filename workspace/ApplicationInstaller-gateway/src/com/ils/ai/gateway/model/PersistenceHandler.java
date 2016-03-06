@@ -73,9 +73,11 @@ public class PersistenceHandler {
 	 * Set the value of a product property. Keys are product name and property name.
 	 */
 	public void setProductProperty(String productName,String propertyName, String value) {
+
 		try {
 			ProductPropertiesRecord record = context.getPersistenceInterface().find(ProductPropertiesRecord.META, productName,propertyName);
-			if( record==null) record = context.getPersistenceInterface().createNew(ProductPropertiesRecord.META);
+			if( record==null ) record = context.getPersistenceInterface().createNew(ProductPropertiesRecord.META);
+			
 			if( record!=null) {
 				record.setProductName(productName);
 				record.setPropertyName(propertyName);
@@ -99,7 +101,7 @@ public class PersistenceHandler {
 	public int getStepVersion(String productName,PanelType type,String subtype) {
 		int version = InstallerConstants.UNSET;
 		try {
-			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type.name(),subtype);
+			InstalledVersionsRecord record = context.getPersistenceInterface().find(InstalledVersionsRecord.META, productName,type.name(),subtype);
 			if( record!=null) version =  record.getVersion();
 		}
 		catch(Exception ex) {
@@ -111,10 +113,13 @@ public class PersistenceHandler {
 	/**
 	 * Set the value of a product version. Keys are product name,artifact type and artifact sub-type..
 	 */
-	public void setStepVersion(String productName,PanelType type,String subtype,int version)  {
+	public void setStepVersion(String productName,PanelType type,String subtype,int version)  {;
+
 		try {
-			ProductVersionRecord record = context.getPersistenceInterface().find(ProductVersionRecord.META, productName,type.name(),subtype);
-			if( record==null) record = context.getPersistenceInterface().createNew(ProductVersionRecord.META);
+			InstalledVersionsRecord record = context.getPersistenceInterface().find(InstalledVersionsRecord.META,productName,type.name(),subtype);
+			if( record==null ) record = context.getPersistenceInterface().createNew(InstalledVersionsRecord.META);
+			
+			if( record==null) record = context.getPersistenceInterface().createNew(InstalledVersionsRecord.META);
 			if( record!=null) {
 				record.setProductName(productName);
 				record.setType(type.name());
@@ -124,7 +129,7 @@ public class PersistenceHandler {
 			}
 			else {
 				log.warnf("%s.setStepVersion: %s:%s:%s=%d - failed to create persistence record (%s)",CLSS,productName,type,subtype,version,
-						ProductVersionRecord.META.quoteName);
+						InstalledVersionsRecord.META.quoteName);
 			} 
 		}
 		catch(Exception ex) {

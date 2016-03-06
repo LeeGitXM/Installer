@@ -4,7 +4,6 @@
 package com.ils.ai.gateway.model;
 
 
-import com.inductiveautomation.ignition.gateway.localdb.persistence.IdentityField;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistentRecord;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.RecordMeta;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.StringField;
@@ -22,13 +21,10 @@ public class ProductPropertiesRecord extends PersistentRecord {
 	public static final String TABLE_NAME = "ILS_Product_Properties";
 	
 	public static final RecordMeta<ProductPropertiesRecord> META = new RecordMeta<>(ProductPropertiesRecord.class, TABLE_NAME);
-	static SFieldFlags[] primary = {SFieldFlags.SMANDATORY};
-	//static SFieldFlags[] primary = {SFieldFlags.SPRIMARY_KEY,SFieldFlags.SMANDATORY};
-	static SFieldFlags[] secondary = {SFieldFlags.SMANDATORY};
-	public static final IdentityField Id = new IdentityField(META);
-	public static final StringField ProductName = new StringField(META, "ProductName",primary );
-	public static final StringField PropertyName = new StringField(META, "PropertyName",primary );
-	public static final StringField Value = new StringField(META, "Value",secondary).setDefault("");
+
+	public static final StringField ProductName = new StringField(META, "ProductName",SFieldFlags.SPRIMARY_KEY );
+	public static final StringField PropertyName = new StringField(META, "PropertyName",SFieldFlags.SPRIMARY_KEY );
+	public static final StringField Value = new StringField(META, "Value",SFieldFlags.SMANDATORY).setDefault("");
 	
 	public RecordMeta<?> getMeta() {return META; }
 	

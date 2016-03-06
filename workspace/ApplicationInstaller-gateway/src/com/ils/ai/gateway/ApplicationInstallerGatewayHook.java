@@ -1,8 +1,12 @@
 package com.ils.ai.gateway;
 
+import java.sql.SQLException;
+
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
+import com.ils.ai.gateway.model.ProductPropertiesRecord;
+import com.ils.ai.gateway.model.InstalledVersionsRecord;
 import com.ils.ai.gateway.panel.ConfigurationPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -36,6 +40,15 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         log.infof("%s.setup: ils.configpanel.title = %s",CLSS,BundleUtil.get().getString("ils.configpanel.title"));
         gatewayContext.getConfigMenuModel().addConfigMenuNode(null, rootNode);
         gatewayContext.getConfigMenuModel().addConfigMenuNode(new String[]{ ROOT_NODE }, setupNode);
+        
+		// Create ProductProperties and ProductVersion tables in the internal database if necessary.
+        try {
+            context.getSchemaUpdater().updatePersistentRecords(ProductPropertiesRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(InstalledVersionsRecord.META);
+        }
+        catch (SQLException sqle) {
+            log.errorf("%s.setup: Error generating product tables (%s).",CLSS,sqle.getLocalizedMessage());
+        }
     }
 
     public static ApplicationInstallerGatewayHook getInstance(){
