@@ -4,6 +4,7 @@
 package com.ils.ai.gateway.model;
 
 
+import com.inductiveautomation.ignition.gateway.localdb.persistence.IdentityField;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.IntField;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistentRecord;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.RecordMeta;
@@ -23,9 +24,11 @@ public class ProductVersionRecord extends PersistentRecord {
 	public static final RecordMeta<ProductVersionRecord> META = new RecordMeta<>(ProductVersionRecord.class, TABLE_NAME);
 	static SFieldFlags[] primary = {SFieldFlags.SPRIMARY_KEY,SFieldFlags.SMANDATORY};
 	static SFieldFlags[] secondary = {SFieldFlags.SMANDATORY};
-	public static final StringField ProductName = new StringField(META, "ProductName",primary );
-	public static final StringField Type = new StringField(META, "Type",primary );
-	public static final StringField SubType = new StringField(META, "SubType",primary );
+	
+	public static final IdentityField Id = new IdentityField(META);
+	public static final StringField ProductName = new StringField(META, "ProductName",SFieldFlags.SMANDATORY );
+	public static final StringField Type = new StringField(META, "Type",SFieldFlags.SMANDATORY );
+	public static final StringField SubType = new StringField(META, "SubType",SFieldFlags.SMANDATORY );
 	public static final IntField Version = new IntField(META, "Version",secondary).setDefault(-2);
 	
 	public RecordMeta<?> getMeta() {return META; }
