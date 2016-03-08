@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -31,6 +30,7 @@ import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
+import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.SRContext;
@@ -574,45 +574,56 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
-	public String loadArtifactAsScanClass(int panelIndex,String provider,String artifactName,InstallerData model) {
+	public String loadArtifactAsScanClass(int panelIndex,TagProviderMeta provider,String artifactName,InstallerData model) {
 		String result = null;
-		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
-		if( bytes!=null && bytes.length>0 ) {
-			List<ScanClass> scanClasses = scanUtil.listFromBytes(provider,bytes);
-			try {
-				log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
-				context.getTagManager().getTagProvider(provider).addScanClasses(scanClasses);	
-			}
-			catch( Exception ex) {
-				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-				log.warn(result);
-			}
+		if( provider==null || provider.getName()==null || provider.getName().isEmpty() ) {
+			result = "A tag provider must be selected before installing the scan classes";
 		}
 		else {
-			result = String.format( "Failed to find %s resource in bundle",artifactName);
-			log.warn(result);
+			String providerName = provider.getName();
+			byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+			if( bytes!=null && bytes.length>0 ) {
+				List<ScanClass> scanClasses = scanUtil.listFromBytes(providerName,bytes);
+				try {
+					log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
+					context.getTagManager().getTagProvider(providerName).addScanClasses(scanClasses);	
+				}
+				catch( Exception ex) {
+					result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
+					log.warn(result);
+				}
+			}
+			else {
+				result = String.format( "Failed to find %s resource in bundle",artifactName);
+				log.warn(result);
+			}
 		}
 		return result;
 	}
 	
-	public String loadArtifactAsTags(int panelIndex,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
+	public String loadArtifactAsTags(int panelIndex,TagProviderMeta provider,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
 		String result = null;
-		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
-		if( file != null ) {
-			
-			try {
-				log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
-				listener.setTempFile(file);
-				tagUtil.listFromFile(file,listener);
-			}
-			catch( Exception ex) {
-				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-				log.warn(result);
-			}
+		if( provider==null || provider.getName()==null || provider.getName().isEmpty() ) {
+			result = "A tag provider must be selected before installing the tags";
 		}
 		else {
-			result = String.format( "Failed to find %s tags in bundle",artifactName);
-			log.warn(result);
+			String providerName = provider.getName();
+			File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
+			if( file != null ) {
+				try {
+					log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
+					listener.setTempFile(file);
+					tagUtil.listFromFile(file,providerName,listener);
+				}
+				catch( Exception ex) {
+					result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
+					log.warn(result);
+				}
+			}
+			else {
+				result = String.format( "Failed to find %s tags in bundle",artifactName);
+				log.warn(result);
+			}
 		}
 		return result;
 	}
@@ -626,7 +637,7 @@ public class InstallerDataHandler {
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
 		this.scanUtil = new ScanClassUtility();
-		this.tagUtil  = new TagUtility();
+		this.tagUtil  = new TagUtility(context);
 		this.xmlUtil  = new XMLUtility();
 	}
 	

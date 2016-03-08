@@ -34,7 +34,7 @@ public class ScanClassStep extends BasicInstallerStep {
         
 		add(new Label("preamble",preamble));
 		add(new Label("currentVersion",currentVersionString));
-		add(new Label("futureVersion",futureVersionString));;
+		add(new Label("futureVersion",futureVersionString));
         
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         
@@ -54,13 +54,13 @@ public class ScanClassStep extends BasicInstallerStep {
         add(new Button("install") {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
-			public void onSubmit() {
+			@Override
+            public void onSubmit() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
-            	
             	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsScanClass(index,selectedProvider.getName(),name,data);
+            		String result = dataHandler.loadArtifactAsScanClass(index,selectedProvider,name,data);
             		if( result==null ) {
             			thisPage.info(String.format("Successfully loaded scanclass", name));
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
@@ -70,34 +70,39 @@ public class ScanClassStep extends BasicInstallerStep {
             }
         });
     }
+	public void setProvider(TagProviderMeta provider) {this.selectedProvider=provider;}
+	
 	// ================================= Classes for Listing Tag Provider  ==============================
-		public class ProviderList extends DropDownChoice<TagProviderMeta> {
-			private static final long serialVersionUID = -1021505223044346435L;
+	public class ProviderList extends DropDownChoice<TagProviderMeta> {
+		private static final long serialVersionUID = -1021505223044346435L;
 
-			public ProviderList(String key,PropertyModel<TagProviderMeta>model,List<TagProviderMeta> list) {
-				super(key,model,list,new ProviderRenderer());
-			}
-			
-			@Override
-			public boolean wantOnSelectionChangedNotifications() { return true; }
-			
-			@Override
-			protected void onSelectionChanged(final TagProviderMeta newSelection) {
-				super.onSelectionChanged(newSelection);
-			}
+		public ProviderList(String key,PropertyModel<TagProviderMeta>model,List<TagProviderMeta> list) {
+			super(key,model,list,new ProviderRenderer());
 		}
-		public class ProviderRenderer implements IChoiceRenderer<TagProviderMeta> {
 
-			@Override
-			public Object getDisplayValue(TagProviderMeta provider) {
-				return provider.getName();
-			}
+		@Override
+		public boolean wantOnSelectionChangedNotifications() { return true; }
 
-			@Override
-			public String getIdValue(TagProviderMeta provider, int i) {
-				return provider.getDisplayPath();
-			}
+		@Override
+		protected void onSelectionChanged(final TagProviderMeta newSelection) {
+			System.out.println("SCANCLASS: onSelectionChanged");
+			ScanClassStep.this.setProvider(newSelection);
 		}
+	}
+
+	public class ProviderRenderer implements IChoiceRenderer<TagProviderMeta> {
+		private static final long serialVersionUID = -6647823887964240602L;
+
+		@Override
+		public Object getDisplayValue(TagProviderMeta provider) {
+			return provider.getName();
+		}
+
+		@Override
+		public String getIdValue(TagProviderMeta provider, int i) {
+			return provider.getName();
+		}
+	}
 	private List<TagProviderMeta> getProviderList() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		return context.getTagManager().getProviderInformation();

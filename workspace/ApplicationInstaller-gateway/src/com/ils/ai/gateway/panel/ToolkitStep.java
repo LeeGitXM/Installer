@@ -12,6 +12,7 @@ import org.apache.wicket.model.Model;
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -26,6 +27,8 @@ public class ToolkitStep extends BasicInstallerStep {
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));
 
 		// Install properties into internal database
 		add(new Button("install") {
@@ -39,10 +42,10 @@ public class ToolkitStep extends BasicInstallerStep {
             	
             	for(PropertyItem prop:properties) {
             		toolkitHandler.setToolkitProperty(prop.getName(), prop.getValue());
-            		ToolkitStep.this.info(String.format("Database update complete."));
+            		ToolkitStep.this.info(String.format("Update of %s complete.",prop.getName()));
             	}
+            	PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             }
         });
 	}
-
 }

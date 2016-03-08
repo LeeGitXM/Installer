@@ -42,8 +42,7 @@ public class ScanClassUtility {
 	 * @return list of scan classes
 	 */
 	public List<ScanClass> listFromBytes(String targetProvider,byte[] bytes) {
-
-
+		
 		List<ScanClass> results = new ArrayList<>();
 
 		List<String[]> rows = null;
@@ -63,14 +62,12 @@ public class ScanClassUtility {
 		}
 
 		String[] headerRow = (String[])rows.get(0);
-		Map<String,Integer> headers = new HashMap<>();
 		for (int i = 0; i < headerRow.length; i++) {
 			headers.put(headerRow[i].toLowerCase(), Integer.valueOf(i));
 		}
 
-
+		// First row is comment
 		for (int i = 1; i < rows.size(); i++) {
-
 			try
 			{
 				results.add(scanClassFromRow((String[])rows.get(i)));

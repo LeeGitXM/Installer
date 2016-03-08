@@ -59,9 +59,8 @@ public class TagStep extends BasicInstallerStep implements TempFileTaskProgressL
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
-            	
             	for(String name:names) {
-            		dataHandler.loadArtifactAsTags(index,name,data,TagStep.this);
+            		dataHandler.loadArtifactAsTags(index,selectedProvider,name,data,TagStep.this);
             		/*
             		if( result==null ) {
             			thisPage.info(String.format("Successfully loaded tag resource %s", name));
@@ -99,7 +98,7 @@ public class TagStep extends BasicInstallerStep implements TempFileTaskProgressL
 
 		@Override
 		public String getIdValue(TagProviderMeta provider, int i) {
-			return provider.getDisplayPath();
+			return provider.getName();
 		}
 	}
 	

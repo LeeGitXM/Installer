@@ -97,13 +97,12 @@
 		<preamble>Create scanclasses referenced by production tags. Scanclasses determine tag poll rates.
 		</preamble>
 		<artifact name="Production Scanclasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclass/scanclasses.csv</location>
+			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	<panel type="module" essential="true" version="1" subtype="production">
 		<title>Install Custom Modules</title>
-		<preamble>This step installs modules necessary for the EMC
-			applications.
+		<preamble>This step installs modules necessary for the EMC applications.
 		</preamble>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-unsigned.modl</location>
@@ -121,7 +120,7 @@
 			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
 	</panel>
-	<panel type="toolkit" essential="true" version="0">
+	<panel type="toolkit" essential="true" version="1">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.
 			These particular parameters define extension functions that update
