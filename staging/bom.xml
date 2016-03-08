@@ -92,6 +92,14 @@
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
+	<panel type="scanclass" essential="True" version="1">
+		<title>Create alternative Scanclasses</title>
+		<preamble>Create scanclasses referenced by production tags. Scanclasses determine tag poll rates.
+		</preamble>
+		<artifact name="Production Scanclasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclass/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="module" essential="true" version="1" subtype="production">
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC

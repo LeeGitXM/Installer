@@ -2,11 +2,12 @@ package com.ils.ai.gateway;
 
 import java.sql.SQLException;
 
+import com.ils.ai.gateway.model.ArtifactVersionsRecord;
+import com.ils.ai.gateway.model.InstalledVersionsRecord;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProductPropertiesRecord;
-import com.ils.ai.gateway.model.InstalledVersionsRecord;
 import com.ils.ai.gateway.panel.ConfigurationPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -24,6 +25,10 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     private static ApplicationInstallerGatewayHook INSTANCE = null;
     private GatewayContext context = null;
     private final LoggerEx log = LogUtil.getLogger(getClass().getPackage().getName());
+    
+    static {
+    	BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
+    }
 
     @Override
     public void setup(GatewayContext gatewayContext) {
@@ -34,7 +39,6 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         handler.setContext(context);
         String title = handler.getTitle(new InstallerData());
         log.infof("%s.setup: Custom title = %s",CLSS,title);
-        BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
         InstallerLabelConfigMenuNode rootNode = new InstallerLabelConfigMenuNode(ROOT_NODE, title);
         LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", ConfigurationPanel.class);
         log.infof("%s.setup: ils.configpanel.title = %s",CLSS,BundleUtil.get().getString("ils.configpanel.title"));
@@ -43,8 +47,9 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         
 		// Create ProductProperties and ProductVersion tables in the internal database if necessary.
         try {
-            context.getSchemaUpdater().updatePersistentRecords(ProductPropertiesRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(ArtifactVersionsRecord.META);
             context.getSchemaUpdater().updatePersistentRecords(InstalledVersionsRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(ProductPropertiesRecord.META);
         }
         catch (SQLException sqle) {
             log.errorf("%s.setup: Error generating product tables (%s).",CLSS,sqle.getLocalizedMessage());

@@ -1,5 +1,5 @@
 /**
- *   (c) 2015  ILS Automation. All rights reserved. 
+ *   (c) 2016  ILS Automation. All rights reserved. 
  */
 package com.ils.ai.gateway.model;
 

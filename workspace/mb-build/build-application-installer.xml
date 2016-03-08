@@ -106,6 +106,8 @@
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DrierRegen.proj" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/scanclasses" />
+		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${build.dir}/temp_modl/artifacts/scanclasses/scanclasses.csv" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${build.dir}/temp_modl/artifacts/tags/connections.xml" />

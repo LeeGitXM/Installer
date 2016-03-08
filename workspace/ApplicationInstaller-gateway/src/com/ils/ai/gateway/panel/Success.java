@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;

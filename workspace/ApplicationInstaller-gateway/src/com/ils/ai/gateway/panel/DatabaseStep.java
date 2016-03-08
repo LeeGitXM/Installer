@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.io.IOException;
@@ -17,12 +20,12 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class DatabaseStep extends InstallerStep {
+public class DatabaseStep extends BasicInstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "license.html";
 	private boolean accepted = false;
 
-	public DatabaseStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
+	public DatabaseStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));

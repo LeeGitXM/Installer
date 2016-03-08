@@ -41,6 +41,7 @@ public class JarUtility {
 		this.log = LogUtil.getLogger(getClass().getPackage().getName());
 	}
 	
+
 	/**
 	 * Search the modules that are installed into Ignition, looking
 	 * for one containing a file with the indicated name.

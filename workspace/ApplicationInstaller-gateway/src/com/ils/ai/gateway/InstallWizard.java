@@ -5,7 +5,7 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
-import com.ils.ai.gateway.panel.InstallerStep;
+import com.ils.ai.gateway.panel.BasicInstallerStep;
 import com.ils.ai.gateway.panel.Success;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizard;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardModel;
@@ -20,7 +20,7 @@ public class InstallWizard extends GatewayWizard {
 	public InstallWizard(String id, IConfigPage configPage, Model<InstallerData> dataModel){
 		super(id, configPage, dataModel);
 		
-        InstallerStep step = InstallerDataHandler.getInstance().getWizardStep(0,null,dataModel);
+        BasicInstallerStep step = InstallerDataHandler.getInstance().getWizardStep(0,null,dataModel);
 
 		GatewayWizardModel wizardModel = new GatewayWizardModel(step);
 		this.init(wizardModel);

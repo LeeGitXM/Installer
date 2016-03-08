@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import org.apache.wicket.model.Model;

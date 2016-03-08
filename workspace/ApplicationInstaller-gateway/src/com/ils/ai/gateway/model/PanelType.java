@@ -20,9 +20,9 @@ public enum PanelType
             PROJECT,       // Replacement or global
             SCANCLASS,
             SOURCE,
-            TAGS,
+            TAG,
             TOOLKIT,
-            TRANSACTIONGROUPS,
+            TRANSACTIONGROUP,
             WELCOME
             ;
    

@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.util.ArrayList;
@@ -25,12 +28,12 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ProjectStep extends InstallerStep {
+public class ProjectStep extends BasicInstallerStep {
 	private static final long serialVersionUID = 9066858944253432239L;
 	private Artifact selectedArtifact = null;
 	private Project selectedProject = null;
 	
-	public ProjectStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel) {
+	public ProjectStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
 		add(new Label("preamble",preamble));

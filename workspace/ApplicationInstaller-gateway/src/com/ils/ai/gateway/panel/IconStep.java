@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.util.List;
@@ -13,11 +16,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 
 /**
  */
-public class IconStep extends InstallerStep {
+public class IconStep extends BasicInstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public IconStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
+	public IconStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
         final IconStep thisPage = this;

@@ -7,10 +7,13 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.ConclusionStep;
-import com.ils.ai.gateway.panel.InstallerStep;
+import com.ils.ai.gateway.panel.IconStep;
+import com.ils.ai.gateway.panel.BasicInstallerStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
 import com.ils.ai.gateway.panel.ProjectStep;
+import com.ils.ai.gateway.panel.ScanClassStep;
+import com.ils.ai.gateway.panel.SourceStep;
 import com.ils.ai.gateway.panel.TagStep;
 import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
@@ -26,8 +29,8 @@ public class InstallerStepFactory  {
 	 * @param panelType
 	 * @return
 	 */
-	public InstallerStep createStep(int panelIndex,InstallerStep prior,PanelType stepType,String title,Model<InstallerData> model) {
-		InstallerStep step = null;
+	public BasicInstallerStep createStep(int panelIndex,BasicInstallerStep prior,PanelType stepType,String title,Model<InstallerData> model) {
+		BasicInstallerStep step = null;
 		switch( stepType)  {
 
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
@@ -38,25 +41,25 @@ public class InstallerStepFactory  {
 				break;
 			case EXTERNAL:
 				break;
-			case ICONS:
+			case ICONS:  step = new IconStep(panelIndex,prior,title,model);
 				break;
 			case LICENSE: step = new LicenseStep(panelIndex,prior,title,model);
 				break;
-			case MODULE: step = new ModuleStep(panelIndex,prior,title,model);
+			case MODULE:  step = new ModuleStep(panelIndex,prior,title,model);
 				break;
 			case PROJECT: step = new ProjectStep(panelIndex,prior,title,model);
 				break;
 			case PROPERTIES:
 				break;
-			case SCANCLASS:
+			case SCANCLASS: step = new ScanClassStep(panelIndex,prior,title,model);
 				break;
-			case SOURCE:
+			case SOURCE: step = new SourceStep(panelIndex,prior,title,model);
 				break;
-			case TAGS: step = new TagStep(panelIndex,prior,title,model);
+			case TAG: step = new TagStep(panelIndex,prior,title,model);
 				break;
 			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
 				break;
-			case TRANSACTIONGROUPS:
+			case TRANSACTIONGROUP:
 				break;
 			case WELCOME: step = new WelcomeStep(panelIndex,prior,title,model);
 				break;

@@ -4,9 +4,14 @@
 package com.ils.ai.gateway.model;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -18,11 +23,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ils.ai.gateway.InstallerConstants;
-import com.ils.ai.gateway.panel.InstallerStep;
+import com.ils.ai.gateway.panel.BasicInstallerStep;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
+import com.ils.ai.gateway.utility.ScanClassUtility;
+import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
+import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.SRContext;
@@ -50,6 +58,8 @@ public class InstallerDataHandler {
 	private DBUtility dbUtil;
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
+	private ScanClassUtility scanUtil = null;
+	private TagUtility tagUtil = null;
 	private XMLUtility xmlUtil = null;
 	private final InstallerStepFactory stepFactory;
 	
@@ -146,6 +156,49 @@ public class InstallerDataHandler {
 			}
 		}
 		return bytes;
+	}
+	/**
+	 * @param model
+	 * @return a list of the names of the artifacts associated with this step
+	 */
+	public File getArtifactAsTemporaryFile(int panelIndex,String artifactName,InstallerData model) {
+		byte[] bytes = null;
+		log.infof("%s.getArtifactAsFile: panel %d, getting %s",CLSS,panelIndex,artifactName);
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+				if( artifactName.equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "name")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						String internalPath = locationNode.getTextContent();
+						Path path = getPathToModule(model);
+						bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
+						log.infof("%s.getArtifactAsBytes: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),bytes.length);
+					}
+					else {
+						log.warnf("%s.getArtifactAsBytes: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		File file = null;
+		try {
+			file = File.createTempFile(artifactName, "xml");
+			Files.write(file.toPath(),bytes, StandardOpenOption.DELETE_ON_CLOSE);
+		}
+		catch(IOException ioe) {
+			log.warnf("%s.getArtifactAsTemporaryFile: IOException creating temporary file for panel %d:%s (%s)",CLSS,
+					panelIndex,artifactName,ioe.getLocalizedMessage());
+		}
+		return file;
 	}
 	/**
 	 * @param model
@@ -294,7 +347,7 @@ public class InstallerDataHandler {
 					}
 				}
 
-				PanelType type = PanelType.CONCLUSION;
+				PanelType type = PanelType.CONCLUSION;  // Because we have to set it to something
 				String val = xmlUtil.attributeValue(panelElement, "type");
 				try {
 					type = PanelType.valueOf(val.toUpperCase());
@@ -314,7 +367,7 @@ public class InstallerDataHandler {
 					}
 				}
 				data.setType(type);
-				if(subtype==null) subtype = type.name();
+				if(subtype==null || subtype.length()==0) subtype = type.name();
 				data.setSubtype(subtype);
 				data.setVersion(version);
 				data.setCurrentVersion(PersistenceHandler.getInstance().getStepVersion(product,type,subtype));
@@ -491,13 +544,12 @@ public class InstallerDataHandler {
 		}
 		return title;
 	}
-	public InstallerStep getWizardStep(int index,InstallerStep prior,Model<InstallerData> dataModel) {
+	public BasicInstallerStep getWizardStep(int index,BasicInstallerStep prior,Model<InstallerData> dataModel) {
 		PanelType stepType = getStepType(index,dataModel.getObject());
 		String title = getStepTitle(index,dataModel.getObject());
-		InstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
+		BasicInstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
 		return step;
 	}
-	
 	public String loadArtifactAsModule(int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
@@ -521,6 +573,49 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
+	
+	public String loadArtifactAsScanClass(int panelIndex,String provider,String artifactName,InstallerData model) {
+		String result = null;
+		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+		if( bytes!=null && bytes.length>0 ) {
+			List<ScanClass> scanClasses = scanUtil.listFromBytes(provider,bytes);
+			try {
+				log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
+				context.getTagManager().getTagProvider(provider).addScanClasses(scanClasses);	
+			}
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
+				log.warn(result);
+			}
+		}
+		else {
+			result = String.format( "Failed to find %s resource in bundle",artifactName);
+			log.warn(result);
+		}
+		return result;
+	}
+	
+	public String loadArtifactAsTags(int panelIndex,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
+		String result = null;
+		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
+		if( file != null ) {
+			
+			try {
+				log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
+				listener.setTempFile(file);
+				tagUtil.listFromFile(file,listener);
+			}
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
+				log.warn(result);
+			}
+		}
+		else {
+			result = String.format( "Failed to find %s tags in bundle",artifactName);
+			log.warn(result);
+		}
+		return result;
+	}
 	/**
 	 * This step is necessary before the instance is useful. Most other 
 	 * properties are initialized lazily.
@@ -530,6 +625,8 @@ public class InstallerDataHandler {
 		this.dbUtil = new DBUtility(context);
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
+		this.scanUtil = new ScanClassUtility();
+		this.tagUtil  = new TagUtility();
 		this.xmlUtil  = new XMLUtility();
 	}
 	

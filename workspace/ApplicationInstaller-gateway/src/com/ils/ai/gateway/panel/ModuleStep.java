@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.util.List;
@@ -10,19 +13,22 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
-public class ModuleStep extends InstallerStep {
+public class ModuleStep extends BasicInstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ModuleStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
+	public ModuleStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
         final ModuleStep thisPage = this;
         
-        add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));;
         
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         List<String> modules = handler.getArtifactNames(index, data);
@@ -45,7 +51,10 @@ public class ModuleStep extends InstallerStep {
             	
             	for(String name:names) {
             		String result = dataHandler.loadArtifactAsModule(index,name,data);
-            		if( result==null ) thisPage.info(String.format("Successfully loaded %s module", name));
+            		if( result==null ) {
+            			thisPage.info(String.format("Successfully loaded %s module", name));
+            			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            		}
             		else thisPage.warn(result);
             	}
             }

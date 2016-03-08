@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway.panel;
 
 import java.util.List;
@@ -16,11 +19,11 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ConclusionStep extends InstallerStep {
+public class ConclusionStep extends BasicInstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ConclusionStep(int index,InstallerStep previous,String title, Model<InstallerData> dataModel){
+	public ConclusionStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble));
