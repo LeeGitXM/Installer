@@ -353,17 +353,17 @@ public class InstallerDataHandler {
 					type = PanelType.valueOf(val.toUpperCase());
 				}
 				catch(IllegalArgumentException iae) {
-					log.warnf("%s.getStepType: Could not convert %s into a PanelType",CLSS,val);
+					log.warnf("%s.getPanelData: Could not convert %s into a PanelType",CLSS,val);
 				}
 				String subtype = xmlUtil.attributeValue(panelElement, "subtype");
 				int version = InstallerConstants.UNSET;  
 				String versString = xmlUtil.attributeValue(panelElement, "version");
-				if(versString!=null) {
+				if(versString!=null && !versString.isEmpty()) {
 					try {
 						version = Integer.parseInt(versString);
 					}
 					catch(NumberFormatException nfe) {
-						log.warnf("%s.getStepVersion: Could not convert %s to int (%s)",CLSS,versString,nfe.getLocalizedMessage());
+						log.warnf("%s.getPanelData: Could not convert %s to int (%s)",CLSS,versString,nfe.getLocalizedMessage());
 					}
 				}
 				data.setType(type);
@@ -512,7 +512,7 @@ public class InstallerDataHandler {
 		int version = InstallerConstants.UNSET;   // An error
 		if( panel!=null) {
 			String versString = xmlUtil.attributeValue(panel, "version");
-			if(versString!=null && versString.trim().length()>0 ) {
+			if(versString!=null && !versString.isEmpty() ) {
 				try {
 					version = Integer.parseInt(versString);
 				}
