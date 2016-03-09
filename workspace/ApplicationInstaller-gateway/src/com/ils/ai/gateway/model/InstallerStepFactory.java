@@ -6,9 +6,10 @@ package com.ils.ai.gateway.model;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.panel.BackupStep;
-import com.ils.ai.gateway.panel.ConclusionStep;
-import com.ils.ai.gateway.panel.IconStep;
 import com.ils.ai.gateway.panel.BasicInstallerStep;
+import com.ils.ai.gateway.panel.ConclusionStep;
+import com.ils.ai.gateway.panel.DocumentationStep;
+import com.ils.ai.gateway.panel.IconStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
 import com.ils.ai.gateway.panel.ProjectStep;
@@ -36,6 +37,8 @@ public class InstallerStepFactory  {
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
 				break;
 			case CONCLUSION: step = new ConclusionStep(panelIndex,prior,title,model);
+				break;
+			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);
 				break;
 			case DATABASE:
 				break;

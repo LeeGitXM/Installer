@@ -17,14 +17,14 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
-public class ModuleStep extends BasicInstallerStep {
+public class DocumentationStep extends BasicInstallerStep {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ModuleStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public DocumentationStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
-        final ModuleStep thisPage = this;
+        final DocumentationStep thisPage = this;
         
 		add(new Label("preamble",preamble));
 		add(new Label("currentVersion",currentVersionString));
@@ -48,26 +48,14 @@ public class ModuleStep extends BasicInstallerStep {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
-            	StringBuilder success = new StringBuilder("");
-            	StringBuilder failure = new StringBuilder("");
-
+            	
             	for(String name:names) {
             		String result = dataHandler.loadArtifactAsModule(index,name,data);
             		if( result==null ) {
-            			if(success.length()>0) success.append(", ");
-            			success.append(name);
+            			thisPage.info(String.format("Successfully loaded %s module", name));
+            			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             		}
-            		else {
-            			if(failure.length()>0) failure.append(", ");
-            			failure.append(String.format("%s(%s)", name,result));
-            		}
-            	}
-            	if(failure.length()==0 ) {
-            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
-            		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-            	}
-            	else {
-            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            		else thisPage.warn(result);
             	}
             }
         });

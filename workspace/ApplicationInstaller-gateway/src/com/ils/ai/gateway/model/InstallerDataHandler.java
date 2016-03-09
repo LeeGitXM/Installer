@@ -201,6 +201,8 @@ public class InstallerDataHandler {
 		return file;
 	}
 	/**
+	 * The algorithm here assumes that the number of locations and artifacts is the same.
+	 * (It should be).
 	 * @param model
 	 * @return the location string for a named artifact.
 	 */
@@ -245,16 +247,11 @@ public class InstallerDataHandler {
 				artifact.setType(xmlUtil.attributeValue(artifactNode, "type"));
 				artifact.setSubtype(xmlUtil.attributeValue(artifactNode, "subtype"));
 				// Location is an element
-				NodeList locations = artifactNode.getChildNodes();
-				int nindex = 0;
+				NodeList locations = ((Element)artifactNode).getElementsByTagName("location");
 				int ncount = locations.getLength();
-				while(nindex<ncount) {
-					Node location = locations.item(nindex);
-					if( location.getNodeType()==Node.ELEMENT_NODE ) {
-						artifact.setLocation(location.getNodeValue());
-						break;
-					}
-					nindex++;
+				if(ncount>0) {  // There should be only one location
+					Node locationNode = locations.item(0);
+					artifact.setLocation(locationNode.getTextContent());
 				}
 				artifacts.add(artifact);
 				index++;

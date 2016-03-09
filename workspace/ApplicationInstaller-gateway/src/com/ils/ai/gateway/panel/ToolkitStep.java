@@ -40,10 +40,11 @@ public class ToolkitStep extends BasicInstallerStep {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
             	
+            	
             	for(PropertyItem prop:properties) {
             		toolkitHandler.setToolkitProperty(prop.getName(), prop.getValue());
-            		ToolkitStep.this.info(String.format("Update of %s complete.",prop.getName()));
             	}
+            	ToolkitStep.this.info(String.format("Update of internal database complete."));
             	PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             }
         });

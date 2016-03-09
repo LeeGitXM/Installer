@@ -45,9 +45,7 @@ public class BackupStep extends BasicInstallerStep {
 					@Override
                     public void write(OutputStream output) throws IOException {
 						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-						System.out.println("BACKUPSTEP Start to write ...");
-                        result = dataHandler.backup(output,data);
-                        System.out.println("BACKUPSTEP complete");
+                        result = dataHandler.backup(output,data);;
                         if(result==null) info("Backup completed successfully");
                         else warn(result);
                         System.out.println("BACKUPSTEP result:"+result);
@@ -57,7 +55,7 @@ public class BackupStep extends BasicInstallerStep {
                 System.out.println("BACKUPSTEP Starting ...");
                 ResourceStreamRequestHandler handle = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handle);
-                handle.detach(getRequestCycle());
+                
                 BackupStep.this.warn("DONE"); // Works without getRequestCycle.scheduleAfter
                 System.out.println("BACKUPSTEP DONE");
             }
