@@ -15,7 +15,7 @@ public class PropertyItem implements Serializable {
 	private String previous = "";  // Hold a prior version of the same property
 
 	/**
-	 * .
+	 * 
 	 */
 	public PropertyItem(String nam,String val) {
 		this.name = nam;

@@ -13,6 +13,23 @@
 	<wicket:panel>
 
 		<p wicket:id="preamble">should not appear</p>
+				<br />
+		<div>
+		<table class="actiontable" cellpadding="0" cellspacing="0">
+				<thead>
+					<tr>
+						<td>Artifact</td>
+						<td class="last">Up-to-date</td>
+					</tr>
+				</thead>
+				<tbody id="actiontable-tbody">
+					<tr wicket:id="panels">
+						<td><span wicket:id="name" /></td>
+						<td class="last"><span wicket:id="check" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br />
 		<div>
 			<input type="button" wicket:id="save" value="Record Properties" />
