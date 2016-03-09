@@ -49,7 +49,13 @@ public class WelcomeStep extends BasicInstallerStep {
 		if( !productName.isEmpty() ) {
 			for(PropertyItem prop:properties) {
 				 String val = dbHandler.getProductProperty(productName, prop.getName());
-				 if( val!= null) prop.setPrevious(val);
+				 if( val!= null ) {
+					 prop.setPrevious(val);
+				 }
+				 // There isn't a separate entry for the product itself
+				 if(prop.getName().equalsIgnoreCase("product")) {
+					 prop.setPrevious(productName);
+				 }
 			}
 		}
         

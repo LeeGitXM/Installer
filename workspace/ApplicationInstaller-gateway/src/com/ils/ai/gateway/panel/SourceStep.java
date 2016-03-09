@@ -3,17 +3,12 @@
  */
 package com.ils.ai.gateway.panel;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
-import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
@@ -30,20 +25,25 @@ public class SourceStep extends BasicInstallerStep {
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble));
-		add(new Label("currentVersion",currentVersionString));
-		add(new Label("futureVersion",futureVersionString));
 		
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        List<String> packages = handler.getArtifactNames(index, data);
-        add(new ListView<String>("package", packages) {
+        List<Artifact> packages = handler.getArtifacts(index, data);
+        add(new ListView<Artifact>("packages", packages) {
 			private static final long serialVersionUID = 8682507940096836472L;
 
-			protected void populateItem(ListItem<String> item) {
-                String text = (String) item.getModelObject();
-                item.add(new Label("name", text));
+			protected void populateItem(ListItem<Artifact> item) {
+				Artifact artifact = item.getModelObject();
+                item.add(new Label("package", artifact.getName()));
+                // Get the existing release number from the internal database
+                PersistenceHandler dbhandler = PersistenceHandler.getInstance();
+                String release = dbhandler.getArtifactRelease(data.getProductName(),panelData.getType(), 
+                							panelData.getSubtype(), artifact.getName());
+                item.add(new Label("existing", release));
+                item.add(new Label("release", artifact.getRelease()));
             }
         });
 
+        /*
         // Get the resource name and file name from the first artifact (there should only be one)
         String artifactName = "source";
         String fileName = "source.zip";
@@ -57,6 +57,8 @@ public class SourceStep extends BasicInstallerStep {
         }
         final String aname = artifactName;
         final String fname = fileName;
+        
+      
 		// Download source
 		add(new Link<Void>("download") {
 			private static final long serialVersionUID = -279565247005738138L;
@@ -87,5 +89,6 @@ public class SourceStep extends BasicInstallerStep {
 				info("Source download is complete");
 			}
 		});
+		*/
 	}
 }

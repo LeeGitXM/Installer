@@ -11,13 +11,28 @@
 <body>
 
 	<wicket:panel>
-
-		<p wicket:id="preamble">should not appear</p>
-		<br />
-		<div>
-			<label>Accept :</label> <input type="checkbox" wicket:id="accept" />
+<div>
+		<p class="preamble" wicket:id="preamble">should not appear</p>
+		<div class="version-box">
+			<table class="vers">
+				<thead>
+					<tr>
+						<td class="vers-header" />
+						<td class="vers-header">Installed</td>
+						<td class="vers-header">New</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="vers-header">Version</td>
+						<td class="vers-body"><span wicket:id="currentVersion" /></td>
+						<td class="vers-body"><span wicket:id="futureVersion" /></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<br />
+		</div>
+		<p class="spacer"/>
 		<div>
 			<input type="button" wicket:id="view" value="View License" />
 		</div>

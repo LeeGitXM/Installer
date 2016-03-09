@@ -246,6 +246,7 @@ public class InstallerDataHandler {
 				artifact.setName(xmlUtil.attributeValue(artifactNode, "name"));
 				artifact.setType(xmlUtil.attributeValue(artifactNode, "type"));
 				artifact.setSubtype(xmlUtil.attributeValue(artifactNode, "subtype"));
+				artifact.setRelease(xmlUtil.attributeValue(artifactNode, "release"));
 				// Location is an element
 				NodeList locations = ((Element)artifactNode).getElementsByTagName("location");
 				int ncount = locations.getLength();

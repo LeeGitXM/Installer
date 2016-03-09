@@ -29,25 +29,9 @@ public class ExternalStep extends BasicInstallerStep {
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));
 
-		// Accept license
-		CheckBox checkbox = new CheckBox("accept", Model.of(Boolean.FALSE)) {
-			private static final long serialVersionUID = -890605923748905601L;
-
-			protected boolean wantOnSelectionChangedNotifications() {
-				return true;
-			}
-			// We don't care what the value is. As long as they click on the box, we're good.
-			// The value is "on" for selected, null for not.
-			@Override
-			public void onSelectionChanged() {
-				if(getValue()!=null) {
-					accepted = true;
-					ExternalStep.this.info(String.format("License terms have been accepted."));
-				}
-			}
-		};
-		add(checkbox);
 
 		// View license
 		add(new Link<Void>("view") {

@@ -52,7 +52,48 @@ public class PersistenceHandler {
 	public void setContext(GatewayContext ctx) { 
 		this.context=ctx;
 	}
-	
+	/**
+	 * @return the last downloaded release number of the specified artifact
+	 * On a failure to find the property, an empty string is returned.
+	 */
+	public String getArtifactRelease(String productName,PanelType type,String subtype,String artifactName) {
+		String value = "";
+		try {
+			ArtifactReleaseRecord record = context.getPersistenceInterface().find(ArtifactReleaseRecord.META, productName,type.name(),
+																												subtype,artifactName);
+			if( record!=null) value =  record.getRelease();
+		}
+		catch(Exception ex) {
+			log.warnf("%s.getArtifactRelease: Exception retrieving %s:%s:%s:%s (%s),",CLSS,productName,type.name(),subtype,artifactName,ex.getMessage());
+		}
+		return value;
+	}
+	/**
+	 * Set the value of a product property. Keys are product name and property name.
+	 */
+	public void setArtifactRelease(String productName,PanelType type,String subtype,String artifactName,String release) {
+
+		try {
+			ArtifactReleaseRecord record = context.getPersistenceInterface().find(ArtifactReleaseRecord.META, productName,type.name(),
+																												subtype,artifactName);
+			if( record==null ) record = context.getPersistenceInterface().createNew(ArtifactReleaseRecord.META);
+			
+			if( record!=null) {
+				record.setProductName(productName);
+				record.setType(type.name());
+				record.setSubType(subtype);
+				record.setArtifactName(artifactName);
+				record.setRelease(release);
+				context.getPersistenceInterface().save(record);
+			}
+			else {
+				log.warnf("%s.setArtifactRelease: %s:%s:%s:%s=%s - failed to create persistence record",CLSS,productName,type.name(),subtype,artifactName,release);
+			} 
+		}
+		catch(Exception ex) {
+			log.warnf("%s.setArtifactRelease: Exception setting %s:%s:%s:%s=%s (%s),",CLSS,productName,type.name(),subtype,artifactName,release,ex.getMessage());
+		}
+	}
 	/**
 	 * @return the value of a product property. Keys are product name and property name.
 	 * On a failure to find the property, an empty string is returned.
@@ -60,7 +101,7 @@ public class PersistenceHandler {
 	public String getProductProperty(String productName,String propertyName) {
 		String value = "";
 		try {
-			ProductPropertiesRecord record = context.getPersistenceInterface().find(ProductPropertiesRecord.META, productName,propertyName);
+			ProductPropertyRecord record = context.getPersistenceInterface().find(ProductPropertyRecord.META, productName,propertyName);
 			if( record!=null) value =  record.getValue();
 		}
 		catch(Exception ex) {
@@ -75,8 +116,8 @@ public class PersistenceHandler {
 	public void setProductProperty(String productName,String propertyName, String value) {
 
 		try {
-			ProductPropertiesRecord record = context.getPersistenceInterface().find(ProductPropertiesRecord.META, productName,propertyName);
-			if( record==null ) record = context.getPersistenceInterface().createNew(ProductPropertiesRecord.META);
+			ProductPropertyRecord record = context.getPersistenceInterface().find(ProductPropertyRecord.META, productName,propertyName);
+			if( record==null ) record = context.getPersistenceInterface().createNew(ProductPropertyRecord.META);
 			
 			if( record!=null) {
 				record.setProductName(productName);
@@ -85,8 +126,7 @@ public class PersistenceHandler {
 				context.getPersistenceInterface().save(record);
 			}
 			else {
-				log.warnf("%s.setProductProperty: %s.%s=%s - failed to create persistence record (%s)",CLSS,productName,propertyName,value,
-						ProductPropertiesRecord.META.quoteName);
+				log.warnf("%s.setProductProperty: %s.%s=%s - failed to create persistence record",CLSS,productName,propertyName,value);
 			} 
 		}
 		catch(Exception ex) {
@@ -101,7 +141,7 @@ public class PersistenceHandler {
 	public int getStepVersion(String productName,PanelType type,String subtype) {
 		int version = InstallerConstants.UNSET;
 		try {
-			InstalledVersionsRecord record = context.getPersistenceInterface().find(InstalledVersionsRecord.META, productName,type.name(),subtype);
+			InstalledVersionRecord record = context.getPersistenceInterface().find(InstalledVersionRecord.META, productName,type.name(),subtype);
 			if( record!=null) version =  record.getVersion();
 		}
 		catch(Exception ex) {
@@ -116,10 +156,10 @@ public class PersistenceHandler {
 	public void setStepVersion(String productName,PanelType type,String subtype,int version)  {;
 
 		try {
-			InstalledVersionsRecord record = context.getPersistenceInterface().find(InstalledVersionsRecord.META,productName,type.name(),subtype);
-			if( record==null ) record = context.getPersistenceInterface().createNew(InstalledVersionsRecord.META);
+			InstalledVersionRecord record = context.getPersistenceInterface().find(InstalledVersionRecord.META,productName,type.name(),subtype);
+			if( record==null ) record = context.getPersistenceInterface().createNew(InstalledVersionRecord.META);
 			
-			if( record==null) record = context.getPersistenceInterface().createNew(InstalledVersionsRecord.META);
+			if( record==null) record = context.getPersistenceInterface().createNew(InstalledVersionRecord.META);
 			if( record!=null) {
 				record.setProductName(productName);
 				record.setType(type.name());
@@ -129,7 +169,7 @@ public class PersistenceHandler {
 			}
 			else {
 				log.warnf("%s.setStepVersion: %s:%s:%s=%d - failed to create persistence record (%s)",CLSS,productName,type,subtype,version,
-						InstalledVersionsRecord.META.quoteName);
+						InstalledVersionRecord.META.quoteName);
 			} 
 		}
 		catch(Exception ex) {

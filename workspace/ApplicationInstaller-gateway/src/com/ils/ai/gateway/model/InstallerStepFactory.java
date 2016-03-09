@@ -8,7 +8,9 @@ import org.apache.wicket.model.Model;
 import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerStep;
 import com.ils.ai.gateway.panel.ConclusionStep;
+import com.ils.ai.gateway.panel.DatabaseStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
+import com.ils.ai.gateway.panel.ExternalStep;
 import com.ils.ai.gateway.panel.IconStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
@@ -40,11 +42,11 @@ public class InstallerStepFactory  {
 				break;
 			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);
 				break;
-			case DATABASE:
+			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
 				break;
-			case EXTERNAL:
+			case EXTERNAL: step = new ExternalStep(panelIndex,prior,title,model);
 				break;
-			case ICONS:  step = new IconStep(panelIndex,prior,title,model);
+			case ICON:  step = new IconStep(panelIndex,prior,title,model);
 				break;
 			case LICENSE: step = new LicenseStep(panelIndex,prior,title,model);
 				break;
@@ -52,7 +54,7 @@ public class InstallerStepFactory  {
 				break;
 			case PROJECT: step = new ProjectStep(panelIndex,prior,title,model);
 				break;
-			case PROPERTIES:
+			case PROPERTY:
 				break;
 			case SCANCLASS: step = new ScanClassStep(panelIndex,prior,title,model);
 				break;

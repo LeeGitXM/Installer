@@ -25,7 +25,9 @@ public class IconStep extends BasicInstallerStep {
         
         final IconStep thisPage = this;
         
-        add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble));
+		add(new Label("currentVersion",currentVersionString));
+		add(new Label("futureVersion",futureVersionString));
         
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         List<String> modules = handler.getArtifactNames(index, data);

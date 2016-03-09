@@ -2,12 +2,12 @@ package com.ils.ai.gateway;
 
 import java.sql.SQLException;
 
-import com.ils.ai.gateway.model.ArtifactVersionsRecord;
-import com.ils.ai.gateway.model.InstalledVersionsRecord;
+import com.ils.ai.gateway.model.ArtifactReleaseRecord;
+import com.ils.ai.gateway.model.InstalledVersionRecord;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
-import com.ils.ai.gateway.model.ProductPropertiesRecord;
+import com.ils.ai.gateway.model.ProductPropertyRecord;
 import com.ils.ai.gateway.panel.ConfigurationPanel;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
@@ -47,9 +47,9 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         
 		// Create ProductProperties and ProductVersion tables in the internal database if necessary.
         try {
-            context.getSchemaUpdater().updatePersistentRecords(ArtifactVersionsRecord.META);
-            context.getSchemaUpdater().updatePersistentRecords(InstalledVersionsRecord.META);
-            context.getSchemaUpdater().updatePersistentRecords(ProductPropertiesRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(ArtifactReleaseRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(InstalledVersionRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(ProductPropertyRecord.META);
         }
         catch (SQLException sqle) {
             log.errorf("%s.setup: Error generating product tables (%s).",CLSS,sqle.getLocalizedMessage());

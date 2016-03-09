@@ -14,42 +14,32 @@
 	<wicket:panel>
 		<div>
 			<p class="preamble" wicket:id="preamble">should not appear</p>
-			<div class="version-box">
-				<table class="vers">
-					<thead>
-						<tr>
-							<td class="vers-header" />
-							<td class="vers-header">Installed</td>
-							<td class="vers-header">New</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="vers-header">Version</td>
-							<td class="vers-body"><span wicket:id="currentVersion" /></td>
-							<td class="vers-body"><span wicket:id="futureVersion" /></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 		</div>
 		<p class="spacer" />
-		<p class="spacer" />
-		<table class="actiontable" cellpadding="0" cellspacing="0">
+		<table class="actiontable" style="width: 75%" cellpadding="0"
+			cellspacing="0">
 			<thead>
-				<td class="last">Source Package</td>
-				<tr />
+				<tr>
+					<td>Package</td>
+					<td>Last Downloaded</td>
+					<td class="last">Now Available</td>
+					<td class="action" />
+				</tr>
 			</thead>
 			<tbody id="actiontable-tbody">
-				<tr wicket:id="package">
-					<td class="last" width="20%"><span wicket:id="name" /></td>
+				<tr wicket:id="packages">
+					<td><span wicket:id="package" /></td>
+					<td><span wicket:id="existing" /></td>
+					<td class="last"><span wicket:id="release" /></td>
+					<td class="action">
+						<ul testid="single-record-action-links">
+							<li class="download"><a href="#"><span>download</span></a></li>
+						</ul> &nbsp;
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<p class="spacer" />
-		<div>
-			<input type="button" wicket:id="download" value="Download Source" />
-		</div>
 	</wicket:panel>
 
 </body>

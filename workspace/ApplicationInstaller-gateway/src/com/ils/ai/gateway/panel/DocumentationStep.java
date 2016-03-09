@@ -27,12 +27,11 @@ public class DocumentationStep extends BasicInstallerStep {
         final DocumentationStep thisPage = this;
         
 		add(new Label("preamble",preamble));
-		add(new Label("currentVersion",currentVersionString));
-		add(new Label("futureVersion",futureVersionString));;
+
         
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
         List<String> modules = handler.getArtifactNames(index, data);
-        add(new ListView<String>("modules", modules) {
+        add(new ListView<String>("documents", modules) {
 			private static final long serialVersionUID = 8682507940096836472L;
 
 			protected void populateItem(ListItem<String> item) {
@@ -40,24 +39,6 @@ public class DocumentationStep extends BasicInstallerStep {
                 item.add(new Label("name", text));
             }
         });
-        
-        add(new Button("install") {
-			private static final long serialVersionUID = 4110778774811578782L;
-			
-			public void onSubmit() {
-				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-            	List<String> names = dataHandler.getArtifactNames(index, data);
-            	
-            	
-            	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsModule(index,name,data);
-            		if( result==null ) {
-            			thisPage.info(String.format("Successfully loaded %s module", name));
-            			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-            		}
-            		else thisPage.warn(result);
-            	}
-            }
-        });
+   
     }
 }

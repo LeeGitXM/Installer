@@ -14,10 +14,10 @@ public enum PanelType
             DATABASE,
             DOCUMENTATION,
             EXTERNAL,       // Python, jar files
-            ICONS, 
+            ICON, 
             LICENSE,
             MODULE,         // 
-            PROPERTIES, 
+            PROPERTY, 
             PROJECT,       // Replacement or global
             SCANCLASS,
             SOURCE,

@@ -99,7 +99,7 @@
 		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/InstallationManual.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${build.dir}/temp_modl/artifacts/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/IA SFC Module/SFCsFunctionalSpec.docx" tofile="${build.dir}/temp_modl/artifacts/doc/SFCsFunctionalSpec.docx" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/SequentialControlUserManual.docx" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/modules" />
@@ -113,7 +113,8 @@
 		<mkdir dir="${build.dir}/temp_modl/artifacts/scanclasses" />
 		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${build.dir}/temp_modl/artifacts/scanclasses/scanclasses.csv" />
 		<mkdir dir="${build.dir}/source" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/Release-0.1r15.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/blt-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/blt-0.1r15.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/sfc-0.1r15.zip" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${build.dir}/temp_modl/artifacts/tags/connections.xml" />
