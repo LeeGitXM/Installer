@@ -60,7 +60,7 @@ public class ConclusionStep extends BasicInstallerStep {
                 PropertyItem property = (PropertyItem) item.getModelObject();
                 item.add(new Label("name", property.getName()));
                 
-                Image checkImage = new Image("check", new ContextRelativeResource("images/check.png"));
+                Image checkImage = new Image("check", new ContextRelativeResource("/images/check.png"));
                 item.add(checkImage);
                 boolean check = property.getValue().equalsIgnoreCase("true");
                 if(!check) checkImage.setVisible(false);
