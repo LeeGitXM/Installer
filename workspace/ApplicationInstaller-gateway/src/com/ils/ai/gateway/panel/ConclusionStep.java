@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.InstallerConstants;
@@ -49,21 +51,19 @@ public class ConclusionStep extends BasicInstallerStep {
 			pindex++;
 		}
         
+		
+		
 		add(new ListView<PropertyItem>("panels", panels) {
 			private static final long serialVersionUID = -4610581829738917953L;
 
 			protected void populateItem(ListItem<PropertyItem> item) {
                 PropertyItem property = (PropertyItem) item.getModelObject();
                 item.add(new Label("name", property.getName()));
+                
+                Image checkImage = new Image("check", new ContextRelativeResource("images/check.png"));
+                item.add(checkImage);
                 boolean check = property.getValue().equalsIgnoreCase("true");
-                if( check ) {
-                	
-                }
-                else {
-                	item.add(new Label("check", ""));
-                }
-                
-                
+                if(!check) checkImage.setVisible(false);
             }
         });
 		
@@ -85,15 +85,17 @@ public class ConclusionStep extends BasicInstallerStep {
 						break;
 					};
 				}
-				if( productName.isEmpty() ) {
+				if( !productName.isEmpty() ) {
+					for(PropertyItem prop:properties) {
+						if(prop.getName().equalsIgnoreCase("product")) continue;
+						dbHandler.setProductProperty(productName, prop.getName(), prop.getValue());
+					}
+					info("You have reached an informed conclusion");
+				}
+				else {
 					warn("Product name is missing from configured properties. No properties update possible.");
-					return;
 				}
-				for(PropertyItem prop:properties) {
-					if(prop.getName().equalsIgnoreCase("product")) continue;
-					dbHandler.setProductProperty(productName, prop.getName(), prop.getValue());
-				}
-				info("You have reached an informed conclusion");
+
 			}
 		});
 	}

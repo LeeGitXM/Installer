@@ -352,6 +352,11 @@ public class InstallerDataHandler {
 				catch(IllegalArgumentException iae) {
 					log.warnf("%s.getPanelData: Could not convert %s into a PanelType",CLSS,val);
 				}
+				val = xmlUtil.attributeValue(panelElement, "essential");
+				
+				data.setEssential(false);
+				if( "true".equalsIgnoreCase(val)) data.setEssential(true);
+				
 				String subtype = xmlUtil.attributeValue(panelElement, "subtype");
 				int version = InstallerConstants.UNSET;  
 				String versString = xmlUtil.attributeValue(panelElement, "version");
@@ -368,6 +373,12 @@ public class InstallerDataHandler {
 				data.setSubtype(subtype);
 				data.setVersion(version);
 				data.setCurrentVersion(PersistenceHandler.getInstance().getStepVersion(product,type,subtype));
+				// The title is a child element
+				NodeList titles = panelElement.getElementsByTagName("title");
+				if( titles.getLength()>0) {
+					Node titleElement = titles.item(0);
+					data.setTitle(titleElement.getTextContent());
+				}
 			}
 			model.getPanelMap().put(key,data);
 		}
