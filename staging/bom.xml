@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<!-- For any panel, the type determines the layout and class. The combination of 
+<!-- For any panel, the type determines the layout and class. The combination of 
       type and subtype must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
       be unique. 
@@ -18,7 +18,9 @@
 		<preamble>Welcome to the ILS Automation installer for EMC Ignition
 			Applications. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
-			installation.
+			installation. Before continuing, please make sure that you have 
+			defined tag providers and database connections for both production and 
+			isolation (test) environments.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>

@@ -431,7 +431,8 @@ public class InstallerDataHandler {
 		List<PropertyItem> properties = new ArrayList<>();
 		Document bom = getBillOfMaterials(model);
 		if( bom!=null ) {
-			NodeList children = bom.getFirstChild().getChildNodes();
+			Element root = bom.getDocumentElement();
+			NodeList children = root.getChildNodes();
 			int count = children.getLength();
 			int index = 0;
 			while(index<count) {
