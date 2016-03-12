@@ -20,7 +20,8 @@
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation (test) environments.
+			isolation (test) environments. Also make sure that you have write permission to the "lib" 
+			folder within the Ignition installation directory.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -118,23 +119,31 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true">
+	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
 		</preamble>
 		<artifact name="XOM Database" type="create" subtype="sql">
-			<location>artifacts/icons</location>
+			<location>artifacts/database</location>
+		</artifact>
+		<artifact name="XOM Database" type="alter" subtype="sql">
+			<location>artifacts/database</location>
 		</artifact>
 	</panel>
-	<panel type="external" essential="true">
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="external" essential="true" version="1">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
 		</preamble>
-		<artifact name="External Python" type="python" subtype="py">
-			<location>artifacts/external</location>
+		<artifact name="External Python - ILS" type="python" subtype="py">
+			<location>artifacts/external/ils-python</location>
 		</artifact>
-		<artifact name="Jar file for External Python" type="java" subtype="jar">
-			<location>artifacts/external</location>
+		<artifact name="External Python - XOM" type="python" subtype="py">
+			<location>artifacts/external/xom-python</location>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="java" subtype="jar">
+			<location>artifacts/external/jars</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >

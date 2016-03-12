@@ -13,11 +13,11 @@ import com.ils.ai.gateway.InstallerConstants;
  */
 public class Artifact implements Serializable  {
 	private static final long serialVersionUID = 7650179030090459881L;
-	private String location = "";
+	private String location = "";     // Where we find it in the release bundle
 	private String name = "";
 	private String release = "";
 	private String subtype = "";
-	private String type = "";     // Artifact type
+	private String type = "";         // Artifact type
 	private int version = InstallerConstants.UNSET;
 
 	public String getLocation() {return location;}

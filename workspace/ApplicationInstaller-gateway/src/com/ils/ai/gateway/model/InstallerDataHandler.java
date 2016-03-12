@@ -569,10 +569,36 @@ public class InstallerDataHandler {
 		BasicInstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
 		return step;
 	}
+	public String loadArtifactAsExternalFiles(int panelIndex,Artifact artifact,InstallerData model) {
+		String result = null;
+		String fromRoot   = artifact.getLocation();  // Add a trailing /
+		if( !fromRoot.endsWith(File.separator)) fromRoot = fromRoot+File.separator;
+		String toRoot="";
+		// Prepend the actual path to the Gateway directory
+		String type = artifact.getType();
+		if( type.equalsIgnoreCase("python") ) {
+			toRoot = context.getUserlibDir().getAbsolutePath()+File.separator+"pylib";  // User-lib/pylib full path
+		}	
+		else {
+			toRoot = context.getLibDir().getAbsolutePath();  // lib full path
+		}
+		
+		
+		// Now process the files
+		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );
+		for(JarEntry entry:entries) {
+			String name = entry.getName();
+			String contents = jarUtil.readFileFromJar(name,getPathToModule(model));
+			String subpath = name.substring(fromRoot.length());
+			String path = String.format("%s%s%s", toRoot,File.separator,subpath);
+			fileUtil.stringToFile(contents, path);     // Creates intervening directories
+		}
+		return result;
+	}
 	public String loadArtifactAsIconCollection(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String root   = artifact.getLocation();  // Includes trailing /
-		if( !root.endsWith("/")) root = root+"/";
+		if( !root.endsWith(File.separator)) root = root+File.separator;
 		ImageManager mgr = context.getImageManager();
 		// First of all we create all intervening directories
 		List<JarEntry> entries = jarUtil.directoriesInJarSubpath(getPathToModule(model),root );
@@ -580,9 +606,9 @@ public class InstallerDataHandler {
 			String name = entry.getName();
 			String iconPath = name.substring(root.length());
 			if(iconPath.length()==0) continue;
-			if(iconPath.endsWith("/")) iconPath=iconPath.substring(0,iconPath.length()-1);
+			if(iconPath.endsWith(File.separator)) iconPath=iconPath.substring(0,iconPath.length()-1);
 			try {
-				int pos = iconPath.lastIndexOf("/");
+				int pos = iconPath.lastIndexOf(File.separator);
 				String fname = iconPath;
 				String dir = null;
 				if( pos>=0 ) {
@@ -646,7 +672,7 @@ public class InstallerDataHandler {
 		if( bytes!=null && bytes.length>0 ) {
 			// If we have data, we had to have a path
 			String filename = getArtifactLocation(panelIndex,artifactName,model);
-			int pos = filename.lastIndexOf("/");
+			int pos = filename.lastIndexOf(File.separator);
 			if (pos>0 ) filename = filename.substring(pos+1);
 			try {
 				log.infof("%s.loadArtifactAsModule: Installing %d bytes as %s",CLSS,bytes.length,filename);

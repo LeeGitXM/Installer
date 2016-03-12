@@ -100,20 +100,27 @@
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${build.dir}/temp_modl/artifacts/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/LabDataDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/SequentialControlUserManual.docx" />
-		<mkdir dir="${build.dir}/temp_modl/artifacts/external/ils" />
-		<copy todir="${build.dir}/temp_modl/artifacts/external/ils">
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/ils-python" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/ils-python">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
-		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom" />
-		<copy todir="${build.dir}/temp_modl/artifacts/external/xom">
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom-python" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/xom-python">
 			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
-				<exclude name="xom/emre" />
 				<include name="xom/**/*.py" />
 			</fileset>
 		</copy>
-		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom" />
+		<delete dir="${build.dir}/temp_modl/artifacts/external/xom-python/xom/emre" />
+		
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/jars/core/common" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/common/blt-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/common/ils-common.jar" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/jars/core/gateway" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/gateway/block-definition.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/gateway/blt-gateway.jar" />	
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/icons" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/icons/blt" />
 		<copy todir="${build.dir}/temp_modl/artifacts/icons/blt">
 			<fileset dir="${git.repo}/blt/images">
