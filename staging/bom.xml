@@ -72,7 +72,7 @@
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true">
+	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>

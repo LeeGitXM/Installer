@@ -42,53 +42,5 @@ public class SourceStep extends BasicInstallerStep {
                 item.add(new Label("release", artifact.getRelease()));
             }
         });
-
-        /*
-        // Get the resource name and file name from the first artifact (there should only be one)
-        String artifactName = "source";
-        String fileName = "source.zip";
-        List<Artifact> artifacts = handler.getArtifacts(panelIndex, data);
-        if(!artifacts.isEmpty()) {
-        	Artifact art = artifacts.get(0);
-        	artifactName = art.getName();
-        	fileName = art.getLocation();
-        	int pos = fileName.lastIndexOf("/");
-        	if( pos>0 ) fileName=fileName.substring(pos+1);
-        }
-        final String aname = artifactName;
-        final String fname = fileName;
-        
-      
-		// Download source
-		add(new Link<Void>("download") {
-			private static final long serialVersionUID = -279565247005738138L;
-			@Override
-			public void onClick() {
-
-				AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
-					private static final long serialVersionUID = 1730037915972320415L;
-
-					@Override
-					public void write(OutputStream output) throws IOException {
-						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-						byte[] bytes = dataHandler.getArtifactAsBytes(panelIndex,aname,data);
-						if( bytes!=null ) {
-							output.write(bytes);
-						}
-					}
-
-					@Override
-					public String getContentType () {
-						return "application/zip";
-					}
-				};
-
-				ResourceStreamRequestHandler requestHandler = new ResourceStreamRequestHandler(rstream, fname);
-				getRequestCycle().scheduleRequestHandlerAfterCurrent(requestHandler);
-				PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-				info("Source download is complete");
-			}
-		});
-		*/
 	}
 }

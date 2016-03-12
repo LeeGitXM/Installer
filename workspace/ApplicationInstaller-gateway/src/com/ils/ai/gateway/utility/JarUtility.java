@@ -17,7 +17,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -155,6 +157,56 @@ public class JarUtility {
 		}
 		return result;
 	}
+	
+	/**
+	 * Iterate over entries in a jar and return those that pass a specified filter and are
+	 * directories.  
+	 */
+	public List<JarEntry> directoriesInJarSubpath(Path jarPath,String subPath) {
+		List<JarEntry> directories = new ArrayList<>();
+		try {
+			JarFile jar = new JarFile(jarPath.toFile());
+			Enumeration<JarEntry> entryWalker = jar.entries();
+			
+			while (entryWalker.hasMoreElements()) {
+				JarEntry entry = entryWalker.nextElement();
+				if (entry.isDirectory() && entry.getName().startsWith(subPath)) {
+					directories.add(entry);
+				}
+			}
+			jar.close();
+		}
+		catch(IOException ioe) {
+			log.infof("%s.directoriesInJarSubpath: IO error converting %s from jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
+		}
+		return directories;
+	}
+	
+	/**
+	 * Iterate over entries in a jar and return those that pass a specified filter and are
+	 * plain files.  
+	 */
+	public List<JarEntry> filesInJarSubpath(Path jarPath,String subPath) {
+		List<JarEntry> files = new ArrayList<>();
+		try {
+			JarFile jar = new JarFile(jarPath.toFile());
+			Enumeration<JarEntry> entryWalker = jar.entries();
+			
+			while (entryWalker.hasMoreElements()) {
+				JarEntry entry = entryWalker.nextElement();
+				if(!entry.isDirectory() && entry.getName().startsWith(subPath)) {
+					files.add(entry);
+				}
+			}
+			jar.close();
+		}
+		catch(IOException ioe) {
+			log.infof("%s.filesInJarSubpath: IO error converting %s from jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
+		}
+		return files;
+	}
+
+
 
 	/**
 	 * Iterate over the files in a jar and copy into a directory.

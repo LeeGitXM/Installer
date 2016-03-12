@@ -100,6 +100,34 @@
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${build.dir}/temp_modl/artifacts/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/LabDataDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/SequentialControlUserManual.docx" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/ils" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/ils">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+				<include name="ils/**/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/xom">
+			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
+				<exclude name="xom/emre" />
+				<include name="xom/**/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/icons/blt" />
+		<copy todir="${build.dir}/temp_modl/artifacts/icons/blt">
+			<fileset dir="${git.repo}/blt/images">
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.dir}/temp_modl/artifacts/icons/custom" />
+		<copy todir="${build.dir}/temp_modl/artifacts/icons/custom">
+			<fileset dir="${svn.repo}/EMChemicals/Ignition/icons">
+				<include name="**/*.png" />
+				<include name="**/*.jpg" />
+				<include name="**/*.JPG" />
+			</fileset>
+		</copy>
 		<mkdir dir="${build.dir}/temp_modl/artifacts/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/modules" />
@@ -113,7 +141,8 @@
 		<mkdir dir="${build.dir}/temp_modl/artifacts/scanclasses" />
 		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${build.dir}/temp_modl/artifacts/scanclasses/scanclasses.csv" />
 		<mkdir dir="${build.dir}/source" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/blt-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/blt-0.1r15.zip" />
+		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/blt-0.1r15.zip" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/sfc-0.1r15.zip" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />

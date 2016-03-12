@@ -4,16 +4,23 @@
 package com.ils.ai.gateway.model;
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarEntry;
 import java.util.prefs.Preferences;
+
+import javax.imageio.ImageIO;
 
 import org.apache.wicket.model.Model;
 import org.w3c.dom.Document;
@@ -34,6 +41,8 @@ import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.SRContext;
+import com.inductiveautomation.ignition.gateway.images.ImageFormat;
+import com.inductiveautomation.ignition.gateway.images.ImageManager;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
 import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
@@ -560,6 +569,77 @@ public class InstallerDataHandler {
 		BasicInstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
 		return step;
 	}
+	public String loadArtifactAsIconCollection(int panelIndex,Artifact artifact,InstallerData model) {
+		String result = null;
+		String root   = artifact.getLocation();  // Includes trailing /
+		if( !root.endsWith("/")) root = root+"/";
+		ImageManager mgr = context.getImageManager();
+		// First of all we create all intervening directories
+		List<JarEntry> entries = jarUtil.directoriesInJarSubpath(getPathToModule(model),root );
+		for(JarEntry entry:entries) {
+			String name = entry.getName();
+			String iconPath = name.substring(root.length());
+			if(iconPath.length()==0) continue;
+			if(iconPath.endsWith("/")) iconPath=iconPath.substring(0,iconPath.length()-1);
+			try {
+				int pos = iconPath.lastIndexOf("/");
+				String fname = iconPath;
+				String dir = null;
+				if( pos>=0 ) {
+					fname = iconPath.substring(pos+1);
+					dir   = iconPath.substring(0,pos+1);
+				}
+				mgr.insertImageFolder(fname, dir);
+			}
+			catch(SQLException sqle) {
+				log.infof("%s.loadArtifactAsIconCollection: Error making folder %s (%s)",CLSS,iconPath,sqle.getLocalizedMessage());
+			}
+		}
+		
+		// Now process the files
+		entries = jarUtil.filesInJarSubpath(getPathToModule(model),root );
+		for(JarEntry entry:entries) {
+			String iconPath = entry.getName().substring(root.length());
+			if(iconPath.length()==0) continue;
+
+			int pos = iconPath.substring(0,iconPath.length()-1).lastIndexOf("/");
+			String fname = iconPath;
+			String dir = null;
+			if( pos>=0 ) {
+				fname = iconPath.substring(pos+1);
+				dir   = iconPath.substring(0,pos+1);
+			}
+			ImageFormat type = ImageFormat.PNG;
+			pos = fname.indexOf(".");
+			if(pos>0) {
+				String extension = fname.substring(pos+1);
+				if( extension.equalsIgnoreCase("GIF")) type = ImageFormat.GIF;
+				else if( extension.equalsIgnoreCase("JPG")) type = ImageFormat.JPEG;
+			}
+			byte[] bytes = jarUtil.readFileAsBytesFromJar(entry.getName(), getPathToModule(model));
+			if( bytes.length>0 ) {
+
+				try {
+					InputStream in = new ByteArrayInputStream(bytes);
+					BufferedImage readImage = ImageIO.read(in);
+					int h = readImage.getHeight();
+					int w = readImage.getWidth();
+					mgr.insertImage(fname, "",type,dir,bytes,w,h,bytes.length);
+				}
+				catch(SQLException sqle) {
+					log.infof("%s.loadArtifactAsIconCollection: Error making folder %s (%s)",CLSS,iconPath,sqle.getLocalizedMessage());
+				}
+				catch (Exception ex) {
+					log.infof("%s.loadArtifactAsIconCollection: Error analyzing image %s (%s)",CLSS,iconPath,ex.getLocalizedMessage());
+				}
+			}
+			else {
+				log.infof("%s.loadArtifactAsIconCollection: Failed to convert %s into byte array",CLSS,iconPath);
+			}
+		}
+		return result;
+	}
+	
 	public String loadArtifactAsModule(int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);

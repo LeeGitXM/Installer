@@ -11,8 +11,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 
+import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
@@ -30,8 +32,8 @@ public class IconStep extends BasicInstallerStep {
 		add(new Label("futureVersion",futureVersionString));
         
         InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        List<String> modules = handler.getArtifactNames(index, data);
-        add(new ListView<String>("modules", modules) {
+        List<String> icons = handler.getArtifactNames(index, data);
+        add(new ListView<String>("icons", icons) {
 			private static final long serialVersionUID = 8682507940096836472L;
 
 			protected void populateItem(ListItem<String> item) {
@@ -45,13 +47,28 @@ public class IconStep extends BasicInstallerStep {
 			
 			public void onSubmit() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-            	List<String> names = dataHandler.getArtifactNames(index, data);
+            	List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
+            	// Each artifact location is a root of a directory in the bundle
+            	StringBuilder success = new StringBuilder("");
+            	StringBuilder failure = new StringBuilder("");
             	
-            	
-            	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsModule(index,name,data);
-            		if( result==null ) thisPage.info(String.format("Successfully loaded %s module", name));
-            		else thisPage.warn(result);
+            	for(Artifact art:artifacts) {
+            		String result = dataHandler.loadArtifactAsIconCollection(index,art,data);
+            		if( result==null ) {
+            			if(success.length()>0) success.append(", ");
+            			success.append(art.getName());
+            		}
+            		else {
+            			if(failure.length()>0) failure.append(", ");
+            			failure.append(String.format("%s(%s)", art.getName(),result));
+            		}
+            	}
+            	if(failure.length()==0 ) {
+            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
+            		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            	}
+            	else {
+            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
             	}
             }
         });
