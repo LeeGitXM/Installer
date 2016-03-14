@@ -12,6 +12,7 @@ public enum PanelType
             BACKUP,
             CONCLUSION,
             DATABASE,
+            DEFINITION,
             DOCUMENTATION,
             EXTERNAL,       // Python, jar files
             ICON, 

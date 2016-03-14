@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class PropertyItem implements Serializable {
 	private static final long serialVersionUID = 773235520456516156L;
 	private String name = "";
+	private String type = "";
 	private String value = "";
 	private String previous = "";  // Hold a prior version of the same property
 
@@ -23,6 +24,8 @@ public class PropertyItem implements Serializable {
 	}
 	public String getName() {return this.name;}
 	public String getValue() {return this.value;}
+	public String getType() {return this.type; }
+	public void setType(String typ) {this.type=typ; }
 	public String getPrevious() {return this.previous; }
 	public void setPrevious(String prior) {this.previous=prior; }
 }

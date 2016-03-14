@@ -98,8 +98,10 @@
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/InstallationManual.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${build.dir}/temp_modl/artifacts/doc/BlockLanguageToolkitDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${build.dir}/temp_modl/artifacts/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/SequentialControlUserManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/MigrationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/VistalonDesigneSpecification.docx" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/external/ils-python" />
 		<copy todir="${build.dir}/temp_modl/artifacts/external/ils-python">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">

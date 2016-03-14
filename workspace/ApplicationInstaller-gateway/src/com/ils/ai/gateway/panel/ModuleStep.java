@@ -26,7 +26,7 @@ public class ModuleStep extends BasicInstallerStep {
         
         final ModuleStep thisPage = this;
         
-		add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));;
         

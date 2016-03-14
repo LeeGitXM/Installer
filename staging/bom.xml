@@ -39,11 +39,22 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
+
 	<panel type="backup" essential="false">
 		<title>Archive into an Ignition Backup</title>
 		<preamble>This is an optional step. Once created, a backup allows you
 			to revert the previous state of the application.
 		</preamble>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Update Toolkit Properties</title>
+		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		Both production and isolation mode versions are needed. These are used by subsequent screens.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
 	</panel>
 	<panel type="project" subtype="main" essential="True" version="1">
 		<title>Install New XOM Projects or Merge Changes into Existing
@@ -86,9 +97,10 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed for the
-			production applications.
+		<preamble>This page defines UDTs and tags that are needed by the applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 		</preamble>
+		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
@@ -105,24 +117,28 @@
 	</panel>
 	<panel type="tag" subtype="test" essential="False" version="1">
 		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines tags used for isolation mode testing.
+		<preamble>This page defines tags that are used by the Ignition Applications
+		when running in ISOLATION mode.
 		</preamble>
+		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="scanclass" essential="True" version="1">
 		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by production tags. Scanclasses determine tag poll rates.
+		<preamble>Create scanclasses referenced by &lt;b&gt;PRODUCTION&lt;/b&gt; tags. Scanclasses determine tag poll rates.
 		</preamble>
+		<property name="provider" type="production"></property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
+		<preamble>Blah.
 		</preamble>
+		<property name="database" type="production"></property>
 		<artifact name="XOM Database" type="create" subtype="sql">
 			<location>artifacts/database</location>
 		</artifact>
@@ -173,14 +189,23 @@
 		<artifact name="Installation Manual" type="documentation" subtype="docx" release="0.12">
 			<location>artifacts/doc/InstallationManual.docx</location>
 		</artifact>
+		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="First">
+			<location>artifacts/doc/ApplicationTestFramework.docx</location>
+		</artifact>
 		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.8">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
 		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.5">
 			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
 		</artifact>
+		<artifact name="Migration Manual" type="documentation" subtype="docx" release="First">
+			<location>artifacts/doc/MigrationManual.docx</location>
+		</artifact>
 		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="First">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
+		</artifact>
+		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="First">
+			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
 		</artifact>
 	</panel>
 	<!--  The source panel is limited to a single artifact. -->

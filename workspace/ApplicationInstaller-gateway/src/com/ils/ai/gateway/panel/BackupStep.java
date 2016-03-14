@@ -27,7 +27,7 @@ public class BackupStep extends BasicInstallerStep {
 	public BackupStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
-        add(new Label("preamble",preamble));
+        add(new Label("preamble",preamble).setEscapeModelStrings(false));
         
         // Note: Tried as a "Link" class to same effect within a form and not. 
         //       Status bars do not appear.

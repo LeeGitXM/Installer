@@ -11,32 +11,36 @@
 <body>
 
 	<wicket:panel>
-	  <div>
-		<p class="preamble" wicket:id="preamble">should not appear</p>
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
 		</div>
-		<table class="actiontable" style="width: 75%" cellpadding="0"
-			cellspacing="0">
-			<thead>
-				<tr>
-					<td style="width: 70%">Document</td>
-					<td style="width: 10%">Last Downloaded</td>
-					<td style="width: 10%" class="last">Now Available</td>
-					<td class="action" />
-				</tr>
-			</thead>
-			<tbody id="actiontable-tbody">
-				<tr wicket:id="documents">
-					<td><span wicket:id="document" /></td>
-					<td><span wicket:id="existing" /></td>
-					<td class="last"><span wicket:id="release" /></td>
-					<td class="action">
-						<ul testid="single-record-action-links">
-							<li class="download"><a href="#"><span>download</span></a></li>
-						</ul> &nbsp;
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div style="width: 600px; height: 400px; overflow: scroll">
+			<table class="actiontable" style="width: 75%" cellpadding="0"
+				cellspacing="0">
+				<thead>
+					<tr>
+						<td style="width: 70%">Document</td>
+						<td style="width: 10%">Last Downloaded</td>
+						<td style="width: 10%" class="last">Now Available</td>
+						<td class="action" />
+					</tr>
+				</thead>
+
+				<tbody id="actiontable-tbody">
+					<tr wicket:id="documents">
+						<td><span wicket:id="document" /></td>
+						<td><span wicket:id="existing" /></td>
+						<td class="last"><span wicket:id="release" /></td>
+						<td class="action">
+							<ul testid="single-record-action-links">
+								<li class="download"><a href="#"><span>download</span></a></li>
+							</ul> &nbsp;
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
 		<p class="spacer" />
 	</wicket:panel>
 </body>

@@ -24,7 +24,7 @@ public class SourceStep extends BasicInstallerStep {
 	public SourceStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
-		add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
         List<Artifact> packages = handler.getArtifacts(index, data);

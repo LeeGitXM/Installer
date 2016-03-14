@@ -9,6 +9,7 @@ import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerStep;
 import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
+import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
 import com.ils.ai.gateway.panel.ExternalStep;
 import com.ils.ai.gateway.panel.IconStep;
@@ -44,6 +45,8 @@ public class InstallerStepFactory  {
 				break;
 			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
 				break;
+			case DEFINITION: step = new DefinitionStep(panelIndex,prior,title,model);
+				break;	
 			case EXTERNAL: step = new ExternalStep(panelIndex,prior,title,model);
 				break;
 			case ICON:  step = new IconStep(panelIndex,prior,title,model);

@@ -33,7 +33,7 @@ public class ConclusionStep extends BasicInstallerStep {
 	public ConclusionStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
-		add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
 		// By definition, this is the last panel. So we know the count.

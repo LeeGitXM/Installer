@@ -36,7 +36,7 @@ public class ProjectStep extends BasicInstallerStep {
 	public ProjectStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
 
-		add(new Label("preamble",preamble));
+		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
 		

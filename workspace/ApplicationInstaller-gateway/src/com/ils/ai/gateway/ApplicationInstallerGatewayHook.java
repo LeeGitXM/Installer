@@ -9,6 +9,7 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProductPropertyRecord;
 import com.ils.ai.gateway.panel.ConfigurationPanel;
+import com.ils.common.persistence.ToolkitRecord;
 import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -50,6 +51,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
             context.getSchemaUpdater().updatePersistentRecords(ArtifactReleaseRecord.META);
             context.getSchemaUpdater().updatePersistentRecords(InstalledVersionRecord.META);
             context.getSchemaUpdater().updatePersistentRecords(ProductPropertyRecord.META);
+            context.getSchemaUpdater().updatePersistentRecords(ToolkitRecord.META);
         }
         catch (SQLException sqle) {
             log.errorf("%s.setup: Error generating product tables (%s).",CLSS,sqle.getLocalizedMessage());

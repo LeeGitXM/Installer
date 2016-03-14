@@ -298,6 +298,7 @@ public class InstallerDataHandler {
 		}
 		return bom;
 	}
+	public GatewayContext getContext() { return context; }
 	
 	public Element getPanelElement(int panelIndex,InstallerData model) {
 		Node panelElement = null;
@@ -408,7 +409,9 @@ public class InstallerDataHandler {
 				Node propertyNode = propertyNodes.item(index);
 				String name = xmlUtil.attributeValue(propertyNode, "name");
 				String value = propertyNode.getTextContent();
-				properties.add(new PropertyItem(name,value));
+				PropertyItem item = new PropertyItem(name,value);
+				item.setType(xmlUtil.attributeValue(propertyNode, "type"));
+				properties.add(item);
 				index++;
 			}
 		}
