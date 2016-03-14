@@ -29,15 +29,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ils.ai.gateway.InstallerConstants;
-import com.ils.ai.gateway.panel.BasicInstallerStep;
+import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.ScanClassUtility;
 import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
+import com.ils.common.persistence.ToolkitProperties;
+import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
-import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.SRContext;
@@ -70,7 +71,7 @@ public class InstallerDataHandler {
 	private ScanClassUtility scanUtil = null;
 	private TagUtility tagUtil = null;
 	private XMLUtility xmlUtil = null;
-	private final InstallerStepFactory stepFactory;
+	private final InstallerPanelFactory stepFactory;
 	
     
 	/**
@@ -79,7 +80,7 @@ public class InstallerDataHandler {
 	private InstallerDataHandler() {
 		log = LogUtil.getLogger(getClass().getPackage().getName());
 		this.prefs = Preferences.userRoot().node(PREFERENCES_NAME);
-		this.stepFactory = new InstallerStepFactory();
+		this.stepFactory = new InstallerPanelFactory();
 	}
 	
 
@@ -111,6 +112,38 @@ public class InstallerDataHandler {
 			}
 		}
 		return result;
+	}
+	/**
+	 * Inspect the properties for the specified panel looking for a "database" property. If the property
+	 * has no value, return the name specified as a toolkit property.
+	 * @return
+	 */
+	public String datasourceNameFromProperties(int index,InstallerData model) {
+		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
+		String datasource = "";
+        // If the production provider property has a value, use it. Otherwise get the toolkit property
+		List<PropertyItem> properties = getPanelProperties(index, model);
+		for(PropertyItem prop:properties) {
+    		if(prop.getName().equalsIgnoreCase("database")) {
+    			if(prop.getType().equalsIgnoreCase("production")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
+    				}
+    				else {
+    					datasource = prop.getValue();
+    				}
+    			}
+    			else if(prop.getType().equalsIgnoreCase("isolation")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE);
+    				}
+    				else {
+    					datasource = prop.getValue();
+    				}
+    			}
+    		}
+    	}
+		return datasource;
 	}
 	/**
 	 * @param model
@@ -299,6 +332,36 @@ public class InstallerDataHandler {
 		return bom;
 	}
 	public GatewayContext getContext() { return context; }
+	
+	/**
+	 * Beginning with the specified panel, search sequentially for a panel that meets the filter criteria
+	 * indicated in the data model.
+	 * @param index
+	 * @param prior
+	 * @param dataModel
+	 * @return
+	 */
+	public BasicInstallerPanel getNextPanel(int index,BasicInstallerPanel prior,Model<InstallerData> dataModel) {
+		InstallerData data = dataModel.getObject();
+		boolean ignoreOptional = data.isIgnoringOptional();
+		boolean ignoreCurrent   = data.isIgnoringCurrent();
+		int count = getStepCount(data);
+		while(index<count) {
+			PanelData pd = getPanelData(index,data);
+			if( (pd.isEssential() || ignoreOptional==false) &&
+				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false) ) {
+				String title = getStepTitle(index,data);
+				PanelType type = getStepType(index,data);
+				BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
+				return panel;
+			}
+			index++;
+		}
+		// If we get here, then return a conclusion. This shouldn't happen if BOM is well-formed
+		String title = getStepTitle(count-1,data);
+		BasicInstallerPanel step = stepFactory.createPanel(index,prior,PanelType.CONCLUSION,title,dataModel);
+		return step;
+	}
 	
 	public Element getPanelElement(int panelIndex,InstallerData model) {
 		Node panelElement = null;
@@ -566,12 +629,7 @@ public class InstallerDataHandler {
 		}
 		return title;
 	}
-	public BasicInstallerStep getWizardStep(int index,BasicInstallerStep prior,Model<InstallerData> dataModel) {
-		PanelType stepType = getStepType(index,dataModel.getObject());
-		String title = getStepTitle(index,dataModel.getObject());
-		BasicInstallerStep step = stepFactory.createStep(index,prior,stepType,title,dataModel);
-		return step;
-	}
+
 	public String loadArtifactAsExternalFiles(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String fromRoot   = artifact.getLocation();  // Add a trailing /
@@ -693,58 +751,81 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
-	public String loadArtifactAsScanClass(int panelIndex,TagProviderMeta provider,String artifactName,InstallerData model) {
+	public String loadArtifactAsScanClass(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
-		if( provider==null || provider.getName()==null || provider.getName().isEmpty() ) {
-			result = "A tag provider must be selected before installing the scan classes";
-		}
-		else {
-			String providerName = provider.getName();
-			byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
-			if( bytes!=null && bytes.length>0 ) {
-				List<ScanClass> scanClasses = scanUtil.listFromBytes(providerName,bytes);
-				try {
-					log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
-					context.getTagManager().getTagProvider(providerName).addScanClasses(scanClasses);	
-				}
-				catch( Exception ex) {
-					result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-					log.warn(result);
-				}
+		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+		if( bytes!=null && bytes.length>0 ) {
+			List<ScanClass> scanClasses = scanUtil.listFromBytes(providerName,bytes);
+			try {
+				log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
+				context.getTagManager().getTagProvider(providerName).addScanClasses(scanClasses);	
 			}
-			else {
-				result = String.format( "Failed to find %s resource in bundle",artifactName);
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
 				log.warn(result);
 			}
 		}
+		else {
+			result = String.format( "Failed to find %s resource in bundle",artifactName);
+			log.warn(result);
+		}
+
 		return result;
 	}
 	
-	public String loadArtifactAsTags(int panelIndex,TagProviderMeta provider,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
+	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
 		String result = null;
-		if( provider==null || provider.getName()==null || provider.getName().isEmpty() ) {
-			result = "A tag provider must be selected before installing the tags";
-		}
-		else {
-			String providerName = provider.getName();
-			File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
-			if( file != null ) {
-				try {
-					log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
-					listener.setTempFile(file);
-					tagUtil.listFromFile(file,providerName,listener);
-				}
-				catch( Exception ex) {
-					result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-					log.warn(result);
-				}
+
+		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
+		if( file != null ) {
+			try {
+				log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
+				listener.setTempFile(file);
+				tagUtil.listFromFile(file,providerName,listener);
 			}
-			else {
-				result = String.format( "Failed to find %s tags in bundle",artifactName);
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
 				log.warn(result);
 			}
 		}
+		else {
+			result = String.format( "Failed to find %s tags in bundle",artifactName);
+			log.warn(result);
+		}
+
 		return result;
+	}
+	/**
+	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
+	 * has no value, return the name specified as a toolkit property.
+	 * @return
+	 */
+	public String providerNameFromProperties(int index,InstallerData model) {
+		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
+		String datasource = "";
+        // If the production provider property has a value, use it. Otherwise get the toolkit property
+		List<PropertyItem> properties = getPanelProperties(index, model);
+		for(PropertyItem prop:properties) {
+    		if(prop.getName().equalsIgnoreCase("provider")) {
+    			if(prop.getType().equalsIgnoreCase("production")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER);
+    				}
+    				else {
+    					datasource = prop.getValue();
+    				}
+    			}
+    			else if(prop.getType().equalsIgnoreCase("isolation")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER);
+    				}
+    				else {
+    					datasource = prop.getValue();
+    				}
+    			}
+    		}
+    	}
+		return datasource;
 	}
 	/**
 	 * This step is necessary before the instance is useful. Most other 

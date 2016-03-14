@@ -6,6 +6,7 @@ package com.ils.ai.gateway.panel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -29,7 +30,7 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  * In particular, we define tag providers and database sources for production and, optionally, 
  * isolation modes.
  */
-public class DefinitionStep extends BasicInstallerStep {
+public class DefinitionStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private boolean showProductionProvider = false;
 	private boolean showIsolationProvider  = false;
@@ -39,8 +40,9 @@ public class DefinitionStep extends BasicInstallerStep {
 	private SerializableDatasourceMeta isolationDatabase=null;
 	private TagProviderMeta productionProvider=null;
 	private TagProviderMeta isolationProvider=null;
+	private boolean valid = false;
 
-	public DefinitionStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public DefinitionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
@@ -97,6 +99,15 @@ public class DefinitionStep extends BasicInstallerStep {
 		productionProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
 		isolationProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER));
 		
+		// Check validity with no action
+		valid = true;
+		if( (showProductionDatabase && productionDatabase==null) ||
+			(showIsolationDatabase  && isolationDatabase==null) ||
+			(showProductionProvider && productionProvider==null) ||
+			(showIsolationProvider  && isolationProvider==null)    )  {
+			valid = false;
+		}
+		
 		// Save selections
 		add(new Button("save") {
 			private static final long serialVersionUID = 3996079889888596264L;
@@ -109,6 +120,32 @@ public class DefinitionStep extends BasicInstallerStep {
 				if( isolationDatabase!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE,isolationDatabase.getName());
 				if( productionProvider!=null ) toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER,productionProvider.getName());
 				if( isolationProvider!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER,isolationProvider.getName());
+				
+				// Check validity
+				StringBuilder msg = new StringBuilder();
+				if( showProductionDatabase && productionDatabase==null )msg.append("Production database is not defined. ");
+				if( showIsolationDatabase  && isolationDatabase==null)  msg.append("Isolation database is not defined. ");
+				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
+				if( showIsolationProvider  && isolationProvider==null)  msg.append("Isolation tag provider is not defined. ");
+				if( msg.length()==0 ) {
+					if(showProductionDatabase&&showIsolationDatabase&&
+					  productionDatabase.getName().equalsIgnoreCase(isolationDatabase.getName())) {
+						msg.append("Production and isolation databases may not be the same. ");
+					}
+					if(showProductionProvider&&showIsolationProvider&&
+							  productionProvider.getName().equalsIgnoreCase(isolationProvider.getName())) {
+								msg.append("Production and isolation tag providers may not be the same. ");
+					}
+				}
+				
+				if( msg.length()==0) {
+					valid = true;
+					info("Datasource and tag provider definitions are complete.");
+				}
+				else {
+					valid = false;
+					warn(msg.toString());
+				}
             }
         });
 	}
@@ -209,5 +246,18 @@ public class DefinitionStep extends BasicInstallerStep {
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	public IDynamicWizardStep next() {
+		IDynamicWizardStep next = null;
+		if( !valid  ) {
+			InstallerDataHandler handler = InstallerDataHandler.getInstance();
+			next = handler.getNextPanel(panelIndex,this,dataModel);
+		}
+		else {
+			next = super.next();
+		}
+		return next;
 	}
 }

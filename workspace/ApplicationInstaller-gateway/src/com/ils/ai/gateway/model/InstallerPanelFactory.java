@@ -6,7 +6,7 @@ package com.ils.ai.gateway.model;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.panel.BackupStep;
-import com.ils.ai.gateway.panel.BasicInstallerStep;
+import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.panel.ConclusionStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
@@ -23,9 +23,9 @@ import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
 /**
- *  Given a panel type and data model, create the wizard step.
+ *  Given a panel type and data model, create the wizard panel.
  */
-public class InstallerStepFactory  {
+public class InstallerPanelFactory  {
 
 
 	/**
@@ -33,8 +33,8 @@ public class InstallerStepFactory  {
 	 * @param panelType
 	 * @return
 	 */
-	public BasicInstallerStep createStep(int panelIndex,BasicInstallerStep prior,PanelType stepType,String title,Model<InstallerData> model) {
-		BasicInstallerStep step = null;
+	public BasicInstallerPanel createPanel(int panelIndex,BasicInstallerPanel prior,PanelType stepType,String title,Model<InstallerData> model) {
+		BasicInstallerPanel step = null;
 		switch( stepType)  {
 
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);

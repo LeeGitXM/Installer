@@ -8,25 +8,24 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
-import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
 
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class DatabaseStep extends BasicInstallerStep {
+public class DatabaseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
-	private TagProviderMeta selectedConnection = null;
+	private String datasource = "";
 
-	public DatabaseStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public DatabaseStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
-
-        final DatabaseStep thisPage = this;
         
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
 
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+        datasource = dataHandler.datasourceNameFromProperties(index, data);
+		add(new Label("datasource",datasource));
         
 
 	}

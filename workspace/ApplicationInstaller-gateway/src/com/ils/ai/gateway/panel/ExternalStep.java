@@ -26,10 +26,10 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ExternalStep extends BasicInstallerStep {
+public class ExternalStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
-	public ExternalStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public ExternalStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel);
 		
 		final ExternalStep thisPage = this;

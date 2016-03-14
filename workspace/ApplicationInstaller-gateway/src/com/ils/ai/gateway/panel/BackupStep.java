@@ -20,11 +20,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class BackupStep extends BasicInstallerStep {
+public class BackupStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ignition-backup.gwbk";
 
-	public BackupStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public BackupStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
         add(new Label("preamble",preamble).setEscapeModelStrings(false));

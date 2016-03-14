@@ -6,6 +6,7 @@ package com.ils.ai.gateway.panel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.image.Image;
@@ -26,11 +27,11 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ConclusionStep extends BasicInstallerStep {
+public class ConclusionStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ConclusionStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public ConclusionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));

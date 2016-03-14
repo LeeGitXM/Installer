@@ -17,11 +17,11 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
-public class ModuleStep extends BasicInstallerStep {
+public class ModuleStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ModuleStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public ModuleStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
         final ModuleStep thisPage = this;

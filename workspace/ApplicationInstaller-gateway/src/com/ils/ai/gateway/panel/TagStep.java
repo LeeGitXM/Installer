@@ -8,38 +8,42 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
-import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.TempFileTaskProgressListener;
-import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
-import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /**
  */
-public class TagStep extends BasicInstallerStep implements TempFileTaskProgressListener {
+public class TagStep extends BasicInstallerPanel implements TempFileTaskProgressListener {
 	private static final long serialVersionUID = 5388412865553172897L;
-	private TagProviderMeta selectedProvider = null;
+	private String provider = "";
 
-	public TagStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
-        
-        final TagStep thisPage = this;
+       
         
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
         
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+        InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+        provider = dataHandler.providerNameFromProperties(index, data);
+		add(new Label("provider",provider));
+		
+		List<String> resources = dataHandler.getArtifactNames(index,data);
+		add(new ListView<String>("tags",resources) {
+			private static final long serialVersionUID = -7571784271601338236L;
+
+			protected void populateItem(ListItem<String> item) {
+				String text = (String)item.getModelObject();
+				item.add(new Label("name",text));
+			}
+		});
        
-        
         add(new Button("install") {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
@@ -48,7 +52,7 @@ public class TagStep extends BasicInstallerStep implements TempFileTaskProgressL
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
             	for(String name:names) {
-            		dataHandler.loadArtifactAsTags(index,selectedProvider,name,data,TagStep.this);
+            		dataHandler.loadArtifactAsTags(index,provider,name,data,TagStep.this);
             		/*
             		if( result==null ) {
             			thisPage.info(String.format("Successfully loaded tag resource %s", name));

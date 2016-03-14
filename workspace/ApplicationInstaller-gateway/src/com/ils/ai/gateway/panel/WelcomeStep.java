@@ -24,12 +24,12 @@ import com.ils.ai.gateway.model.PropertyItem;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class WelcomeStep extends BasicInstallerStep {
+public class WelcomeStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "ReleaseNotes.pdf";
 
 	
-	public WelcomeStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public WelcomeStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
 
         add(new Label("preamble",preamble));

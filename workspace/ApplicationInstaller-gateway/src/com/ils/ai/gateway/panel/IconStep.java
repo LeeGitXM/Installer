@@ -18,11 +18,11 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
-public class IconStep extends BasicInstallerStep {
+public class IconStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public IconStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public IconStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
         final IconStep thisPage = this;

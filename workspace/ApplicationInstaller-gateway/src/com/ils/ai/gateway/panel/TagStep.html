@@ -35,11 +35,11 @@
 		<p class="spacer" />
 		<div>
 			<p>
-				<span class="label">Tag provider: </span><select
-					wicket:id="providers" />
+				<span class="label">Tag provider: </span>
+				<span wicket:id="provider" />
 			</p>
 		</div>
-		<p class="spacer" />
+		<br />
 		<div>
 			<table class="actiontable" style="width: 75%" cellpadding="0"
 				cellspacing="0">
@@ -53,11 +53,13 @@
 					</tr>
 				</tbody>
 			</table>
+			<p class="spacer" />
 			<div>
 				<form action="">
 					<input type="submit" wicket:id="install" value="Install Tags" />
 				</form>
 			</div>
+			<p class="spacer" />
 		</div>
 	</wicket:panel>
 </body>

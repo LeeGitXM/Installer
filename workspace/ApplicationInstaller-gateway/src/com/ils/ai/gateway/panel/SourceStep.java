@@ -18,10 +18,10 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class SourceStep extends BasicInstallerStep {
+public class SourceStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
-	public SourceStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public SourceStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));

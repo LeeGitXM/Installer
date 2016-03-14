@@ -21,12 +21,12 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class LicenseStep extends BasicInstallerStep {
+public class LicenseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private static String fileName = "license.html";
 	private boolean accepted = false;
 
-	public LicenseStep(int index,BasicInstallerStep previous,String title, Model<InstallerData> dataModel){
+	public LicenseStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
@@ -88,7 +88,7 @@ public class LicenseStep extends BasicInstallerStep {
 		IDynamicWizardStep next = null;
 		if( !accepted && panelData.getCurrentVersion() < futureVersion ) {
 			InstallerDataHandler handler = InstallerDataHandler.getInstance();
-			next = handler.getWizardStep(panelIndex,this,dataModel);
+			next = handler.getNextPanel(panelIndex,this,dataModel);
 		}
 		else {
 			next = super.next();

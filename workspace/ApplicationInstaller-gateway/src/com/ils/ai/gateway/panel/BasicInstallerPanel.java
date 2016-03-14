@@ -17,11 +17,11 @@ import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWiz
 /**
  * This class represents a panel in the Installer wizard.
  */
-public class BasicInstallerStep extends GatewayWizardStep {
+public class BasicInstallerPanel extends GatewayWizardStep {
 	private static final long serialVersionUID = 6830153148651712890L;
 	protected static final int UNSET = InstallerConstants.UNSET;  // For integer parameters that have no value.
 	protected final int panelIndex;
-	protected final BasicInstallerStep prior;
+	protected final BasicInstallerPanel prior;
 	protected final Model<InstallerData> dataModel;
 	protected final InstallerData data;
 	protected final PanelData panelData;
@@ -35,7 +35,7 @@ public class BasicInstallerStep extends GatewayWizardStep {
 	protected String futureVersionString = "";
 
 
-	public BasicInstallerStep(int index,BasicInstallerStep previous,String title,Model<InstallerData> model) {
+	public BasicInstallerPanel(int index,BasicInstallerPanel previous,String title,Model<InstallerData> model) {
 		super(previous,title, model);
 		this.panelIndex = index;
 		this.prior = previous;
@@ -74,7 +74,7 @@ public class BasicInstallerStep extends GatewayWizardStep {
 		IDynamicWizardStep next = null;
 		if( !isLastStep() ) {
 			InstallerDataHandler handler = InstallerDataHandler.getInstance();
-			next = handler.getWizardStep(panelIndex+1,this,dataModel);
+			next = handler.getNextPanel(panelIndex+1,this,dataModel);
 		}
 		return next;
 	}

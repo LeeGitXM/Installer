@@ -8,7 +8,7 @@
 	border-collapse: collapse;
 }
 .preamble {
-	width:75%;
+	width:65%;
 	float: left;
 	display:block;
 }
@@ -26,6 +26,11 @@
 	border-color: black;
 	text-align:center;
 	padding: 0px 0px 0px 0px;
+}
+
+select.chooser {
+	height:12px;
+	width:120px;
 }
 
 table.vers {

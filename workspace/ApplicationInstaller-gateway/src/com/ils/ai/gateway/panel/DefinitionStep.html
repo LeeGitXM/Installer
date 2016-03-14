@@ -14,25 +14,26 @@
 		<p wicket:id="preamble">should not appear</p>
 		<p class="spacer" />
 		<p class="spacer" />
-		
+
 		<table>
 			<tr>
-				<td><span class="label" wicket:id="productionProviderLabel" /><select
-					wicket:id="productionProviders" /></td>
+				<td><span class="label" wicket:id="productionProviderLabel" /></td>
+				<td><select class="chooser" wicket:id="productionProviders" /></td>
 				<td />
-				<td><span class="label" wicket:id="isolationProviderLabel" /><select
-					wicket:id="isolationProviders" /></td>
+				<td><span class="label" wicket:id="isolationProviderLabel" /></td>
+				<td><select class="chooser" wicket:id="isolationProviders" /></td>
 			</tr>
 
 			<tr>
-				<td><span class="label" wicket:id="productionDatabaseLabel" /><select
-					wicket:id="productionDatabases" /></td>
+				<td><span class="label" wicket:id="productionDatabaseLabel" /></td>
+				<td><select class="chooser" wicket:id="productionDatabases" /></td>
 				<td />
-				<td><span class="label" wicket:id="isolationDatabaseLabel" /><select
-					wicket:id="isolationDatabases" /></td>
+				<td><span class="label" wicket:id="isolationDatabaseLabel" /></td>
+				<td><select class="chooser" wicket:id="isolationDatabases" /></td>
 			</tr>
 			<tr />
 		</table>
+		<p class="spacer" />
 		<div>
 			<input type="submit" wicket:id="save" value="Save" />
 		</div>

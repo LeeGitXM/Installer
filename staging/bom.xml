@@ -118,7 +118,7 @@
 	<panel type="tag" subtype="test" essential="False" version="1">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
-		when running in ISOLATION mode.
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
 		</preamble>
 		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
@@ -136,7 +136,8 @@
 	</panel>
 	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>Blah.
+		<preamble>This page provides the opportunity for either creating a new database instantce or
+		altering an existing instance to accommodate schema corrections.
 		</preamble>
 		<property name="database" type="production"></property>
 		<artifact name="XOM Database" type="create" subtype="sql">
@@ -150,7 +151,10 @@
 	     Jar types are copied into lib -->
 	<panel type="external" essential="true" version="1">
 		<title>Python Code for Ignition Applications</title>
-		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
+		<preamble>This page loads Python code that supports the Ignition Application suite. 
+		The Python is divided into two categories: code developed by ILS Automation that is 
+		generic and used in multiple products, and code specific to the current XOM applications.
+		A third category consists of Java jar files that are referenced by the Python.
 		</preamble>
 		<artifact name="External Python - ILS" type="python" subtype="py">
 			<location>artifacts/external/ils-python</location>
@@ -189,7 +193,7 @@
 		<artifact name="Installation Manual" type="documentation" subtype="docx" release="0.12">
 			<location>artifacts/doc/InstallationManual.docx</location>
 		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="First">
+		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/ApplicationTestFramework.docx</location>
 		</artifact>
 		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.8">
@@ -198,13 +202,13 @@
 		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.5">
 			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="First">
+		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.5">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="First">
+		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
-		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="First">
+		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.4">
 			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
 		</artifact>
 	</panel>
