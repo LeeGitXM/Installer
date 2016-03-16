@@ -167,11 +167,11 @@
 		altering an existing instance to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
-		<property name="database" type="production"></property>
-		<artifact name="XOM Database" type="create" subtype="sql">
+		<property name="database" type="isolation"></property>
+		<artifact name="XOM Database" type="sql" subtype="create">
 			<location>artifacts/database/createXOM.sql</location>
 		</artifact>
-		<artifact name="XOM Database Update" type="alter" subtype="sql">
+		<artifact name="XOM Database Update" type="sql" subtype="alter">
 			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
