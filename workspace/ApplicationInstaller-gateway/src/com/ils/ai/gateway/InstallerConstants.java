@@ -19,6 +19,12 @@ public interface InstallerConstants   {
 	public final static String BOM_LOCATION = "artifacts/bom.xml";       // Location of bom within jar
 	public final static String MODULE_MARKER = ".application-installer"; // Name of file that marks the module as "the one"
 	
+	// These are the standard properties
+	public final static String PROPERTY_DATE    = "date";
+	public final static String PROPERTY_PRODUCT = "product";
+	public final static String PROPERTY_RELEASE = "release"; 
+	public final static String PROPERTY_VERSION = "version"; 
+	
 	// Indicator for an integer that has never been set.
 	public final static int UNSET = -2;
 }

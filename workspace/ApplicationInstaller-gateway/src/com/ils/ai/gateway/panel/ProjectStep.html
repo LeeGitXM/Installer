@@ -9,7 +9,6 @@
 </wicket:head>
 </head>
 <body>
-
 	<wicket:panel>
 		<div>
 			<p class="preamble" wicket:id="preamble">should not appear</p>
@@ -41,14 +40,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr wicket:id="full">
 					<td class="trow-title">Install new project</td>
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
 							<table>
 								<tr>
 									<td><span class="label">Source project: </span></td>
-									<td><select wicket:id="fullArtifacts" /></td>
+									<td><span wicket:id="fullProject" /></td>
 								</tr>
 								<tr>
 									<td><span class="label">New project name:</span></td>
@@ -62,28 +61,27 @@
 							</table>
 
 							<p>Install a clean, un-configured project into the gateway.
-								The chosen name cannot conflict with any existing project.
-								Repeat for every source project of interest.</p>
+								The chosen name may not conflict with any existing project.</p>
 						</form>
 					</td>
 				</tr>
-				<tr>
+				<tr wicket:id="partial">
 					<td class="trow-title">Merge with Existing Project</td>
 					<td class="trow-body">
 						<form wicket:id="mergeForm" action="">
 							<table>
 								<tr>
 									<td><span class="label">Source project:</span></td>
-									<td><select wicket:id="partialArtifacts" /></td>
+									<td><span wicket:id="partialProject" /></td>
+								</tr>
+								<tr>
+									<td><span class="label">Existing project:</span></td>
+									<td><select wicket:id="projects" /></td>
 								</tr>
 								<tr>
 									<td><span class="label">New project name:</span></td>
 									<td><input class="textbox" wicket:id="mergeName"
 										type="text" /></td>
-								</tr>
-								<tr>
-									<td><span class="label">Existing project:</span></td>
-									<td><select wicket:id="projects" /></td>
 								</tr>
 								<tr>
 									<td />
@@ -96,21 +94,20 @@
 						</form>
 					</td>
 				</tr>
-				<tr>
+				<tr wicket:id="global">
 					<td class="trow-title">Merge with Global Project</td>
 					<td class="trow-body">
 						<form wicket:id="globalForm" action="">
 							<table>
 								<tr>
 									<td><span class="label">Source project: </span></td>
-									<td><select wicket:id="globalArtifacts" /></td>
+									<td><span wicket:id="globalProject" /></td>
 								</tr>
 								<td />
 								<td><input style="align:right"type="submit" wicket:id="mergeGlobal"
 									value="Merge" /></td>
 							</table>
-							<p>Merge new or modified project resources contained in the
-								source project into the global project.</p>
+							<p>Merge new or modified project resources into the global project.</p>
 						</form>
 					</td>
 				</tr>

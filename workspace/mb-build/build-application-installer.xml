@@ -94,6 +94,9 @@
 		<!-- Copy staged artifacts into the bundle -->
 		<mkdir dir="${build.dir}/temp_modl/artifacts" />
 		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/database" />
+		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${build.dir}/temp_modl/artifacts/database/createXOM.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/createSfcTables.mysql.sql" tofile="${build.dir}/temp_modl/artifacts/database/createSfcTables.sql" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/InstallationManual.docx" />

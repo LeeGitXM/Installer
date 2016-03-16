@@ -15,11 +15,12 @@ public enum PanelType
             DEFINITION,
             DOCUMENTATION,
             EXTERNAL,       // Python, jar files
+            GLOBAL,         // global project
             ICON, 
             LICENSE,
             MODULE,         // 
             PROPERTY, 
-            PROJECT,       // Replacement or global
+            PROJECT,       // Replacement or new
             SCANCLASS,
             SOURCE,
             TAG,

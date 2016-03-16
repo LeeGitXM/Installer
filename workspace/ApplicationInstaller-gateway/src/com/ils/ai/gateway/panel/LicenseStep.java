@@ -19,7 +19,6 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
- * Created by travis.cox on 2/17/2016.
  */
 public class LicenseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;

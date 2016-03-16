@@ -9,7 +9,6 @@
 </wicket:head>
 </head>
 <body>
-
 	<wicket:panel>
 		<div>
 			<p class="preamble" wicket:id="preamble">should not appear</p>
@@ -35,12 +34,11 @@
 		<p class="spacer" />
 		<div>
 			<p>
-				<span class="label">Datasource: </span>
-				<span wicket:id="datasource" />
+				<span class="label">Datasource: </span> <span wicket:id="datasource" />
 			</p>
-		</div>>
+		</div>
 		<p class="spacer" />
-		<!-- 
+
 		<table class="edittable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
@@ -48,7 +46,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr wicket:id="create">
 					<td class="trow-title">Create new database instance</td>
 					<td class="trow-body">
 						<form wicket:id="createForm" action="">
@@ -60,12 +58,13 @@
 								</tr>
 							</table>
 
-							<p>Create or totally replace tables that support the application.
-								The new tables will be populated with an initial data set.</p>
+							<p>Create or totally replace tables that support the
+								application. The new tables will be populated with an initial
+								data set.</p>
 						</form>
 					</td>
 				</tr>
-				<tr>
+				<tr wicket:id="alter">
 					<td class="trow-title">Update an existing instance</td>
 					<td class="trow-body">
 						<form wicket:id="alterForm" action="">
@@ -76,15 +75,15 @@
 										wicket:id="alter" value="Alter" /></td>
 								</tr>
 							</table>
-							<p>Alter a previously created table to bring it in line with the current state of the application.
-							   Existing data will be preserved. It is not necessary to perform this step in addition to the
-							   previous.</p>
+							<p>Alter a previously created table to bring it in line with
+								the current state of the application. Existing data will be
+								preserved. It is not necessary to perform this step in addition
+								to the previous.</p>
 						</form>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		 -->
 	</wicket:panel>
 </body>
 </html>

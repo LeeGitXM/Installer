@@ -74,6 +74,7 @@ public class WelcomeStep extends BasicInstallerPanel {
         // Set whether or not to skip panels that are up-to-date
 		// Accept license
         String current = handler.getPreference("currentCheckbox");
+        data.setIgnoringCurrent(current.equalsIgnoreCase("true"));
 		CheckBox checkbox = new CheckBox("current", (current.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
 			private static final long serialVersionUID = -890605923748905601L;
 			
@@ -100,6 +101,8 @@ public class WelcomeStep extends BasicInstallerPanel {
 		
 		// Essential checkbox
 		String essential = handler.getPreference("essentialCheckbox");
+		data.setIgnoringOptional(current.equalsIgnoreCase("true"));
+		
 		checkbox = new CheckBox("essential", (essential.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
 			private static final long serialVersionUID = -890605923748905601L;
 

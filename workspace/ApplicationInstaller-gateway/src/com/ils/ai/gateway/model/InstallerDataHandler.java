@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
@@ -38,6 +40,11 @@ import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
+import com.inductiveautomation.ignition.common.model.ApplicationScope;
+import com.inductiveautomation.ignition.common.project.GlobalProps;
+import com.inductiveautomation.ignition.common.project.Project;
+import com.inductiveautomation.ignition.common.project.ProjectResource;
+import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -45,6 +52,7 @@ import com.inductiveautomation.ignition.gateway.SRContext;
 import com.inductiveautomation.ignition.gateway.images.ImageFormat;
 import com.inductiveautomation.ignition.gateway.images.ImageManager;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
+import com.inductiveautomation.ignition.gateway.project.ProjectManager;
 import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
 import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
 
@@ -144,6 +152,37 @@ public class InstallerDataHandler {
     		}
     	}
 		return datasource;
+	}
+	
+	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
+		String result = null;
+		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+		if( bytes!=null && bytes.length>0 ) {
+			// If we have data, we had to have a path
+			String sql = new String(bytes);
+			String[] lines = sql.split(";\n");
+			if( lines.length<2 ) {
+				lines = sql.split(";\r\n");
+				if( lines.length<2 ) {
+					lines = sql.split("GO\n");
+					if( lines.length<2 ) {
+						lines = sql.split("GO\r\n");
+					}
+				}
+			}
+			try {
+				result = dbUtil.executeMultilineSQL(lines, datasource);
+			}
+			catch( Exception ex) {
+				result = String.format( "Exception executing SQL (%s)",ex.getMessage());
+				log.warn(result);
+			}
+		}
+		else {
+			result = String.format( "Failed to find %s sql in bundle",artifactName);
+			log.warn(result);
+		}
+		return result;
 	}
 	/**
 	 * @param model
@@ -751,6 +790,59 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
+	public String loadProjectAtLocation(String location,String name,InstallerData model) {
+		String result = null;
+		Path internalPath = getPathToModule(model);
+		InputStream projectReader = null;
+		JarFile jar = null;
+		try {
+			jar = new JarFile(internalPath.toFile());
+			JarEntry entry = jar.getJarEntry(location);
+			if( entry!=null ) {
+				projectReader = jar.getInputStream(entry);
+				Project project = Project.fromXML(projectReader);
+				project.setName(name);
+				String description = project.getDescription();
+				project.setDescription(updateProjectDescription(description,model));
+				ProjectManager pmgr = getContext().getProjectManager();
+				pmgr.addProject(project, true);
+				long resid = project.getId();
+				GlobalProps props = pmgr.getProps(resid, ProjectVersion.Staging);
+				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
+				props.setAuthProfileName("default");
+				props.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
+				props.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
+			}
+			else {
+				result = String.format("Project location %s does not match a path in the release bundle", location);
+			}
+		}
+		catch(SAXException saxe) {
+			result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
+		}
+		catch(IOException ioe) {
+			result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
+		}
+		catch(Exception ex) {
+			result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
+		}
+		finally{
+			if(projectReader!=null) {
+				try {
+					projectReader.close();
+				}
+				catch(IOException ignore) {}
+			}
+			if( jar!=null ) {
+				try {
+					jar.close();
+				}
+				catch(IOException ignore) {}
+			}
+		}
+		return result;
+	}
+	
 	public String loadArtifactAsScanClass(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
@@ -793,6 +885,109 @@ public class InstallerDataHandler {
 			log.warn(result);
 		}
 
+		return result;
+	}
+
+	// Start with an existing project and create a new one with resources overridden from another.
+	public String mergeWithGlobalProjectFromLocation(String location,String name,InstallerData model) {
+		String result = null;
+
+		ProjectManager pmgr = getContext().getProjectManager();
+		Path internalPath = getPathToModule(model);
+		InputStream projectReader = null;
+		JarFile jar = null;
+		try {
+			Project mergee = pmgr.getGlobalProject(ApplicationScope.ALL);
+			jar = new JarFile(internalPath.toFile());
+			JarEntry entry = jar.getJarEntry(location);
+			if( entry!=null ) {
+				projectReader = jar.getInputStream(entry);
+				Project standard = Project.fromXML(projectReader);
+				standard.applyDiff(mergee);
+			}
+			else {
+				result = String.format("Project location %s does not match a path in the release bundle", location);
+			}
+		}
+		catch(SAXException saxe) {
+			result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
+		}
+		catch(IOException ioe) {
+			result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
+		}
+		catch(Exception ex) {
+			result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
+		}
+		finally{
+			if(projectReader!=null) {
+				try {
+					projectReader.close();
+				}
+				catch(IOException ignore) {}
+			}
+			if( jar!=null ) {
+				try {
+					jar.close();
+				}
+				catch(IOException ignore) {}
+			}
+		}
+
+
+		return result;
+	}
+	// Start with an existing project and create a new one with resources overridden from another.
+	public String mergeWithProjectFromLocation(Project existing,String location,String name,InstallerData model) {
+		String result = null;
+		if( existing!=null) {
+			ProjectManager pmgr = getContext().getProjectManager();
+			Path internalPath = getPathToModule(model);
+			InputStream projectReader = null;
+			JarFile jar = null;
+			try {
+				pmgr.copyProject(existing.getName(), name, true); // Will overwrite
+				Project mergee = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Staging);
+				String description = mergee.getDescription();
+				mergee.setDescription(updateProjectDescription(description,model));
+				
+				jar = new JarFile(internalPath.toFile());
+				JarEntry entry = jar.getJarEntry(location);
+				if( entry!=null ) {
+					projectReader = jar.getInputStream(entry);
+					Project standard = Project.fromXML(projectReader);
+					standard.applyDiff(mergee);
+				}
+				else {
+					result = String.format("Project location %s does not match a path in the release bundle", location);
+				}
+			}
+			catch(SAXException saxe) {
+				result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
+			}
+			catch(IOException ioe) {
+				result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
+			}
+			catch(Exception ex) {
+				result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
+			}
+			finally{
+				if(projectReader!=null) {
+					try {
+						projectReader.close();
+					}
+					catch(IOException ignore) {}
+				}
+				if( jar!=null ) {
+					try {
+						jar.close();
+					}
+					catch(IOException ignore) {}
+				}
+			}
+		}
+		else {
+			result = String.format("You must select an existing project to be the target of the merge");
+		}
 		return result;
 	}
 	/**
@@ -843,6 +1038,22 @@ public class InstallerDataHandler {
 	
 	public void setPreference(String key,String value) {
 		prefs.put(key,value);
+	}
+	
+	// Alter a project description to add its derivation
+	// Replace anything after a double dash
+	private String updateProjectDescription(String desc,InstallerData data) {
+		int pos = desc.indexOf("--");
+		if( pos>0 ) desc = desc.substring(pos);
+		String product = "";
+		String release = "";
+		String date = "";
+		for(PropertyItem pi:getProperties(data)) {
+			if(pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PRODUCT)) product = pi.getValue();
+			else if(pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATE)) date = pi.getValue();
+			else if(pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_RELEASE)) release = pi.getValue();
+		}
+		return String.format("%s -- %s, %s, %s --", desc,product,release,date);
 	}
 }
 
