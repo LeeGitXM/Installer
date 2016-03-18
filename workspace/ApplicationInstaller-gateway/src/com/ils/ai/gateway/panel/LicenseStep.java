@@ -94,4 +94,9 @@ public class LicenseStep extends BasicInstallerPanel {
 		}
 		return next;
 	}
+	
+	@Override
+	public boolean isNextAvailable() {
+		return false;
+	}
 }

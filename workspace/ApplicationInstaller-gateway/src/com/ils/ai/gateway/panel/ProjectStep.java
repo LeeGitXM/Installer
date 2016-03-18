@@ -71,7 +71,7 @@ public class ProjectStep extends BasicInstallerPanel {
         Label fullProject = new Label("fullProject",fullProjectName);
         newProjectForm.add(fullProject);
         TextField<String> newname = new TextField<String>("newName", Model.of(suggestedName(fullProjectName,panelData.getCurrentVersion())));
-        newname.add(new ProjectNameValidator());
+        //newname.add(new ProjectNameValidator());
         newProjectForm.add(newname);
 
         newProjectForm.add(new Button("new") {

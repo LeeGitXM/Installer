@@ -101,4 +101,10 @@ public class ConclusionStep extends BasicInstallerPanel {
 			}
 		});
 	}
+	
+	@Override
+	public void onFinish(Model<InstallerData> dataModel) {
+		
+	}
+
 }
