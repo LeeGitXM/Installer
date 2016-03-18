@@ -11,7 +11,6 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.panel.Success;
-import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizard;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardModel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;

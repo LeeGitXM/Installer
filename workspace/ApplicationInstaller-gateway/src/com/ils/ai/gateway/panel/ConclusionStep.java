@@ -6,23 +6,17 @@ package com.ils.ai.gateway.panel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.ContextRelativeResource;
 
-import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PanelData;
-import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
-import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /**
  * Created by travis.cox on 2/17/2016.
@@ -51,9 +45,7 @@ public class ConclusionStep extends BasicInstallerPanel {
 			}
 			pindex++;
 		}
-        
-		
-		
+       
 		add(new ListView<PropertyItem>("panels", panels) {
 			private static final long serialVersionUID = -4610581829738917953L;
 
