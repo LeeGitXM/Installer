@@ -281,5 +281,8 @@
 			the Gateway internal database.
 		</preamble>
 	</panel>
+	<!-- The summary page is displayed "onFinish()". Use HTML markup for formatting. -->
+	<summary>
+	</summary>
 </installer>
 

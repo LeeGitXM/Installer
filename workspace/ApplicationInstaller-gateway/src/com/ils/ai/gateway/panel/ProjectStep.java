@@ -35,8 +35,6 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String fullProjectLocation    = "";
 	private String partialProjectLocation = "";
 	private String globalProjectLocation  = "";
-	
-	
 	private Project selectedProject = null;     // Project to be merged
 	
 	public ProjectStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel) {
@@ -71,7 +69,6 @@ public class ProjectStep extends BasicInstallerPanel {
         Label fullProject = new Label("fullProject",fullProjectName);
         newProjectForm.add(fullProject);
         TextField<String> newname = new TextField<String>("newName", Model.of(suggestedName(fullProjectName,panelData.getCurrentVersion())));
-        newname.add(new ProjectNameValidator());
         newProjectForm.add(newname);
 
         newProjectForm.add(new Button("new") {
@@ -79,15 +76,22 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.loadProjectAtLocation(fullProjectLocation,newname.getValue(),data);
+				ProjectNameValidator validator = new ProjectNameValidator();
+				String result = validator.validate(newname);
 				if( result==null ) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					info(String.format("Project %s loaded successfully", newname.getValue()));
+					result = handler.loadProjectAtLocation(fullProjectLocation,newname.getValue(),data);
+					if( result==null ) {
+						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+						info(String.format("Project %s loaded successfully", newname.getValue()));
+					}
+					else {
+						warn(result);
+					}
 				}
 				else {
 					warn(result);
 				}
-            }
+			}
         });
 		full.add(newProjectForm);
         add(full);
@@ -109,11 +113,18 @@ public class ProjectStep extends BasicInstallerPanel {
 			private static final long serialVersionUID = 4110668774811578782L;
 
 			public void onSubmit() {
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,mergename.getValue(),data);
+				ProjectNameValidator validator = new ProjectNameValidator();
+				String result = validator.validate(mergename);
 				if( result==null ) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					info(String.format("Project %s merged successfully", mergename.getValue()));
+					InstallerDataHandler handler = InstallerDataHandler.getInstance();
+					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,mergename.getValue(),data);
+					if( result==null ) {
+						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+						info(String.format("Project %s merged successfully", mergename.getValue()));
+					}
+					else {
+						warn(result);
+					}
 				}
 				else {
 					warn(result);

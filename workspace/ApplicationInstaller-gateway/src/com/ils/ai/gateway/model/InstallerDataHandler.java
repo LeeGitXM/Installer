@@ -36,6 +36,7 @@ import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.ScanClassUtility;
 import com.ils.ai.gateway.utility.TagUtility;
+import com.ils.ai.gateway.utility.TransactionGroupUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
 import com.ils.common.db.DBUtility;
 import com.ils.common.persistence.ToolkitProperties;
@@ -43,7 +44,6 @@ import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.GlobalProps;
 import com.inductiveautomation.ignition.common.project.Project;
-import com.inductiveautomation.ignition.common.project.ProjectResource;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.util.LogUtil;
@@ -78,6 +78,7 @@ public class InstallerDataHandler {
 	private JarUtility jarUtil = null;
 	private ScanClassUtility scanUtil = null;
 	private TagUtility tagUtil = null;
+	private TransactionGroupUtility transactionUtil = null;
 	private XMLUtility xmlUtil = null;
 	private final InstallerPanelFactory stepFactory;
 	
@@ -272,8 +273,8 @@ public class InstallerDataHandler {
 		}
 		File file = null;
 		try {
-			file = File.createTempFile(artifactName, "xml");
-			Files.write(file.toPath(),bytes, StandardOpenOption.DELETE_ON_CLOSE);
+			file = File.createTempFile("tagartifacts",".xml");
+			Files.write(file.toPath(),bytes,StandardOpenOption.TRUNCATE_EXISTING);
 		}
 		catch(IOException ioe) {
 			log.warnf("%s.getArtifactAsTemporaryFile: IOException creating temporary file for panel %d:%s (%s)",CLSS,
@@ -865,26 +866,50 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
-	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model,TempFileTaskProgressListener listener) {
+	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
 
 		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
 		if( file != null ) {
 			try {
 				log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
-				listener.setTempFile(file);
-				tagUtil.listFromFile(file,providerName,listener);
+				tagUtil.importFromFile(file,providerName);
+			}
+			catch( SAXException saxe) {
+				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
 			}
 			catch( Exception ex) {
-				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-				log.warn(result);
+				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
+				log.warn("InstallerDataHandler.loadArtifactAsTags: EXCEPTION",ex);
 			}
 		}
 		else {
 			result = String.format( "Failed to find %s tags in bundle",artifactName);
-			log.warn(result);
 		}
 
+		return result;
+	}
+	
+	public String loadArtifactAsTransactionGroup(int panelIndex,String projectName,String artifactName,InstallerData model) {
+		String result = null;
+
+		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
+		if( file != null ) {
+			try {
+				log.infof("%s.loadArtifactAsTransactionGroup: Installing %s as %s",CLSS,file.getName(),artifactName);
+				transactionUtil.importFromFile(file,projectName);
+			}
+			catch( SAXException saxe) {
+				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
+			}
+			catch( Exception ex) {
+				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
+				log.warn("InstallerDataHandler.loadArtifactAsTransactionGroup: EXCEPTION",ex);
+			}
+		}
+		else {
+			result = String.format( "Failed to find %s transaction group in bundle",artifactName);
+		}
 		return result;
 	}
 
@@ -1033,6 +1058,7 @@ public class InstallerDataHandler {
 		this.jarUtil  = new JarUtility(context);
 		this.scanUtil = new ScanClassUtility();
 		this.tagUtil  = new TagUtility(context);
+		this.transactionUtil = new TransactionGroupUtility(context);
 		this.xmlUtil  = new XMLUtility();
 	}
 	

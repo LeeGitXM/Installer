@@ -5,6 +5,7 @@ package com.ils.ai.gateway.panel;
 
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.file.File;
 
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
@@ -77,5 +78,12 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 			next = handler.getNextPanel(panelIndex+1,this,dataModel);
 		}
 		return next;
+	}
+	
+	protected String fileNameFromLocation(String loc) {
+		String fname = loc;
+		int pos = fname.lastIndexOf(File.separator);
+		if( pos>0 ) fname = fname.substring(pos+1);
+		return fname;
 	}
 }

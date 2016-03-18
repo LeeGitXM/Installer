@@ -64,7 +64,7 @@ public class ScanClassStep extends BasicInstallerPanel {
             	for(String name:names) {
             		String result = dataHandler.loadArtifactAsScanClass(index,provider,name,data);
             		if( result==null ) {
-            			thisPage.info(String.format("Successfully loaded scanclass", name));
+            			thisPage.info(String.format("Successfully loaded scanclass %s", name));
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             		}
             		else thisPage.warn(result);

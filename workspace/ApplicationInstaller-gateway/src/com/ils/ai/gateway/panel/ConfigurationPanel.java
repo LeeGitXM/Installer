@@ -35,4 +35,5 @@ public class ConfigurationPanel extends ConfigPanel {
     public String[] getMenuPath() {
         return null;
     }
+    
 }

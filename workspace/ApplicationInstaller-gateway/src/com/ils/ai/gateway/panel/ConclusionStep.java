@@ -68,37 +68,5 @@ public class ConclusionStep extends BasicInstallerPanel {
                 if(!check) checkImage.setVisible(false);
             }
         });
-		
-		// Install properties into internal database
-		add(new Button("save") {
-			private static final long serialVersionUID = 4330778774811578782L;
-
-			public void onSubmit() {
-				GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-				PersistenceHandler dbHandler = PersistenceHandler.getInstance();
-				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-				List<PropertyItem> properties = dataHandler.getProperties(data);
-
-				// For starters get the product name
-				String productName = "";
-				for(PropertyItem prop:properties) {
-					if(prop.getName().equalsIgnoreCase("product")) {
-						productName  = prop.getValue();
-						break;
-					};
-				}
-				if( !productName.isEmpty() ) {
-					for(PropertyItem prop:properties) {
-						if(prop.getName().equalsIgnoreCase("product")) continue;
-						dbHandler.setProductProperty(productName, prop.getName(), prop.getValue());
-					}
-					info("You have reached an informed conclusion");
-				}
-				else {
-					warn("Product name is missing from configured properties. No properties update possible.");
-				}
-
-			}
-		});
 	}
 }

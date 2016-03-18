@@ -3,7 +3,6 @@
  */
 package com.ils.ai.gateway.panel;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,17 +13,18 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
-import com.ils.ai.gateway.model.TempFileTaskProgressListener;
+import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  */
-public class TagStep extends BasicInstallerPanel implements TempFileTaskProgressListener {
+public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
 	private String provider = "";
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
+        final TagStep thisPage = this;
         
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
@@ -51,47 +51,30 @@ public class TagStep extends BasicInstallerPanel implements TempFileTaskProgress
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
+            	StringBuilder success = new StringBuilder("");
+            	StringBuilder failure = new StringBuilder("");
+            	
             	for(String name:names) {
-            		dataHandler.loadArtifactAsTags(index,provider,name,data,TagStep.this);
-            		/*
+            		String result = dataHandler.loadArtifactAsTags(index,provider,name,data);
             		if( result==null ) {
-            			thisPage.info(String.format("Successfully loaded tag resource %s", name));
-            			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            			if(success.length()>0) success.append(", ");
+            			success.append(name);
             		}
-            		else thisPage.warn(result);
-            		*/
+            		else {
+            			if(failure.length()>0) failure.append(", ");
+            			failure.append(String.format("%s(%s)", name,result));
+            		}
             	}
+            	if(failure.length()==0 ) {
+            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
+            		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            	}
+            	else {
+            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            	}
+            	
             }
         });
     }
-	
-	
-	
-//  ===================================== Task Progress Listener  ====================================
-	// Retain the path to the temp file with data so that it can be deleted
-	@Override
-	public void setTempFile(File file) {
-		
-	}
-	@Override
-	public void setIndeterminate(boolean flag) {
-	}
-	@Override
-	public void setNote(String text) {
-		System.out.println("TagStep.setNote = "+text);
-	}
-	@Override
-	public void setProgress(int progress) {
-		System.out.println("TagStep.setProgress = "+progress);
-		
-	}
-	@Override
-	public void setProgressMax(int maxProgress) {
-		System.out.println("TagStep.setProgressMax = "+maxProgress);
-	}
-	@Override
-	public boolean isCanceled() {
-		return false;
-	}
 
 }

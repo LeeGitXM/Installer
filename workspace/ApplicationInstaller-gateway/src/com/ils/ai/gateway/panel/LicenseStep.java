@@ -83,15 +83,7 @@ public class LicenseStep extends BasicInstallerPanel {
 	}
 	
 	@Override
-	public IDynamicWizardStep next() {
-		IDynamicWizardStep next = null;
-		if( !accepted && panelData.getCurrentVersion() < futureVersion ) {
-			InstallerDataHandler handler = InstallerDataHandler.getInstance();
-			next = handler.getNextPanel(panelIndex,this,dataModel);
-		}
-		else {
-			next = super.next();
-		}
-		return next;
+	public boolean isNextAvailable() {
+		return accepted || panelData.getCurrentVersion() >= futureVersion ;
 	}
 }
