@@ -26,9 +26,13 @@ public class Success extends ConfigPanel {
 			System.out.println(c.getMarkupId() +": "+c.getClass().getName());
 			if(c instanceof Label ) {
 				Label label = (Label)c;
+				label.setEscapeModelStrings(false);
 				System.out.println(label.getDefaultModelObjectAsString());
-				Label replacement = new Label(c.getId(),"Replacement text");
+				Label replacement = new Label(c.getId(),"Replacement <u>text</u>");
 				label.replaceWith(replacement);
+				label.setEscapeModelStrings(false);
+				add(label);
+				label.render();
 				break;
 			}
 			else if(c instanceof MultiLineLabel ) {
