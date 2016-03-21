@@ -19,7 +19,7 @@ public class PanelData implements Serializable  {
 	private boolean essential = false;
 	private String subtype = "";
 	private String title = "";
-	private PanelType type = PanelType.CONCLUSION;     // Artifact type
+	private PanelType type = PanelType.SUMMARY;     // Artifact type
 	private int version = InstallerConstants.UNSET;
 	
 	public int getCurrentVersion() {return currentVersion;}

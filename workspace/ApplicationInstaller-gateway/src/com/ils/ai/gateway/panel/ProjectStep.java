@@ -79,7 +79,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				ProjectNameValidator validator = new ProjectNameValidator();
 				String result = validator.validate(newname);
 				if( result==null ) {
-					result = handler.loadProjectAtLocation(fullProjectLocation,newname.getValue(),data);
+					result = handler.loadArtifactAsProject(fullProjectLocation,newname.getValue(),data);
 					if( result==null ) {
 						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 						info(String.format("Project %s loaded successfully", newname.getValue()));

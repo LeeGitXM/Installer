@@ -21,11 +21,11 @@ import com.ils.ai.gateway.model.PropertyItem;
 /**
  * Created by travis.cox on 2/17/2016.
  */
-public class ConclusionStep extends BasicInstallerPanel {
+public class SummaryStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
 
-	public ConclusionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
+	public SummaryStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));

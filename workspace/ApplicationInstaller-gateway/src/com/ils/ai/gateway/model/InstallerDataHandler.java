@@ -6,6 +6,7 @@ package com.ils.ai.gateway.model;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +21,12 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
+import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
 
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,10 +47,17 @@ import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.GlobalProps;
 import com.inductiveautomation.ignition.common.project.Project;
+import com.inductiveautomation.ignition.common.project.ProjectPublishMode;
+import com.inductiveautomation.ignition.common.project.ProjectResource;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
+import com.inductiveautomation.ignition.common.user.AuthenticatedUser;
+import com.inductiveautomation.ignition.common.user.BasicAuthenticatedUser;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
+import com.inductiveautomation.ignition.common.xmlserialization.SerializationException;
+import com.inductiveautomation.ignition.common.xmlserialization.deserialization.XMLDeserializer;
+import com.inductiveautomation.ignition.common.xmlserialization.serialization.XMLSerializer;
 import com.inductiveautomation.ignition.gateway.SRContext;
 import com.inductiveautomation.ignition.gateway.images.ImageFormat;
 import com.inductiveautomation.ignition.gateway.images.ImageManager;
@@ -399,10 +409,84 @@ public class InstallerDataHandler {
 		}
 		// If we get here, then return a conclusion. This shouldn't happen if BOM is well-formed
 		String title = getStepTitle(count-1,data);
-		BasicInstallerPanel step = stepFactory.createPanel(index,prior,PanelType.CONCLUSION,title,dataModel);
+		BasicInstallerPanel step = stepFactory.createPanel(index,prior,PanelType.SUMMARY,title,dataModel);
 		return step;
 	}
 	
+	/**
+	 * The epilog is a panel with final instructions. There should be only one.
+	 * @param model
+	 * @return
+	 */
+	public Element getEpilogElement(InstallerData model) {
+		Node epilogElement = null;
+		Document bom = getBillOfMaterials(model);
+		if( bom!=null ) {
+			NodeList elements = bom.getElementsByTagName("epilog");
+			int count = elements.getLength();
+			if( count>0  ) {
+				epilogElement = elements.item(0);  
+			}
+			else {
+				log.warnf("%s.getEpilogElement: No epilog in Bill of Materials.",CLSS);
+			}
+		}
+		else {
+			log.warnf("%s.getEpilogElement: Failed to read BOM from module.",CLSS);
+		}
+		return (Element)epilogElement;
+	}
+	public String getFinalPreamble(InstallerData model) {
+		String text = "";    // If all else fails
+		Element finalElement = getEpilogElement(model);
+		if( finalElement!=null ) {
+			NodeList elements = finalElement.getElementsByTagName("preamble");
+			int count = elements.getLength();
+			if( count>0  ) {
+				Node element = elements.item(0);
+				text = element.getTextContent();
+			}
+			else {
+				log.warnf("%s.getFinalPreamble: No preamble element in epilog.",CLSS,count);
+			}
+		}
+		return text;
+	}
+	public String getFinalTitle(InstallerData model) {
+		String text = "";    // If all else fails
+		Element finalElement = getEpilogElement(model);
+		if( finalElement!=null ) {
+			NodeList elements = finalElement.getElementsByTagName("title");
+			int count = elements.getLength();
+			if( count>0  ) {
+				Node element = elements.item(0);
+				text = element.getTextContent();
+			}
+			else {
+				log.warnf("%s.getFinalTitle: No title element in epilog.",CLSS,count);
+			}
+		}
+		return text;
+	}
+	// Return property name value pairs associated with a particular panel
+	public List<PropertyItem> getFinalNotes(InstallerData model) {
+		List<PropertyItem> notes = new ArrayList<>();
+		Element epilog = getEpilogElement(model);
+		if( epilog!=null ) {
+			NodeList propertyNodes = epilog.getElementsByTagName("note");
+			int count = propertyNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node propertyNode = propertyNodes.item(index);
+				String name = xmlUtil.attributeValue(propertyNode, "name");
+				String value = propertyNode.getTextContent();
+				PropertyItem item = new PropertyItem(name,value);
+				notes.add(item);
+				index++;
+			}
+		}
+		return notes;
+	}
 	public Element getPanelElement(int panelIndex,InstallerData model) {
 		Node panelElement = null;
 		Document bom = getBillOfMaterials(model);
@@ -458,7 +542,7 @@ public class InstallerDataHandler {
 					}
 				}
 
-				PanelType type = PanelType.CONCLUSION;  // Because we have to set it to something
+				PanelType type = PanelType.SUMMARY;  // Because we have to set it to something
 				String val = xmlUtil.attributeValue(panelElement, "type");
 				try {
 					type = PanelType.valueOf(val.toUpperCase());
@@ -539,7 +623,6 @@ public class InstallerDataHandler {
 		return productName;
 	}
 
-
 	// Return property name value pairs
 	// We only want properties that are direct children
 	public List<PropertyItem> getProperties(InstallerData model) {
@@ -572,7 +655,7 @@ public class InstallerDataHandler {
 		}
 		return count;
 	}
-	
+
 	public String getStepPreamble(int panelIndex,InstallerData model) {
 		String text = "";    // If all else fails
 		Element panelElement = getPanelElement(panelIndex,model);
@@ -791,7 +874,7 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
-	public String loadProjectAtLocation(String location,String name,InstallerData model) {
+	public String loadArtifactAsProject(String location,String name,InstallerData model) {
 		String result = null;
 		Path internalPath = getPathToModule(model);
 		InputStream projectReader = null;
@@ -806,13 +889,14 @@ public class InstallerDataHandler {
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
 				ProjectManager pmgr = getContext().getProjectManager();
-				pmgr.addProject(project, true);
-				long resid = project.getId();
+				long resid = pmgr.addProject(project, true);
 				GlobalProps props = pmgr.getProps(resid, ProjectVersion.Staging);
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
 				props.setAuthProfileName("default");
 				props.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
 				props.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
+				AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
 			}
 			else {
 				result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -928,7 +1012,11 @@ public class InstallerDataHandler {
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
 				Project standard = Project.fromXML(projectReader);
-				standard.applyDiff(mergee);
+				mergee.applyDiff(standard);  // Standard overwrites
+				GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
+				AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+				pmgr.saveProject(mergee, user, "n/a", 
+						String.format("ILS Automation Installer: global updated from %s",standard.getName()), false);
 			}
 			else {
 				result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -971,7 +1059,7 @@ public class InstallerDataHandler {
 			JarFile jar = null;
 			try {
 				pmgr.copyProject(existing.getName(), name, true); // Will overwrite
-				Project mergee = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Staging);
+				Project mergee = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
 				String description = mergee.getDescription();
 				mergee.setDescription(updateProjectDescription(description,model));
 				
@@ -980,7 +1068,11 @@ public class InstallerDataHandler {
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
 					Project standard = Project.fromXML(projectReader);
-					standard.applyDiff(mergee);
+					mergee.applyDiff(standard);
+					GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
+					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+					pmgr.saveProject(mergee, user, "n/a", 
+							String.format("ILS Automation Installer: updated from %s",standard.getName()), false);
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -1060,6 +1152,8 @@ public class InstallerDataHandler {
 		this.tagUtil  = new TagUtility(context);
 		this.transactionUtil = new TransactionGroupUtility(context);
 		this.xmlUtil  = new XMLUtility();
+	
+				
 	}
 	
 	public void setPreference(String key,String value) {
@@ -1080,6 +1174,66 @@ public class InstallerDataHandler {
 			else if(pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_RELEASE)) release = pi.getValue();
 		}
 		return String.format("%s -- %s, %s, %s --", desc,product,release,date);
+	}
+	private void dumpXML(String label,ProjectResource res) {
+		System.out.println(label);
+		InputStream is = new ByteArrayInputStream(res.getData());
+		XMLDeserializer deserializer = new XMLDeserializer();
+		deserializer.getClassNameMap().addDefaults();
+		XMLSerializer serializer = new XMLSerializer();
+		serializer.getClassNameMap().addDefaults();
+		try {
+			String xml = deserializer.transcodeToXML(is, serializer);
+			System.out.println(xml);
+		}
+		catch(SerializationException sex) {
+			System.out.println(String.format("%s.dumpXML: Exception deserializing (%s)",CLSS, sex.getMessage()));
+		}
+		
+	}
+	
+	/**
+	 * Replace the global properties resource in the project.
+	 * @param proj
+	 * @param props
+	 */
+	private void updateGlobalProps(ProjectManager pmgr, Project proj, GlobalProps props) {
+		ProjectResource globalPropsRes = proj.getResourceOfType("", "sr.global.props");
+		dumpXML("updateGlobalProps: original",globalPropsRes);
+		proj.deleteResource(globalPropsRes.getResourceId());
+		try {
+			props.setPublishMode(ProjectPublishMode.Auto);
+			long resid = pmgr.getNewResourceId();
+			XMLSerializer serializer = new XMLSerializer();
+			serializer.getClassNameMap().addDefaults();
+			serializer.addObject(props);
+			
+			String newXML = serializer.serializeXML();
+			System.out.println(newXML);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			GZIPOutputStream zipOut = new GZIPOutputStream(baos);
+			IOUtils.copy(new ByteArrayInputStream(newXML.getBytes("UTF-8")), zipOut);
+			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+			xml = xml+"<objects>\n";
+			xml = xml+"<o cls=\"com.inductiveautomation.ignition.common.project.GlobalProps\">\n";
+			xml = xml+"<o-c m=\"setAuthProfileName\" s=\"1;str\"><str id=\"0\">default</str></o-c>\n";
+			xml = xml+"<o-c m=\"setDefaultDatasourceName\" s=\"1;str\"><ref>0</ref></o-c>\n";
+			xml = xml+"<o-c m=\"setDefaultSQLTagsProviderName\" s=\"1;str\"><ref>0</ref></o-c>\n";
+			xml = xml+"</o>\n";
+			xml = xml+"</objects>\n";
+
+			//byte[] bytes = baos.toByteArray();
+			byte[] bytes = xml.getBytes();
+			ProjectResource resource = new ProjectResource(resid,"","sr.global.props","GlobalProps",
+										ApplicationScope.ALL,bytes);
+			zipOut.close();
+			dumpXML("updateGlobalProps: new (from res)",resource);
+			System.out.println(String.format("Resource is %d bytes",bytes.length));
+			proj.putResource(resource);
+		}
+		catch(Exception ex) {
+			System.out.println(String.format("%s.updateGlobalProps: Exception getting resource ID (%s)",CLSS, ex.getMessage()));
+		}
 	}
 }
 

@@ -10,7 +10,7 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
-import com.ils.ai.gateway.panel.Success;
+import com.ils.ai.gateway.panel.FinalPage;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizard;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardModel;
 import com.inductiveautomation.ignition.gateway.web.pages.IConfigPage;
@@ -35,8 +35,8 @@ public class InstallWizard extends GatewayWizard {
 	public void onFinish(IModel iModel, IConfigPage iConfigPage) {
 		Model<InstallerData> dataModel = (Model<InstallerData>)iModel;
 		recordCompletion(dataModel.getObject());
-		iConfigPage.setConfigPanel(new Success());
-		ApplicationInstallerGatewayHook.getInstance().uninstallMenuNodes(true);
+		iConfigPage.setConfigPanel(new FinalPage(dataModel));
+		new Thread(new PageRunner()).start();
 	}
 	
 	private void recordCompletion(InstallerData data) {
@@ -57,10 +57,25 @@ public class InstallWizard extends GatewayWizard {
 				if(prop.getName().equalsIgnoreCase("product")) continue;
 				dbHandler.setProductProperty(productName, prop.getName(), prop.getValue());
 			}
-			info("You have reached an informed conclusion");
 		}
 		else {
 			warn("Product name is missing from configured properties. No properties update possible.");
+		}
+	}
+	
+	/**
+	 * Delay for long enough to display the page, then delete the module.
+	 * @author chuckc
+	 *
+	 */
+	public class PageRunner implements Runnable {
+		public void run() {
+			try {
+				Thread.sleep(10000);    // 10 secs
+			}
+			catch(InterruptedException ignore) {}
+			System.out.println("InstallWizard: uninstalling installer module");
+			ApplicationInstallerGatewayHook.getInstance().uninstallMenuNodes(true);
 		}
 	}
 }

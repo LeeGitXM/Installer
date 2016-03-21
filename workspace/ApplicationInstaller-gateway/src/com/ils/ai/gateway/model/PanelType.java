@@ -10,7 +10,6 @@ package com.ils.ai.gateway.model;
 public enum PanelType
 {
             BACKUP,
-            CONCLUSION,
             DATABASE,
             DEFINITION,
             DOCUMENTATION,
@@ -23,6 +22,7 @@ public enum PanelType
             PROJECT,       // Replacement or new
             SCANCLASS,
             SOURCE,
+            SUMMARY,
             TAG,
             TOOLKIT,
             TRANSACTIONGROUP,

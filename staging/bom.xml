@@ -275,14 +275,23 @@
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
 	</panel>
 	<!-- The conclusion panel must always be displayed, thus no version -->
-	<panel type="conclusion" essential="true">
-		<title>Installation Complete</title>
-		<preamble>Record the current version of EMC Ignition Applications in
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of EMC Ignition Applications in
 			the Gateway internal database.
 		</preamble>
 	</panel>
-	<!-- The summary page is displayed "onFinish()". Use HTML markup for formatting. -->
-	<summary>
-	</summary>
+	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<epilog>
+		<title>Ignition Applications</title>
+		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
+		          is complete, there are just a few more manual steps required. </preamble>
+		<note name="Authorization">Be sure to verify authorizations on any projects that were created. For any new 
+		            projects, the default authentication profile was used.</note>
+		<note name="Old Projects">No projects were overwritten. This might be a good time to delete obsolete versions and
+		                          rename the newly installed projects back to their familiar names.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
 </installer>
 

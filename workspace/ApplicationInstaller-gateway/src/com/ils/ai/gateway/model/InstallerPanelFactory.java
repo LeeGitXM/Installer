@@ -7,7 +7,7 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
-import com.ils.ai.gateway.panel.ConclusionStep;
+import com.ils.ai.gateway.panel.SummaryStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
@@ -39,8 +39,6 @@ public class InstallerPanelFactory  {
 
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
 				break;
-			case CONCLUSION: step = new ConclusionStep(panelIndex,prior,title,model);
-				break;
 			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);
 				break;
 			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
@@ -62,6 +60,8 @@ public class InstallerPanelFactory  {
 			case SCANCLASS: step = new ScanClassStep(panelIndex,prior,title,model);
 				break;
 			case SOURCE: step = new SourceStep(panelIndex,prior,title,model);
+				break;
+			case SUMMARY: step = new SummaryStep(panelIndex,prior,title,model);
 				break;
 			case TAG: step = new TagStep(panelIndex,prior,title,model);
 				break;

@@ -6,7 +6,7 @@
 
 	<import file="${basedir}/mb-build/build.xml"/>
 
-	<property name="version.build" value="0" />	
+	<property name="version.build" value="1" />	
 	<property name="version.beta" value="-development" />		
 	<property name="AIModule.version" value="2.0.1.${version.build}" />
 	<property name="AIModule.name" value="ApplicationInstaller" />

@@ -29,7 +29,7 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 	protected final String product;
 	protected String preamble = "";
 	protected String subtype = "";
-	protected PanelType type = PanelType.CONCLUSION;
+	protected PanelType type = PanelType.SUMMARY;
 	protected int futureVersion = InstallerConstants.UNSET;
 	
 	protected String currentVersionString = "";
