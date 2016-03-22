@@ -217,7 +217,7 @@ public class InstallerDataHandler {
 	}
 	/**
 	 * @param model
-	 * @return a list of the names of the artifacts associated with this step
+	 * @return the contents of the specified artifact as a byte array.
 	 */
 	public byte[] getArtifactAsBytes(int panelIndex,String artifactName,InstallerData model) {
 		byte[] bytes = null;
@@ -251,7 +251,8 @@ public class InstallerDataHandler {
 	}
 	/**
 	 * @param model
-	 * @return a list of the names of the artifacts associated with this step
+	 * @return a reference to a temporary file that contains the contents of the specified
+	 *         artifact. The file should be automatically deleted on closure.
 	 */
 	public File getArtifactAsTemporaryFile(int panelIndex,String artifactName,InstallerData model) {
 		byte[] bytes = null;
@@ -320,6 +321,52 @@ public class InstallerDataHandler {
 			}
 		}
 		return internalPath;
+	}
+	
+	/**
+	 * We use a simplified mime type based on the file extension of the artifact's location.
+	 * @param model
+	 * @return the mimetype of the specified artifact.
+	 */
+	public String getArtifactMimeType(int panelIndex,String artifactName,InstallerData model) {
+		String mime = "application/zip"; 
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+				if( artifactName.equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "name")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						String filepath = locationNode.getTextContent();
+						int pos = filepath.lastIndexOf(".");
+						if( pos>0 ) {
+							String extension = filepath.substring(pos+1);
+							if( extension.equalsIgnoreCase("PDF"))       mime = "application/pdf";
+							else if( extension.equalsIgnoreCase("DOC"))  mime ="application/msword";
+							else if( extension.equalsIgnoreCase("DOCX")) mime ="application/msword";
+							else if( extension.equalsIgnoreCase("ZIP"))  mime = "application/zip";
+							else {
+								log.warnf("%s.getArtifactMimeType: panel %d:%s %s has unrecognized file extension",CLSS,panelIndex,artifactName,filepath);
+							}
+						}
+						else {
+							log.warnf("%s.getArtifactMimeType: panel %d:%s %s has no file extension",CLSS,panelIndex,artifactName,filepath);
+						}
+					}
+					else {
+						log.warnf("%s.getArtifactMimeType: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		return mime;
 	}
 	/**
 	 * @param model

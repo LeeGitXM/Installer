@@ -65,7 +65,9 @@ public class SourceStep extends BasicInstallerPanel {
 		                    }
 							@Override
 							public String getContentType () {
-								return "application/zip";
+								InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		                        String mime = dataHandler.getArtifactMimeType(index,artifact.getName(),data);
+		                        return mime;
 							}
 						};
 

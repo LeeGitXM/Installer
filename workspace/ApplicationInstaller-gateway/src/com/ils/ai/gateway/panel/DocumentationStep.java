@@ -54,6 +54,7 @@ public class DocumentationStep extends BasicInstallerPanel {
 					@Override
 					public void onClick() {
 						AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
+							private static final long serialVersionUID = 8346007006721901917L;
 							@Override
 		                    public void write(OutputStream output) throws IOException {
 								InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
@@ -66,7 +67,9 @@ public class DocumentationStep extends BasicInstallerPanel {
 		                    }
 							@Override 
 							public String getContentType () {
-								return "application/msword";
+								InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		                        String mime = dataHandler.getArtifactMimeType(index,artifact.getName(),data);
+		                        return mime;
 							}
 						};
 

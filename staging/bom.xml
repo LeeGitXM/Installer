@@ -284,7 +284,7 @@
 	</panel>
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
-		<title>Ignition Applications</title>
+		<title>Ignition Applications - Installed</title>
 		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
 		<note name="Authorization">Be sure to verify authorizations on any projects that were created. For any new 

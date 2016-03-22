@@ -94,6 +94,7 @@ public class PersistenceHandler {
 			log.warnf("%s.setArtifactRelease: Exception setting %s:%s:%s:%s=%s (%s),",CLSS,productName,type.name(),subtype,artifactName,release,ex.getMessage());
 		}
 	}
+
 	/**
 	 * @return the value of a product property. Keys are product name and property name.
 	 * On a failure to find the property, an empty string is returned.

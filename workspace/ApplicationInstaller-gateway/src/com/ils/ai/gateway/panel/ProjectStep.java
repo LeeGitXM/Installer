@@ -21,6 +21,8 @@ import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
+import com.ils.ai.gateway.model.SQuery;
+import com.ils.ai.gateway.model.UserSourceProfileRecord;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -62,6 +64,7 @@ public class ProjectStep extends BasicInstallerPanel {
         	}
         }
 	
+        List<UserSourceProfileRecord> profiles = context.getPersistenceInterface().query(new SQuery<UserSourceProfileRecord>(UserSourceProfileRecord.META));
 		// New Project form
         WebMarkupContainer full = new WebMarkupContainer("full");
         full.setVisible(!fullProjectLocation.isEmpty());

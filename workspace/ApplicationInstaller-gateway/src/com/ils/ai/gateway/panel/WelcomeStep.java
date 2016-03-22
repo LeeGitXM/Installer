@@ -146,7 +146,9 @@ public class WelcomeStep extends BasicInstallerPanel {
                     }
 					@Override
 					public String getContentType () {
-						return "application/pdf";
+						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+                        String mime = dataHandler.getArtifactMimeType(index,"notes",data);
+                        return mime;
 					}
                 };
                 
