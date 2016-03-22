@@ -4,7 +4,7 @@
 	<id>com.ils.installer</id>
 	<name>ApplicationInstaller</name>
 	<description>IgnitionApplication Installer</description>
-	<license>license.html</license>
+	<license></license>
 	<version>1.0.0.0</version>
 	<freemodule>true</freemodule>
 	<requiredignitionversion>7.8.0</requiredignitionversion>

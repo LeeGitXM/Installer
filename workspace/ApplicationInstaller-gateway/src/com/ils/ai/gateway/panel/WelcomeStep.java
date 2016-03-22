@@ -72,7 +72,6 @@ public class WelcomeStep extends BasicInstallerPanel {
         });
         
         // Set whether or not to skip panels that are up-to-date
-		// Accept license
         String current = handler.getPreference("currentCheckbox");
         data.setIgnoringCurrent(current.equalsIgnoreCase("true"));
 		CheckBox checkbox = new CheckBox("current", (current.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
@@ -82,8 +81,6 @@ public class WelcomeStep extends BasicInstallerPanel {
 			protected boolean wantOnSelectionChangedNotifications() {
 				return true;
 			}
-			// We don't care what the value is. As long as they click on the box, we're good.
-			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
@@ -109,7 +106,6 @@ public class WelcomeStep extends BasicInstallerPanel {
 			protected boolean wantOnSelectionChangedNotifications() {
 				return true;
 			}
-			// We don't care what the value is. As long as they click on the box, we're good.
 			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
