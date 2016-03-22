@@ -921,7 +921,7 @@ public class InstallerDataHandler {
 		return result;
 	}
 	
-	public String loadArtifactAsProject(String location,String name,InstallerData model) {
+	public String loadArtifactAsProject(String location,String name,String profile,InstallerData model) {
 		String result = null;
 		Path internalPath = getPathToModule(model);
 		InputStream projectReader = null;
@@ -931,18 +931,28 @@ public class InstallerDataHandler {
 			JarEntry entry = jar.getJarEntry(location);
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
+				ProjectManager pmgr = getContext().getProjectManager();
 				Project project = Project.fromXML(projectReader);
 				project.setName(name);
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
-				ProjectManager pmgr = getContext().getProjectManager();
-				long resid = pmgr.addProject(project, true);
-				GlobalProps props = pmgr.getProps(resid, ProjectVersion.Staging);
+				
+				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
+				
+				GlobalProps globalProps = project.decodeOrCreate(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, context.createDeserializer(), GlobalProps.class);
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
-				props.setAuthProfileName("default");
-				props.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
-				props.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
-				AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+				globalProps.setAuthProfileName(profile);
+				globalProps.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
+				globalProps.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
+
+				XMLSerializer serializer = new XMLSerializer();
+				serializer.getClassNameMap().addDefaults();
+				serializer.addObject(globalProps);
+				byte[] bytes = serializer.serializeBinary(true);
+				ProjectResource resource = new ProjectResource(propsResource.getResourceId(), GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.ALL, bytes);
+				project.putResource(resource, true);
+				
+				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),"1","admin",globalProps.getRequiredRoles());
 				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
 			}
 			else {

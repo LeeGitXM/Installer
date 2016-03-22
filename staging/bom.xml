@@ -65,8 +65,8 @@
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications.
 		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
+		<!-- For projects, artifact subtypes are: full, overwrite, partial and global -->
+		<artifact name="XOM" type="project" subtype="overwrite">
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
 		<artifact name="XOM Partial Project" type="project" subtype="partial">

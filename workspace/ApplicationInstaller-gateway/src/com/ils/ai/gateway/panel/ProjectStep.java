@@ -21,23 +21,27 @@ import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
-import com.ils.ai.gateway.model.SQuery;
-import com.ils.ai.gateway.model.UserSourceProfileRecord;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
+import com.inductiveautomation.ignition.gateway.user.UserSourceProfileRecord;
+
+import simpleorm.dataset.SQuery;
 
 /**
  */
 public class ProjectStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 9066858944253432239L;
-	private String fullProjectName    = "UNUSED";
-	private String partialProjectName = "UNUSED";
-	private String globalProjectName  = "UNUSED";
-	private String fullProjectLocation    = "";
-	private String partialProjectLocation = "";
-	private String globalProjectLocation  = "";
-	private Project selectedProject = null;     // Project to be merged
+	private String fullProjectName        = "UNUSED";
+	private String overwrittenProjectName = "UNUSED";
+	private String partialProjectName     = "UNUSED";
+	private String globalProjectName      = "UNUSED";
+	private String fullProjectLocation        = "";
+	private String overwrittenProjectLocation = "";
+	private String partialProjectLocation     = "";
+	private String globalProjectLocation      = "";
+	private UserSourceProfileRecord selectedAuth = null;    // Authentication profile
+	private Project selectedProject = null;                 // Project to be merged
 	
 	public ProjectStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
@@ -54,6 +58,10 @@ public class ProjectStep extends BasicInstallerPanel {
         		fullProjectName = art.getName();
         		fullProjectLocation = art.getLocation();
         	}
+        	else if( art.getSubtype().equalsIgnoreCase("overwritten")) {
+        		overwrittenProjectName = art.getName();
+        		overwrittenProjectLocation = art.getLocation();
+        	}
         	else if( art.getSubtype().equalsIgnoreCase("partial")) {
         		partialProjectName = art.getName();
         		partialProjectLocation = art.getLocation();
@@ -64,7 +72,9 @@ public class ProjectStep extends BasicInstallerPanel {
         	}
         }
 	
-        List<UserSourceProfileRecord> profiles = context.getPersistenceInterface().query(new SQuery<UserSourceProfileRecord>(UserSourceProfileRecord.META));
+        AuthenticationList profiles = new AuthenticationList("profiles", new PropertyModel<UserSourceProfileRecord>(this, "selectedAuth"), getProfiles());
+		add(profiles);
+		
 		// New Project form
         WebMarkupContainer full = new WebMarkupContainer("full");
         full.setVisible(!fullProjectLocation.isEmpty());
@@ -82,7 +92,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				ProjectNameValidator validator = new ProjectNameValidator();
 				String result = validator.validate(newname);
 				if( result==null ) {
-					result = handler.loadArtifactAsProject(fullProjectLocation,newname.getValue(),data);
+					result = handler.loadArtifactAsProject(fullProjectLocation,newname.getValue(),selectedAuth.getName(),data);
 					if( result==null ) {
 						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 						info(String.format("Project %s loaded successfully", newname.getValue()));
@@ -197,7 +207,42 @@ public class ProjectStep extends BasicInstallerPanel {
 			return new Long(project.getId()).toString();
 		}
 	}
+	// ================================= Classes for Listing Auth Profiles  ==============================
+	public class AuthenticationList extends DropDownChoice<UserSourceProfileRecord> {
+		private static final long serialVersionUID = -6176535065922396528L;
+
+		public AuthenticationList(String key,PropertyModel<UserSourceProfileRecord>model,List<UserSourceProfileRecord> list) {
+			super(key,model,list,new AuthenticationRenderer());
+		}
+
+		@Override
+		public boolean wantOnSelectionChangedNotifications() { return true; }
+
+		@Override
+		protected void onSelectionChanged(final UserSourceProfileRecord newSelection) {
+			super.onSelectionChanged(newSelection);
+		}
+	}
+
+	public class AuthenticationRenderer implements IChoiceRenderer<UserSourceProfileRecord> {
+		private static final long serialVersionUID = 4630298963332443090L;
+
+		@Override
+		public Object getDisplayValue(UserSourceProfileRecord profile) {
+			return profile.getName();
+		}
+
+		@Override
+		public String getIdValue(UserSourceProfileRecord profile, int i) {
+			return new Long(profile.getId()).toString();
+		}
+	}
 	//===============================================================================
+	private List<UserSourceProfileRecord> getProfiles() {
+		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
+		List<UserSourceProfileRecord> profiles = context.getPersistenceInterface().query(new SQuery<UserSourceProfileRecord>(UserSourceProfileRecord.META));
+		return profiles;
+	}
 	private List<Project> getProjects() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
