@@ -80,10 +80,6 @@
 		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${AIModule.name}_Gateway/dist/ai-gateway.jar" todir="${build.dir}/temp_modl/" />
 		
-
-		<!-- Copy license file into the bundle -->
-		<copy file="${build.dir}/license.html" todir="${build.dir}/temp_modl/" />
-
 		<!-- Echo the version into .version in the bundle and to be saved -->
 		<echo message="${AIModule.name}-${AIModule.version}:${AIModule.release}" file="${build.dir}/temp_modl/.version" append="false"/>
 		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.version" append="false"/>

@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -33,15 +34,14 @@ import simpleorm.dataset.SQuery;
 public class ProjectStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 9066858944253432239L;
 	private String fullProjectName        = "UNUSED";
-	private String overwrittenProjectName = "UNUSED";
 	private String partialProjectName     = "UNUSED";
 	private String globalProjectName      = "UNUSED";
 	private String fullProjectLocation        = "";
-	private String overwrittenProjectLocation = "";
 	private String partialProjectLocation     = "";
 	private String globalProjectLocation      = "";
 	private UserSourceProfileRecord selectedAuth = null;    // Authentication profile
 	private Project selectedProject = null;                 // Project to be merged
+	private boolean backupProject = false;
 	
 	public ProjectStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
@@ -58,10 +58,6 @@ public class ProjectStep extends BasicInstallerPanel {
         		fullProjectName = art.getName();
         		fullProjectLocation = art.getLocation();
         	}
-        	else if( art.getSubtype().equalsIgnoreCase("overwritten")) {
-        		overwrittenProjectName = art.getName();
-        		overwrittenProjectLocation = art.getLocation();
-        	}
         	else if( art.getSubtype().equalsIgnoreCase("partial")) {
         		partialProjectName = art.getName();
         		partialProjectLocation = art.getLocation();
@@ -74,6 +70,29 @@ public class ProjectStep extends BasicInstallerPanel {
 	
         AuthenticationList profiles = new AuthenticationList("profiles", new PropertyModel<UserSourceProfileRecord>(this, "selectedAuth"), getProfiles());
 		add(profiles);
+		// Set whether or not to skip panels that are up-to-date
+		// Accept license
+		String backup = dataHandler.getPreference("backupCheckbox");
+		backupProject = backup.equalsIgnoreCase("true");
+		CheckBox checkbox = new CheckBox("backup", (backupProject?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
+			private static final long serialVersionUID = -1551368213086376136L;
+
+			protected boolean wantOnSelectionChangedNotifications() {return true;}
+			// The value is "on" for selected, null for not.
+			@Override
+			public void onSelectionChanged() {
+				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+				if(getValue()==null) {
+					backupProject = false;
+					dataHandler.setPreference("backupCheckbox","false");
+				}
+				else {
+					backupProject = true;
+					dataHandler.setPreference("backupCheckbox","true");
+				}
+			}
+		};
+		add(checkbox);
 		
 		// New Project form
         WebMarkupContainer full = new WebMarkupContainer("full");

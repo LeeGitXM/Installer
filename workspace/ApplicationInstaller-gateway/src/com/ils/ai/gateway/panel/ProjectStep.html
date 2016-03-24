@@ -32,7 +32,16 @@
 			</div>
 		</div>
 		<p class="spacer" />
-		<p><span class="label">Authentication Profile: </span>><select wicket:id="profiles" /></p>
+		<div>
+			<table>
+				<tr>
+					<td><label>Authentication Profile: </label> <select
+						wicket:id="profiles" /></td>
+					<td><label>Create backup:</label> <input type="checkbox"
+						wicket:id="backup" /></td>
+				</tr>
+			</table>
+		</div>
 		<p class="spacer" />
 		<table class="edittable" cellspacing="0" cellpadding="0">
 			<thead>
@@ -56,8 +65,8 @@
 								</tr>
 								<tr>
 									<td />
-									<td><input style="align:right" type="submit" wicket:id="new"
-										value="Install New" /></td>
+									<td><input style="align: right" type="submit"
+										wicket:id="new" value="Install New" /></td>
 								</tr>
 							</table>
 
@@ -86,40 +95,13 @@
 								</tr>
 								<tr>
 									<td />
-									<td><input style="align:right" type="submit" wicket:id="merge" value="Merge" /></td>
+									<td><input style="align: right" type="submit"
+										wicket:id="merge" value="Merge" /></td>
 								</tr>
 							</table>
 							<p>Merge new or modified project resources from the source
 								project into the selected existing project. The result is a new
 								project with a name as specified.</p>
-						</form>
-					</td>
-				</tr>
-				<tr wicket:id="overwrite">
-					<td class="trow-title">Overwrite with Existing Project</td>
-					<td class="trow-body">
-						<form wicket:id="overwriteForm" action="">
-							<table>
-								<tr>
-									<td><span class="label">Source project:</span></td>
-									<td><span wicket:id="overwriteProject" /></td>
-								</tr>
-								<tr>
-									<td><span class="label">Project to Replace:</span></td>
-									<td><select wicket:id="projects" /></td>
-								</tr>
-								<tr>
-									<td><span class="label">New project name:</span></td>
-									<td><input class="textbox" wicket:id="mergeName"
-										type="text" /></td>
-								</tr>
-								<tr>
-									<td />
-									<td><input style="align:right" type="submit" wicket:id="merge" value="Merge" /></td>
-								</tr>
-							</table>
-							<p>Overwrite an existing project with the source project.
-								The existing project is deleted.</p>
 						</form>
 					</td>
 				</tr>
@@ -133,10 +115,11 @@
 									<td><span wicket:id="globalProject" /></td>
 								</tr>
 								<td />
-								<td><input style="align:right"type="submit" wicket:id="mergeGlobal"
-									value="Merge" /></td>
+								<td><input style="align: right" type="submit"
+									wicket:id="mergeGlobal" value="Merge" /></td>
 							</table>
-							<p>Merge new or modified project resources into the global project.</p>
+							<p>Merge new or modified project resources into the global
+								project.</p>
 						</form>
 					</td>
 				</tr>
