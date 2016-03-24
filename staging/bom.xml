@@ -5,18 +5,18 @@
       be unique. 
  -->
 <installer>
-	<title>EMC Ignition Applications</title>
+	<title>ACE Controls Application</title>
 	<description>Installer for EMC Ignition Applications.</description>
-	<property name="product">Ignition Applications</property>
-	<property name="release">0.1r15</property>
-	<property name="date">Mar 17, 2016</property>
+	<property name="product">ACE Controls</property>
+	<property name="release">1.2b5</property>
+	<property name="date">July 4, 2016</property>
 	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="True">
-		<title>ILS Automation Installer for EMC Ignition Applications</title>
-		<preamble>Welcome to the ILS Automation installer for EMC Ignition
-			Applications. The table below compares the existing installation of
+		<title>ILS Automation Installer for ACE Controls Applications</title>
+		<preamble>Welcome to the ILS Automation installer for the ACE Controls
+			Ignition Application. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
