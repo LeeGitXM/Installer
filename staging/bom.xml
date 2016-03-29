@@ -32,8 +32,7 @@
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
 			to indicate acceptance of the terms.
-			You must accept the license terms
-			to proceed.
+			You must accept the license terms to proceed.
 		</preamble>
 		<artifact name="license" type="html">
 			<location>artifacts/license/license.html</location>
