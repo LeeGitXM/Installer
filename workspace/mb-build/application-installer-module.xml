@@ -13,10 +13,6 @@
 	<!-- Load in our jars for each scope -->
 	<export scope="G">ils-common.jar</export>
 	<jar scope="G">ai-gateway.jar</jar>
-	<jar scope="G">jackson-annotations-2.2.3.jar</jar>
-	<jar scope="G">jackson-core-2.2.3.jar</jar>
-	<jar scope="G">jackson-databind-2.2.3.jar</jar>
-
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
 	<hook scope="G">com.ils.ai.gateway.ApplicationInstallerGatewayHook</hook>
 </module>

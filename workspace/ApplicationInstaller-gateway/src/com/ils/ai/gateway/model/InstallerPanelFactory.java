@@ -67,8 +67,6 @@ public class InstallerPanelFactory  {
 				break;
 			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
 				break;
-			case TRANSACTIONGROUP:
-				break;
 			case WELCOME: step = new WelcomeStep(panelIndex,prior,title,model);
 				break;
 		}

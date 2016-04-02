@@ -75,9 +75,6 @@
 		
 		<!-- Copy gateway jar -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-annotations-2.2.3.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-core-2.2.3.jar" todir="${build.dir}/temp_modl/" />
-		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${AIModule.name}_Gateway/dist/ai-gateway.jar" todir="${build.dir}/temp_modl/" />
 		
 		<!-- Echo the version into .version in the bundle and to be saved -->

@@ -25,7 +25,6 @@ public enum PanelType
             SUMMARY,
             TAG,
             TOOLKIT,
-            TRANSACTIONGROUP,
             WELCOME
             ;
    

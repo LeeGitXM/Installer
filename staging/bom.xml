@@ -46,16 +46,19 @@
 		</preamble>
 	</panel>
 	<panel type="definition" essential="true">
-		<title>Update Toolkit Properties</title>
+		<title>Interface Definitions</title>
 		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		Both production and isolation mode versions are needed. These are used by subsequent screens.
+		This product requires that both production and test mode versions are specified. 
+		The selections hare are used by subsequent screens.
 		</preamble>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
 		<property name="database" type="production"></property>
 		<property name="database" type="isolation"></property>
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
 	</panel>
-	<panel type="project" subtype="main" essential="True" version="1">
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install a New XOM Project or Merge Changes into an Existing
 			Project
 		</title>
@@ -64,7 +67,7 @@
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications.
 		</preamble>
-		<!-- For projects, artifact subtypes are: new, full, partial and global -->
+		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
@@ -136,7 +139,7 @@
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="True" version="1">
+	<panel type="scanclass" essential="true" version="1">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by &lt;b&gt;PRODUCTION&lt;/b&gt; tags. Scanclasses determine tag poll rates.
 		</preamble>
@@ -146,17 +149,17 @@
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
-		<title>Database Create and Alter Scripts for Ignition Applications</title>
+		<title>Database Create and Alter Scripts for te ACE Application</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
 		<!-- Recognized subtypes are: create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
+		<artifact name="ACE Database" type="sql" subtype="create">
 			<location>artifacts/database/createXOM.sql</location>
 		</artifact>
-		<artifact name="XOM Database Update" type="sql" subtype="alter">
+		<artifact name="ACE Database Update" type="sql" subtype="alter">
 			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
@@ -167,26 +170,27 @@
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="isolation"></property>
-		<artifact name="XOM Database" type="sql" subtype="create">
+		<artifact name="ACE Database" type="sql" subtype="create">
 			<location>artifacts/database/createXOM.sql</location>
 		</artifact>
-		<artifact name="XOM Database Update" type="sql" subtype="alter">
+		<artifact name="ACE Database Update" type="sql" subtype="alter">
 			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="external" essential="true" version="1">
-		<title>Python Code for Ignition Applications</title>
-		<preamble>This page loads Python code that supports the Ignition Application suite. 
+		<title>Python Code for the ACE Application</title>
+		<preamble>This page loads Python code that supports the ACE Application. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
-		generic and used in multiple products, and code specific to the current XOM applications.
+		generic and used in multiple products, and code modified specifically for
+		this application.
 		A third category consists of Java jar files that are referenced by the Python.
 		</preamble>
 		<artifact name="External Python - ILS" type="python" subtype="py">
 			<location>artifacts/external/ils-python</location>
 		</artifact>
-		<artifact name="External Python - XOM" type="python" subtype="py">
+		<artifact name="External Python - ACE" type="python" subtype="py">
 			<location>artifacts/external/xom-python</location>
 		</artifact>
 		<artifact name="Jar Files to Support External Python" type="java" subtype="jar">
@@ -197,10 +201,10 @@
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		</preamble>
-		<artifact name="ILS-SFC Enhancements" type="module">
+		<artifact name="SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-unsigned.modl</location>
 		</artifact>
-		<artifact name="Block Language Toolkit" type="module">
+		<artifact name="Application Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-unsigned.modl</location>
 		</artifact>
 	</panel>
@@ -232,24 +236,23 @@
 		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.5">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>
+		<artifact name="Plant Layout Specification" type="documentation" subtype="docx" release="1.4">
+			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
+		</artifact>
 		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
-		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.4">
-			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
-		</artifact>
 	</panel>
-	<!--  The source panel is limited to a single artifact. -->
 	<panel type="source" essential="false" version="1">
 		<title>Source Distribution</title>
-		<preamble>The Java source for the Block Language Toolkit and the ILS extensions to Sequential function charts are bundled into a single zip file.
+		<preamble>The Java source for the Application Toolkit and extensions to Sequential function charts are bundled into a single zip file.
 		The source distribution comes complete with Eclipse project files and ant scripts for building. 
         Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
 		</preamble>
-		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="0.1r15">
+		<artifact name="Toolkit Source Code" type="source" subtype="zip" release="0.1r15">
 			<location>artifacts/source/blt-0.1r15.zip</location>
 		</artifact>
-		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="0.1r15">
+		<artifact name="SFC Extensions Source Code" type="source" subtype="zip" release="0.1r15">
 			<location>artifacts/source/sfc-0.1r15.zip</location>
 		</artifact>
 	</panel>
@@ -273,23 +276,20 @@
 		<property
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
 	</panel>
-	<!-- The conclusion panel must always be displayed, thus no version -->
+	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of EMC Ignition Applications in
+		 Selecting "Finish" will record the current version of ACE Ignition Applications in
 			the Gateway internal database.
 		</preamble>
 	</panel>
-	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
 	<epilog>
-		<title>Ignition Applications - Installed</title>
-		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
-		          is complete, there are just a few more manual steps required. </preamble>
-		<note name="Authorization">Be sure to verify authorizations on any projects that were created. For any new 
-		            projects, the default authentication profile was used.</note>
-		<note name="Old Projects">No projects were overwritten. This might be a good time to delete obsolete versions and
-		                          rename the newly installed projects back to their familiar names.</note>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of the ACE Control Ignition Application
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Project Permissions">Make sure that appropriate permissions are associated with each newly-installed project.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>
 </installer>
