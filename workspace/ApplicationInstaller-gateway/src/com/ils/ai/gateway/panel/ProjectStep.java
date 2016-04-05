@@ -100,16 +100,15 @@ public class ProjectStep extends BasicInstallerPanel {
 		Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
         Label fullProject = new Label("fullProject",fullProjectName);
         newProjectForm.add(fullProject);
-        TextField<String> newname = new TextField<String>("newName", Model.of(suggestedName(fullProjectName,panelData.getCurrentVersion())));
-        newProjectForm.add(newname);
-
+        
         newProjectForm.add(new Button("new") {
 			private static final long serialVersionUID = 4110558774811578782L;
 
 			public void onSubmit() {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				ProjectNameValidator validator = new ProjectNameValidator();
-				String result = validator.validate(newname);
+				if(backupProject) createBackup(fullProjectName);
+				
+				
 				if( result==null ) {
 					result = handler.loadArtifactAsProject(fullProjectLocation,newname.getValue(),selectedAuth.getName(),data);
 					if( result==null ) {
@@ -139,13 +138,13 @@ public class ProjectStep extends BasicInstallerPanel {
 
 		ProjectList projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
 		mergeProjectForm.add(projects);
-		TextField<String> mergename = new TextField<String>("mergeName", Model.of(""));
-		mergeProjectForm.add(mergename);
+
 		mergeProjectForm.add(new Button("merge") {
 			private static final long serialVersionUID = 4110668774811578782L;
 
 			public void onSubmit() {
-				ProjectNameValidator validator = new ProjectNameValidator();
+				if( backupProject) createBackup(mergename.getValue());
+				ProjectNameFinder validator = new ProjectNameFinder();
 				String result = validator.validate(mergename);
 				if( result==null ) {
 					InstallerDataHandler handler = InstallerDataHandler.getInstance();
@@ -270,5 +269,10 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String suggestedName(String root,int version) {
 		if( version<0 ) version = 0; // Unset
 		return String.format("%s_%d", root,version);
+	}
+	// Find an unused name 
+	private void createBackup(String oldName) {
+		ProjectNameFinder validator = new ProjectNameFinder();
+		String result = validator.validate(newname);
 	}
 }

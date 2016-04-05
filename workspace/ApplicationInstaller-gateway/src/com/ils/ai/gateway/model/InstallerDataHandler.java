@@ -133,6 +133,32 @@ public class InstallerDataHandler {
 		return result;
 	}
 	/**
+	 * Create a new project with resources copied from am existing one.
+	 * We are guaranteed that the new project does not yet exist.
+	 * Save the newly copied project.
+	 * @param oldName
+	 * @param backupName
+	 * @return
+	 */
+	public String copyProjectToBackup(String oldName,String backupName) {
+		String result = null;
+		
+		ProjectManager pmgr = getContext().getProjectManager();
+		try {
+			pmgr.copyProject(oldName, backupName, true); // Will overwrite, name, true); 
+			Project backup = pmgr.getProject(backupName, ApplicationScope.ALL, ProjectVersion.Published);
+			GlobalProps props = pmgr.getProps(backup.getId(), ProjectVersion.Published);
+			AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+			pmgr.saveProject(backup, user, "n/a", 
+					String.format("ILS Automation Installer: updated from %s",oldName), false);
+		}
+		catch(Exception ex) {
+			result = String.format("Exception copying project %s (%s)",oldName,ex.getLocalizedMessage());
+		}
+		return result;
+		
+	}
+	/**
 	 * Inspect the properties for the specified panel looking for a "database" property. If the property
 	 * has no value, return the name specified as a toolkit property.
 	 * @return
@@ -347,8 +373,12 @@ public class InstallerDataHandler {
 						if( pos>0 ) {
 							String extension = filepath.substring(pos+1);
 							if( extension.equalsIgnoreCase("PDF"))       mime = "application/pdf";
-							else if( extension.equalsIgnoreCase("DOC"))  mime ="application/msword";
-							else if( extension.equalsIgnoreCase("DOCX")) mime ="application/msword";
+							else if( extension.equalsIgnoreCase("DOC"))  mime = "application/msword";
+							else if( extension.equalsIgnoreCase("DOCX")) mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+							else if( extension.equalsIgnoreCase("VSD"))  mime = "application/visio";
+							else if( extension.equalsIgnoreCase("XLS"))  mime = "application/vnd.ms-exel";
+							else if( extension.equalsIgnoreCase("XLSX")) mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+							else if( extension.equalsIgnoreCase("XML"))  mime = "application/xml";
 							else if( extension.equalsIgnoreCase("ZIP"))  mime = "application/zip";
 							else {
 								log.warnf("%s.getArtifactMimeType: panel %d:%s %s has unrecognized file extension",CLSS,panelIndex,artifactName,filepath);
@@ -1030,7 +1060,9 @@ public class InstallerDataHandler {
 
 		return result;
 	}
-	
+	/*
+	 * UNUSED: TransactionGroups are project resources, not independent ones.
+	 */
 	public String loadArtifactAsTransactionGroup(int panelIndex,String projectName,String artifactName,InstallerData model) {
 		String result = null;
 
@@ -1055,7 +1087,7 @@ public class InstallerDataHandler {
 	}
 
 	// Start with an existing project and create a new one with resources overridden from another.
-	public String mergeWithGlobalProjectFromLocation(String location,String name,InstallerData model) {
+	public String mergeWithGlobalProjectFromLocation(String location,InstallerData model) {
 		String result = null;
 
 		ProjectManager pmgr = getContext().getProjectManager();
@@ -1080,13 +1112,13 @@ public class InstallerDataHandler {
 			}
 		}
 		catch(SAXException saxe) {
-			result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
+			result = String.format("SAX error loading project %s (%s)", location,saxe.getLocalizedMessage());
 		}
 		catch(IOException ioe) {
-			result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
+			result = String.format("IO error reading project %s (%s)", location,ioe.getLocalizedMessage());
 		}
 		catch(Exception ex) {
-			result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
+			result = String.format("Exception loading project %s (%s)",location,ex.getLocalizedMessage());
 		}
 		finally{
 			if(projectReader!=null) {
@@ -1126,10 +1158,7 @@ public class InstallerDataHandler {
 					projectReader = jar.getInputStream(entry);
 					Project standard = Project.fromXML(projectReader);
 					mergee.applyDiff(standard);
-					GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
-					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
-					pmgr.saveProject(mergee, user, "n/a", 
-							String.format("ILS Automation Installer: updated from %s",standard.getName()), false);
+					c
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);

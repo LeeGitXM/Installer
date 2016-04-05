@@ -59,23 +59,23 @@
 		<property name="provider" type="isolation"></property>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Install a New XOM Project or Merge Changes into an Existing
+		<title>Install a New ACE Project or Merge Changes into an Existing
 			Project
 		</title>
-		<preamble>XOM is the main Ignition project. This page provides
+		<preamble>ACE is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/XOM.proj</location>
+		<artifact name="ACE" type="project" subtype="full">
+			<location>artifacts/projects/ACE.proj</location>
 		</artifact>
-		<artifact name="XOM Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/XOM.proj</location>
+		<artifact name="ACE Partial Project" type="project" subtype="partial">
+			<location>artifacts/projects/ACE.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="dbmgr" essential="True" version="1">
+	<panel type="project" subtype="dbmgr" essential="true" version="1">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.
@@ -86,7 +86,7 @@
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="True" version="1">
+	<panel type="project" subtype="sfc" essential="true" version="1">
 		<title>Install SFC Charts in the Global Project
 		</title>
 		<preamble>This page handles installation of charts for various migrated SFC projects.
@@ -94,7 +94,7 @@
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
-		<artifact name="DrierRegen" type="project" subtype="global">
+		<artifact name="CustomSFC" type="project" subtype="global">
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
 	</panel>
@@ -109,7 +109,7 @@
 			<location>artifacts/icons/custom</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="1">
+	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.

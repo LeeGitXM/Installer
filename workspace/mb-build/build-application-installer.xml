@@ -88,7 +88,7 @@
 		<mkdir dir="${build.dir}/temp_modl/artifacts" />
 		<copy file="${stage.dir}/bom.xml" tofile="${build.dir}/temp_modl/artifacts/bom.xml" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/database" />
-		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${build.dir}/temp_modl/artifacts/database/createXOM.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${build.dir}/temp_modl/artifacts/database/createACE.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/createSfcTables.mysql.sql" tofile="${build.dir}/temp_modl/artifacts/database/createSfcTables.sql" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNotes.pdf" />
@@ -140,7 +140,7 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/TF-module-unsigned.modl" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/projects" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/ACE.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DrierRegen.proj" />
 		<mkdir dir="${build.dir}/temp_modl/artifacts/scanclasses" />

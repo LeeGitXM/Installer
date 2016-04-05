@@ -14,29 +14,41 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 
 /**
- * Validate that the supplied name does not already exist as a current project.
- * The normal: textfield.add(new ProjectNameValidator(context)); didn't work for us.
- * We need validation BEFORE, but not AFTER the project is created.
+ * Find an unused project name given a root name that is a current project.
+ * The 
  */
-public class ProjectNameValidator  {
+public class ProjectNameFinder  {
 
 	/**
 	 * @return an error message in the case of a match with an existing project.
 	 *         If there is no problem, then return null.
 	 */
-	public String validate(TextField<String> validatable) {
-		String result =null;
+	public String findUnused(String currentName) {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		// getProjectsLite does not include resources with the project
 		List<Project> projects = context.getProjectManager().getProjectsLite(ProjectVersion.Staging);
-		String name = validatable.getValue();
-		for(Project project:projects) {
-			System.out.println(String.format("ProjectNameValidator.validate %s vs %s",name,project.getName()));
-			if( project.getName().equalsIgnoreCase(name) ) {
-				result = "There is an existing project with this name. Choose another.";
-				break;
+		int index = 0;
+		String proposed = currentName;
+		for(;;) {
+			boolean found = false;
+			for(Project project:projects) {
+				if( project.getName().equalsIgnoreCase(proposed) ) {
+					found = true;
+					proposed = proposed+nextSuffix(index);
+					break;
+				}
 			}
+			if( !found ) break;
+			index++;
 		}
-		return result;
+		return proposed;
+	}
+	
+	private String nextSuffix(int index) {
+		String suffix = "_bak";
+		if( index>0)  {
+			suffix = String.format("_bak%d", index);
+		}
+		return suffix;
 	}
 }
