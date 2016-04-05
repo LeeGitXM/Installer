@@ -79,10 +79,8 @@
 		
 		<!-- Echo the version into .version in the bundle and to be saved -->
 		<echo message="${AIModule.name}-${AIModule.version}:${AIModule.release}" file="${build.dir}/temp_modl/.version" append="false"/>
-		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.version" append="false"/>
 		<!-- Create and copy a .application-installer marker into the module -->
 		<echo message="${AIModule.name}-${AIModule.version}:${AIModule.release}" file="${build.dir}/temp_modl/.application-installer" append="false"/>
-		<echo message="${AIModule.name}-${AIModule.name}:${AIModule.release}" file="${build.dir}/.application-installer" append="false"/>
 		
 		<!-- Copy staged artifacts into the bundle -->
 		<mkdir dir="${build.dir}/temp_modl/artifacts" />

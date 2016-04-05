@@ -147,6 +147,7 @@ public class InstallerDataHandler {
 		try {
 			pmgr.copyProject(oldName, backupName, true); // Will overwrite, name, true); 
 			Project backup = pmgr.getProject(backupName, ApplicationScope.ALL, ProjectVersion.Published);
+			backup.setEnabled(false);
 			GlobalProps props = pmgr.getProps(backup.getId(), ProjectVersion.Published);
 			AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
 			pmgr.saveProject(backup, user, "n/a", 
@@ -1158,7 +1159,6 @@ public class InstallerDataHandler {
 					projectReader = jar.getInputStream(entry);
 					Project standard = Project.fromXML(projectReader);
 					mergee.applyDiff(standard);
-					c
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);

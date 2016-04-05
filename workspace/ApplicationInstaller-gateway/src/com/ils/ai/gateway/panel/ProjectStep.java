@@ -105,19 +105,16 @@ public class ProjectStep extends BasicInstallerPanel {
 			private static final long serialVersionUID = 4110558774811578782L;
 
 			public void onSubmit() {
+				String result = null;
+				if(backupProject) result = createBackup(fullProjectName);
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				if(backupProject) createBackup(fullProjectName);
 				
-				
+				if( result==null) {
+					result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,selectedAuth.getName(),data);
+				}
 				if( result==null ) {
-					result = handler.loadArtifactAsProject(fullProjectLocation,newname.getValue(),selectedAuth.getName(),data);
-					if( result==null ) {
-						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-						info(String.format("Project %s loaded successfully", newname.getValue()));
-					}
-					else {
-						warn(result);
-					}
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					info(String.format("Project %s loaded successfully", fullProjectName));
 				}
 				else {
 					warn(result);
@@ -143,19 +140,15 @@ public class ProjectStep extends BasicInstallerPanel {
 			private static final long serialVersionUID = 4110668774811578782L;
 
 			public void onSubmit() {
-				if( backupProject) createBackup(mergename.getValue());
-				ProjectNameFinder validator = new ProjectNameFinder();
-				String result = validator.validate(mergename);
+				String result = null;
+				if(backupProject) result = createBackup(fullProjectName);
+				InstallerDataHandler handler = InstallerDataHandler.getInstance();
 				if( result==null ) {
-					InstallerDataHandler handler = InstallerDataHandler.getInstance();
-					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,mergename.getValue(),data);
-					if( result==null ) {
-						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-						info(String.format("Project %s merged successfully", mergename.getValue()));
-					}
-					else {
-						warn(result);
-					}
+					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,partialProjectName,data);
+				}
+				if( result==null ) {
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					info(String.format("Project %s merged successfully", partialProjectName));
 				}
 				else {
 					warn(result);
@@ -180,7 +173,7 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.mergeWithGlobalProjectFromLocation(globalProjectLocation,newname.getValue(),data);
+				String result = handler.mergeWithGlobalProjectFromLocation(globalProjectLocation,data);
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 					info(String.format("Global project updated successfully"));
@@ -270,9 +263,12 @@ public class ProjectStep extends BasicInstallerPanel {
 		if( version<0 ) version = 0; // Unset
 		return String.format("%s_%d", root,version);
 	}
-	// Find an unused name 
-	private void createBackup(String oldName) {
-		ProjectNameFinder validator = new ProjectNameFinder();
-		String result = validator.validate(newname);
+	// Find an unused name and copy the original to it.
+	// @return an error string, if any
+	private String createBackup(String oldName) {
+		ProjectNameFinder finder = new ProjectNameFinder();
+		String backupName = finder.findUnused(oldName);
+		InstallerDataHandler handler = InstallerDataHandler.getInstance();
+		return handler.copyProjectToBackup(oldName,backupName);
 	}
 }
