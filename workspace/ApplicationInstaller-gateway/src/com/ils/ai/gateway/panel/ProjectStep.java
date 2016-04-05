@@ -108,7 +108,9 @@ public class ProjectStep extends BasicInstallerPanel {
 				String result = null;
 				if(backupProject) result = createBackup(fullProjectName);
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				
+				if( result==null && selectedAuth==null ) {
+					result = "Please select an authentication profile";
+				}
 				if( result==null) {
 					result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,selectedAuth.getName(),data);
 				}
@@ -141,8 +143,12 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				String result = null;
+
 				if(backupProject) result = createBackup(fullProjectName);
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
+				if( result==null && selectedAuth==null ) {
+					result = "Please select an authentication profile";
+				}
 				if( result==null ) {
 					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,partialProjectName,data);
 				}
@@ -264,11 +270,12 @@ public class ProjectStep extends BasicInstallerPanel {
 		return String.format("%s_%d", root,version);
 	}
 	// Find an unused name and copy the original to it.
-	// @return an error string, if any
 	private String createBackup(String oldName) {
 		ProjectNameFinder finder = new ProjectNameFinder();
 		String backupName = finder.findUnused(oldName);
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-		return handler.copyProjectToBackup(oldName,backupName);
+		String error = handler.copyProjectToBackup(oldName,backupName);
+		if( error!=null ) error = String.format("Backup failed (%s)",error);
+		return error;
 	}
 }

@@ -37,6 +37,7 @@
 				<tr>
 					<td><label>Authentication Profile: </label> <select
 						wicket:id="profiles" /></td>
+					<td></td>
 					<td><label>Create backup:</label> <input type="checkbox"
 						wicket:id="backup" /></td>
 				</tr>
@@ -62,12 +63,12 @@
 								<tr>
 									<td />
 									<td><input style="align: right" type="submit"
-										wicket:id="new" value="Install New" /></td>
+										wicket:id="new" value="Install" /></td>
 								</tr>
 							</table>
 
-							<p>Install a clean, un-configured project into the gateway.
-								The chosen name may not conflict with any existing project.</p>
+							<p>Install the specified project into the gateway, overwriting any existing
+								project of the same name.</p>
 						</form>
 					</td>
 				</tr>
@@ -91,8 +92,8 @@
 								</tr>
 							</table>
 							<p>Merge new or modified project resources from the source
-								project into the selected existing project. The result is a new
-								project with a name as specified.</p>
+								project into the selected existing project. The name
+								and permissions associated with the existing project do not change.</p>
 						</form>
 					</td>
 				</tr>
@@ -109,7 +110,7 @@
 								<td><input style="align: right" type="submit"
 									wicket:id="mergeGlobal" value="Merge" /></td>
 							</table>
-							<p>Merge new or modified project resources into the global
+							<p>Merge new or modified project resources from the source project into the global
 								project.</p>
 						</form>
 					</td>

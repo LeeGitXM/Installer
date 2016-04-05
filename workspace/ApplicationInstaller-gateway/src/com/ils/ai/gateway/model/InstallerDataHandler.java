@@ -982,6 +982,7 @@ public class InstallerDataHandler {
 				byte[] bytes = serializer.serializeBinary(true);
 				ProjectResource resource = new ProjectResource(propsResource.getResourceId(), GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.ALL, bytes);
 				project.putResource(resource, true);
+				pmgr.addProject(project, true);
 				
 				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),"1","admin",globalProps.getRequiredRoles());
 				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
