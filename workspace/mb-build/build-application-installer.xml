@@ -150,7 +150,6 @@
 		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${build.dir}/temp_modl/artifacts/tags/connections.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/siteTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/siteTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/sqlTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/testTags.xml" />
 		
