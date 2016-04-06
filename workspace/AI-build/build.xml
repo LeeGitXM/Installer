@@ -1,0 +1,85 @@
+<project name="MasterBuilderBuild" basedir="../">
+	<!-- 
+	   -Dgit.repo="${env_var:GIT_REPO}"
+	   -Dsvn.repo="${env_var:SVN_REPO}"
+	-->
+	<property name="build.dir" value="${basedir}/AI-build" />
+	
+	<!-- Allows external ant tasks like <if> to be used -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${build.dir}/AntLib/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+	
+
+	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+	<property name="p200props" value="${build.dir}/pack200.properties" />
+
+	<tstamp>
+		<format property="build.date" pattern="MM/dd/yyyy hh:mm aa" />
+	</tstamp>
+
+	<!-- SDK jar classpath. This classpath includes all the jars needed to build a module against the SDK. -->
+	<path id="ignition.classpath">
+		<fileset dir="${git.repo}/ignition-78/lib" includes="*.jar" />
+	</path>
+	<!-- External jar classpath. This classpath includes the remaining jars needed to build the module. -->
+	<path id="external.classpath">
+		 <fileset dir="${git.repo}/external/lib" includes="jython*.jar" />
+		 <fileset dir="${git.repo}/external/lib" includes="ils-common.jar" />
+		 <fileset dir="${git.repo}/external/lib" includes="log4j-*.jar" />
+		 <fileset dir="${git.repo}/external/lib" includes="slf4j-*.jar" />
+	</path>
+	
+	<!-- Generic Buildfile: Reference Via Antcalls -->
+	<target name="MakeProject">
+		<echo message="Compiling ${modName}" />
+		<mkdir dir="${build.dir}/bin/${modName}/bin" />
+		<echo message="Compiling ${sourceDirFolder}" />
+		<echo message="Classpath ${module.build.classpath}" />
+		<javac srcdir="${sourceDirFolder}/src" destdir="${build.dir}/bin/${modName}/bin"
+				source="${javacSource}" target="${javacSource}" debug="true" fork="true"
+				memoryinitialsize="128m" memorymaximumsize="512m" debuglevel="lines,vars,source"
+				includeantruntime="false">
+			<classpath refid="${module.build.classpath}" />
+			<exclude name="**/test/*" />
+		</javac>
+		<echo message="Copying ${modName}" />
+		<copy todir="${build.dir}/bin/${modName}/bin">
+			<fileset dir="${basedir}/${sourceDirFolder}/src">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<echo message="If ${explodelib}" />
+		<if>
+			<equals arg1="${explodeLib}" arg2="true" />
+			<then>
+				<unzip dest="${basedir}/TF_Build/bin/${modName}/bin">
+					<fileset dir="${sourceDirFolder}/lib">
+						<include name="*.jar" />
+					</fileset>
+				</unzip>
+			</then>
+		</if>
+
+		<echo message="Replacing properties .." />
+		<propertyselector property="replace.list" delimiter="," match="\[replace\](.*)" select="\1" />
+		<if>
+			<isset property="replace.list" />
+			<then>
+				<foreach list="${replace.list}" delimiter="," target="MakeProject-ReplaceProps" param="replace.path" inheritall="true" />
+			</then>
+		</if>
+
+		<echo message="Making distribution directory ..." />
+		<delete dir="${build.dir}/bin/${modName}/dist" />
+		<mkdir dir="${build.dir}/bin/${modName}/dist" />
+
+		<jar destfile="${build.dir}/bin/${modName}/dist/${jarName}.jar">
+			<fileset dir="${build.dir}/bin/${modName}/bin" />
+		</jar>
+	</target>
+
+</project>

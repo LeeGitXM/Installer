@@ -1,0 +1,70 @@
+<!-- Compile installer code into jar files. This project code is generic, but details
+     are determined by artifacts copied into the module bundle. For now we use
+     the "Ignition Applications" package for Exxon-Mobil Chemicals.
+-->
+<project name="ApplicationInstaller" basedir="../" default="BuildAndInstallModule">
+	<import file="./build.xml"/>
+	<property name="version.build" value="1" />	
+	<property name="version.beta" value="-development" />		
+	<property name="AIModule.version" value="2.0.1.${version.build}" />
+	<property name="AIModule.name" value="AI" />
+	<property name="AIModule.release" value="0.1" />
+	<property name="AIModule.description" value="Application Installer - Built for EMC Ignition Applications" />
+	<property name="jar.dir" value="${git.repo}/external/lib" />
+	<property name="deploy.dir" value="${build.dir}/deploy" />
+	<property name="stage.dir" value="${basedir}/../staging" />
+	<property name="ant.build.javac.source" value="1.8"/>
+	<property name="ant.build.javac.target" value="1.8"/>
+	
+	<!-- Common jar classpath -->
+	<!-- Gateway depends on the Common -->
+	<path id="AI_Common.classpath">
+		<path refid="ignition.classpath" />
+		<path refid="external.classpath" />
+	</path>
+		
+	<!-- Gateway jar classpath -->
+	<path id="AI_Gateway.classpath">
+		<path refid="AI_Common.classpath" />
+	</path>	
+
+	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
+		<target name="BuildAndInstallModule" depends="clean, build" />
+
+	<!-- Cleans all previously built files (leaves doc) -->
+	<target name="clean" description="Remove existing build products" >
+		<delete dir="${build.dir}/bin" />
+		<delete dir="${build.dir}/release" />
+		<delete dir="${build.dir}/temp_modl" />
+		<delete dir="${deploy.dir}" />
+	</target>	
+	
+	<!-- Builds the module jars  -->
+	<target name="build" depends="clean" description="Compile the source">
+		<echo message="${AIModule.name} ${AIModule.version}" />	
+		<delete dir="${build.dir}/temp_modl" />	
+		
+		<!-- build.date and version.build are both defined in build.xml -->
+		<echo message="Build date: ${build.date}" />
+		<echo message="Build version: ${version.build}" />	
+				
+	
+		<!-- Application Installer Gateway jar -->
+		<antcall target="MakeProject">
+			<param name="modName" value="${AIModule.name}_Gateway" />
+			<param name="sourceDirFolder" value="AI-gateway" />
+			<param name="jarName" value="ai-gateway" />
+			<param name="javacSource" value="1.8" />
+			<param name="module.build.classpath" value="AI_Gateway.classpath"/>
+		</antcall>
+		
+		<!-- Create .modl file -->
+		<echo message="Making ${AIModule.name} modl" />
+		<mkdir dir="${build.dir}/temp_modl" />
+		
+		<!-- Copy gateway jar -->
+		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
+		<copy file="${build.dir}/bin/${AIModule.name}_Gateway/dist/ai-gateway.jar" todir="${build.dir}/temp_modl/" />
+		
+	</target>
+</project>

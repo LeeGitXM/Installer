@@ -1,0 +1,4 @@
+name,mode,low_rate,high_rate,driving_tag,comparison_mode,comparison_value,stale_timeout
+"Default",Direct,30000,1000,"",Equal,0.0,30000,0
+"Default Historical",Direct,60000,10000,"",Equal,0.0,300000,2
+"OPCScanClass",Direct,60000,1000,"",Equal,0.0,300000,2

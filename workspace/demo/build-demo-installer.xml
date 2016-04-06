@@ -1,0 +1,151 @@
+<!-- Create a demonstration application installer for documentation
+     purposes. This file exercizes all panel types.
+     
+     We require that GIT_REPO and SVN_REPO be provided to this script.
+-->
+<project name="ApplicationInstaller" basedir="." default="deploy">
+	<property name="build.dir" value="${basedir}/../AI-build" />
+	<property name="staging.dir" value="${basedir}/staging" />
+	<property name="artifact.dir" value="${staging.dir}/artifacts" />
+	<property name="deploy.dir" value="${basedir}/modules" />
+	<property name="bom" value="${basedir}/bom.xml" />
+	<property name="module.name" value="demo-installer" />
+	<property name="module.path" value="${basedir}/modules/demo-installer-unsigned.modl" />
+	<property name="module.xml" value="${basedir}/demo-installer-module.xml" />
+	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+
+	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
+	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
+		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
+	</taskdef>
+
+	<tstamp>
+		<format property="build.date" pattern="MM/dd/yyyy HH:mm" />
+	</tstamp>
+
+	<!-- Clean results of previous runs -->
+	<target name="clean" description="Remove existing archive">
+		<delete dir="${staging.dir}" />
+		<delete file="${module.path}" />
+	</target>
+
+	<!-- Builds the toolkit module jars and the final .modl file -->
+	<target name="build" depends="clean" description="Assemble the installer">
+
+		<!-- build.date and version.build are both defined in build.xml -->
+		<echo message="Build date: ${build.date}" />
+		<echo message="Build version: ${version.build}" />
+
+
+		<!-- Create directories -->
+		<echo message="Making ${module.name} modl" />
+		<mkdir dir="${staging.dir}" />
+		<mkdir dir="${artifact.dir}" />
+		<mkdir dir="${deploy.dir}" />
+
+		<!-- Create module.xml, marker file and bill-of-materials -->
+		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
+		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
+		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
+
+		<!-- Copy Core jar files -->
+		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
+		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
+
+
+		<!-- Copy staged artifacts into the bundle -->
+		<mkdir dir="${artifact.dir}" />
+
+		<!-- Database -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/database" />
+		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${build.dir}/temp_modl/artifacts/database/createACE.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/createSfcTables.mysql.sql" tofile="${build.dir}/temp_modl/artifacts/database/createSfcTables.sql" />
+
+		<!-- Documentation -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/doc" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${build.dir}/temp_modl/artifacts/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/InstallationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${build.dir}/temp_modl/artifacts/doc/BlockLanguageToolkitDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${build.dir}/temp_modl/artifacts/doc/ApplicationTestFramework.docx" />
+		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/LabDataDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${build.dir}/temp_modl/artifacts/doc/MigrationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${build.dir}/temp_modl/artifacts/doc/VistalonDesigneSpecification.docx" />
+		<!-- External -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/ils-python" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/ils-python">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+				<include name="ils/**/*.py" />
+			</fileset>
+		</copy>
+		<!-- External -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/xom-python" />
+		<copy todir="${build.dir}/temp_modl/artifacts/external/xom-python">
+			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
+				<include name="xom/**/*.py" />
+			</fileset>
+		</copy>
+		<delete dir="${build.dir}/temp_modl/artifacts/external/xom-python/xom/emre" />
+
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/jars/core/common" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/common/blt-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/common/ils-common.jar" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/jars/core/gateway" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/gateway/block-definition.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${build.dir}/temp_modl/artifacts/external/jars/core/gateway/blt-gateway.jar" />
+
+		<!-- Icons -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/external/icons" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/icons/blt" />
+		<copy todir="${build.dir}/temp_modl/artifacts/icons/blt">
+			<fileset dir="${git.repo}/blt/images">
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build.dir}/temp_modl/artifacts/icons/custom" />
+		<copy todir="${build.dir}/temp_modl/artifacts/icons/custom">
+			<fileset dir="${svn.repo}/EMChemicals/Ignition/icons">
+				<include name="**/*.png" />
+				<include name="**/*.jpg" />
+				<include name="**/*.JPG" />
+			</fileset>
+		</copy>
+
+		<!-- License -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/license" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${build.dir}/temp_modl/artifacts/license/license.html" />
+
+		<!-- Modules -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/modules" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/ILS-SFC-module-unsigned.modl" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/BLT-module-unsigned.modl" />
+		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${build.dir}/temp_modl/artifacts/modules/TF-module-unsigned.modl" />
+
+		<!-- Projects -->
+		<mkdir dir="${build.dir}/temp_modl/artifacts/projects" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${build.dir}/temp_modl/artifacts/projects/ACE.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DbManager.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${build.dir}/temp_modl/artifacts/projects/DrierRegen.proj" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/scanclasses" />
+		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${build.dir}/temp_modl/artifacts/scanclasses/scanclasses.csv" />
+
+		<!-- Source -->
+		<mkdir dir="${build.dir}/source" />
+		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/blt-0.1r15.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${build.dir}/temp_modl/artifacts/source/sfc-0.1r15.zip" />
+		<mkdir dir="${build.dir}/temp_modl/artifacts/tags" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${build.dir}/temp_modl/artifacts/tags/UDTs.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${build.dir}/temp_modl/artifacts/tags/connections.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/sqlTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${build.dir}/temp_modl/artifacts/tags/testTags.xml" />
+
+		<!-- Zip it all up -->
+		<zip zipfile="${build.dir}/modules/${module.name}-module-unsigned.modl" basedir="${build.dir}/temp_modl" />
+	</target>
+
+	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
+	<target name="deploy" depends="build">
+		<echo message="Installing ${module.name} on Ignition Gateway." />
+		<postmodule posturl="${local.gateway.url}" modulefile="${build.dir}/modules/${module.name}-module-unsigned.modl" />
+	</target>
+</project>

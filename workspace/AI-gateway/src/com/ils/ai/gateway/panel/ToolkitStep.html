@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
+<body>
+
+	<wicket:panel>
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
+			<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="spacer"/>
+		<p class="spacer"/>
+		<div>
+			<input type="submit" wicket:id="install" value="Update" />
+		</div>
+		<br />
+	</wicket:panel>
+</body>
+</html>

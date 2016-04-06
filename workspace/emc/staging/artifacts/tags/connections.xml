@@ -1,0 +1,187 @@
+<Tags>
+   <Tag name="Connections" path="" type="Folder"/>
+   <Tag name="CDBalerVolLab" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="FrntAvgC2NotHigh" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost568a" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost568b" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost490" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost491" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost492" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CatIsOut" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="RateChangeOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SplitFlyingSwitchOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SingleRateChangeOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="EBalerVolLab" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SeriesRateChangeOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CDEBalerTemp" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="RxMlOk" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="FrntLngthAboveSP" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="PremixTempLessThanMax" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SeriesFlyingSwitchOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ABBalerVolFtnir" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="MlHigh" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="PremixLineFresh" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CaSqcToCrx" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="MlLow" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="StabSqcToCrx" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CFlyingSwitchOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CDBalerVolFtnir" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="EBalerVolFtnir" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="MooneySqcToCstrMooney" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost488" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SdstrmC3C2Ratio" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost489" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CatIsIn-b" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="UniformCntrTprTips" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CatIsIn-a" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="FrntLngthBelowSetpointSF4" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SplitRateChangeOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="C2SqcToC2Cstr" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="MyConnectionPost" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="SingleFlyingSwitchOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="FrntLngthShortToMooneyLogic" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="PremixTempChgPermitted" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="PremixTempAvail" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ABBalerVolLab" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="CRxGrd" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="ConnectionPost569" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+   <Tag name="PolyRateChangeOutput" path="Connections" type="DB">
+      <Property name="Value"></Property>
+      <Property name="DataType">7</Property>
+   </Tag>
+</Tags>
