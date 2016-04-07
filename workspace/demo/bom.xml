@@ -1,4 +1,4 @@
-d<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- For any panel, the type determines the layout and class. The combination of 
       type and subtype must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 

@@ -45,9 +45,8 @@
 		<mkdir dir="${artifact.dir}" />
 		<mkdir dir="${deploy.dir}" />
 
-		<!-- Create module.xml, marker file and bill-of-materials -->
+		<!-- Create module.xml and  marker file -->
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
-		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 
 		<!-- Copy Core jar files -->
@@ -56,6 +55,7 @@
 
 		<!-- Copy staged artifacts into the bundle -->
 		<mkdir dir="${artifact.dir}" />
+		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />

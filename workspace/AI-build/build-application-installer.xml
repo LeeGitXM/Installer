@@ -29,7 +29,7 @@
 	</path>	
 
 	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
-		<target name="BuildAndInstallModule" depends="clean, build" />
+	<target name="BuildAndInstallModule" depends="clean, build" />
 
 	<!-- Cleans all previously built files (leaves doc) -->
 	<target name="clean" description="Remove existing build products" >

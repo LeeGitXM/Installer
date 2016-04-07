@@ -109,21 +109,23 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				String result = null;
-				if(backupProject) result = createBackup(fullProjectName);
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				if( result==null && selectedAuth==null ) {
+				if( selectedAuth==null ) {
 					result = "Please select an authentication profile";
 				}
-				if( result==null) {
-					result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,selectedAuth.getName(),data);
-				}
-				if( result==null ) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					info(String.format("Project %s loaded successfully", fullProjectName));
-					dataHandler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
-				}
 				else {
-					warn(result);
+					InstallerDataHandler handler = InstallerDataHandler.getInstance();
+					if(backupProject) result = createBackup(fullProjectName);
+					if( result==null) {
+						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,selectedAuth.getName(),data);
+					}
+					if( result==null ) {
+						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+						info(String.format("Project %s loaded successfully", fullProjectName));
+						dataHandler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
+					}
+					else {
+						warn(result);
+					}
 				}
 			}
         });
