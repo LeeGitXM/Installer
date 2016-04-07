@@ -33,6 +33,7 @@ import simpleorm.dataset.SQuery;
  */
 public class ProjectStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 9066858944253432239L;
+	private final static String AUTH_PREFERENCE_NAME = "authenticationProfile";
 	private String fullProjectName        = "UNUSED";
 	private String partialProjectName     = "UNUSED";
 	private String globalProjectName      = "UNUSED";
@@ -67,9 +68,11 @@ public class ProjectStep extends BasicInstallerPanel {
         		globalProjectLocation = art.getLocation();
         	}
         }
-	
-        AuthenticationList profiles = new AuthenticationList("profiles", new PropertyModel<UserSourceProfileRecord>(this, "selectedAuth"), getProfiles());
+        String defaultProfileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
+        AuthenticationList profiles = new AuthenticationList("profiles", new PropertyModel<UserSourceProfileRecord>(this, "selectedAuth"), 
+        									getProfiles(),defaultProfileName);
 		add(profiles);
+
 		// Set whether or not to skip panels that are up-to-date
 		// Accept license
 		String backup = dataHandler.getPreference("backupCheckbox");
@@ -117,6 +120,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 					info(String.format("Project %s loaded successfully", fullProjectName));
+					dataHandler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
 				}
 				else {
 					warn(result);
@@ -226,8 +230,14 @@ public class ProjectStep extends BasicInstallerPanel {
 	public class AuthenticationList extends DropDownChoice<UserSourceProfileRecord> {
 		private static final long serialVersionUID = -6176535065922396528L;
 
-		public AuthenticationList(String key,PropertyModel<UserSourceProfileRecord>model,List<UserSourceProfileRecord> list) {
+		public AuthenticationList(String key,PropertyModel<UserSourceProfileRecord>model,List<UserSourceProfileRecord> list,String defName) {
 			super(key,model,list,new AuthenticationRenderer());
+			for(UserSourceProfileRecord rec:list) {
+				if( rec.getName().equalsIgnoreCase(defName)) {
+					this.setDefaultModelObject(rec);
+					break;
+				}
+			}
 		}
 
 		@Override
@@ -261,11 +271,6 @@ public class ProjectStep extends BasicInstallerPanel {
 	private List<Project> getProjects() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
-	}
-	// Underscore is the only acceptable delimiter
-	private String suggestedName(String root,int version) {
-		if( version<0 ) version = 0; // Unset
-		return String.format("%s_%d", root,version);
 	}
 	// Find an unused name and copy the original to it.
 	private String createBackup(String oldName) {
