@@ -54,10 +54,9 @@
 		<preamble>Check authentication profiles to verify that at least one of them
 		includes a user assigned to each role utilized by the product.
 		</preamble>
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
+		<role name="Operator">Console operator</role>
+		<role name="AE">Application engineer</role>
+		<role name="OE">Operations engineer</role>
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>

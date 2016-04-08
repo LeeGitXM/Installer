@@ -3,19 +3,17 @@
  */
 package com.ils.ai.gateway.panel;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
-import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PropertyItem;
 
 /**
  * The purpose of this step is to validate that an authentication profile exists with the required
@@ -28,45 +26,30 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
  */
 public class AuthenticationStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
-	private static String fileName = "ignition-backup.gwbk";
 
 	public AuthenticationStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
        
+        InstallerDataHandler handler = InstallerDataHandler.getInstance();
         add(new Label("preamble",preamble).setEscapeModelStrings(false));
-        // 
-        // Note: Tried as a "Link" class to same effect within a form and not. 
-        //       Status bars do not appear.
-        Form<InstallerData> form = new Form<InstallerData>("validationForm", new CompoundPropertyModel<InstallerData>(data));
-        Button button = new Button("validate") {
-			private static final long serialVersionUID = 1L;
-			String result = null;
+        
+        List<PropertyItem> roles = handler.getAuthenticationRoles(panelIndex,data);
+		add(new ListView<PropertyItem>("roles", roles) {
+			private static final long serialVersionUID = -4610581829738917953L;
 
-			@Override
-            public void onSubmit() {
-				
-                AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
-					private static final long serialVersionUID = 3787754864513466176L;
-					
-					@Override
-                    public void write(OutputStream output) throws IOException {
-						InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-                        result = dataHandler.backup(output,data);;
-                        if(result==null) info("Backup completed successfully");
-                        else warn(result);
-                        System.out.println("BACKUPSTEP result:"+result);
-                    }
-                };
-                
-                System.out.println("BACKUPSTEP Starting ...");
-                ResourceStreamRequestHandler handle = new ResourceStreamRequestHandler(rstream, fileName);
-                getRequestCycle().scheduleRequestHandlerAfterCurrent(handle);
-                
-                AuthenticationStep.this.warn("DONE"); // Works without getRequestCycle.scheduleAfter
-                System.out.println("BACKUPSTEP DONE");
+			protected void populateItem(ListItem<PropertyItem> item) {
+                PropertyItem property = (PropertyItem) item.getModelObject();
+                item.add(new Label("name", property.getName()));
+                item.add(new Label("role", property.getValue()));
             }
-        };
-        form.add(button);
-        add(form);
+        });
+		
+        add(new Button("validate") {
+			private static final long serialVersionUID = 4110778774811578782L;
+			
+			public void onSubmit() {
+				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+			}
+        });
     }
 }

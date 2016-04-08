@@ -77,6 +77,7 @@ import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.Backu
 public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
 	private static final long serialVersionUID = -9021431638644580809L;
+	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
 	private static InstallerDataHandler instance = null;
 	
@@ -429,6 +430,25 @@ public class InstallerDataHandler {
 			}
 		}
 		return artifacts;
+	}
+	// Return property name value pairs associated with a particular panel
+	public List<PropertyItem> getAuthenticationRoles(int panelIndex,InstallerData model) {
+		List<PropertyItem> roles = new ArrayList<>();
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList propertyNodes = panel.getElementsByTagName("role");
+			int count = propertyNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node propertyNode = propertyNodes.item(index);
+				String name = xmlUtil.attributeValue(propertyNode, "name");
+				String value = propertyNode.getTextContent();
+				PropertyItem item = new PropertyItem(name,value);
+				roles.add(item);
+				index++;
+			}
+		}
+		return roles;
 	}
 	/**
 	 * Search the installer module for the bill of materials.
@@ -842,12 +862,12 @@ public class InstallerDataHandler {
 	public String loadArtifactAsExternalFiles(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String fromRoot   = artifact.getLocation();  // Add a trailing /
-		if( !fromRoot.endsWith(File.separator)) fromRoot = fromRoot+File.separator;
+		if( !fromRoot.endsWith(FILE_SEPARATOR)) fromRoot = fromRoot+FILE_SEPARATOR;
 		String toRoot="";
 		// Prepend the actual path to the Gateway directory
 		String type = artifact.getType();
 		if( type.equalsIgnoreCase("python") ) {
-			toRoot = context.getUserlibDir().getAbsolutePath()+File.separator+"pylib";  // User-lib/pylib full path
+			toRoot = context.getUserlibDir().getAbsolutePath()+FILE_SEPARATOR+"pylib";  // User-lib/pylib full path
 		}	
 		else {
 			toRoot = context.getLibDir().getAbsolutePath();  // lib full path
@@ -860,7 +880,7 @@ public class InstallerDataHandler {
 			String name = entry.getName();
 			String contents = jarUtil.readFileFromJar(name,getPathToModule(model));
 			String subpath = name.substring(fromRoot.length());
-			String path = String.format("%s%s%s", toRoot,File.separator,subpath);
+			String path = String.format("%s%s%s", toRoot,FILE_SEPARATOR,subpath);
 			fileUtil.stringToFile(contents, path);     // Creates intervening directories
 		}
 		return result;
@@ -868,7 +888,7 @@ public class InstallerDataHandler {
 	public String loadArtifactAsIconCollection(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String root   = artifact.getLocation();  // Includes trailing /
-		if( !root.endsWith(File.separator)) root = root+File.separator;
+		if( !root.endsWith(FILE_SEPARATOR)) root = root+FILE_SEPARATOR;
 		ImageManager mgr = context.getImageManager();
 		// First of all we create all intervening directories
 		List<JarEntry> entries = jarUtil.directoriesInJarSubpath(getPathToModule(model),root );
@@ -876,9 +896,10 @@ public class InstallerDataHandler {
 			String name = entry.getName();
 			String iconPath = name.substring(root.length());
 			if(iconPath.length()==0) continue;
-			if(iconPath.endsWith(File.separator)) iconPath=iconPath.substring(0,iconPath.length()-1);
+			// NOTE: Instead of File.separator, the XML should always use "/"
+			if(iconPath.endsWith(FILE_SEPARATOR)) iconPath=iconPath.substring(0,iconPath.length()-1);
 			try {
-				int pos = iconPath.lastIndexOf(File.separator);
+				int pos = iconPath.lastIndexOf(FILE_SEPARATOR);
 				String fname = iconPath;
 				String dir = null;
 				if( pos>=0 ) {
@@ -942,7 +963,7 @@ public class InstallerDataHandler {
 		if( bytes!=null && bytes.length>0 ) {
 			// If we have data, we had to have a path
 			String filename = getArtifactLocation(panelIndex,artifactName,model);
-			int pos = filename.lastIndexOf(File.separator);
+			int pos = filename.lastIndexOf(FILE_SEPARATOR);
 			if (pos>0 ) filename = filename.substring(pos+1);
 			try {
 				log.infof("%s.loadArtifactAsModule: Installing %d bytes as %s",CLSS,bytes.length,filename);

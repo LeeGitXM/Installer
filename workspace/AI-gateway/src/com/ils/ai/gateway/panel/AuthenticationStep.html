@@ -12,14 +12,27 @@
 
 	<wicket:panel>
 		<p wicket:id="preamble">should not appear</p>
-		<p class="spacer"/>
-		<p class="spacer"/>
+		<p class="spacer" />
+		<p class="spacer" />
+		<table class="edittable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<td colspan="2">Required Roles</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="roles">
+					<td class="trow-title"><span wicket:id="name" /></td>
+					<td class="trow-body"><span wicket:id="role" /></td>
+				</tr>
+			</tbody>
+		</table>
 		<div>
-			<form wicket:id="validationForm" action="">
+			<form action="">
 				<input type="submit" wicket:id="validate" value="Validate" />
 			</form>
 		</div>
-		<p class="spacer"/>
+		<p class="spacer" />
 	</wicket:panel>
 
 </body>
