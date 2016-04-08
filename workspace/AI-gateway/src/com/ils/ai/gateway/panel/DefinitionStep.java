@@ -6,7 +6,6 @@ package com.ils.ai.gateway.panel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -40,6 +39,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 	private SerializableDatasourceMeta isolationDatabase=null;
 	private TagProviderMeta productionProvider=null;
 	private TagProviderMeta isolationProvider=null;
+	private boolean saved = false;
 	private boolean valid = false;
 
 	public DefinitionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
@@ -143,9 +143,11 @@ public class DefinitionStep extends BasicInstallerPanel {
 					info("Datasource and tag provider definitions are complete.");
 				}
 				else {
-					valid = false;
+					valid = false;  
 					warn(msg.toString());
 				}
+				
+				saved = true;
             }
         });
 	}
@@ -248,9 +250,10 @@ public class DefinitionStep extends BasicInstallerPanel {
 		return result;
 	}
 	
-	
+	// If they've pressed "Save", allow user to proceed,
+	// no matter what -- they've been warned.
 	@Override
 	public boolean isNextAvailable() {
-		return valid ;
+		return valid || saved;
 	}
 }

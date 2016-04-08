@@ -40,7 +40,7 @@
 	</panel>
 
 	<panel type="backup" essential="false">
-		<title>Archive into an Ignition Backup</title>
+		<title>Save gateway state as an Ignition Backup</title>
 		<preamble>This is an optional step. Once created, a backup allows you
 			to revert the previous state of the application.
 		</preamble>
