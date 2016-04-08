@@ -248,16 +248,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 		return result;
 	}
 	
+	
 	@Override
-	public IDynamicWizardStep next() {
-		IDynamicWizardStep next = null;
-		if( !valid  ) {
-			InstallerDataHandler handler = InstallerDataHandler.getInstance();
-			next = handler.getNextPanel(panelIndex,this,dataModel);
-		}
-		else {
-			next = super.next();
-		}
-		return next;
+	public boolean isNextAvailable() {
+		return valid ;
 	}
 }

@@ -37,8 +37,8 @@ public class AuthenticationStep extends BasicInstallerPanel {
         // 
         // Note: Tried as a "Link" class to same effect within a form and not. 
         //       Status bars do not appear.
-        Form<InstallerData> form = new Form<InstallerData>("backupForm", new CompoundPropertyModel<InstallerData>(data));
-        Button button = new Button("backup") {
+        Form<InstallerData> form = new Form<InstallerData>("validationForm", new CompoundPropertyModel<InstallerData>(data));
+        Button button = new Button("validate") {
 			private static final long serialVersionUID = 1L;
 			String result = null;
 
