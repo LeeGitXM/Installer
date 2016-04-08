@@ -20,11 +20,6 @@
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
 
-	<tstamp>
-		<format property="build.date" pattern="MM/dd/yyyy HH:mm" />
-	</tstamp>
-
-
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
 		<delete dir="${staging.dir}" />
@@ -34,7 +29,14 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both defined in build.xml -->
+		<!-- build.date and version.build are both in SVN Release area, in
+		    files VERS and DATE.
+		    Update the BOM. "loadfile" does not overwrite existing properties.
+		-->
+		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/Release/DATE"/>
+		<trim input="${rawdate}" property="build.date" />
+		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<trim input="${rawvers}" property="version.build"/>
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
@@ -48,14 +50,17 @@
 		<!-- Create module.xml and  marker file -->
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
+		
 
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
 
-		<!-- Copy staged artifacts into the bundle -->
+		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
+		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
@@ -129,16 +134,22 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${artifact.dir}/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/XOM.proj" tofile="${artifact.dir}/projects/XOM.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
-		<mkdir dir="${artifact.dir}/scanclasses" />
-		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
-		<mkdir dir="${artifact.dir}/source" />
-		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${artifact.dir}/source/blt-0.1r15.zip" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${artifact.dir}/source/sfc-0.1r15.zip" />
 
+		<!-- Source -->
+		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
+		<!-- Exports -->
+		<copy file="${git.repo}/blt/migration/json/ignition/crxProductQuality.json" tofile="${artifact.dir}/migration/crxProductQuality.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/cstrProductQuality.json" tofile="${artifact.dir}/migration/cstrProductQuality.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/polyFlyingSwitch.json" tofile="${artifact.dir}/migration/polyFlyingSwitch.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/polyRateChange.json" tofile="${artifact.dir}/migration/polyRateChange.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/vfuProductQuality.json" tofile="${artifact.dir}/migration/vfuProductQuality.json" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/migration/DrierRegen.proj" />
+		
+		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
@@ -161,4 +172,20 @@
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
 	</target>
 
+	<!-- macro to trim newlines from a variable -->
+		 <macrodef name="trim">
+		   <attribute name="input" />
+		   <attribute name="property" />
+		   <sequential>
+		     <tempfile property="temp.file" />
+		     <echo file="${temp.file}" message="@{input}" />
+		     <move file="${temp.file}" tofile="${temp.file}.2">
+		       <filterchain>
+		       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+		       </filterchain>
+		     </move>
+		     <loadfile property="@{property}" srcFile="${temp.file}.2" />
+		     <delete file="${temp.file}.2" failonerror="false" />
+		   </sequential>
+		 </macrodef>
 </project>

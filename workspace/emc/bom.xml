@@ -8,8 +8,8 @@
 	<title>EMC Ignition Applications</title>
 	<description>Installer for EMC Ignition Applications.</description>
 	<property name="product">Ignition Applications</property>
-	<property name="release">0.1r17</property>
-	<property name="date">Apr 15, 2016</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
 	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
@@ -54,10 +54,9 @@
 		<preamble>Check authentication profiles to verify that at least one of them
 		includes a user assigned to each role utilized by the product.
 		</preamble>
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
+		<role name="Operator">Console operator</role>
+		<role name="AE">Application engineer</role>
+		<role name="OE">Operations engineer</role>
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
@@ -178,7 +177,7 @@
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="True" version="1">
+	<panel type="project" subtype="sfc" essential="true" version="1">
 		<title>Install SFC Charts in the Global Project
 		</title>
 		<preamble>This page handles installation of charts for various migrated SFC projects.
@@ -250,13 +249,39 @@
 		The source distribution comes complete with Eclipse project files and ant scripts for building. 
         Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
 		</preamble>
-		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="0.1r15">
-			<location>artifacts/source/blt-0.1r15.zip</location>
+		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="@RELEASE@">
+			<location>artifacts/source/blt-@RELEASE@.zip</location>
 		</artifact>
-		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="0.1r15">
-			<location>artifacts/source/sfc-0.1r15.zip</location>
+		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="@RELEASE@">
+			<location>artifacts/source/sfc-@RELEASE@.zip</location>
 		</artifact>
 	</panel>
+	<panel type="source" essential="false" version="1">
+		<title>Migration</title>
+		<preamble>The packages below contain exported-then-migrated diagrams and sequential control charts corresponding to
+		          the most recent conversions. Vistalon-specific exports are already included in the XOM and global projects
+		          as delivered.
+		</preamble>
+		<artifact name="Vistalon - CSTR" type="source" subtype="json" release="@RELEASE@">
+			<location>artifacts/migration/cstrProductQuality</location>
+		</artifact>
+		<artifact name="Vistalon - CRX" type="source" subtype="json" release="@RELEASE@">
+			<location>artifacts/migration/crxProductQuality.json</location>
+		</artifact>
+		<artifact name="Poly Flying Switch" type="source" subtype="json" release="@RELEASE@">
+			<location>artifacts/migration/polyFlyingSwitch.json</location>
+		</artifact>
+		<artifact name="Poly Rate Change" type="source" subtype="json" release="@RELEASE@">
+			<location>artifacts/migration/polyRateChange.json</location>
+		</artifact>
+		<artifact name="VFU" type="source" subtype="json" release="@RELEASE@">
+			<location>artifacts/migration/vfuProductQuality.json</location>
+		</artifact>
+		<artifact name="Drier Regen" type="source" subtype="proj" release="@RELEASE@">
+			<location>artifacts/migration/DrierRegen.proj</location>
+		</artifact>
+	</panel>
+	
 	<panel type="toolkit" essential="true" version="1">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.

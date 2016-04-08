@@ -30,19 +30,6 @@ public class FinalPage extends ConfigPanel {
 	public FinalPage(Model<InstallerData> model){
 		super("ils.success.title");
 		this.data = model.getObject();
-		/*
-		ComponentHierarchyIterator walker = visitChildren();
-		while(walker.hasNext()) {
-			Component c = walker.next();
-			System.out.println(c.getMarkupId() +": "+c.getClass().getName());
-			if(c instanceof Label ) {
-				Label label = (Label)c;
-				label.setEscapeModelStrings(false);
-				System.out.println(label.getDefaultModelObjectAsString());
-				break;
-			}
-		}
-		*/
 		
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
 		String title = handler.getFinalTitle(data);
