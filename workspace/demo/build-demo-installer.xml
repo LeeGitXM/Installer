@@ -20,7 +20,7 @@
 	</taskdef>
 
 	<tstamp>
-		<format property="build.date" pattern="MM/dd/yyyy HH:mm" />
+		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
 	</tstamp>
 
 	<!-- Clean results of previous runs -->
@@ -32,8 +32,15 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both defined in build.xml -->
-		<echo message="Build date: ${build.date}" />
+		<!-- build.date and version.build are both defined in build.xml 
+		    Override them here with file contents in SVN Release area
+		    Update the BOM. "loadfile" does not overwrite existing properties.
+		-->
+		
+		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<trim input="${raw}" property="version.build"/>
+		
+		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
 
@@ -52,9 +59,11 @@
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
 
 
-		<!-- Copy staged artifacts into the bundle -->
+		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
+		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
@@ -95,7 +104,7 @@
 
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
-		<mkdir dir="$${artifact.dir}/icons/blt" />
+		<mkdir dir="${artifact.dir}/icons/blt" />
 		<copy todir="${artifact.dir}/icons/blt">
 			<fileset dir="${git.repo}/blt/images">
 				<include name="**/*.png" />
@@ -131,8 +140,11 @@
 		<!-- Source -->
 		<mkdir dir="${artifact.dir}/source" />
 		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${artifact.dir}/source/blt-0.1r15.zip" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-0.1r15.zip" tofile="${artifact.dir}/source/sfc-0.1r15.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
+		
+		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${artifact.dir}/artifacts/tags/connections.xml" />
@@ -148,4 +160,21 @@
 		<echo message="Installing ${module.name} on Ignition Gateway." />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
 	</target>
+	
+	<!-- macro to trim newlines from a variable -->
+	 <macrodef name="trim">
+	   <attribute name="input" />
+	   <attribute name="property" />
+	   <sequential>
+	     <tempfile property="temp.file" />
+	     <echo file="${temp.file}" message="@{input}" />
+	     <move file="${temp.file}" tofile="${temp.file}.2">
+	       <filterchain>
+	       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+	       </filterchain>
+	     </move>
+	     <loadfile property="@{property}" srcFile="${temp.file}.2" />
+	     <delete file="${temp.file}.2" failonerror="false" />
+	   </sequential>
+	 </macrodef>
 </project>

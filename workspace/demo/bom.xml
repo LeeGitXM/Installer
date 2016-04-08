@@ -8,8 +8,8 @@
 	<title>ACE Controls Application</title>
 	<description>Installer for EMC Ignition Applications.</description>
 	<property name="product">ACE Controls</property>
-	<property name="release">1.2b5</property>
-	<property name="date">July 4, 2016</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
 	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
@@ -248,11 +248,11 @@
 		The source distribution comes complete with Eclipse project files and ant scripts for building. 
         Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
 		</preamble>
-		<artifact name="Toolkit Source Code" type="source" subtype="zip" release="0.1r15">
-			<location>artifacts/source/blt-0.1r15.zip</location>
+		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="@RELEASE@">
+			<location>artifacts/source/blt-@RELEASE@.zip</location>
 		</artifact>
-		<artifact name="SFC Extensions Source Code" type="source" subtype="zip" release="0.1r15">
-			<location>artifacts/source/sfc-0.1r15.zip</location>
+		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="@RELEASE@">
+			<location>artifacts/source/sfc-@RELEASE@.zip</location>
 		</artifact>
 	</panel>
 	<panel type="toolkit" essential="true" version="1">
