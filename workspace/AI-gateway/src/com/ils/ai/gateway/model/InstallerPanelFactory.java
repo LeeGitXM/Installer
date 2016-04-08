@@ -5,6 +5,7 @@ package com.ils.ai.gateway.model;
 
 import org.apache.wicket.model.Model;
 
+import com.ils.ai.gateway.panel.AuthenticationStep;
 import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.panel.DatabaseStep;
@@ -38,6 +39,8 @@ public class InstallerPanelFactory  {
 		BasicInstallerPanel step = null;
 		switch( stepType)  {
 
+			case AUTHENTICATION:     step = new AuthenticationStep(panelIndex,prior,title,model);
+				break;
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
 				break;
 			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);

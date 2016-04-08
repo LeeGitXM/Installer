@@ -55,7 +55,7 @@ public class JarUtility {
 		Path jarDirPath = Paths.get(context.getUserlibDir().getAbsolutePath(),"modules");
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(jarDirPath, "*.{jar,modl}")) {
 			for (Path entry: stream) {
-				log.infof("%s.internalModuleContaining: Inspecting %s ..",CLSS,entry.toString());
+				log.infof("%s.internalModuleContaining: Inspecting %s for %s ...",CLSS,entry.toString(),marker);
 				if(jarAtPathContains(entry,marker)) {
 					result=entry;
 					break;
@@ -162,7 +162,7 @@ public class JarUtility {
 	
 	/**
 	 * Iterate over entries in a jar and return those that pass a specified filter and are
-	 * directories.  
+	 * directories. This is used for icon traversal.  
 	 */
 	public List<JarEntry> directoriesInJarSubpath(Path jarPath,String subPath) {
 		List<JarEntry> directories = new ArrayList<>();
@@ -194,8 +194,10 @@ public class JarUtility {
 			JarFile jar = new JarFile(jarPath.toFile());
 			Enumeration<JarEntry> entryWalker = jar.entries();
 			
+			// Scan the top level of the jar
 			while (entryWalker.hasMoreElements()) {
 				JarEntry entry = entryWalker.nextElement();
+				//log.infof("%s.filesInJarSubpath: entry path: %s vs subpath %s",CLSS,entry.getName(),subPath);
 				if(!entry.isDirectory() && entry.getName().startsWith(subPath)) {
 					files.add(entry);
 				}
@@ -206,9 +208,7 @@ public class JarUtility {
 			log.infof("%s.filesInJarSubpath: IO error converting %s from jar (%s)",CLSS,jarPath.toString(),ioe.getLocalizedMessage());
 		}
 		return files;
-	}
-
-
+	} 
 
 	/**
 	 * Iterate over the files in a jar and copy into a directory.

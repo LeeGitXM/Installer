@@ -4,7 +4,6 @@
 package com.ils.ai.gateway.panel;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
-import org.apache.wicket.util.io.IOUtils;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 
 import com.ils.ai.gateway.model.Artifact;
@@ -23,7 +21,7 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
- * Created by travis.cox on 2/17/2016.
+ * 
  */
 public class SourceStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;

@@ -58,6 +58,16 @@
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
 	</panel>
+	<panel type="authentication" essential="false">
+		<title>Verify User Roles</title>
+		<preamble>Check authentication profiles to verify that at least one of them
+		includes users assigned to each role utilized by the product.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="external" essential="true" version="1">
@@ -119,15 +129,6 @@
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="1">
-		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by &lt;b&gt;PRODUCTION&lt;/b&gt; tags. Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/scanclasses.csv</location>
-		</artifact>
-	</panel>
 	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for te ACE Application</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
@@ -162,10 +163,10 @@
 		<preamble>This step installs modules necessary for the EMC applications.
 		</preamble>
 		<artifact name="SFC Enhancements" type="module">
-			<location>artifacts/modules/ILS-SFC-module-unsigned.modl</location>
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
 		<artifact name="Application Toolkit" type="module">
-			<location>artifacts/modules/BLT-module-unsigned.modl</location>
+			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
 	<panel type="module" essential="false" version="1" subtype="test">

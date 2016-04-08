@@ -9,13 +9,13 @@ package com.ils.ai.gateway.model;
  */
 public enum PanelType
 {
-            BACKUP,
+			AUTHENTICATION,
+			BACKUP,
             DATABASE,
             DEFINITION,
             DOCUMENTATION,
             EXTERNAL,       // Python, jar files
             FILE, 
-            GLOBAL,         // global project
             ICON, 
             LICENSE,
             MODULE,         // 

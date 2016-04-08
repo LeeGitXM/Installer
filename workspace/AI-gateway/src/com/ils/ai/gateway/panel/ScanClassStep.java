@@ -7,22 +7,13 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
-import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
-import com.ils.ai.gateway.model.PropertyItem;
-import com.ils.common.persistence.ToolkitProperties;
-import com.ils.common.persistence.ToolkitRecordHandler;
-import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
-import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /**
  */

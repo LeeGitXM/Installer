@@ -24,6 +24,7 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
  */
 public class FileUtility {
 	private final String TAG = "FileUtility";
+	private final boolean DEBUG = true;
 	private final LoggerEx log;
 
 	public FileUtility() {
@@ -38,11 +39,12 @@ public class FileUtility {
 	 */
 	public String copyFile(String source,String destination) {
 		String error = null;
+		if(DEBUG) log.infof("%s.copyFile: copy %s to %s",TAG,source,destination);
 		try {
 			Path srcPath  = Paths.get(source);
 			Path destPath = Paths.get(destination);
 			destPath.getParent().toFile().mkdirs();   // Create any intervening directories
-			Files.copy(srcPath, destPath, StandardCopyOption.COPY_ATTRIBUTES,StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(srcPath, destPath, StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch( InvalidPathException ipe) {
 			error = String.format("%s.copyFile: one or both of %s and %s is invalid (%s)",TAG,source,destination,ipe.getLocalizedMessage());
@@ -85,10 +87,18 @@ public class FileUtility {
 	 */
 	public String stringToFile(String text,String destination) {
 		String error = null;
+		if(DEBUG) log.infof("%s.stringToFile: creating %s",TAG,destination);
 		try {
 			Path destPath = Paths.get(destination);
-			destPath.getParent().toFile().mkdirs();   // Create any intervening directories
-			Files.write(destPath, text.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE);
+			// Create any intervening directories .. make sure that there are some.
+			if( destPath.getParent().toFile().exists() || destPath.getParent().toFile().mkdirs() ) {
+				destPath.getParent().toFile().setWritable(true);
+				Files.write(destPath, text.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE);
+			}
+			else {
+				error = String.format("%s.stringToFile: Failed to create intervening directories when writing %s",TAG,destination);
+				log.info(error);
+			}
 		}
 		catch( InvalidPathException ipe) {
 			error = String.format("%s.stringToFile: path %s is invalid (%s)",TAG,destination,ipe.getLocalizedMessage());
@@ -96,6 +106,14 @@ public class FileUtility {
 		}
 		catch( IOException ioe) {
 			error = String.format("%s.stringToFile: Exception writing to %s (%s)",TAG,destination,ioe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( UnsupportedOperationException usoe) {
+			error = String.format("%s.stringToFile: Unsupported operation writing to %s (%s)",TAG,destination,usoe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( SecurityException se) {
+			error = String.format("%s.stringToFile: Security exception writing to %s (%s)",TAG,destination,se.getLocalizedMessage());
 			log.info(error);
 		}
 		return error;

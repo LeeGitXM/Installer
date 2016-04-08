@@ -6,7 +6,6 @@ package com.ils.ai.gateway.panel;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.link.Link;

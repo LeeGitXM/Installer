@@ -831,6 +831,14 @@ public class InstallerDataHandler {
 		return title;
 	}
 
+	/**
+	 * "external" means outside of an Ignition project. We are actually installing the files inside the
+	 * Gateway install directory.
+	 * @param panelIndex
+	 * @param artifact
+	 * @param model
+	 * @return
+	 */
 	public String loadArtifactAsExternalFiles(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String fromRoot   = artifact.getLocation();  // Add a trailing /

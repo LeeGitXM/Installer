@@ -1,11 +1,9 @@
 /**
  * Copyright 2016. ILS Automation. All rights reserved.
  */
-package com.ils.ai.gateway.panel;
+package com.ils.ai.gateway.model;
 
 import java.util.List;
-
-import org.apache.wicket.markup.html.form.TextField;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.inductiveautomation.ignition.common.project.Project;

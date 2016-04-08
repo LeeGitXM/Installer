@@ -9,20 +9,16 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
-import com.ils.ai.gateway.panel.ProjectStep.ProjectList;
-import com.inductiveautomation.ignition.common.project.Project;
 
 /**
- * Created by travis.cox on 2/17/2016.
+ * 
  */
 public class DatabaseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
