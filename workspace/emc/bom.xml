@@ -97,10 +97,6 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
-		<artifact name="Tags Representing Connections" type="tag"
-			subtype="xml">
-			<location>artifacts/tags/connections.xml</location>
-		</artifact>
 		<artifact name="Production Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>

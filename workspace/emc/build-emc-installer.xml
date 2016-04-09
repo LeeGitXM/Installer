@@ -153,7 +153,6 @@
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${artifact.dir}/tags/connections.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
 

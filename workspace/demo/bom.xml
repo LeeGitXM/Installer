@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- For any panel, the type determines the layout and class. The combination of 
-      type and subtype must be unique. If missing, the subtype is taken to be the
+      type and sub-type must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
       be unique. 
  -->
@@ -289,6 +289,7 @@
 		<preamble>The automated installation and configuration of the ACE Control Ignition Application
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Project Permissions">Make sure that appropriate permissions are associated with each newly-installed project.</note>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>
 </installer>

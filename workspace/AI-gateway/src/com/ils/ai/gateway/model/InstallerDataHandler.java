@@ -224,6 +224,27 @@ public class InstallerDataHandler {
 		return result;
 	}
 	/**
+	 * Search the internal database for a user in the specified profile that has admin
+	 * privileges. This is the user that we want to make the owner of our projects.
+	 * @param model the bean holder of all shared information.
+	 * @return the profile of the first user with admin privileges.
+	 */
+	public int getAdministrativeProfile(InstallerData model) {
+		getAdministrativeUser(model);    // Has side effect of setting the profile
+		return model.getAdministrativeProfile();
+	}
+	
+	/**
+	 * Search the internal database for a user in the specified profile that has admin
+	 * privileges. This is the user that we want to make the owner of our projects.
+	 * @param model the bean holder of all shared information.
+	 * @return
+	 */
+	public String getAdministrativeUser(InstallerData model) {
+		model.setAdministrativeProfile(1);
+		return "admin";
+	}
+	/**
 	 * @param model
 	 * @return a list of the names of the artifacts associated with this step
 	 */
@@ -982,7 +1003,15 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * Create a new project. Leave it disabled.
+	 * @param location
+	 * @param name
+	 * @param profile
+	 * @param model
+	 * @return
+	 */
 	public String loadArtifactAsProject(String location,String name,String profile,InstallerData model) {
 		String result = null;
 		Path internalPath = getPathToModule(model);
@@ -998,6 +1027,7 @@ public class InstallerDataHandler {
 				project.setName(name);
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
+				project.setEnabled(false);
 				
 				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
 				
@@ -1015,7 +1045,10 @@ public class InstallerDataHandler {
 				project.putResource(resource, true);
 				pmgr.addProject(project, true);
 				
-				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),"1","admin",globalProps.getRequiredRoles());
+				int adminProfile = getAdministrativeProfile(model);
+				String adminUser = getAdministrativeUser(model);
+				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),
+											String.valueOf(adminProfile),adminUser,globalProps.getRequiredRoles());
 				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
 			}
 			else {
@@ -1171,7 +1204,16 @@ public class InstallerDataHandler {
 
 		return result;
 	}
-	// Start with an existing project and create a new one with resources overridden from another.
+	/**
+	 *  Start with an existing project and create a new one with resources overridden from another.
+	 *  Leave it disabled.
+	 * @param existing
+	 * @param location
+	 * @param name
+	 * @param model
+	 * @return
+	 */
+	
 	public String mergeWithProjectFromLocation(Project existing,String location,String name,InstallerData model) {
 		String result = null;
 		if( existing!=null) {
@@ -1184,6 +1226,7 @@ public class InstallerDataHandler {
 				Project mergee = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
 				String description = mergee.getDescription();
 				mergee.setDescription(updateProjectDescription(description,model));
+				mergee.setEnabled(false);
 				
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(location);
@@ -1191,6 +1234,11 @@ public class InstallerDataHandler {
 					projectReader = jar.getInputStream(entry);
 					Project standard = Project.fromXML(projectReader);
 					mergee.applyDiff(standard);
+					GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
+					// Search for administrative user.
+					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+					pmgr.saveProject(mergee, user, "n/a", 
+							String.format("ILS Automation Installer: updated from %s",standard.getName()), false);
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);

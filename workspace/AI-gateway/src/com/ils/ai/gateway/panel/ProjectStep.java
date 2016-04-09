@@ -85,14 +85,14 @@ public class ProjectStep extends BasicInstallerPanel {
 			// The value is "on" for selected, null for not.
 			@Override
 			public void onSelectionChanged() {
-				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+				InstallerDataHandler handler = InstallerDataHandler.getInstance();
 				if(getValue()==null) {
 					backupProject = false;
-					dataHandler.setPreference("backupCheckbox","false");
+					handler.setPreference("backupCheckbox","false");
 				}
 				else {
 					backupProject = true;
-					dataHandler.setPreference("backupCheckbox","true");
+					handler.setPreference("backupCheckbox","true");
 				}
 			}
 		};
@@ -122,7 +122,7 @@ public class ProjectStep extends BasicInstallerPanel {
 					if( result==null ) {
 						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 						info(String.format("Project %s loaded successfully", fullProjectName));
-						dataHandler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
+						handler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
 					}
 					else {
 						warn(result);
