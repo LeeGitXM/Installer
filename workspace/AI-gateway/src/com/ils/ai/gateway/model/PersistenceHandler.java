@@ -57,6 +57,7 @@ public class PersistenceHandler {
 	 * On a failure to find the property, an empty string is returned.
 	 */
 	public String getArtifactRelease(String productName,PanelType type,String subtype,String artifactName) {
+		log.infof("%s.getArtifactRelease: Retrieving %s:%s:%s:%s (%s)",CLSS,productName,type.name(),subtype,artifactName);
 		String value = "";
 		try {
 			ArtifactReleaseRecord record = context.getPersistenceInterface().find(ArtifactReleaseRecord.META, productName,type.name(),
@@ -64,7 +65,7 @@ public class PersistenceHandler {
 			if( record!=null) value =  record.getRelease();
 		}
 		catch(Exception ex) {
-			log.warnf("%s.getArtifactRelease: Exception retrieving %s:%s:%s:%s (%s),",CLSS,productName,type.name(),subtype,artifactName,ex.getMessage());
+			log.warnf("%s.getArtifactRelease: Exception retrieving %s:%s:%s:%s (%s)",CLSS,productName,type.name(),subtype,artifactName,ex.getMessage());
 		}
 		return value;
 	}
@@ -72,7 +73,7 @@ public class PersistenceHandler {
 	 * Set the value of a product property. Keys are product name and property name.
 	 */
 	public void setArtifactRelease(String productName,PanelType type,String subtype,String artifactName,String release) {
-
+		log.infof("%s.setArtifactRelease: Setting %s:%s:%s:%s=%s",CLSS,productName,type.name(),subtype,artifactName,release);
 		try {
 			ArtifactReleaseRecord record = context.getPersistenceInterface().find(ArtifactReleaseRecord.META, productName,type.name(),
 																												subtype,artifactName);
@@ -91,7 +92,7 @@ public class PersistenceHandler {
 			} 
 		}
 		catch(Exception ex) {
-			log.warnf("%s.setArtifactRelease: Exception setting %s:%s:%s:%s=%s (%s),",CLSS,productName,type.name(),subtype,artifactName,release,ex.getMessage());
+			log.warnf("%s.setArtifactRelease: Exception setting %s:%s:%s:%s=%s (%s)",CLSS,productName,type.name(),subtype,artifactName,release,ex.getMessage());
 		}
 	}
 
@@ -100,13 +101,14 @@ public class PersistenceHandler {
 	 * On a failure to find the property, an empty string is returned.
 	 */
 	public String getProductProperty(String productName,String propertyName) {
+		log.infof("%s.getProductProperty: Retrieving %s (%s),",CLSS,propertyName);
 		String value = "";
 		try {
 			ProductPropertyRecord record = context.getPersistenceInterface().find(ProductPropertyRecord.META, productName,propertyName);
 			if( record!=null) value =  record.getValue();
 		}
 		catch(Exception ex) {
-			log.warnf("%s.getProductProperty: Exception retrieving %s (%s),",CLSS,propertyName,ex.getMessage());
+			log.warnf("%s.getProductProperty: Exception retrieving %s (%s)",CLSS,propertyName,ex.getMessage());
 		}
 		return value;
 	}
@@ -115,7 +117,7 @@ public class PersistenceHandler {
 	 * Set the value of a product property. Keys are product name and property name.
 	 */
 	public void setProductProperty(String productName,String propertyName, String value) {
-
+		log.infof("%s.setProductProperty: Setting %s:%s=%s",CLSS,productName,propertyName,value);
 		try {
 			ProductPropertyRecord record = context.getPersistenceInterface().find(ProductPropertyRecord.META, productName,propertyName);
 			if( record==null ) record = context.getPersistenceInterface().createNew(ProductPropertyRecord.META);
@@ -131,7 +133,7 @@ public class PersistenceHandler {
 			} 
 		}
 		catch(Exception ex) {
-			log.warnf("%s.setProductProperty: Exception setting %s:%s=%s (%s),",CLSS,productName,propertyName,value,ex.getMessage());
+			log.warnf("%s.setProductProperty: Exception setting %s:%s=%s (%s)",CLSS,productName,propertyName,value,ex.getMessage());
 		}
 	}
 	/**
@@ -141,12 +143,13 @@ public class PersistenceHandler {
 	 */
 	public int getStepVersion(String productName,PanelType type,String subtype) {
 		int version = InstallerConstants.UNSET;
+		log.infof("%s.getStepVersion: Retrieving %s:%s:%s,",CLSS,productName,type.name(),subtype);
 		try {
 			InstalledVersionRecord record = context.getPersistenceInterface().find(InstalledVersionRecord.META, productName,type.name(),subtype);
 			if( record!=null) version =  record.getVersion();
 		}
 		catch(Exception ex) {
-			log.warnf("%s.getStepVersion: Exception retrieving %s:%s:%s (%s),",CLSS,productName,type.name(),subtype,ex.getMessage());
+			log.warnf("%s.getStepVersion: Exception retrieving %s:%s:%s (%s)",CLSS,productName,type.name(),subtype,ex.getMessage());
 		}
 		return version;
 	}
@@ -155,7 +158,7 @@ public class PersistenceHandler {
 	 * Set the value of a product version. Keys are product name,artifact type and artifact sub-type..
 	 */
 	public void setStepVersion(String productName,PanelType type,String subtype,int version)  {;
-
+		log.infof("%s.setStepVersion: Setting %s:%s:%s=%d",CLSS,productName,type.name(),subtype,version);
 		try {
 			InstalledVersionRecord record = context.getPersistenceInterface().find(InstalledVersionRecord.META,productName,type.name(),subtype);
 			if( record==null ) record = context.getPersistenceInterface().createNew(InstalledVersionRecord.META);
@@ -174,7 +177,7 @@ public class PersistenceHandler {
 			} 
 		}
 		catch(Exception ex) {
-			log.warnf("%s.setStepVersion: Exception setting %s:%s:%s=%d (%s),",CLSS,productName,type.name(),subtype,version,ex.getMessage());
+			log.warnf("%s.setStepVersion: Exception setting %s:%s:%s=%d (%s)",CLSS,productName,type.name(),subtype,version,ex.getMessage());
 		}
 	}
 }

@@ -145,7 +145,7 @@
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="True" version="1">
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install a New XOM Project or Merge Changes into an Existing
 			Project
 		</title>
@@ -162,7 +162,7 @@
 			<location>artifacts/projects/XOM.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="dbmgr" essential="True" version="1">
+	<panel type="project" subtype="dbmgr" essential="true" version="1">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.

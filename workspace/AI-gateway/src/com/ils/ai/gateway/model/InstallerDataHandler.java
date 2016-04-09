@@ -241,8 +241,10 @@ public class InstallerDataHandler {
 	 * @return
 	 */
 	public String getAdministrativeUser(InstallerData model) {
+		String admin = "admin";
 		model.setAdministrativeProfile(1);
-		return "admin";
+		model.setAdministrativeUser(admin);
+		return admin;
 	}
 	/**
 	 * @param model
