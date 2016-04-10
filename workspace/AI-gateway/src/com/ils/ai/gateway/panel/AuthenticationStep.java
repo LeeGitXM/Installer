@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 
 /**
@@ -48,7 +49,10 @@ public class AuthenticationStep extends BasicInstallerPanel {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
 			public void onSubmit() {
-				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+				PersistenceHandler ph = PersistenceHandler.getInstance();
+				boolean valid = ph.validateRoleList(roles);
+				if( valid ) info("Validated: One or more authentication profiles that contain all the required roles");
+				else warn("There is no authentication profile that contains all the required roles");
 			}
         });
     }

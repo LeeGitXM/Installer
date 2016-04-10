@@ -16,7 +16,7 @@ import org.w3c.dom.Document;
  */
 public class InstallerData implements Serializable  {
 	private static final long serialVersionUID = -7650179030090459881L;
-	private int administrativeProfile = 1;
+	private String administrativeProfile = "1";
 	private String administrativeUser = null;
 	private Document bom = null;
 	private String modulePath = null;
@@ -25,7 +25,7 @@ public class InstallerData implements Serializable  {
 	private boolean ignoringCurrent   = false;   // Ignore artifacts that are up-to-date
 	private final Map<Integer,PanelData> panelMap = new HashMap<>();
 
-	public int getAdministrativeProfile() {return administrativeProfile;}
+	public String getAdministrativeProfile() {return administrativeProfile;}
 	public String getAdministrativeUser() {return administrativeUser;}
 	public Document getBillOfMaterials() {return bom;}
 	public String getModulePath() {return this.modulePath;}
@@ -33,7 +33,7 @@ public class InstallerData implements Serializable  {
 	public String getProductName() {return this.productName;}
     public boolean isIgnoringCurrent() { return ignoringCurrent; }
     public boolean isIgnoringOptional() { return ignoringOptional; }
-	public void setAdministrativeProfile(int profile) {administrativeProfile=profile;}
+	public void setAdministrativeProfile(String profile) {administrativeProfile=profile;}
 	public void setAdministrativeUser(String user) {administrativeUser=user;}
     public void setBillOfMaterials(Document doc) {this.bom = doc;}
     public void setIgnoringCurrent(boolean flag) { this.ignoringCurrent = flag; }

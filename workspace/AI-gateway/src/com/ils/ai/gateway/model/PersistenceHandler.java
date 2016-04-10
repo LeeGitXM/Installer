@@ -4,9 +4,18 @@
 package com.ils.ai.gateway.model;
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import com.ils.ai.gateway.InstallerConstants;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
+import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistenceSession;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /**
@@ -23,7 +32,6 @@ public class PersistenceHandler {
 	
 	private final LoggerEx log;
 	private GatewayContext context = null;
-
     
 	/**
 	 * Constructor is private per Singleton pattern.
@@ -52,12 +60,70 @@ public class PersistenceHandler {
 	public void setContext(GatewayContext ctx) { 
 		this.context=ctx;
 	}
+	
+	/**
+	 * @return a list of properties set of administrative user names and profiles.
+	 *         Properties fields are: "Name" and "ProfileId"
+	 *         It is up to the receiver to close the result set.
+	 */
+	public List<Properties> getAdministrativeUsers() {
+		List<Properties> propertyList = new ArrayList<>();
+		try {
+			PersistenceSession session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			String SQL = 
+					"SELECT USER.UserName,ROLE.profileId " +
+					"FROM  InternalUserTable USER, InternalAuthMappingTable MAP,InternalRoleTable ROLE " +
+					"WHERE ROLE.roleName = 'Administrator' " +
+					"  AND ROLE.roleId = MAP.roleId" +
+					"  AND MAP.userId = USER.userId";
+			Statement statement = cxn.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			while (rs.next()) {
+				Properties props = new Properties();
+				props.setProperty("Name", rs.getString(1));
+				props.setProperty("ProfileId", rs.getString(2));
+				propertyList.add(props);  // column 3
+			}
+			rs.close();
+			statement.close();
+			session.close();
+		}
+		catch(SQLException sqle) {
+			log.warnf("%s.getAdministrativeUsers: Exception finding admin users (%s)",CLSS,sqle.getMessage());
+		}
+		return propertyList;
+	}
+	
+	/**
+	 * @return a list of authentication profile names.
+	 */
+	public synchronized List<String> getProfileNames() {
+		List<String> profiles = new ArrayList<>();
+		try {
+			PersistenceSession session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			String SQL = "SELECT NAME FROM AUTHPROFILES";
+			Statement statement = cxn.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			while (rs.next()) {
+				profiles.add(rs.getString("NAME"));  // column 3
+			}
+			rs.close();
+			statement.close();
+			session.close();
+		}
+		catch(SQLException sqle) {
+			log.warnf("%s.getProfileNames: Exception finding profiles (%s)",CLSS,sqle.getMessage());
+		}
+		return profiles;
+	}
 	/**
 	 * @return the last downloaded release number of the specified artifact
 	 * On a failure to find the property, an empty string is returned.
 	 */
 	public String getArtifactRelease(String productName,PanelType type,String subtype,String artifactName) {
-		log.infof("%s.getArtifactRelease: Retrieving %s:%s:%s:%s (%s)",CLSS,productName,type.name(),subtype,artifactName);
+		log.infof("%s.getArtifactRelease: Retrieving %s:%s:%s:%s",CLSS,productName,type.name(),subtype,artifactName);
 		String value = "";
 		try {
 			ArtifactReleaseRecord record = context.getPersistenceInterface().find(ArtifactReleaseRecord.META, productName,type.name(),
@@ -101,7 +167,7 @@ public class PersistenceHandler {
 	 * On a failure to find the property, an empty string is returned.
 	 */
 	public String getProductProperty(String productName,String propertyName) {
-		log.infof("%s.getProductProperty: Retrieving %s (%s),",CLSS,propertyName);
+		log.infof("%s.getProductProperty: Retrieving %s,",CLSS,propertyName);
 		String value = "";
 		try {
 			ProductPropertyRecord record = context.getPersistenceInterface().find(ProductPropertyRecord.META, productName,propertyName);
@@ -179,6 +245,47 @@ public class PersistenceHandler {
 		catch(Exception ex) {
 			log.warnf("%s.setStepVersion: Exception setting %s:%s:%s=%d (%s)",CLSS,productName,type.name(),subtype,version,ex.getMessage());
 		}
+	}
+	
+	/**
+	 * Query the internal database for a profile that contains all the listed roles.
+	 * @return true if such a profile exists.
+	 */
+	public boolean validateRoleList(List<PropertyItem> roles) {
+		boolean valid = false;
+		try {
+			PersistenceSession session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			StringBuilder inClause = new StringBuilder("(");
+			int count = 0;
+			for(PropertyItem item:roles) {
+				if( count>0 ) inClause.append(",");
+				inClause.append(String.format("'%s'", item.getName()));
+				count++;
+			}
+			inClause.append(")");
+			String SQL = 
+					"SELECT COUNT(ROLE.profileId) FROM InternalRoleTable ROLE " +
+					"WHERE ROLE.roleName IN " + inClause.toString() +
+					"  GROUP BY (ROLE.profileId)";
+			log.info("\n"+SQL+"\n");
+			Statement statement = cxn.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			while (rs.next()) {
+				int rowCount = rs.getInt(1);   // 1-based
+				if(rowCount>=count) {
+					valid = true;
+					break;
+				}
+			}
+			rs.close();
+			statement.close();
+			session.close();
+		}
+		catch(SQLException sqle) {
+			log.warnf("%s.validateRoleList: Exception counting roles (%s)",CLSS,sqle.getMessage());
+		}
+		return valid;
 	}
 }
 

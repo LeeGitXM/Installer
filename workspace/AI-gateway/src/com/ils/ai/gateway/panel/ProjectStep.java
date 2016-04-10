@@ -3,7 +3,9 @@
  */
 package com.ils.ai.gateway.panel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,9 +27,11 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProjectNameFinder;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
+import com.inductiveautomation.ignition.gateway.localdb.persistence.RecordMeta;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.user.UserSourceProfileRecord;
 
+import simpleorm.dataset.SFieldMeta;
 import simpleorm.dataset.SQuery;
 
 /**
@@ -41,7 +45,7 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String fullProjectLocation        = "";
 	private String partialProjectLocation     = "";
 	private String globalProjectLocation      = "";
-	private UserSourceProfileRecord selectedAuth = null;    // Authentication profile
+	private String profileName= null;    // Authentication profile
 	private Project selectedProject = null;                 // Project to be merged
 	private boolean backupProject = false;
 	
@@ -69,9 +73,11 @@ public class ProjectStep extends BasicInstallerPanel {
         		globalProjectLocation = art.getLocation();
         	}
         }
-        String defaultProfileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
-        AuthenticationList profiles = new AuthenticationList("profiles", new PropertyModel<UserSourceProfileRecord>(this, "selectedAuth"), 
-        									getProfiles(),defaultProfileName);
+        
+        // Set the default profile
+        PersistenceHandler ph = PersistenceHandler.getInstance();
+        profileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
+        DropDownChoice<String> profiles = new DropDownChoice<String>("profiles", new PropertyModel<String>(this, "profileName"),ph.getProfileNames());
 		add(profiles);
 
 		// Set whether or not to skip panels that are up-to-date
@@ -110,19 +116,21 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				String result = null;
-				if( selectedAuth==null ) {
+				if( profileName==null || profileName.isEmpty() ) {
 					result = "Please select an authentication profile";
 				}
 				else {
+					System.out.println(String.format("ProjectStep: Creating full project with profile %s",profileName));
 					InstallerDataHandler handler = InstallerDataHandler.getInstance();
 					if(backupProject) result = createBackup(fullProjectName);
 					if( result==null) {
-						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,selectedAuth.getName(),data);
+						
+						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,profileName,data);
 					}
 					if( result==null ) {
 						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 						info(String.format("Project %s loaded successfully", fullProjectName));
-						handler.setPreference(AUTH_PREFERENCE_NAME,selectedAuth.getName());
+						handler.setPreference(AUTH_PREFERENCE_NAME,profileName);
 					}
 					else {
 						warn(result);
@@ -229,48 +237,8 @@ public class ProjectStep extends BasicInstallerPanel {
 			return new Long(project.getId()).toString();
 		}
 	}
-	// ================================= Classes for Listing Auth Profiles  ==============================
-	public class AuthenticationList extends DropDownChoice<UserSourceProfileRecord> {
-		private static final long serialVersionUID = -6176535065922396528L;
 
-		public AuthenticationList(String key,PropertyModel<UserSourceProfileRecord>model,List<UserSourceProfileRecord> list,String defName) {
-			super(key,model,list,new AuthenticationRenderer());
-			for(UserSourceProfileRecord rec:list) {
-				if( rec.getName().equalsIgnoreCase(defName)) {
-					this.setDefaultModelObject(rec);
-					break;
-				}
-			}
-		}
-
-		@Override
-		public boolean wantOnSelectionChangedNotifications() { return true; }
-
-		@Override
-		protected void onSelectionChanged(final UserSourceProfileRecord newSelection) {
-			super.onSelectionChanged(newSelection);
-		}
-	}
-
-	public class AuthenticationRenderer implements IChoiceRenderer<UserSourceProfileRecord> {
-		private static final long serialVersionUID = 4630298963332443090L;
-
-		@Override
-		public Object getDisplayValue(UserSourceProfileRecord profile) {
-			return profile.getName();
-		}
-
-		@Override
-		public String getIdValue(UserSourceProfileRecord profile, int i) {
-			return new Long(profile.getId()).toString();
-		}
-	}
 	//===============================================================================
-	private List<UserSourceProfileRecord> getProfiles() {
-		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		List<UserSourceProfileRecord> profiles = context.getPersistenceInterface().query(new SQuery<UserSourceProfileRecord>(UserSourceProfileRecord.META));
-		return profiles;
-	}
 	private List<Project> getProjects() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);

@@ -24,7 +24,7 @@ import com.inductiveautomation.ignition.common.util.LoggerEx;
  */
 public class FileUtility {
 	private final String TAG = "FileUtility";
-	private final boolean DEBUG = true;
+	private final boolean DEBUG = false;
 	private final LoggerEx log;
 
 	public FileUtility() {

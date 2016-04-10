@@ -18,6 +18,7 @@ import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -229,7 +230,7 @@ public class InstallerDataHandler {
 	 * @param model the bean holder of all shared information.
 	 * @return the profile of the first user with admin privileges.
 	 */
-	public int getAdministrativeProfile(InstallerData model) {
+	public String getAdministrativeProfile(InstallerData model) {
 		getAdministrativeUser(model);    // Has side effect of setting the profile
 		return model.getAdministrativeProfile();
 	}
@@ -242,8 +243,16 @@ public class InstallerDataHandler {
 	 */
 	public String getAdministrativeUser(InstallerData model) {
 		String admin = "admin";
-		model.setAdministrativeProfile(1);
+		model.setAdministrativeProfile("1");
 		model.setAdministrativeUser(admin);
+		List<Properties> propertyList = PersistenceHandler.getInstance().getAdministrativeUsers();
+		// Just use the first one ...
+		if( !propertyList.isEmpty()) {
+			Properties props = propertyList.get(0);
+			admin = props.getProperty("Name");
+			model.setAdministrativeProfile(props.getProperty("ProfileId"));
+			model.setAdministrativeUser(admin);
+		}
 		return admin;
 	}
 	/**
@@ -1047,10 +1056,10 @@ public class InstallerDataHandler {
 				project.putResource(resource, true);
 				pmgr.addProject(project, true);
 				
-				int adminProfile = getAdministrativeProfile(model);
+				String adminProfile = getAdministrativeProfile(model);
 				String adminUser = getAdministrativeUser(model);
 				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),
-											String.valueOf(adminProfile),adminUser,globalProps.getRequiredRoles());
+											adminProfile,adminUser,globalProps.getRequiredRoles());
 				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
 			}
 			else {

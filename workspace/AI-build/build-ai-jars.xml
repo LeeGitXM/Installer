@@ -58,8 +58,8 @@
 			<param name="module.build.classpath" value="AI_Gateway.classpath"/>
 		</antcall>
 		
-		<!-- Create .modl file -->
-		<echo message="Making ${AIModule.name} modl" />
+		<!-- Create temp_modl directory -->
+		<echo message="Making ${AIModule.name} jar files" />
 		<mkdir dir="${build.dir}/temp_modl" />
 		
 		<!-- Copy gateway jar -->
