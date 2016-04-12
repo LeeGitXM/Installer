@@ -118,9 +118,12 @@
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
-		<!-- Recognized subtypes are: create, alter -->
+		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createXOMVistalon.sql</location>
+			<location>artifacts/database/createVistalon.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
 		<panel type="database" essential="false" version="1">
@@ -130,8 +133,11 @@
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="isolation"></property>
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createXOMVistalon.sql</location>
+		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
+			<location>artifacts/database/createVistalon.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
@@ -311,8 +317,7 @@
 		<title>Ignition Applications - Installed</title>
 		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
-		<note name="Authorizations">Be sure to verify project access authorizations. For any newly created 
-		            projects, the default authentication profile was used.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>
 </installer>

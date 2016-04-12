@@ -51,7 +51,7 @@ public class AuthenticationStep extends BasicInstallerPanel {
 			public void onSubmit() {
 				PersistenceHandler ph = PersistenceHandler.getInstance();
 				boolean valid = ph.validateRoleList(roles);
-				if( valid ) info("Validated: One or more authentication profiles that contain all the required roles");
+				if( valid ) info("Validated: One or more authentication profiles contain all the required roles");
 				else warn("There is no authentication profile that contains all the required roles");
 			}
         });

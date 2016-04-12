@@ -77,7 +77,22 @@ public class ProjectStep extends BasicInstallerPanel {
         // Set the default profile
         PersistenceHandler ph = PersistenceHandler.getInstance();
         profileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
-        DropDownChoice<String> profiles = new DropDownChoice<String>("profiles", new PropertyModel<String>(this, "profileName"),ph.getProfileNames());
+        DropDownChoice<String> profiles=new DropDownChoice<String>("profiles", new PropertyModel<String>(this, "profileName"), ph.getProfileNames()) {
+			private static final long serialVersionUID = 2602629544295913483L;
+			
+		
+			@Override
+			protected CharSequence getDefaultChoice(String selectedValue) {
+				return profileName;
+			}
+        	@Override
+        	public void onSelectionChanged(String newSelection) {
+        		profileName = newSelection;
+        		InstallerDataHandler.getInstance().setPreference(AUTH_PREFERENCE_NAME,profileName);
+        	}
+			@Override
+			protected boolean wantOnSelectionChangedNotifications() {return true;}
+        };
 		add(profiles);
 
 		// Set whether or not to skip panels that are up-to-date
@@ -116,11 +131,12 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				String result = null;
+				System.out.println(String.format("ProjectStep.onsubmit newForm: %s", fullProjectName));
 				if( profileName==null || profileName.isEmpty() ) {
 					result = "Please select an authentication profile";
 				}
 				else {
-					System.out.println(String.format("ProjectStep: Creating full project with profile %s",profileName));
+					System.out.println(String.format("ProjectStep.onSubmit: Creating full project with profile %s",profileName));
 					InstallerDataHandler handler = InstallerDataHandler.getInstance();
 					if(backupProject) result = createBackup(fullProjectName);
 					if( result==null) {

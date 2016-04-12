@@ -134,12 +134,12 @@
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
-		<!-- Recognized subtypes are: create, alter -->
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createXOM.sql</location>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="ACE Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
-		<artifact name="ACE Database Update" type="sql" subtype="alter">
-			<location>artifacts/database/createSfcTables.sql</location>
+		<artifact name="ACE Database" type="sql" subtype="create">
+			<location>artifacts/database/createACE.sql</location>
 		</artifact>
 	</panel>
 		<panel type="database" essential="false" version="1">
@@ -149,10 +149,10 @@
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="isolation"></property>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createXOM.sql</location>
+		<artifact name="Clear ACE Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
-		<artifact name="ACE Database Update" type="sql" subtype="alter">
+		<artifact name="ACE Database" type="sql" subtype="create">
 			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
@@ -288,7 +288,6 @@
 		<title>Installation Complete</title>
 		<preamble>The automated installation and configuration of the ACE Control Ignition Application
 		          is complete. There are just a few more manual steps required. </preamble>
-		<note name="Project Permissions">Make sure that appropriate permissions are associated with each newly-installed project.</note>
 		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>

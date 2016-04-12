@@ -24,7 +24,9 @@ public class DatabaseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private String datasource = "";
 	private boolean hasAlter = false;
+	private boolean hasClear = false;
 	private boolean hasCreate = false;
+	private String clearName    = "";
 	private String createName    = "";
 	private String alterName = "";
 
@@ -39,20 +41,47 @@ public class DatabaseStep extends BasicInstallerPanel {
         InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
         List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
         for(Artifact art:artifacts) {
-        	if( art.getSubtype().equalsIgnoreCase("create")) {
-        		hasCreate = true;
-        		createName = art.getName();
-        	}
-        	else if( art.getSubtype().equalsIgnoreCase("alter")) {
+        	if( art.getSubtype().equalsIgnoreCase("alter")) {
         		hasAlter = true;
         		alterName = art.getName();
         	}
+        	else if( art.getSubtype().equalsIgnoreCase("clear")) {
+        		hasClear = true;
+        		clearName = art.getName();
+        	}
+        	else if( art.getSubtype().equalsIgnoreCase("create")) {
+        		hasCreate = true;
+        		createName = art.getName();
+        	}
+        	
         }
         
         datasource = dataHandler.datasourceNameFromProperties(index, data);
 		add(new Label("datasource",datasource));
         
+		// Clear database form
+        WebMarkupContainer clear = new WebMarkupContainer("clear");
+        clear.setVisible(hasClear);
+		Form<InstallerData> clearSchemaForm = new Form<InstallerData>("clearForm", new CompoundPropertyModel<InstallerData>(data));
+        
+		clearSchemaForm.add(new Button("clear") {
+			private static final long serialVersionUID = 4330228774822578782L;
 
+			public void onSubmit() {
+				InstallerDataHandler handler = InstallerDataHandler.getInstance();
+				String result = handler.executeSQLFromArtifact(datasource,index,clearName,data);
+				if( result==null || result.isEmpty()) {
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					info(String.format("Datasource %s cleared (tables dropped).", datasource));
+				}
+				else {
+					warn(result);
+				}
+            }
+        });
+		clear.add(clearSchemaForm);
+        add(clear);
+        
 		// Create database form
         WebMarkupContainer create = new WebMarkupContainer("create");
         create.setVisible(hasCreate);

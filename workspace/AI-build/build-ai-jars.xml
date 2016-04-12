@@ -4,7 +4,7 @@
 -->
 <project name="ApplicationInstaller" basedir="../" default="BuildAndInstallModule">
 	<import file="./build.xml"/>
-	<property name="version.build" value="1" />	
+	<property name="version.build" value="2" />	
 	<property name="version.beta" value="-development" />		
 	<property name="AIModule.version" value="2.0.1.${version.build}" />
 	<property name="AIModule.name" value="AI" />

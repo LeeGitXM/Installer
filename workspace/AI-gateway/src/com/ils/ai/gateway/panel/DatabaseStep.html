@@ -46,6 +46,22 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr wicket:id="clear">
+					<td class="trow-title">Create new database instance</td>
+					<td class="trow-body">
+						<form wicket:id="clearForm" action="">
+							<table>
+								<tr>
+									<td />
+									<td><input style="align: right" type="submit"
+										wicket:id="clear" value="Clear" /></td>
+								</tr>
+							</table>
+
+							<p>Drop all tables in a database instance.</p>
+						</form>
+					</td>
+				</tr>
 				<tr wicket:id="create">
 					<td class="trow-title">Create new database instance</td>
 					<td class="trow-body">
@@ -58,9 +74,8 @@
 								</tr>
 							</table>
 
-							<p>Create or totally replace tables that support the
-								application. The new tables will be populated with an initial
-								data set.</p>
+							<p>Create tables that support the application. The new tables will be populated with an initial
+								data set. The database must be cleared of any existing tables for this to succeed.</p>
 						</form>
 					</td>
 				</tr>

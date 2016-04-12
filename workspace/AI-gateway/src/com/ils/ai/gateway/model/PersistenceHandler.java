@@ -62,9 +62,9 @@ public class PersistenceHandler {
 	}
 	
 	/**
-	 * @return a list of properties set of administrative user names and profiles.
+	 * @return a list of properties containing administrative user names and profiles.
+	 *         We'll use the first one in the list.
 	 *         Properties fields are: "Name" and "ProfileId"
-	 *         It is up to the receiver to close the result set.
 	 */
 	public List<Properties> getAdministrativeUsers() {
 		List<Properties> propertyList = new ArrayList<>();
@@ -77,13 +77,15 @@ public class PersistenceHandler {
 					"WHERE ROLE.roleName = 'Administrator' " +
 					"  AND ROLE.roleId = MAP.roleId" +
 					"  AND MAP.userId = USER.userId";
+			log.info("\n"+SQL+"\n");
 			Statement statement = cxn.createStatement();
 			ResultSet rs = statement.executeQuery(SQL);
 			while (rs.next()) {
 				Properties props = new Properties();
 				props.setProperty("Name", rs.getString(1));
 				props.setProperty("ProfileId", rs.getString(2));
-				propertyList.add(props);  // column 3
+				log.infof("%s.getAdminstrativeUsers: %s (%s)",CLSS,rs.getString(1),rs.getString(2));
+				propertyList.add(props); 
 			}
 			rs.close();
 			statement.close();
