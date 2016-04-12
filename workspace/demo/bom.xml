@@ -97,6 +97,35 @@
 			<location>artifacts/icons/custom</location>
 		</artifact>
 	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Database Create and Alter Scripts for te ACE Application</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="ACE Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+		<artifact name="ACE Database" type="sql" subtype="create">
+			<location>artifacts/database/createACE.sql</location>
+		</artifact>
+	</panel>
+	<panel type="database" essential="false" version="1">
+		<title>Database Create and Alter Scripts for Test</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="isolation"></property>
+		<artifact name="Clear ACE Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+		<artifact name="ACE Database" type="sql" subtype="create">
+			<location>artifacts/database/createSfcTables.sql</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -125,35 +154,6 @@
 		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/testTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>Database Create and Alter Scripts for te ACE Application</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="ACE Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createACE.sql</location>
-		</artifact>
-	</panel>
-		<panel type="database" essential="false" version="1">
-		<title>Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<artifact name="Clear ACE Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
