@@ -6,7 +6,7 @@
  -->
 <installer>
 	<title>ACE Controls Application</title>
-	<description>Installer for EMC Ignition Applications.</description>
+	<description>Demonstration Installation.</description>
 	<property name="product">ACE Controls</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -15,13 +15,14 @@
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="True">
 		<title>ILS Automation Installer for ACE Controls Applications</title>
-		<preamble>Welcome to the ILS Automation installer for the ACE Controls
-			Ignition Application. The table below compares the existing installation of
+		<preamble>Welcome to demonstration version of the ILS Automation installer for Ignition Applications.
+		    Here we install a fictional product called ACE Controls and exercise
+		    all panel options of the installer.
+			The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation (test) environments. Also make sure that you have write permission to the "lib" 
-			folder within the Ignition installation directory.
+			isolation (test) environments.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>

@@ -1,0 +1,191 @@
+<!-- Create an application installer for the Exxon-Mobil EMRE
+     "AED-RTA" package. This file assembles artifacts
+     to create a specialized installer.
+     
+     We require that GIT_REPO and SVN_REPO be provided to this script.
+-->
+<project name="AEDInstaller" basedir="." default="deploy">
+	<property name="build.dir" value="${basedir}/../AI-build" />
+	<property name="staging.dir" value="${basedir}/staging" />
+	<property name="artifact.dir" value="${staging.dir}/artifacts" />
+	<property name="deploy.dir" value="${basedir}/modules" />
+	<property name="bom" value="${basedir}/bom.xml" />
+	<property name="module.name" value="aed-installer" />
+	<property name="module.path" value="${basedir}/modules/aed-installer-unsigned.modl" />
+	<property name="module.xml" value="${basedir}/aed-installer-module.xml" />
+	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+
+	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
+	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
+		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
+	</taskdef>
+
+	<!-- Clean results of previous runs -->
+	<target name="clean" description="Remove existing archive">
+		<delete dir="${staging.dir}" />
+		<delete file="${module.path}" />
+	</target>
+
+	<!-- Builds the toolkit module jars and the final .modl file -->
+	<target name="build" depends="clean" description="Assemble the installer">
+
+		<!-- build.date and version.build are both in SVN Release area, in
+		    files VERS and DATE.
+		    Update the BOM. "loadfile" does not overwrite existing properties.
+		-->
+		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/Release/DATE"/>
+		<trim input="${rawdate}" property="build.date" />
+		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<trim input="${rawvers}" property="version.build"/>
+		<echo message="Build date: ${build.date}" />
+		<echo message="Build version: ${version.build}" />
+
+
+		<!-- Create directories -->
+		<echo message="Making ${module.name} modl" />
+		<mkdir dir="${staging.dir}" />
+		<mkdir dir="${artifact.dir}" />
+		<mkdir dir="${deploy.dir}" />
+
+		<!-- Create module.xml and  marker file -->
+		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
+		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
+		
+
+		<!-- Copy Core jar files -->
+		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
+		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
+
+		<!-- Copy staged artifacts into the bundle. Update release and build date -->
+		<mkdir dir="${artifact.dir}" />
+		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
+		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
+
+		<!-- Database -->
+		<mkdir dir="${artifact.dir}/database" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/createXOMvistalon.sql" tofile="${artifact.dir}/database/createVistalon.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
+
+		<!-- Documentation -->
+		<mkdir dir="${artifact.dir}/doc" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${git.repo}/installer/doc/ApplicationInstaller.docx" tofile="${artifact.dir}/doc/ApplicationInstaller.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
+		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/SequentialControlUserManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Project Management/SFCStepScorecard.xlsx" tofile="${artifact.dir}/doc/SFCDevelopmentScorecard.xslx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesignSpecification.docx" />
+
+		<!-- External -->
+		<mkdir dir="${artifact.dir}/external/ils-python" />
+		<copy todir="${artifact.dir}/external/ils-python">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+				<include name="ils/**/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/external/xom-python" />
+		<copy todir="${artifact.dir}/external/xom-python">
+			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
+				<include name="xom/**/*.py" />
+			</fileset>
+		</copy>
+		<delete dir="${artifact.dir}/external/xom-python/xom/emre" />
+
+		<mkdir dir="${artifact.dir}/external/jars/core/common" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/core/common/blt-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
+		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/core/gateway/block-definition.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/core/gateway/blt-gateway.jar" />
+
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<mkdir dir="${artifact.dir}/icons/blt" />
+		<copy todir="${artifact.dir}/icons/blt">
+			<fileset dir="${git.repo}/blt/images">
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/icons/custom" />
+		<copy todir="${artifact.dir}/icons/custom">
+			<fileset dir="${svn.repo}/EMChemicals/Ignition/icons">
+				<include name="**/*.png" />
+				<include name="**/*.jpg" />
+				<include name="**/*.JPG" />
+			</fileset>
+		</copy>
+		<!-- Copy license file into the artifacts -->
+		<mkdir dir="${artifact.dir}/license" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" todir="${artifact.dir}/license/" />
+
+		<!-- Modules -->
+		<mkdir dir="${artifact.dir}/modules" />
+		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
+
+		<!-- Projects -->
+		<mkdir dir="${artifact.dir}/projects" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/XOM.proj" tofile="${artifact.dir}/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
+
+		<!-- Source -->
+		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
+		<!-- Exports -->
+		<copy file="${git.repo}/blt/migration/json/ignition/crxProductQuality.json" tofile="${artifact.dir}/migration/crxProductQuality.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/cstrProductQuality.json" tofile="${artifact.dir}/migration/cstrProductQuality.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/polyFlyingSwitch.json" tofile="${artifact.dir}/migration/polyFlyingSwitch.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/polyRateChange.json" tofile="${artifact.dir}/migration/polyRateChange.json" />
+		<copy file="${git.repo}/blt/migration/json/ignition/vfuProductQuality.json" tofile="${artifact.dir}/migration/vfuProductQuality.json" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/migration/DrierRegen.proj" />
+		
+		
+		<!-- Tags -->
+		<mkdir dir="${artifact.dir}/tags" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
+
+		<!-- Zip it all up -->
+		<zip zipfile="${module.path}" basedir="${staging.dir}" />
+	</target>
+
+	<!-- Installs the installer module 
+	  1) In the local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. 
+	  2) Onto the Google Drive
+	 -->
+	
+	<target name="deploy" depends="build">
+		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
+		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
+		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
+	</target>
+
+	<!-- macro to trim newlines from a variable -->
+		 <macrodef name="trim">
+		   <attribute name="input" />
+		   <attribute name="property" />
+		   <sequential>
+		     <tempfile property="temp.file" />
+		     <echo file="${temp.file}" message="@{input}" />
+		     <move file="${temp.file}" tofile="${temp.file}.2">
+		       <filterchain>
+		       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+		       </filterchain>
+		     </move>
+		     <loadfile property="@{property}" srcFile="${temp.file}.2" />
+		     <delete file="${temp.file}.2" failonerror="false" />
+		   </sequential>
+		 </macrodef>
+</project>

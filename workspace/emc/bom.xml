@@ -20,8 +20,7 @@
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation (test) environments. Also make sure that you have write permission to the "lib" 
-			folder within the Ignition installation directory.
+			isolation-mode (test) environments.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
