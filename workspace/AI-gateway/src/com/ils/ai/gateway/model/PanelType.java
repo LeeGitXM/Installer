@@ -11,6 +11,7 @@ public enum PanelType
 {
 			AUTHENTICATION,
 			BACKUP,
+			CLEAR,
             DATABASE,
             DEFINITION,
             DOCUMENTATION,

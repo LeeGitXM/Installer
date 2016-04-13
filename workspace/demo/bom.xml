@@ -10,7 +10,7 @@
 	<property name="product">ACE Controls</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">2</property>
+	<property name="version">3</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="True">
@@ -44,6 +44,22 @@
 		<preamble>This is an optional step. Once created, a backup allows you
 			to revert the previous state of the application.
 		</preamble>
+	</panel>
+	<panel type="clear" essential="false">
+		<title>Clear obsolete files</title>
+		<preamble>This step removes obsolete files installed during one
+		          or more previous installations.
+		</preamble>
+		<!-- subtypes are: lib, user-lib, filesystem -->
+		<artifact name="Incorrect external jar" type="file" subtype="lib">
+			<location>core/common/ils-common.gz</location>
+		</artifact>
+		<artifact name="Obsolete python module" type="directory" subtype="user-lib">
+			<location>pylib/xom</location>
+		</artifact>
+		<artifact name="Unused test files" type="directory" subtype="filesystem">
+			<location>test/regression</location>
+		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
 		<title>Interface Definitions</title>
@@ -253,6 +269,19 @@
 		</artifact>
 		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="@RELEASE@">
 			<location>artifacts/source/sfc-@RELEASE@.zip</location>
+		</artifact>
+	</panel>
+	<panel type="file" essential="false">
+		<title>Install test files</title>
+		<preamble>This step adds test scripts to the filesystem.
+		           
+		</preamble>
+		<!-- paths are with respect to the file system root -->
+		<artifact name="Test python scripts" type="directory" >
+			<location>regression/pylib</location>
+		</artifact>
+		<artifact name="Test framework scripts" type="directory" subtype="user-lib">
+			<location>regression/basic</location>
 		</artifact>
 	</panel>
 	<panel type="toolkit" essential="true" version="1">

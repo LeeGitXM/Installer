@@ -19,13 +19,13 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 /**
  * A panel to install files at specific locations outside the Ignition installation directory.
  */
-public class FileStep extends BasicInstallerPanel {
+public class ClearStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 
-	public FileStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
+	public ClearStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel);
 		
-		final FileStep thisPage = this;
+		final ClearStep thisPage = this;
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
@@ -33,8 +33,8 @@ public class FileStep extends BasicInstallerPanel {
 
 
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        List<String> files = handler.getArtifactNames(index, data);
-        add(new ListView<String>("resources", files) {
+        List<String> artifacts = handler.getArtifactNames(index, data);
+        add(new ListView<String>("artifacts", artifacts) {
 			private static final long serialVersionUID = 8682507940096836472L;
 
 			protected void populateItem(ListItem<String> item) {
@@ -43,7 +43,7 @@ public class FileStep extends BasicInstallerPanel {
             }
         });
         
-        add(new Button("install") {
+        add(new Button("clean") {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
 			public void onSubmit() {
@@ -65,11 +65,11 @@ public class FileStep extends BasicInstallerPanel {
             		}
             	}
             	if(failure.length()==0 ) {
-            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
+            		thisPage.info(success.insert(0,"Successfully removed: ").toString());
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             	}
             	else {
-            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            		thisPage.warn(failure.insert(0,"Failed to delete files: ").toString());
             	}
             }
         });

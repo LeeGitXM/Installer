@@ -8,6 +8,7 @@ import org.apache.wicket.model.Model;
 import com.ils.ai.gateway.panel.AuthenticationStep;
 import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
+import com.ils.ai.gateway.panel.ClearStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
@@ -42,6 +43,8 @@ public class InstallerPanelFactory  {
 			case AUTHENTICATION:     step = new AuthenticationStep(panelIndex,prior,title,model);
 				break;
 			case BACKUP:     step = new BackupStep(panelIndex,prior,title,model);
+				break;
+			case CLEAR:        step = new ClearStep(panelIndex,prior,title,model);
 				break;
 			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);
 				break;

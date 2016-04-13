@@ -45,7 +45,7 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String fullProjectLocation        = "";
 	private String partialProjectLocation     = "";
 	private String globalProjectLocation      = "";
-	private String profileName= null;    // Authentication profile
+	private String profileName= null;                       // Authentication profile
 	private Project selectedProject = null;                 // Project to be merged
 	private boolean backupProject = false;
 	
@@ -131,26 +131,25 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				String result = null;
-				System.out.println(String.format("ProjectStep.onsubmit newForm: %s", fullProjectName));
+				InstallerDataHandler handler = InstallerDataHandler.getInstance();
+				System.out.println(String.format("ProjectStep.onsubmit newForm: %s (profile %s)", fullProjectName,profileName));
 				if( profileName==null || profileName.isEmpty() ) {
 					result = "Please select an authentication profile";
 				}
 				else {
 					System.out.println(String.format("ProjectStep.onSubmit: Creating full project with profile %s",profileName));
-					InstallerDataHandler handler = InstallerDataHandler.getInstance();
 					if(backupProject) result = createBackup(fullProjectName);
 					if( result==null) {
-						
 						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,profileName,data);
 					}
-					if( result==null ) {
-						PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-						info(String.format("Project %s loaded successfully", fullProjectName));
-						handler.setPreference(AUTH_PREFERENCE_NAME,profileName);
-					}
-					else {
-						warn(result);
-					}
+				}
+				if( result==null ) {
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					info(String.format("Project %s loaded successfully", fullProjectName));
+					handler.setPreference(AUTH_PREFERENCE_NAME,profileName);
+				}
+				else {
+					warn(result);
 				}
 			}
         });
