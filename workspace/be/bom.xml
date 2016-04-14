@@ -40,13 +40,13 @@
 	<panel type="backup" essential="false">
 		<title>Save gateway state as an Ignition Backup</title>
 		<preamble>This is an optional step. Once created, a backup allows you
-			to revert the previous state of the application.
+			       to revert the previous state of Ignition.
 		</preamble>
 	</panel>
 	<panel type="definition" essential="true">
 		<title>Interface Definitions</title>
 		<preamble>Specify the tag provider and database connections as used by Batch Expert+. 
-		The selections hare are used by subsequent screens.
+		The selections here are used by subsequent screens.
 		</preamble>
 		<!--  Allowed names are: database, provider -->
 		<!--  Allowed types are: production, isolation -->
@@ -57,36 +57,33 @@
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="external" essential="true" version="1">
-		<title>Python Code for the ACE Application</title>
-		<preamble>This page loads Python code that supports the ACE Application. 
-		The Python is divided into two categories: code developed by ILS Automation that is 
-		generic and used in multiple products, and code modified specifically for
-		this application.
-		A third category consists of Java jar files that are referenced by the Python.
+		<title>Python Extensions for the Batch Expert+</title>
+		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
-		<artifact name="External Python - ILS" type="python" subtype="py">
-			<location>artifacts/external/ils-python</location>
+		<artifact name="Charting Extensions" type="directory" subtype="user-lib">
+			<location>artifacts/external/ils</location>
+			<destination>pylib/ils</destination>
 		</artifact>
-		<artifact name="External Python - ACE" type="python" subtype="py">
-			<location>artifacts/external/xom-python</location>
-		</artifact>
-		<artifact name="Jar Files to Support External Python" type="java" subtype="jar">
-			<location>artifacts/external/jars</location>
+		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
+			<location>artifacts/external/xlsxwriter</location>
+			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
-		<title>Database Create and Alter Scripts for te ACE Application</title>
+		<title>Database Clear, Create and Alter Scripts Batch Expert+</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		altering an existing instance to accommodate schema updates.
 		</preamble>
 		<property name="database" type="production"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="ACE Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
+		<artifact name="Clear Tables" type="sql" subtype="clear">
+			<location>artifacts/database/createTables.sql</location>
 		</artifact>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createACE.sql</location>
+		<artifact name="Create Tables" type="sql" subtype="create">
+			<location>artifacts/database/createTables.sql</location>
+		</artifact>
+		<artifact name="Update Database Tables" type="sql" subtype="alter">
+			<location>artifacts/database/createTables.sql</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
@@ -96,17 +93,10 @@
 		</preamble>
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
+			<location>artifacts/tags/udts.xml</location>
 		</artifact>
-		<artifact name="Tags Representing Connections" type="tag"
-			subtype="xml">
-			<location>artifacts/tags/connections.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
+		<artifact name="Tags Used by BatchExpert+" type="tag" subtype="xml">
 			<location>artifacts/tags/sqlTags.xml</location>
-		</artifact>
-		<artifact name="Vistalon Site Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/siteTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
@@ -121,116 +111,33 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Install a New ACE Project or Merge Changes into an Existing
+		<title>Install a New BE Project or Merge Changes into an Existing
 			Project
 		</title>
-		<preamble>ACE is the main Ignition project. This page provides
+		<preamble>Batch Expert is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="ACE" type="project" subtype="full">
-			<location>artifacts/projects/ACE.proj</location>
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpert.proj</location>
 		</artifact>
-		<artifact name="ACE Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/ACE.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="dbmgr" essential="true" version="1">
-		<title>Install the DbManager Project</title>
-		<preamble>DbManager is a utility for maintenance of
-			application databases. It is not generally user-customizable.
-			The action on this page completely replaces the existing copy.
-		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="DbManager" type="project" subtype="full">
-			<location>artifacts/projects/DbManager.proj</location>
+		<artifact name="BatchExpert Partial Project" type="project" subtype="partial">
+			<location>artifacts/projects/BatchExpert.proj</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="1">
 		<title>Install SFC Charts in the Global Project
 		</title>
-		<preamble>This page handles installation of charts for various migrated SFC projects.
+		<preamble>This page handles installation of charts for sequential control of batch operations.
 			The charts are packaged as Ignition global projects. They completely replace
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
-		<artifact name="CustomSFC" type="project" subtype="global">
-			<location>artifacts/projects/DrierRegen.proj</location>
+		<artifact name="BatchExpert SFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFC.proj</location>
 		</artifact>
-	</panel>
-	<panel type="documentation" essential="false">
-		<title>Product Documentation</title>
-		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
-		</preamble>
-		<artifact name="Installation Manual" type="documentation" subtype="docx" release="0.12">
-			<location>artifacts/doc/InstallationManual.docx</location>
-		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/ApplicationTestFramework.docx</location>
-		</artifact>
-		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.8">
-			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
-		</artifact>
-		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.5">
-			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.5">
-			<location>artifacts/doc/MigrationManual.docx</location>
-		</artifact>
-		<artifact name="Plant Layout Specification" type="documentation" subtype="docx" release="1.4">
-			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
-			<location>artifacts/doc/SequentialControlUserManual.docx</location>
-		</artifact>
-	</panel>
-	<panel type="source" essential="false" version="1">
-		<title>Source Distribution</title>
-		<preamble>The Java source for the Application Toolkit and extensions to Sequential function charts are bundled into a single zip file.
-		The source distribution comes complete with Eclipse project files and ant scripts for building. 
-        Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
-		</preamble>
-		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="@RELEASE@">
-			<location>artifacts/source/blt-@RELEASE@.zip</location>
-		</artifact>
-		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="@RELEASE@">
-			<location>artifacts/source/sfc-@RELEASE@.zip</location>
-		</artifact>
-	</panel>
-	<panel type="file" essential="false">
-		<title>Install test files</title>
-		<preamble>This step adds test scripts to the filesystem.
-		           
-		</preamble>
-		<!-- paths are with respect to the file system root -->
-		<artifact name="Test python scripts" type="directory" >
-			<location>regression/pylib</location>
-		</artifact>
-		<artifact name="Test framework scripts" type="directory" subtype="user-lib">
-			<location>regression/basic</location>
-		</artifact>
-	</panel>
-	<panel type="toolkit" essential="true" version="1">
-		<title>Update Toolkit Properties</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			These particular parameters define extension functions that update
-			the database in response to operator operations on diagrams.
-		</preamble>
-		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
-		<property name="com.ils.application(property-rename-script)">xom.extensions.appProperties.rename</property>
-		<property name="com.ils.application(property-set-script)">xom.extensions.appProperties.setAux</property>
-		<property name="com.ils.family(property-get-script)">xom.extensions.famProperties.getAux</property>
-		<property name="com.ils.family(property-rename-script)">xom.extensions.famProperties.rename</property>
-		<property name="com.ils.family(property-set-script)">xom.extensions.famProperties.setAux</property>
-		<property name="com.ils.diagram(node-create-script)">xom.extensions.diaCreation.create</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
@@ -243,7 +150,7 @@
 	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
 	<epilog>
 		<title>Installation Complete</title>
-		<preamble>The automated installation and configuration of the ACE Control Ignition Application
+		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>

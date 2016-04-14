@@ -93,14 +93,17 @@
 		this application.
 		A third category consists of Java jar files that are referenced by the Python.
 		</preamble>
-		<artifact name="External Python - ILS" type="python" subtype="py">
+		<artifact name="External Python - ILS" type="directory" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
+			<destination>pylib/ils</destination>
 		</artifact>
-		<artifact name="External Python - ACE" type="python" subtype="py">
+		<artifact name="External Python - ACE" type="directory" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
+			<destination>pylib/xom</destination>
 		</artifact>
-		<artifact name="Jar Files to Support External Python" type="java" subtype="jar">
+		<artifact name="Jar Files to Support External Python" type="directory" subtype="lib">
 			<location>artifacts/external/jars</location>
+			<destination>core</destination>
 		</artifact>
 	</panel>
 	<panel type="icon" essential="true" version="1">
