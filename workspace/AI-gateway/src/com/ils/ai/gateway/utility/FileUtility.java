@@ -62,8 +62,9 @@ public class FileUtility {
 	 * root directory. Delete it.
 	 * @param directory to be deleted along with its contents.
 	 */
-	public void deleteDirectory(Path directory) throws IOException{
-
+	public String deleteDirectory(Path directory) {
+		String error = null;
+		try {
 		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -77,8 +78,27 @@ public class FileUtility {
 				return FileVisitResult.CONTINUE;
 			}
 		});
+		}
+		catch(IOException ioe) {
+			error = String.format("%s.deleteDirectory: Exception deleting %s (%s)",TAG,directory.toString(),ioe.getLocalizedMessage());
+		}
+		return error;
 	}
 	
+	/**
+	 * Delete it a single file.
+	 * @param file to be deleted along with its contents.
+	 */
+	public String deleteFile(Path file) {
+		String error = null;
+		try {
+			Files.delete(file);
+		}
+		catch(IOException ioe) {
+			error = String.format("%s.deleteFile: Exception deleting %s (%s)",TAG,file.toString(),ioe.getLocalizedMessage());
+		}
+		return error;
+	}
 	/**
 	 * Write the text 
 	 * @param text

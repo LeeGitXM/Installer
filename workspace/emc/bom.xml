@@ -69,7 +69,7 @@
 		</artifact>
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
-	     Jar types are copied into lib -->
+	         Jar types are copied into lib -->
 	<panel type="external" essential="true" version="1">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
@@ -79,6 +79,7 @@
 		</preamble>
 		<artifact name="External Python - ILS" type="python" subtype="py">
 			<location>artifacts/external/ils-python</location>
+			<destination>artifacts/external/ils-python</destination>
 		</artifact>
 		<artifact name="External Python - XOM" type="python" subtype="py">
 			<location>artifacts/external/xom-python</location>

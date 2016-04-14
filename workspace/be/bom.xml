@@ -43,26 +43,9 @@
 			to revert the previous state of the application.
 		</preamble>
 	</panel>
-	<panel type="clear" essential="false">
-		<title>Clear obsolete files</title>
-		<preamble>This step removes obsolete files installed during one
-		          or more previous installations.
-		</preamble>
-		<!-- subtypes are: lib, user-lib, filesystem -->
-		<artifact name="Incorrect external jar" type="file" subtype="lib">
-			<location>core/common/ils-common.gz</location>
-		</artifact>
-		<artifact name="Obsolete python module" type="directory" subtype="user-lib">
-			<location>pylib/xom</location>
-		</artifact>
-		<artifact name="Unused test files" type="directory" subtype="filesystem">
-			<location>test/regression</location>
-		</artifact>
-	</panel>
 	<panel type="definition" essential="true">
 		<title>Interface Definitions</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
+		<preamble>Specify the tag provider and database connections as used by Batch Expert+. 
 		The selections hare are used by subsequent screens.
 		</preamble>
 		<!--  Allowed names are: database, provider -->

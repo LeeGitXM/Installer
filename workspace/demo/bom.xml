@@ -51,15 +51,15 @@
 		<preamble>This step removes obsolete files installed during one
 		          or more previous installations.
 		</preamble>
-		<!-- subtypes are: lib, user-lib, filesystem -->
+		<!-- subtypes are: lib, user-lib, home -->
 		<artifact name="Incorrect external jar" type="file" subtype="lib">
-			<location>core/common/ils-common.gz</location>
+			<destination>core/common/ils-common.gz</destination>
 		</artifact>
-		<artifact name="Obsolete python module" type="directory" subtype="user-lib">
+		<artifact name="Obsolete python modules" type="directory" subtype="user-lib">
 			<location>pylib/xom</location>
 		</artifact>
-		<artifact name="Unused test files" type="directory" subtype="filesystem">
-			<location>test/regression</location>
+		<artifact name="Unused test files" type="directory" subtype="home">
+			<destination>test/regression</destination>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">

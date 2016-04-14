@@ -193,7 +193,23 @@ public class InstallerDataHandler {
     	}
 		return datasource;
 	}
-	
+	public String deleteFilesReferencedInArtifact(int panelIndex,Artifact artifact,InstallerData model) {
+		String result = null;
+		String type = artifact.getType();         // file or directory
+		String subtype = artifact.getSubtype();   // lib/user-lib/home
+		String prefix = System.getProperty("user.home");
+		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
+		String destination = artifact.getDestination();
+		Path path = Paths.get(prefix, destination);
+		if( type.equalsIgnoreCase("file") ) {
+			result = fileUtil.deleteFile(path);
+		}
+		else {
+			result = fileUtil.deleteDirectory(path);
+		}
+		return result;
+	}
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
@@ -353,14 +369,15 @@ public class InstallerDataHandler {
 		}
 		return file;
 	}
+
 	/**
 	 * The algorithm here assumes that the number of locations and artifacts is the same.
-	 * (It should be).
+	 * (It should be). We are only given the name of the artifact.
 	 * @param model
 	 * @return the location string for a named artifact.
 	 */
-	public String getArtifactLocation(int panelIndex,String artifactName,InstallerData model) {
-		String internalPath = null;
+	public Element getArtifactLocation(int panelIndex,String artifactName,InstallerData model) {
+		Element locationElement = null;
 		Element panel = getPanelElement(panelIndex,model);
 		if( panel!=null ) {
 			NodeList artifactNodes = panel.getElementsByTagName("artifact");
@@ -372,15 +389,14 @@ public class InstallerDataHandler {
 					NodeList locationNodes = panel.getElementsByTagName("location");
 					int lcount = locationNodes.getLength();
 					if( lcount>0) {
-						Node locationNode = locationNodes.item(index);
-						internalPath = locationNode.getTextContent();
+						locationElement = (Element)locationNodes.item(index);
 					}
 					break;
 				}
 				index++;
 			}
 		}
-		return internalPath;
+		return locationElement;
 	}
 	
 	/**
@@ -458,6 +474,13 @@ public class InstallerDataHandler {
 				if(ncount>0) {  // There should be only one location
 					Node locationNode = locations.item(0);
 					artifact.setLocation(locationNode.getTextContent());
+				}
+				// Destination is an element
+				NodeList destinations = ((Element)artifactNode).getElementsByTagName("destination");
+				ncount = destinations.getLength();
+				if(ncount>0) {  // There should be only one destination
+					Node destinationNode = destinations.item(0);
+					artifact.setDestination(destinationNode.getTextContent());
 				}
 				artifacts.add(artifact);
 				index++;
@@ -996,7 +1019,8 @@ public class InstallerDataHandler {
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
 		if( bytes!=null && bytes.length>0 ) {
 			// If we have data, we had to have a path
-			String filename = getArtifactLocation(panelIndex,artifactName,model);
+			Element location = getArtifactLocation(panelIndex,artifactName,model);
+			String filename = location.getTextContent();
 			int pos = filename.lastIndexOf(FILE_SEPARATOR);
 			if (pos>0 ) filename = filename.substring(pos+1);
 			try {
