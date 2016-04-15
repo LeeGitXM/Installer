@@ -63,6 +63,7 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 
 		
 		<!-- License -->
@@ -80,14 +81,14 @@
 		
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/batch-expert/python/ils">
+		<copy todir="${artifact.dir}/external">
+			<fileset dir="${git.repo}/batch-expert/python">
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
-		<copy todir="${artifact.dir}/external/xlsxwriter">
-			<fileset dir="${git.repo}/batch-expert/python/xlsxwriter">
-				<include name="ils/**/*.py" />
+		<copy todir="${artifact.dir}/external">
+			<fileset dir="${git.repo}/batch-expert/python">
+				<include name="xlsxwriter/**/*.py" />
 			</fileset>
 		</copy>
 		
@@ -97,9 +98,9 @@
 		<copy file="${git.repo}/py-sfc/workspace/sfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 
 		<!-- Project -->
-		<mkdir dir="${artifact.dir}/project" />
-		<copy file="${git.repo}/batch-expert/project/BatchExpert.proj" tofile="${artifact.dir}/project/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/project/BatchExpertSFC.proj" tofile="${artifact.dir}/project/BatchExpertSFC.proj" />
+		<mkdir dir="${artifact.dir}/projects" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFC.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />

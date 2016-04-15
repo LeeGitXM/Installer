@@ -921,24 +921,17 @@ public class InstallerDataHandler {
 		String result = null;
 		String fromRoot   = artifact.getLocation();  // Add a trailing /
 		if( !fromRoot.endsWith(FILE_SEPARATOR)) fromRoot = fromRoot+FILE_SEPARATOR;
-		String toRoot="";
 		
-		String type = artifact.getType();         // file or directory
+		
+		// String type = artifact.getType();         // file or directory --- unused
 		String subtype = artifact.getSubtype();   // lib/user-lib/home
-		String prefix = System.getProperty("user.home");
-		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
-		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
+		String toRoot = System.getProperty("user.home");
+		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
-		Path path = Paths.get(prefix, destination);
-		if( type.equalsIgnoreCase("file") ) {
-			toRoot = context.getUserlibDir().getAbsolutePath()+FILE_SEPARATOR+"pylib";  // User-lib/pylib full path
-		}	
-		else {
-			toRoot = context.getLibDir().getAbsolutePath();  // lib full path
-		}
-		
-		
-		// Now process the files
+		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
+
+		// Now process the files -- we really don't care if the artifact is a directory or single file
 		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );
 		for(JarEntry entry:entries) {
 			String name = entry.getName();

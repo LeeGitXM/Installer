@@ -17,7 +17,7 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
- * A panel to install files at specific locations outside the Ignition installation directory.
+ * A panel to install files at specific locations inside or outside the Ignition installation directory.
  */
 public class FileStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;

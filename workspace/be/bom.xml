@@ -7,7 +7,7 @@
 <installer>
 	<title>BatchExpert+</title>
 	<description>Installer for ILS Automation's Batch Expert+</description>
-	<property name="product">ACE Controls</property>
+	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
 	<property name="version">3</property>
@@ -54,7 +54,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="external" essential="true" version="1">
+	<panel type="file" essential="true" version="1">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>

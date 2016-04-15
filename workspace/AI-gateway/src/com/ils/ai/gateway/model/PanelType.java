@@ -15,7 +15,6 @@ public enum PanelType
             DATABASE,
             DEFINITION,
             DOCUMENTATION,
-            EXTERNAL,       // Python, jar files
             FILE, 
             ICON, 
             LICENSE,
