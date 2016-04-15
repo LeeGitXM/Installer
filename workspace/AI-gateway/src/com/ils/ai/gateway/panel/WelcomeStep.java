@@ -123,7 +123,7 @@ public class WelcomeStep extends BasicInstallerPanel {
 		add(checkbox);
 		
         // View release notes
-        add(new Link<Void>("notes") {
+        Link<Void> notes = new Link<Void>("notes") {
 			private static final long serialVersionUID = -8430219201330058910L;
 
 			@Override
@@ -151,7 +151,11 @@ public class WelcomeStep extends BasicInstallerPanel {
                 ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
             }
-        });
+        };
+        add(notes);
+        // Only show button if there is an artifact defining the notes
+        List<String> artifactNames = handler.getArtifactNames(panelIndex, data);
+        notes.setVisible(artifactNames.contains("notes"));  
     }
 	
 }

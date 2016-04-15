@@ -44,8 +44,8 @@ public class LicenseStep extends BasicInstallerPanel {
 			public void onSelectionChanged() {
 				if(getValue()!=null) {
 					accepted = true;
-					LicenseStep.this.info(String.format("License terms have been accepted."));
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					LicenseStep.this.info(String.format("License terms have been accepted."));
 				}
 			}
 		};

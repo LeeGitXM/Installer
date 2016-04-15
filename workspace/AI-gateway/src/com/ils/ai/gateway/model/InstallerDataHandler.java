@@ -116,6 +116,57 @@ public class InstallerDataHandler {
 		}
 		return instance;
 	}
+	
+	/**
+	 * Search the artifact for preference elements. Analyze and apply them.
+	 * @param index
+	 * @param model
+	 */
+	public void applyPreferences(int panelIndex,InstallerData model) {
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList preferenceNodes = panel.getElementsByTagName("preference");
+			int count = preferenceNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node preferenceNode = preferenceNodes.item(index);
+				String name = xmlUtil.attributeValue(preferenceNode, "name");
+				String key  = xmlUtil.attributeValue(preferenceNode, "key");
+				String type = xmlUtil.attributeValue(preferenceNode, "type");
+				if( name!=null && !name.isEmpty() && key!=null && !key.isEmpty()) {
+					String value = preferenceNode.getTextContent();
+					if( value==null || value.isEmpty() ) {
+						removePreference(name,key);
+					}
+					else if( type!=null && !type.isEmpty() ) {
+						if( type.equalsIgnoreCase("home")) {
+							setPreference(name,key,System.getProperty("user.home")+FILE_SEPARATOR+value);
+						}
+						else if( type.equalsIgnoreCase("lib")) {
+							setPreference(name,key,context.getLibDir().getAbsolutePath()+FILE_SEPARATOR+value);
+						}
+						else if( type.equalsIgnoreCase("user-lib")) {
+							setPreference(name,key,context.getUserlibDir().getAbsolutePath()+FILE_SEPARATOR+value);
+						}
+						else {
+							log.infof("%s.applyPreferences: Preference %s on panel %d, unrecognized type (%s)", CLSS,key,panelIndex,type);
+						}
+					}
+					else {
+						setPreference(name,key,value);
+					}
+				}
+				else {
+					log.infof("%s.applyPreferences: Preference on panel %d found with missing name or key", CLSS,panelIndex);
+				}
+
+				index++;
+			}
+		}
+		else {
+			log.infof("%s.applyPreferences: Panel %d not found", CLSS,panelIndex);
+		}
+	}
 	/**
 	 * Perform a gateway backup directed toward the supplied path.
 	 */
@@ -1356,9 +1407,18 @@ public class InstallerDataHandler {
 	
 				
 	}
+	public void removePreference(String name, String key) {
+		Preferences preferences = Preferences.userRoot().node(name);
+		preferences.remove(key);
+	}
 	
 	public void setPreference(String key,String value) {
 		prefs.put(key,value);
+	}
+	
+	public void setPreference(String name, String key,String value) {
+		Preferences preferences = Preferences.userRoot().node(name);
+		preferences.put(key,value);
 	}
 	
 	// Alter a project description to add its derivation

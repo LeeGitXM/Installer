@@ -56,8 +56,24 @@
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>
 	</panel>
+	<!-- 'user-lib" subtypes are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="1">
+		<title>Python Code for Ignition Applications</title>
+		<preamble>This page loads Python code that supports the Block Language Toolkit. 
+		Additionally, Java jar files that are referenced by the Python are installed.
+		</preamble>
+		<artifact name="External Python - ILS" type="directory" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="directory" subtype="lib">
+			<location>artifacts/external/jars</location>
+			<destination>core</destination>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install Tags for Testing</title>
+		<title>Install Production Tags for Testing</title>
 		<preamble>This page defines tags that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 		</preamble>
@@ -67,10 +83,10 @@
 		</artifact>
 	</panel>
 		<panel type="tag" subtype="isolation" essential="true" version="1">
-		<title>Install Tags for Testing</title>
+		<title>Install Isolation Tags for Testing</title>
 		<preamble>This page defines tags that are needed by the applications
 			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode. (These are 
-			identical to those for PRODUCTION.
+			identical to those for PRODUCTION.)
 		</preamble>
 		<property name="provider" type="isolation"></property>
 		<artifact name="Tags for the Test Diagrams" type="tag" subtype="xml">
@@ -97,26 +113,26 @@
 			<location>artifacts/projects/BasicDiagrams.proj</location>
 		</artifact>
 	</panel>
-	<panel type="file" essential="true">
+	<panel type="file" essential="true" version="1">
 		<title>Install test files</title>
 		<preamble>This step adds test scripts to the filesystem inside the user's home directory.
 		          It also initializes preferences for the TestFramework control dialog.     
 		</preamble>
 		<!-- Set preferences for the testing framework. If type is specified, we manipulate the path. -->
-		<preference name="TestFramePreferences" key="TestDatasource" type="home"></preference>
-		<preference name="TestFramePreferences" key="TestScriptPath" type="home"></preference>
-		<preference name="TestFramePreferences" key="TestSetupPath"  type="home"></preference>
-		<preference name="TestFramePreferences" key="TestLogPath"    type="home"></preference>
-		<preference name="TestFramePreferences" key="TestPyPath"     type="home"></preference>
-		<preference name="TestFramePreferences" key="TestTeardownPath" type="home"></preference>
+		<preference name="TestFramePreferences" key="TestDatasource"></preference>
+		<preference name="TestFramePreferences" key="TestScriptPath" type="home">regression/blt/basic/readwrite.txt</preference>
+		<preference name="TestFramePreferences" key="TestSetupPath"  type="home">regression/blt/basic/setup.txt</preference>
+		<preference name="TestFramePreferences" key="TestLogPath"    type="home">regression/blt/logs</preference>
+		<preference name="TestFramePreferences" key="TestPyPath"     type="home">regression/pylib</preference>
+		<preference name="TestFramePreferences" key="TestTeardownPath" type="home">regression/blt/basic/teardown.txt</preference>
 		<!-- paths are with respect to the file system root -->
 		<artifact name="Test python scripts" type="directory" >
 			<location>artifacts/test/pylib</location>
-			<destination type="home">regression/pylib</destination>
+			<destination type="home">regression</destination>
 		</artifact>
 		<artifact name="Test framework scripts" type="directory">
 			<location>artifacts/test/blt/basic</location>
-			<destination type="home">regression/blt/basic</destination>
+			<destination type="home">regression/blt</destination>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

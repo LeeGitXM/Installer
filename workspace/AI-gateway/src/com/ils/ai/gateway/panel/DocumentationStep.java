@@ -71,7 +71,6 @@ public class DocumentationStep extends BasicInstallerPanel {
 							}
 						};
 
-						
 						ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, fileNameFromLocation(artifact.getLocation()));
 						getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
 					}

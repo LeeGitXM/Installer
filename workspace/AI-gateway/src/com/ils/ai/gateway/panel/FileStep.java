@@ -24,8 +24,6 @@ public class FileStep extends BasicInstallerPanel {
 
 	public FileStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel);
-		
-		final FileStep thisPage = this;
 
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
@@ -65,11 +63,12 @@ public class FileStep extends BasicInstallerPanel {
             		}
             	}
             	if(failure.length()==0 ) {
-            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
+            		dataHandler.applyPreferences(index,data);
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            		info(success.insert(0,"Successfully loaded: ").toString());	
             	}
             	else {
-            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            		warn(failure.insert(0,"Failed to load: ").toString());
             	}
             }
         });

@@ -145,8 +145,8 @@ public class ProjectStep extends BasicInstallerPanel {
 				}
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					info(String.format("Project %s loaded successfully", fullProjectName));
 					handler.setPreference(AUTH_PREFERENCE_NAME,profileName);
+					info(String.format("Project %s loaded successfully", fullProjectName));
 				}
 				else {
 					warn(result);
