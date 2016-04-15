@@ -54,7 +54,7 @@ public class ExternalStep extends BasicInstallerPanel {
             	StringBuilder failure = new StringBuilder("");
             	
             	for(Artifact art:artifacts) {
-            		String result = dataHandler.loadArtifactAsExternalFiles(index,art,data);
+            		String result = dataHandler.loadArtifactAsFiles(index,art,data);
             		if( result==null ) {
             			if(success.length()>0) success.append(", ");
             			success.append(art.getName());

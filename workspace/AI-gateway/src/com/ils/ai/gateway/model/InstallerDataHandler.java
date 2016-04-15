@@ -910,20 +910,27 @@ public class InstallerDataHandler {
 
 	/**
 	 * "external" means outside of an Ignition project. We are actually installing the files inside the
-	 * Gateway install directory.
+	 * Gateway install directory. This method is used for both "external" and "file" panels (making
+	 * one of them redundant).
 	 * @param panelIndex
 	 * @param artifact
 	 * @param model
 	 * @return
 	 */
-	public String loadArtifactAsExternalFiles(int panelIndex,Artifact artifact,InstallerData model) {
+	public String loadArtifactAsFiles(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
 		String fromRoot   = artifact.getLocation();  // Add a trailing /
 		if( !fromRoot.endsWith(FILE_SEPARATOR)) fromRoot = fromRoot+FILE_SEPARATOR;
 		String toRoot="";
-		// Prepend the actual path to the Gateway directory
-		String type = artifact.getType();
-		if( type.equalsIgnoreCase("python") ) {
+		
+		String type = artifact.getType();         // file or directory
+		String subtype = artifact.getSubtype();   // lib/user-lib/home
+		String prefix = System.getProperty("user.home");
+		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
+		String destination = artifact.getDestination();
+		Path path = Paths.get(prefix, destination);
+		if( type.equalsIgnoreCase("file") ) {
 			toRoot = context.getUserlibDir().getAbsolutePath()+FILE_SEPARATOR+"pylib";  // User-lib/pylib full path
 		}	
 		else {
