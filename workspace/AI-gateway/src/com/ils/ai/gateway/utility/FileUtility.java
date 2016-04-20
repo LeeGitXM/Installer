@@ -32,6 +32,45 @@ public class FileUtility {
 	}
 
 	/**
+	 * Write a byte array to a file. Use this for binary files. 
+	 * @param text
+	 * @param destination
+	 * @return error string. A null indicates success.
+	 */
+	public String bytesToFile(byte[] bytes,String destination) {
+		String error = null;
+		if(DEBUG) log.infof("%s.bytesToFile: creating %s",TAG,destination);
+		try {
+			Path destPath = Paths.get(destination);
+			// Create any intervening directories .. make sure that there are some.
+			if( destPath.getParent().toFile().exists() || destPath.getParent().toFile().mkdirs() ) {
+				destPath.getParent().toFile().setWritable(true);
+				Files.write(destPath, bytes, StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE);
+			}
+			else {
+				error = String.format("%s.bytesToFile: Failed to create intervening directories when writing %s",TAG,destination);
+				log.info(error);
+			}
+		}
+		catch( InvalidPathException ipe) {
+			error = String.format("%s.bytesToFile: path %s is invalid (%s)",TAG,destination,ipe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( IOException ioe) {
+			error = String.format("%s.bytesToFile: Exception writing to %s (%s)",TAG,destination,ioe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( UnsupportedOperationException usoe) {
+			error = String.format("%s.bytesToFile: Unsupported operation writing to %s (%s)",TAG,destination,usoe.getLocalizedMessage());
+			log.info(error);
+		}
+		catch( SecurityException se) {
+			error = String.format("%s.bytesToFile: Security exception writing to %s (%s)",TAG,destination,se.getLocalizedMessage());
+			log.info(error);
+		}
+		return error;
+	}
+	/**
 	 * 
 	 * @param source
 	 * @param destination

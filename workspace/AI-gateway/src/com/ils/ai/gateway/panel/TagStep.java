@@ -23,8 +23,6 @@ public class TagStep extends BasicInstallerPanel {
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
-       
-        final TagStep thisPage = this;
         
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
@@ -67,10 +65,11 @@ public class TagStep extends BasicInstallerPanel {
             	}
             	if(failure.length()==0 ) {
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-            		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
+            		panelData.setCurrentVersion(futureVersion);
+            		info(success.insert(0,"Successfully loaded: ").toString());
             	}
             	else {
-            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            		warn(failure.insert(0,"Failed to load: ").toString());
             	}
             }
         });

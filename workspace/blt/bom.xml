@@ -51,10 +51,17 @@
 		<property name="com.ils.family(property-get-script)"></property>
 		<property name="com.ils.family(property-rename-script)"></property>
 		<property name="com.ils.family(property-set-script)"></property>
-		<property name="com.ils.diagram(node-create-script)"></property>
+		<property name="com.ils.diagram(node-save-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Icons for BLT Blocks</title>
+		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit. </preamble>
+		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
+			<location>artifacts/icons/blt</location>
+		</artifact>
 	</panel>
 	<!-- 'user-lib" subtypes are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
@@ -63,11 +70,15 @@
 		<preamble>This page loads Python code that supports the Block Language Toolkit. 
 		Additionally, Java jar files that are referenced by the Python are installed.
 		</preamble>
-		<artifact name="External Python - ILS" type="directory" subtype="user-lib">
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
-			<destination>pylib/ils</destination>
+			<destination>pylib</destination>
 		</artifact>
-		<artifact name="Jar Files to Support External Python" type="directory" subtype="lib">
+		<artifact name="External Python - XOM" type="text" subtype="user-lib">
+			<location>artifacts/external/xom-python</location>
+			<destination>pylib</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
 			<location>artifacts/external/jars</location>
 			<destination>core</destination>
 		</artifact>
@@ -97,7 +108,7 @@
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for Block Language Toolkit Testing.
 		</preamble>
-		<artifact name="Application Toolkit" type="module">
+		<artifact name="Block Language Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 		<artifact name="Testing Framework" type="module">
@@ -126,11 +137,11 @@
 		<preference name="TestFramePreferences" key="TestPyPath"     type="home">regression/pylib</preference>
 		<preference name="TestFramePreferences" key="TestTeardownPath" type="home">regression/blt/basic/teardown.txt</preference>
 		<!-- paths are with respect to the file system root -->
-		<artifact name="Test python scripts" type="directory" >
+		<artifact name="Test python scripts" type="text" >
 			<location>artifacts/test/pylib</location>
 			<destination type="home">regression</destination>
 		</artifact>
-		<artifact name="Test framework scripts" type="directory">
+		<artifact name="Test framework scripts" type="text">
 			<location>artifacts/test/blt/basic</location>
 			<destination type="home">regression/blt</destination>
 		</artifact>

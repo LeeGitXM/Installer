@@ -974,7 +974,7 @@ public class InstallerDataHandler {
 		if( !fromRoot.endsWith(FILE_SEPARATOR)) fromRoot = fromRoot+FILE_SEPARATOR;
 		
 		
-		// String type = artifact.getType();         // file or directory --- unused
+		String type = artifact.getType();         // text or binary
 		String subtype = artifact.getSubtype();   // lib/user-lib/home
 		String toRoot = System.getProperty("user.home");
 		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
@@ -986,10 +986,16 @@ public class InstallerDataHandler {
 		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );
 		for(JarEntry entry:entries) {
 			String name = entry.getName();
-			String contents = jarUtil.readFileFromJar(name,getPathToModule(model));
 			String subpath = name.substring(fromRoot.length());
 			String path = String.format("%s%s%s", toRoot,FILE_SEPARATOR,subpath);
-			fileUtil.stringToFile(contents, path);     // Creates intervening directories
+			if( type.equalsIgnoreCase("text")) {
+				String contents = jarUtil.readFileFromJar(name,getPathToModule(model));
+				fileUtil.stringToFile(contents, path);     // Creates intervening directories
+			}
+			else {
+				byte[] contents = jarUtil.readFileAsBytesFromJar(name,getPathToModule(model));
+				fileUtil.bytesToFile(contents, path);     // Creates intervening directories
+			}
 		}
 		return result;
 	}

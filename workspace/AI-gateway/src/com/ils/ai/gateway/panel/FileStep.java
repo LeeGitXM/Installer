@@ -65,6 +65,7 @@ public class FileStep extends BasicInstallerPanel {
             	if(failure.length()==0 ) {
             		dataHandler.applyPreferences(index,data);
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            		panelData.setCurrentVersion(futureVersion);
             		info(success.insert(0,"Successfully loaded: ").toString());	
             	}
             	else {

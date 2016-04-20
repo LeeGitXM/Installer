@@ -77,15 +77,15 @@
 		generic and used in multiple products, and code specific to the current XOM applications.
 		A third category consists of Java jar files that are referenced by the Python.
 		</preamble>
-		<artifact name="External Python - ILS" type="directory" subtype="user-lib">
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
-			<destination>pylib/ils</destination>
+			<destination>pylib</destination>
 		</artifact>
-		<artifact name="External Python - XOM" type="directory" subtype="user-lib">
+		<artifact name="External Python - XOM" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
-			<destination>pylib/xom</destination>
+			<destination>pylib</destination>
 		</artifact>
-		<artifact name="Jar Files to Support External Python" type="directory" subtype="lib">
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
 			<location>artifacts/external/jars</location>
 			<destination>core</destination>
 		</artifact>

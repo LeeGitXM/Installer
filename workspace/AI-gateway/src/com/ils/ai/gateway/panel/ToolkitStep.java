@@ -45,6 +45,7 @@ public class ToolkitStep extends BasicInstallerPanel {
             		toolkitHandler.setToolkitProperty(prop.getName(), prop.getValue());
             	}
             	PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            	panelData.setCurrentVersion(futureVersion);
             	ToolkitStep.this.info(String.format("Update of internal database complete."));
             }
         });

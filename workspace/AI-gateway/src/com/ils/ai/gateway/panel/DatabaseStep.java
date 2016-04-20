@@ -71,7 +71,6 @@ public class DatabaseStep extends BasicInstallerPanel {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
 				String result = handler.executeSQLFromArtifact(datasource,index,clearName,data);
 				if( result==null || result.isEmpty()) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 					info(String.format("Datasource %s cleared (tables dropped).", datasource));
 				}
 				else {
@@ -95,6 +94,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 				String result = handler.executeSQLFromArtifact(datasource,index,createName,data);
 				if( result==null || result.isEmpty()) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
 					info(String.format("Datasource %s schema created successfully", datasource));
 				}
 				else {
@@ -119,6 +119,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 				String result = handler.executeSQLFromArtifact(datasource,index,alterName,data);
 				if( result==null || result.isEmpty()) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
 					info(String.format("Datasource %s schema updated successfully", datasource));
 				}
 				else {

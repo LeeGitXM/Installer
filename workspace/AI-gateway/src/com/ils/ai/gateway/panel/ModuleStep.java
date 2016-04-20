@@ -64,6 +64,7 @@ public class ModuleStep extends BasicInstallerPanel {
             	}
             	if(failure.length()==0 ) {
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            		panelData.setCurrentVersion(futureVersion);
             		thisPage.info(success.insert(0,"Successfully loaded: ").toString());	
             	}
             	else {

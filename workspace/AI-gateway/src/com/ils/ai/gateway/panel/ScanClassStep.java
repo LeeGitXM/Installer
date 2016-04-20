@@ -24,8 +24,6 @@ public class ScanClassStep extends BasicInstallerPanel {
 	public ScanClassStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
         
-        final ScanClassStep thisPage = this;
-        
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
@@ -56,9 +54,10 @@ public class ScanClassStep extends BasicInstallerPanel {
             		String result = dataHandler.loadArtifactAsScanClass(index,provider,name,data);
             		if( result==null ) {
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-            			thisPage.info(String.format("Successfully loaded scanclass %s", name));
+            			panelData.setCurrentVersion(futureVersion);
+            			info(String.format("Successfully loaded scanclass %s", name));
             		}
-            		else thisPage.warn(result);
+            		else warn(result);
             	}
             }
         });

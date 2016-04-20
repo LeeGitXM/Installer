@@ -145,6 +145,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				}
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
 					handler.setPreference(AUTH_PREFERENCE_NAME,profileName);
 					info(String.format("Project %s loaded successfully", fullProjectName));
 				}
@@ -182,6 +183,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				}
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
 					info(String.format("Project %s merged successfully", partialProjectName));
 				}
 				else {
@@ -210,6 +212,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				String result = handler.mergeWithGlobalProjectFromLocation(globalProjectLocation,data);
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
 					info(String.format("Global project updated successfully"));
 				}
 				else {

@@ -38,6 +38,7 @@ public class SummaryStep extends BasicInstallerPanel {
 			PanelData pdata = handler.getPanelData(pindex,data);
 			// Create a PropertyItem for everything that is essential
 			if(pdata.isEssential() && pdata.getVersion()!=InstallerConstants.UNSET) {
+				System.out.println(String.format("SummaryStep: %s (%d vs %d)", pdata.getTitle(),pdata.getCurrentVersion(),pdata.getVersion()));
 				String value = "true";  // Up-to-date
 				if(pdata.getCurrentVersion()<pdata.getVersion() ) value = "false";
 				PropertyItem pi = new PropertyItem(pdata.getTitle(),value);

@@ -96,11 +96,11 @@
 		<delete dir="${artifact.dir}/external/xom-python/xom/emre" />
 
 		<mkdir dir="${artifact.dir}/external/jars/core/common" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/core/common/blt-common.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/common/ils-common.jar" />
 		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/core/gateway/block-definition.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/core/gateway/blt-gateway.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/gateway/block-definition.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/gateway/blt-gateway.jar" />
 
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
