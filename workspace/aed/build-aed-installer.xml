@@ -116,8 +116,8 @@
 				<include name="**/*.png" />
 			</fileset>
 		</copy>
-		<mkdir dir="${artifact.dir}/icons/custom" />
-		<copy todir="${artifact.dir}/icons/custom">
+		<mkdir dir="${artifact.dir}/icons/custom/Custom" />
+		<copy todir="${artifact.dir}/icons/custom/Custom">
 			<fileset dir="${svn.repo}/EMChemicals/Ignition/icons">
 				<include name="**/*.png" />
 				<include name="**/*.jpg" />

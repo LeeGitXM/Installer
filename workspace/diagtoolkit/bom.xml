@@ -77,35 +77,6 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>Database Create and Alter Scripts for te ACE Application</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="ACE Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createACE.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="1">
-		<title>Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<artifact name="Clear ACE Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-		<artifact name="ACE Database" type="sql" subtype="create">
-			<location>artifacts/database/createSfcTables.sql</location>
-		</artifact>
-	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -136,105 +107,9 @@
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs modules necessary for the EMC applications.
-		</preamble>
-		<artifact name="SFC Enhancements" type="module">
-			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
-		</artifact>
-		<artifact name="Application Toolkit" type="module">
-			<location>artifacts/modules/BLT-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="module" essential="false" version="1" subtype="test">
-		<title>Install Module for Testing</title>
-		<preamble>This step installs the module that holds the testing
-			framework.
-		</preamble>
-		<artifact name="Testing Framework" type="module">
-			<location>artifacts/modules/TF-module-unsigned.modl</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Install a New ACE Project or Merge Changes into an Existing
-			Project
-		</title>
-		<preamble>ACE is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications.
-		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="ACE" type="project" subtype="full">
-			<location>artifacts/projects/ACE.proj</location>
-		</artifact>
-		<artifact name="ACE Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/ACE.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="dbmgr" essential="true" version="1">
-		<title>Install the DbManager Project</title>
-		<preamble>DbManager is a utility for maintenance of
-			application databases. It is not generally user-customizable.
-			The action on this page completely replaces the existing copy.
-		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="DbManager" type="project" subtype="full">
-			<location>artifacts/projects/DbManager.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for various migrated SFC projects.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<artifact name="CustomSFC" type="project" subtype="global">
-			<location>artifacts/projects/DrierRegen.proj</location>
-		</artifact>
-	</panel>
-	<panel type="documentation" essential="false">
-		<title>Product Documentation</title>
-		<preamble>The list below contains both user-level and design documents. They may be downloaded individually.
-		</preamble>
-		<artifact name="Installation Manual" type="documentation" subtype="docx" release="0.12">
-			<location>artifacts/doc/InstallationManual.docx</location>
-		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/ApplicationTestFramework.docx</location>
-		</artifact>
-		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.8">
-			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
-		</artifact>
-		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.5">
-			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.5">
-			<location>artifacts/doc/MigrationManual.docx</location>
-		</artifact>
-		<artifact name="Plant Layout Specification" type="documentation" subtype="docx" release="1.4">
-			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
-			<location>artifacts/doc/SequentialControlUserManual.docx</location>
-		</artifact>
-	</panel>
-	<panel type="source" essential="false" version="1">
-		<title>Source Distribution</title>
-		<preamble>The Java source for the Application Toolkit and extensions to Sequential function charts are bundled into a single zip file.
-		The source distribution comes complete with Eclipse project files and ant scripts for building. 
-        Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
-		</preamble>
-		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="@RELEASE@">
-			<location>artifacts/source/blt-@RELEASE@.zip</location>
-		</artifact>
-		<artifact name="ILS-SFC Source Code" type="source" subtype="zip" release="@RELEASE@">
-			<location>artifacts/source/sfc-@RELEASE@.zip</location>
-		</artifact>
-	</panel>
+
+	
+	
 	<panel type="file" essential="false">
 		<title>Install test files</title>
 		<preamble>This step adds test scripts to the filesystem.

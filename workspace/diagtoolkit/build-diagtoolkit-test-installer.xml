@@ -102,22 +102,6 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/core/gateway/block-definition.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/core/gateway/blt-gateway.jar" />
 
-		<!-- Icons -->
-		<mkdir dir="${artifact.dir}/icons" />
-		<mkdir dir="${artifact.dir}/icons/blt" />
-		<copy todir="${artifact.dir}/icons/blt">
-			<fileset dir="${git.repo}/blt/images">
-				<include name="**/*.png" />
-			</fileset>
-		</copy>
-		<mkdir dir="${artifact.dir}/icons/custom" />
-		<copy todir="${artifact.dir}/icons/custom">
-			<fileset dir="${svn.repo}/EMChemicals/Ignition/icons">
-				<include name="**/*.png" />
-				<include name="**/*.jpg" />
-				<include name="**/*.JPG" />
-			</fileset>
-		</copy>
 
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
