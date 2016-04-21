@@ -963,6 +963,7 @@ public class InstallerDataHandler {
 	 * "external" means outside of an Ignition project. We are actually installing the files inside the
 	 * Gateway install directory. This method is used for both "external" and "file" panels (making
 	 * one of them redundant).
+	 * NOTE:  context.getHome() is the "data" subdirectory.
 	 * @param panelIndex
 	 * @param artifact
 	 * @param model
@@ -973,14 +974,21 @@ public class InstallerDataHandler {
 		String fromRoot   = artifact.getLocation();  // Add a trailing /
 		if( !fromRoot.endsWith(FILE_SEPARATOR)) fromRoot = fromRoot+FILE_SEPARATOR;
 		
-		
 		String type = artifact.getType();         // text or binary
 		String subtype = artifact.getSubtype();   // lib/user-lib/home
 		String toRoot = System.getProperty("user.home");
+		// This works nicely for Mac and Linux, is a disaster for Windows. We'll just use C:\
+		if( System.getProperty("os.name").startsWith("Windows")) {
+			toRoot = "C:";
+		}
+		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: DIR = %s",context.getLibDir().getAbsolutePath()));
+		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: OS NAME = %s",System.getProperty("os.name")));
 		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
 		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
 		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
+		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
+
 
 		// Now process the files -- we really don't care if the artifact is a directory or single file
 		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );

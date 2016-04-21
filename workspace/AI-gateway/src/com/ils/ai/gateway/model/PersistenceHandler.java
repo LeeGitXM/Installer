@@ -98,10 +98,12 @@ public class PersistenceHandler {
 	}
 	
 	/**
-	 * @return a list of authentication profile names.
+	 * @return a list of authentication profile names. We add a blank entry to the top
+	 *         to correspond to "no selection".
 	 */
 	public synchronized List<String> getProfileNames() {
 		List<String> profiles = new ArrayList<>();
+		profiles.add("");  // "no selection"
 		try {
 			PersistenceSession session = context.getPersistenceInterface().getSession();
 			Connection cxn = session.getJdbcConnection();

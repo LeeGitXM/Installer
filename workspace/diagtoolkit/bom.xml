@@ -5,7 +5,7 @@
       be unique. 
  -->
 <installer>
-	<title>Dignostic Toolkit Testing</title>
+	<title>Diagnostic Toolkit Testing</title>
 	<description>Installer of a test environment for hte EMC Diagnostics Toolkit</description>
 	<property name="product">Diagnostic Toolkit - test</property>
 	<property name="release">@RELEASE@</property>
@@ -27,121 +27,47 @@
 	</panel>
 	<panel type="clear" essential="false">
 		<title>Clear obsolete files</title>
-		<preamble>This step removes obsolete files installed during one
+		<preamble>This step removes test scripts installed during one
 		          or more previous installations.
 		</preamble>
-		<!-- subtypes are: lib, user-lib, filesystem -->
-		<artifact name="Incorrect external jar" type="file" subtype="lib">
-			<location>core/common/ils-common.gz</location>
+		<!-- subtypes are: lib, user-lib, home -->
+		<artifact name="Python library" type="directory" subtype="home">
+			<destination>pylib</destination>
 		</artifact>
-		<artifact name="Obsolete python module" type="directory" subtype="user-lib">
-			<location>pylib/xom</location>
-		</artifact>
-		<artifact name="Unused test files" type="directory" subtype="filesystem">
-			<location>test/regression</location>
+		<artifact name="Diagnostic Toolkit Tests" type="directory" subtype="home">
+			<destination>regression</destination>
 		</artifact>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Interface Definitions</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
-		The selections hare are used by subsequent screens.
-		</preamble>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
-	</panel>
-	<!-- Python types are copied into the Ignition user-lib/pylib area.
-	     Jar types are copied into lib -->
+	
 	<panel type="file" essential="true" version="1">
-		<title>Python Code for the ACE Application</title>
-		<preamble>This page loads Python code that supports the ACE Application. 
-		The Python is divided into two categories: code developed by ILS Automation that is 
-		generic and used in multiple products, and code modified specifically for
-		this application.
-		A third category consists of Java jar files that are referenced by the Python.
-		</preamble>
-		<artifact name="External Python - ILS" type="directory" subtype="user-lib">
-			<location>artifacts/external/ils-python</location>
-			<destination>pylib</destination>
-		</artifact>
-		<artifact name="External Python - ACE" type="directory" subtype="user-lib">
-			<location>artifacts/external/xom-python</location>
-			<destination>pylib</destination>
-		</artifact>
-		<artifact name="Jar Files to Support External Python" type="directory" subtype="lib">
-			<location>artifacts/external/jars</location>
-			<destination>core</destination>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Tags Representing Connections" type="tag"
-			subtype="xml">
-			<location>artifacts/tags/connections.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
-		</artifact>
-		<artifact name="Vistalon Site Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/siteTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="False" version="1">
-		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/testTags.xml</location>
-		</artifact>
-	</panel>
-
-	
-	
-	<panel type="file" essential="false">
 		<title>Install test files</title>
-		<preamble>This step adds test scripts to the filesystem.
-		           
+		<preamble>This step adds test scripts to the user's home directory.   
+		          It also initializes preferences for the TestFramework control dialog     
 		</preamble>
+		<!-- Set preferences for the testing framework. If type is specified, we manipulate the path. -->
+		<preference name="TestFramePreferences" key="TestDatasource"></preference>
+		<preference name="TestFramePreferences" key="TestScriptPath" type="home">regression/CRX-C2-Tests/testscripts/c22fd.txt</preference>
+		<preference name="TestFramePreferences" key="TestSetupPath"  type="home">regression/CRX-C2-Tests/testscripts/setup.txt</preference>
+		<preference name="TestFramePreferences" key="TestLogPath"    type="home">regression/CRX-C2/test_results/c2.log</preference>
+		<preference name="TestFramePreferences" key="TestPyPath"     type="home">pylib</preference>
+		<preference name="TestFramePreferences" key="TestTeardownPath" type="home">regression/CRX-C2-Tests/testscripts/teardown.txt</preference>
 		<!-- paths are with respect to the file system root -->
-		<artifact name="Test python scripts" type="directory" >
-			<location>regression/pylib</location>
+		<artifact name="Test python scripts" type="text" >
+			<location>artifacts/test/pylib</location>
+			<destination type="home">.</destination>
 		</artifact>
-		<artifact name="Test framework scripts" type="directory" subtype="user-lib">
-			<location>regression/basic</location>
+		<artifact name="Test framework scripts" type="text">
+			<location>artifacts/test/regression</location>
+			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="toolkit" essential="true" version="1">
-		<title>Update Toolkit Properties</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			These particular parameters define extension functions that update
-			the database in response to operator operations on diagrams.
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the test framework.
 		</preamble>
-		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
-		<property name="com.ils.application(property-rename-script)">xom.extensions.appProperties.rename</property>
-		<property name="com.ils.application(property-set-script)">xom.extensions.appProperties.setAux</property>
-		<property name="com.ils.family(property-get-script)">xom.extensions.famProperties.getAux</property>
-		<property name="com.ils.family(property-rename-script)">xom.extensions.famProperties.rename</property>
-		<property name="com.ils.family(property-set-script)">xom.extensions.famProperties.setAux</property>
-		<property name="com.ils.diagram(node-create-script)">xom.extensions.diaCreation.create</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-signed.modl</location>
+		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">

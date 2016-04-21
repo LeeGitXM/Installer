@@ -65,74 +65,25 @@
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${artifact.dir}/database/createACE.sql" />
-		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
-
-		<!-- Documentation -->
-		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${artifact.dir}/doc/InstallationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
-		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesigneSpecification.docx" />
-		<!-- External -->
-		<mkdir dir="${artifact.dir}/external/ils-python" />
-		<copy todir="${artifact.dir}/external/ils-python">
+	
+		<mkdir dir="${artifact.dir}/test" />
+		<copy todir="${artifact.dir}/test/pylib">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
-				<include name="ils/**/*.py" />
+				<include name="pylib/**/*.py" />
 			</fileset>
 		</copy>
-		<!-- External -->
-		<mkdir dir="${artifact.dir}/external/xom-python" />
-		<copy todir="${artifact.dir}/external/xom-python">
-			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
-				<include name="xom/**/*.py" />
+		<copy todir="${artifact.dir}/test/regression">
+			<fileset dir="${svn.repo}/EMChemicals/Migration/Vistalon">
+				<include name="Regression/**/*.txt" />
 			</fileset>
 		</copy>
-		<delete dir="${artifact.dir}/external/xom-python/xom/emre" />
-
-		<mkdir dir="${artifact.dir}/external/jars/core/common" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/core/common/blt-common.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
-		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/core/gateway/block-definition.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/core/gateway/blt-gateway.jar" />
 
 
-		<!-- License -->
-		<mkdir dir="${artifact.dir}/license" />
-		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" tofile="${artifact.dir}/license/license.html" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
-		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-unsigned.modl" tofile="${artifact.dir}/modules/TF-module-unsigned.modl" />
+		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
 
-		<!-- Projects -->
-		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${artifact.dir}/projects/ACE.proj" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
-		<mkdir dir="${artifact.dir}/scanclasses" />
-		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
-
-		<!-- Source -->
-		<mkdir dir="${artifact.dir}/source" />
-		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
-		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
-		
-		<!-- Tags -->
-		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/connections.xml" tofile="${artifact.dir}/artifacts/tags/connections.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
