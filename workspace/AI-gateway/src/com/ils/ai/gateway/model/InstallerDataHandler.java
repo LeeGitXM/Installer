@@ -198,7 +198,7 @@ public class InstallerDataHandler {
 	 * @param backupName
 	 * @return
 	 */
-	public String copyProjectToBackup(String oldName,String backupName) {
+	public String copyProjectToBackup(String oldName,String backupName,InstallerData model) {
 		String result = null;
 		
 		ProjectManager pmgr = getContext().getProjectManager();
@@ -207,7 +207,9 @@ public class InstallerDataHandler {
 			Project backup = pmgr.getProject(backupName, ApplicationScope.ALL, ProjectVersion.Published);
 			backup.setEnabled(false);
 			GlobalProps props = pmgr.getProps(backup.getId(), ProjectVersion.Published);
-			AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+			String adminProfile = getAdministrativeProfile(model);
+			String adminUser = getAdministrativeUser(model);
+			AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
 			pmgr.saveProject(backup, user, "n/a", 
 					String.format("ILS Automation Installer: updated from %s",oldName), false);
 		}
@@ -1132,6 +1134,9 @@ public class InstallerDataHandler {
 				ProjectManager pmgr = getContext().getProjectManager();
 				Project project = Project.fromXML(projectReader);
 				project.setName(name);
+				for(ProjectResource res:project.getResources() ) {
+					System.out.println(String.format("InstallerDataHandler: res %s (%s) = %d",res.getName(),res.getResourceType(),res.getResourceId()));
+				}
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
 				project.setEnabled(false);
@@ -1342,8 +1347,10 @@ public class InstallerDataHandler {
 					Project standard = Project.fromXML(projectReader);
 					mergee.applyDiff(standard);
 					GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
-					// Search for administrative user.
-					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
+					
+					String adminProfile = getAdministrativeProfile(model);
+					String adminUser = getAdministrativeUser(model);
+					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
 					pmgr.saveProject(mergee, user, "n/a", 
 							String.format("ILS Automation Installer: updated from %s",standard.getName()), false);
 				}

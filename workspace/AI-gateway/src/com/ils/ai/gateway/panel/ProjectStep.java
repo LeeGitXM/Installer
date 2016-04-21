@@ -266,7 +266,7 @@ public class ProjectStep extends BasicInstallerPanel {
 		ProjectNameFinder finder = new ProjectNameFinder();
 		String backupName = finder.findUnused(oldName);
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-		String error = handler.copyProjectToBackup(oldName,backupName);
+		String error = handler.copyProjectToBackup(oldName,backupName,data);
 		if( error!=null ) error = String.format("Backup failed (%s)",error);
 		return error;
 	}
