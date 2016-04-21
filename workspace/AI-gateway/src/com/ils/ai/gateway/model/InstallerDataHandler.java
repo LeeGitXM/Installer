@@ -140,7 +140,12 @@ public class InstallerDataHandler {
 					}
 					else if( type!=null && !type.isEmpty() ) {
 						if( type.equalsIgnoreCase("home")) {
-							setPreference(name,key,System.getProperty("user.home")+FILE_SEPARATOR+value);
+							String root = System.getProperty("user.home");
+							// This works nicely for Mac and Linux, is a disaster for Windows. We'll just use C:\
+							if( System.getProperty("os.name").startsWith("Windows")) {
+								root = "C:";
+							}
+							setPreference(name,key,root+FILE_SEPARATOR+value);
 						}
 						else if( type.equalsIgnoreCase("lib")) {
 							setPreference(name,key,context.getLibDir().getAbsolutePath()+FILE_SEPARATOR+value);
@@ -249,6 +254,10 @@ public class InstallerDataHandler {
 		String type = artifact.getType();         // file or directory
 		String subtype = artifact.getSubtype();   // lib/user-lib/home
 		String prefix = System.getProperty("user.home");
+		// This works nicely for Mac and Linux, is a disaster for Windows. We'll just use C:\
+		if( System.getProperty("os.name").startsWith("Windows")) {
+			prefix = "C:";
+		}
 		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
 		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
@@ -981,14 +990,12 @@ public class InstallerDataHandler {
 		if( System.getProperty("os.name").startsWith("Windows")) {
 			toRoot = "C:";
 		}
-		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: DIR = %s",context.getLibDir().getAbsolutePath()));
-		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: OS NAME = %s",System.getProperty("os.name")));
+		
 		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
 		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
 		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
 		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
-
 
 		// Now process the files -- we really don't care if the artifact is a directory or single file
 		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );
