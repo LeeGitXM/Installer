@@ -300,7 +300,7 @@
 		<property name="com.ils.family(property-get-script)">xom.extensions.famProperties.getAux</property>
 		<property name="com.ils.family(property-rename-script)">xom.extensions.famProperties.rename</property>
 		<property name="com.ils.family(property-set-script)">xom.extensions.famProperties.setAux</property>
-		<property name="com.ils.diagram(node-create-script)">xom.extensions.diaCreation.create</property>
+		<property name="com.ils.diagram(node-save-script)">xom.extensions.diaCreation.create</property>
 		<property
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
 		<property
