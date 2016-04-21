@@ -38,7 +38,6 @@
 			<destination>regression</destination>
 		</artifact>
 	</panel>
-	
 	<panel type="file" essential="true" version="1">
 		<title>Install test files</title>
 		<preamble>This step adds test scripts to the user's home directory.   
