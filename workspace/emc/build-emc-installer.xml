@@ -160,6 +160,10 @@
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
+		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclasses" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />

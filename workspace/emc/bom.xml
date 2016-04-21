@@ -305,6 +305,8 @@
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
 		<property
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<property name="SecondaryTimeFactor">1.0</property>
+		
 	</panel>
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
