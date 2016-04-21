@@ -9,7 +9,7 @@
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom.xml" />
-	<property name="module.name" value="diagtoolkit-test-installer" />
+	<property name="module.name" value="norms-test-installer-unsigned" />
 	<property name="module.path" value="${basedir}/modules/diagtoolkit-test-installer-unsigned.modl" />
 	<property name="module.xml" value="${basedir}/diagtoolkit-test-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -92,7 +92,7 @@
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
 		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
+		<copy file="${module.path}" tofile="${google.repo}/0.1r17/${module.name}.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
 	</target>
 	
