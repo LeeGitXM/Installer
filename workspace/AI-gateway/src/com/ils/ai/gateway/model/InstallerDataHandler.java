@@ -1136,8 +1136,7 @@ public class InstallerDataHandler {
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
 				
-				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
-				
+				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);	
 				GlobalProps globalProps = project.decodeOrCreate(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, context.createDeserializer(), GlobalProps.class);
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
 				globalProps.setAuthProfileName(profile);
@@ -1270,7 +1269,7 @@ public class InstallerDataHandler {
 		return result;
 	}
 
-	// Start with an existing project and create a new one with resources overridden from another.
+	// Start with the existing global project and merge in resources from a project in the bundle.
 	public String mergeWithGlobalProjectFromLocation(String location,InstallerData model) {
 		String result = null;
 
@@ -1279,17 +1278,24 @@ public class InstallerDataHandler {
 		InputStream projectReader = null;
 		JarFile jar = null;
 		try {
-			Project mergee = pmgr.getGlobalProject(ApplicationScope.ALL);
+			Project globalProject = pmgr.getGlobalProject(ApplicationScope.ALL);
 			jar = new JarFile(internalPath.toFile());
 			JarEntry entry = jar.getJarEntry(location);
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
-				Project standard = Project.fromXML(projectReader);
-				mergee.applyDiff(standard);  // Standard overwrites
-				GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
-				AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),"1","admin",props.getRequiredRoles());
-				pmgr.saveProject(mergee, user, "n/a", 
-						String.format("ILS Automation Installer: global updated from %s",standard.getName()), false);
+				Project updateProject = Project.fromXML(projectReader);
+				updateProject.applyDiff(globalProject);  // Update overwrites
+				pmgr.addProject(globalProject, true);    // Overwrite the global project
+				globalProject = pmgr.getGlobalProject(ApplicationScope.ALL);
+				globalProject.setEnabled(true);
+				
+				GlobalProps globalProps = pmgr.getProps(globalProject.getId(), ProjectVersion.Staging);
+				String adminProfile = getAdministrativeProfile(model);
+				String adminUser = getAdministrativeUser(model);
+				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),adminProfile,adminUser,globalProps.getRequiredRoles());
+				
+				pmgr.saveProject(globalProject, user, "n/a", 
+						String.format("ILS Automation Installer: global updated from %s",updateProject.getName()), true);  // Publish
 			}
 			else {
 				result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -1341,24 +1347,28 @@ public class InstallerDataHandler {
 			JarFile jar = null;
 			try {
 				pmgr.copyProject(existing.getName(), name, true); // Will overwrite
-				Project mergee = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
-				String description = mergee.getDescription();
-				mergee.setDescription(updateProjectDescription(description,model));
-				mergee.setEnabled(false);
+				Project originalProject = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
+				String description = originalProject.getDescription();
+				originalProject.setDescription(updateProjectDescription(description,model));
+				originalProject.setEnabled(false);
 				
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(location);
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
-					Project standard = Project.fromXML(projectReader);
-					mergee.applyDiff(standard);
-					GlobalProps props = pmgr.getProps(mergee.getId(), ProjectVersion.Published);
+					Project updateProject = Project.fromXML(projectReader);
+					updateProject.applyDiff(originalProject);    // Update project "wins"
+					pmgr.addProject(originalProject, true);      // Overwrite itself
+					originalProject = pmgr.getProject(originalProject.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+					originalProject.setEnabled(false);
+					
+					GlobalProps props = pmgr.getProps(originalProject.getId(), ProjectVersion.Published);
 					
 					String adminProfile = getAdministrativeProfile(model);
 					String adminUser = getAdministrativeUser(model);
 					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-					pmgr.saveProject(mergee, user, "n/a", 
-							String.format("ILS Automation Installer: updated from %s",standard.getName()), false);
+					pmgr.saveProject(originalProject, user, "n/a", 
+							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);

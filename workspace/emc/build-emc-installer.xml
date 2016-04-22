@@ -4,13 +4,13 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="ApplicationInstaller" basedir="." default="deploy">
+<project name="ApplicationInstaller" basedir="." default="build">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom.xml" />
-	<property name="module.name" value="emc-installer" />
+	<property name="module.name" value="emc-installer-unsigned" />
 	<property name="module.path" value="${basedir}/modules/emc-installer-unsigned.modl" />
 	<property name="module.xml" value="${basedir}/emc-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -169,14 +169,14 @@
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
 	</target>
 
-	<!-- Installs the installer module 
+	<!-- Installs the installer module - this is not part of the default target
 	  1) In the local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. 
 	  2) Onto the Google Drive
 	 -->
 	
 	<target name="deploy" depends="build">
 		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
-		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
+		<copy file="${module.path}" tofile="${google.repo}/0.1r17/${module.name}.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
 	</target>
 
