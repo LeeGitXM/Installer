@@ -142,6 +142,17 @@
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
 	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
@@ -321,8 +332,9 @@
 		<title>Ignition Applications - Installed</title>
 		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
-		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use.</note>
+		
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
 	</epilog>
 </installer>
 

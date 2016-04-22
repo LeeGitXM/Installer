@@ -73,11 +73,10 @@ import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.Backu
  *   
  *  This class is a singleton for easy access throughout the wizard screens.
  *  WARNING: This class is not serializable and cannot be assigned as an 
- *           instance variable for any pagoe or nested class within a page.
+ *           instance variable for any page or nested class within a page.
  */
 public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
-	private static final long serialVersionUID = -9021431638644580809L;
 	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
 	private static InstallerDataHandler instance = null;
@@ -1114,7 +1113,7 @@ public class InstallerDataHandler {
 	}
 
 	/**
-	 * Create a new project. Leave it disabled.
+	 * Create a new project. Leave it disabled. 
 	 * @param location
 	 * @param name
 	 * @param profile
@@ -1134,12 +1133,8 @@ public class InstallerDataHandler {
 				ProjectManager pmgr = getContext().getProjectManager();
 				Project project = Project.fromXML(projectReader);
 				project.setName(name);
-				for(ProjectResource res:project.getResources() ) {
-					System.out.println(String.format("InstallerDataHandler: res %s (%s) = %d",res.getName(),res.getResourceType(),res.getResourceId()));
-				}
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
-				project.setEnabled(false);
 				
 				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
 				
@@ -1153,10 +1148,21 @@ public class InstallerDataHandler {
 				serializer.getClassNameMap().addDefaults();
 				serializer.addObject(globalProps);
 				byte[] bytes = serializer.serializeBinary(true);
-				ProjectResource resource = new ProjectResource(propsResource.getResourceId(), GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.ALL, bytes);
+				ProjectResource resource = new ProjectResource(propsResource.getResourceId(), GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.GATEWAY, bytes);
 				project.putResource(resource, true);
+
 				pmgr.addProject(project, true);
 				
+				// Re-constitute the project from the project manager. Without this step, we end
+				// up with a project containing some duplicated resources. We don't know why this works ...
+				project = pmgr.getProject(project.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+				project.setEnabled(false);
+				/*
+				for(ProjectResource res:project.getResources() ) {
+					System.out.println(String.format("InstallerDataHandler: res %d.%d %s (%s) = %s",project.getId(),res.getResourceId(),res.getName(),
+							res.getResourceType(),(project.isResourceDirty(res))?"DIRTY":"CLEAN"));
+				}
+				*/
 				String adminProfile = getAdministrativeProfile(model);
 				String adminUser = getAdministrativeUser(model);
 				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),
