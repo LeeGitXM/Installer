@@ -116,6 +116,17 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the EMC applications.
+		</preamble>
+		<artifact name="ILS-SFC Enhancements" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+		<artifact name="Block Language Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -137,17 +148,6 @@
 		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/testTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs modules necessary for the EMC applications.
-		</preamble>
-		<artifact name="ILS-SFC Enhancements" type="module">
-			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
-		</artifact>
-		<artifact name="Block Language Toolkit" type="module">
-			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">

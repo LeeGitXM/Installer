@@ -146,6 +146,26 @@
 			<location>artifacts/database/createSfcTables.sql</location>
 		</artifact>
 	</panel>
+		<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the EMC applications.
+		</preamble>
+		<artifact name="SFC Enhancements" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+		<artifact name="Application Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" essential="false" version="1" subtype="test">
+		<title>Install Module for Testing</title>
+		<preamble>This step installs the module that holds the testing
+			framework.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-unsigned.modl</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -185,27 +205,6 @@
 		<property name="provider" type="production"></property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
 			<location>artifacts/scanclasses/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs modules necessary for the EMC applications.
-		</preamble>
-		<artifact name="SFC Enhancements" type="module">
-			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
-		</artifact>
-		<artifact name="Application Toolkit" type="module">
-			<location>artifacts/modules/BLT-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="module" essential="false" version="1" subtype="test">
-		<title>Install Module for Testing</title>
-		<preamble>This step installs the module that holds the testing
-			framework.
-		</preamble>
-		<artifact name="Testing Framework" type="module">
-			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
