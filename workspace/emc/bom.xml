@@ -47,8 +47,7 @@
 		<property name="database" type="isolation"></property>
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
-	</panel>
-	<!-- 	
+	</panel>	
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
 		<preamble>Check authentication profiles to verify that at least one of them
@@ -58,7 +57,6 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	-->
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
@@ -70,8 +68,7 @@
 			<location>artifacts/icons/custom</location>
 		</artifact>
 	</panel>
-		<!-- Python types are copied into the Ignition user-lib/pylib area.
-	         Jar types are copied into lib -->
+	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
 	<panel type="file" essential="true" version="1">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 

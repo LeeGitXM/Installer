@@ -26,7 +26,7 @@ public class IconStep extends BasicInstallerPanel {
         super(index,previous, title, dataModel); 
         
         final IconStep thisPage = this;
-        
+        System.out.println(String.format("IconStep: %s",title));
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
@@ -66,12 +66,16 @@ public class IconStep extends BasicInstallerPanel {
             	if(failure.length()==0 ) {
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             		panelData.setCurrentVersion(futureVersion);
+            		System.out.println(String.format("IconStep:  success - new version %d",futureVersion));
             		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
             	}
             	else {
+            		System.out.println(String.format("IconStep:  page layout complete"));
             		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
             	}
+            	System.out.println(String.format("IconStep:  on-submit complete"));
             }
         });
+        System.out.println(String.format("IconStep:  page layout complete"));
     }
 }
