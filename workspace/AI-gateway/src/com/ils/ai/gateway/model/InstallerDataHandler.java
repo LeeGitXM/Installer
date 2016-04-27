@@ -626,6 +626,7 @@ public class InstallerDataHandler {
 		// If we get here, then return a conclusion. This shouldn't happen if BOM is well-formed
 		String title = getStepTitle(count-1,data);
 		BasicInstallerPanel step = stepFactory.createPanel(index,prior,PanelType.SUMMARY,title,dataModel);
+		log.infof("%s.getNextPanel: %s (%s)",CLSS,title,step.getClass().getName());
 		return step;
 	}
 	

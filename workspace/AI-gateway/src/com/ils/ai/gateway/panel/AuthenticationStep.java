@@ -53,7 +53,6 @@ public class AuthenticationStep extends BasicInstallerPanel {
 				boolean valid = ph.validateRoleList(roles);
 				if( valid ) info("Validated: One or more authentication profiles contain all the required roles");
 				else warn("There is no authentication profile that contains all the required roles");
-				System.out.println(String.format("AuthenticationStep:  on-submit complete"));
 			}
         });
         System.out.println(String.format("AuthenticationStep:  page layout complete"));
