@@ -3,9 +3,7 @@
  */
 package com.ils.ai.gateway.panel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -27,12 +25,7 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProjectNameFinder;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
-import com.inductiveautomation.ignition.gateway.localdb.persistence.RecordMeta;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.inductiveautomation.ignition.gateway.user.UserSourceProfileRecord;
-
-import simpleorm.dataset.SFieldMeta;
-import simpleorm.dataset.SQuery;
 
 /**
  */

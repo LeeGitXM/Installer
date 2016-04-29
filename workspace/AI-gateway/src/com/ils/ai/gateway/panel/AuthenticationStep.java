@@ -55,7 +55,6 @@ public class AuthenticationStep extends BasicInstallerPanel {
 				else warn("There is no authentication profile that contains all the required roles");
 			}
         });
-        System.out.println(String.format("AuthenticationStep:  page layout complete"));
     }
 	
 }

@@ -54,7 +54,6 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 		product  = dataHandler.getProductName(data);
 		type     = dataHandler.getStepType(panelIndex, data);
 		subtype  = dataHandler.getStepSubtype(panelIndex, data);
-		System.out.println(String.format("BasicInstallerPanel: %s (%s:%s)",product,type,subtype));
 	}
 
 	@Override
