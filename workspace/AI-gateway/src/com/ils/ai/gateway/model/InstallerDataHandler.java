@@ -484,10 +484,12 @@ public class InstallerDataHandler {
 						if( pos>0 ) {
 							String extension = filepath.substring(pos+1);
 							if( extension.equalsIgnoreCase("PDF"))       mime = "application/pdf";
+							else if( extension.equalsIgnoreCase("CSV"))  mime = "text/plain";
 							else if( extension.equalsIgnoreCase("DOC"))  mime = "application/msword";
 							else if( extension.equalsIgnoreCase("DOCX")) mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 							else if( extension.equalsIgnoreCase("JSON")) mime = "application/json";
 							else if( extension.equalsIgnoreCase("PROJ")) mime = "application/xml";    // Ignition project
+							else if( extension.equalsIgnoreCase("TXT"))  mime = "text/plain";
 							else if( extension.equalsIgnoreCase("VSD"))  mime = "application/visio";
 							else if( extension.equalsIgnoreCase("XLS"))  mime = "application/vnd.ms-exel";
 							else if( extension.equalsIgnoreCase("XLSX")) mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
