@@ -17,7 +17,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.jar.JarEntry;
@@ -1318,9 +1320,11 @@ public class InstallerDataHandler {
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
 				Project updateProject = Project.fromXML(projectReader);
-				updateProject.applyDiff(globalProject);  // Update overwrites
+				mergeProject(globalProject,updateProject);
 				pmgr.addProject(globalProject, true);    // Overwrite the global project
-				globalProject = pmgr.getGlobalProject(ApplicationScope.ALL);
+				// Re-constitute the project from the project manager. Without this step, we end
+				// up with a project containing some duplicated resources. We don't know why this works ...
+				globalProject = pmgr.getGlobalProject(ApplicationScope.GATEWAY);
 				globalProject.setEnabled(true);
 				
 				GlobalProps globalProps = pmgr.getProps(globalProject.getId(), ProjectVersion.Staging);
@@ -1358,8 +1362,6 @@ public class InstallerDataHandler {
 				catch(IOException ignore) {}
 			}
 		}
-
-
 		return result;
 	}
 	/**
@@ -1391,7 +1393,7 @@ public class InstallerDataHandler {
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
 					Project updateProject = Project.fromXML(projectReader);
-					updateProject.applyDiff(originalProject);    // Update project "wins"
+					mergeProject(originalProject,updateProject);
 					pmgr.addProject(originalProject, true);      // Overwrite itself
 					originalProject = pmgr.getProject(originalProject.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
 					originalProject.setEnabled(false);
@@ -1499,6 +1501,40 @@ public class InstallerDataHandler {
 		preferences.put(key,value);
 	}
 	
+	// Merge resources from the partial project into the original
+	private void mergeProject(Project original,Project partial) {
+		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
+		// Create map of partial resources.
+		for( ProjectResource res:partial.getResources() ) {
+			String path = partial.getFolderPath(res.getResourceId());
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			log.debugf("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
+			partialResources.put(key, res);
+		}
+		// Delete any resources in the original that are in the partial
+		List<ProjectResource> toBeDeleted = new ArrayList<>();
+		for( ProjectResource res:original.getResources() ) {
+			String path = original.getFolderPath(res.getResourceId());
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			if( partialResources.get(key)!=null ) {
+				log.debugf("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+				toBeDeleted.add(res);
+			}
+			else{
+				log.debugf("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+			}
+		}
+		for( ProjectResource res:toBeDeleted ) {
+			original.deleteResource(res.getResourceId());
+		}
+		
+		// Now add all the partial resources back in
+		for( ProjectResource res:partial.getResources() ) {
+			original.putResource(res);
+			log.debugf("%s.mergeProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
+		}
+	}
+	
 	// Alter a project description to add its derivation
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {
@@ -1574,5 +1610,6 @@ public class InstallerDataHandler {
 			System.out.println(String.format("%s.updateGlobalProps: Exception getting resource ID (%s)",CLSS, ex.getMessage()));
 		}
 	}
+
 }
 

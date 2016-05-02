@@ -170,7 +170,9 @@
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version.
+			modifications from a previous version. <br/>
+			NOTE: For the current EMChemicals project, the merge capability is still in 
+			development and should NOT be used.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
