@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
+import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
@@ -98,6 +99,9 @@ public class DatabaseStep extends BasicInstallerPanel {
 					info(String.format("Datasource %s schema created successfully", datasource));
 				}
 				else {
+					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
+						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
+					}
 					warn(result);
 				}
             }
@@ -123,6 +127,9 @@ public class DatabaseStep extends BasicInstallerPanel {
 					info(String.format("Datasource %s schema updated successfully", datasource));
 				}
 				else {
+					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
+						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
+					}
 					warn(result);
 				}
             }

@@ -25,6 +25,8 @@ public interface InstallerConstants   {
 	public final static String PROPERTY_RELEASE = "release"; 
 	public final static String PROPERTY_VERSION = "version"; 
 	
+	// Don't allow error messages longer than this ...
+	public final static int MAX_ERROR_LENGTH = 4000;
 	// Indicator for an integer that has never been set.
 	public final static int UNSET = -2;
 }

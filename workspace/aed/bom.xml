@@ -65,7 +65,7 @@
 			<destination>pylib/xom</destination>
 		</artifact>
 		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
-			<location>artifacts/external/jars</location>
+			<location>artifacts/external/jars/core</location>
 			<destination>core</destination>
 		</artifact>
 	</panel>
@@ -77,9 +77,16 @@
 		They will succeed only on new empty database instances.  
 		</preamble>
 		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="AED Database" type="sql" subtype="create">
+		<artifact name="Create AED Database" type="sql" subtype="create">
 			<location>artifacts/database/createAED.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear" dbms="SQLSERVER">
+			<location>artifacts/database/clearAED.sql</location>
+		</artifact>
+		<artifact name="Alter AED Database" type="sql" subtype="alter" dbms="SQLSERVER">
+			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
@@ -122,10 +129,10 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 		<artifact name="AED-RTA Design Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/AedRtaDesignSpecigication.docx</location>
+			<location>artifacts/doc/AedRtaDesignSpecification.docx</location>
 		</artifact>
 		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.34">
-			<location>artifacts/doc/AEDModuleProgrammersGuide..docx</location>
+			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
 		</artifact>
 		<artifact name="AED-RTA Installation Manual" type="documentation" subtype="docx" release="1.4">
 			<location>artifacts/doc/AEDInstallationManual.docx</location>
@@ -166,7 +173,7 @@
 		<preamble>Store properties in the Gateway installation directory: &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
 		</preamble>
 		<artifact name="Text Translations" type="text" subtype="user-lib">
-			<location>artifacts/external/properties</location>
+			<location>artifacts/properties</location>
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>

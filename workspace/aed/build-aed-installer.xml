@@ -4,7 +4,7 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="AEDInstaller" basedir="." default="deploy">
+<project name="AEDInstaller" basedir="." default="build">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
@@ -64,7 +64,9 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/aed_create.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/aed_create_v7_with_data.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/AED_v7_update_from_Donald.sql" tofile="${artifact.dir}/database/alterAED.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -98,8 +100,8 @@
 		<copy file="${git.repo}/external/lib/jackson-core-2.2.3.jar" tofile="${artifact.dir}/external/jars/core/common/jackson-core-2.2.3.jar" />
 		<copy file="${git.repo}/external/lib/jackson-databind-2.2.3.jar" tofile="${artifact.dir}/external/jars/core/common/jackson-databind-2.2.3.jar" />
 		<copy file="${git.repo}/external/lib/poi-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-3.13.jar" />
-		<copy file="${git.repo}/external/lib/poi-ooxml-3.13.jar" tofile="${artifact.dir}/external/jars/core/poi-ooxml-3.13.jar" />
-		<copy file="${git.repo}/external/lib/poi-ooxml-schemas-3.13.jar" tofile="${artifact.dir}/external/jars/core/poi-ooxml-schemas-3.13.jar" />
+		<copy file="${git.repo}/external/lib/poi-ooxml-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-ooxml-3.13.jar" />
+		<copy file="${git.repo}/external/lib/poi-ooxml-schemas-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-ooxml-schemas-3.13.jar" />
 		<copy file="${git.repo}/external/lib/stax-api-1.0.1.jar" tofile="${artifact.dir}/external/jars/core/common/stax-api-1.0.1.jar" />
 		<copy file="${git.repo}/external/lib/xmlbeans-2.6.0.jar" tofile="${artifact.dir}/external/jars/core/common/xmlbeans-2.6.0.jar" />
 		

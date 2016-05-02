@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -42,6 +43,7 @@ import com.ils.ai.gateway.utility.ScanClassUtility;
 import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.TransactionGroupUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
+import com.ils.common.db.DBMS;
 import com.ils.common.db.DBUtility;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
@@ -273,22 +275,51 @@ public class InstallerDataHandler {
 	}
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
+		// Search for DBMS
+		DBMS dbms = DBMS.ANSI;  // Default
+		List<PropertyItem> properties =  getPanelProperties(panelIndex,model);
+		for( PropertyItem property:properties) {
+			if( "dbms".equalsIgnoreCase(property.getName()) ) {
+				try {
+					dbms = DBMS.valueOf(property.getType().toUpperCase());
+				}
+				catch(IllegalArgumentException iae) {
+					log.infof("%s.executeSQLFromArtifact: Unrecognized DBMS type %s (ignored)", CLSS,property.getType());
+				}
+				break;
+			}
+		}
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
 		if( bytes!=null && bytes.length>0 ) {
-			// If we have data, we had to have a path
-			String sql = new String(bytes);
-			String[] lines = sql.split(";\n");
-			if( lines.length<2 ) {
-				lines = sql.split(";\r\n");
-				if( lines.length<2 ) {
-					lines = sql.split("GO\n");
-					if( lines.length<2 ) {
-						lines = sql.split("GO\r\n");
-					}
+			// Do our best to group multi-line statements into legal SQL
+			// Combine multiple lines into single SQL statements
+			Scanner scanner = new Scanner(new String(bytes));
+			List<String> statements = new ArrayList<>();
+			StringBuffer sb = new StringBuffer();
+			while(scanner.hasNextLine()) {
+				// Accumulate until we get to a statement terminator
+				String line = scanner.nextLine();
+				if( line.endsWith("\r")) line = line.substring(0, line.length()-1);
+				
+				if( !dbms.equals(DBMS.SQLSERVER) && line.endsWith(";")) {
+					sb.append(line.substring(0,line.length()-1));
+					statements.add(sb.toString());
+					sb.setLength(0);
+				}
+				if( line.equalsIgnoreCase("go") ) {
+					statements.add(sb.toString());
+					sb.setLength(0);
+				}
+				else {
+					sb.append(line);
+					sb.append("\n");
 				}
 			}
+			scanner.close();
+			
 			try {
-				result = dbUtil.executeMultilineSQL(lines, datasource);
+				String statementArray[] = new String[statements.size()];
+				result = dbUtil.executeMultilineSQL(statements.toArray(statementArray), datasource);
 			}
 			catch( Exception ex) {
 				result = String.format( "Exception executing SQL (%s)",ex.getMessage());
