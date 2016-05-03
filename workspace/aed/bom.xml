@@ -58,7 +58,9 @@
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the XOM application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
-		A second category consists of Java jar files that are referenced by this Python.
+		A second category consists of Java jar files that are referenced by this Python.<br/>
+		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
+		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
 		</preamble>
 		<artifact name="External Python - AED" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
@@ -67,6 +69,10 @@
 		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
 			<location>artifacts/external/jars/core</location>
 			<destination>core</destination>
+		</artifact>
+		<artifact name="Text Translations" type="text" subtype="user-lib">
+			<location>artifacts/properties</location>
+			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
@@ -166,15 +172,6 @@
 		</artifact>
 		<artifact name="VFM User Interface" type="documentation" subtype="docx" release="7">
 			<location>artifacts/doc/VFMUserInterface.docx</location>
-		</artifact>
-	</panel>
-	<panel type="file" essential="true" version="1">
-		<title>Property Files for Internationalization</title>
-		<preamble>Store properties in the Gateway installation directory: &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
-		</preamble>
-		<artifact name="Text Translations" type="text" subtype="user-lib">
-			<location>artifacts/properties</location>
-			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
 	<!-- The conclusion panel must always be displayed, thus no version -->
