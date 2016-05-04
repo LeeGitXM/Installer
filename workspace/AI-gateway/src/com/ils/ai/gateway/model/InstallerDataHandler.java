@@ -83,6 +83,9 @@ public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
 	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
+	private static final int TAG_CHUNK_SIZE = 1000;
+	private static final String TAGS_HEADER =  "<Tags>";
+	private static final String TAGS_TRAILER = "</Tags>";
 	private static InstallerDataHandler instance = null;
 	
 	private final LoggerEx log;
@@ -420,6 +423,84 @@ public class InstallerDataHandler {
 		return bytes;
 	}
 	/**
+	 * Assume that the artifact is a list of tags in XML format. Split the list into sets of approximately 1000
+	 * tags for chunked processing. We have found that the gateway times out if we attempt large numbers of tag imports.
+	 */
+	public List<File> getArtifactAsListOfTagFiles(int panelIndex,String artifactName,InstallerData model) {
+		List<File> files = new ArrayList<>();
+		String contents = "";
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+		
+				if( artifactName.equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "name")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						String internalPath = locationNode.getTextContent();
+						Path path = getPathToModule(model);
+						contents = jarUtil.readFileFromJar(internalPath,path);
+						log.infof("%s.getArtifactAsListOfTagFiles: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),contents.length());
+					}
+					else {
+						log.warnf("%s.getArtifactAsListOfTagFiles: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		// Strip header and trailer
+		Scanner scanner = new Scanner(contents);
+		scanner.useDelimiter("<Tag ");
+		if( scanner.hasNext() ) scanner.next();    // Skip over header
+		StringBuffer sb = new StringBuffer();
+		sb.append(TAGS_HEADER);
+		int count = 0;
+		while( scanner.hasNext() ) {
+			if( count>=TAG_CHUNK_SIZE ) {
+				File file = null;
+				if( !sb.toString().endsWith(TAGS_TRAILER)) sb.append(TAGS_TRAILER);
+				try {
+					file = File.createTempFile("tagartifacts",".xml");
+					Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
+					files.add(file);
+				}
+				catch(IOException ioe) {
+					log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
+							                                                          panelIndex,artifactName,ioe.getLocalizedMessage());
+				}
+				count = 0;
+				sb = new StringBuffer();
+				sb.append(TAGS_HEADER);
+			}
+			sb.append("<Tag ");
+			sb.append(scanner.next());
+			count++;
+		}
+		scanner.close();
+		
+		if( count>0 ) {
+			File file = null;
+			try {
+				file = File.createTempFile("tagartifacts",".xml");
+				Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
+				files.add(file);
+			}
+			catch(IOException ioe) {
+				log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
+						                                                          panelIndex,artifactName,ioe.getLocalizedMessage());
+			}
+		}
+		
+		return files;
+	}
+	/**
 	 * @param model
 	 * @return a reference to a temporary file that contains the contents of the specified
 	 *         artifact. The file should be automatically deleted on closure.
@@ -442,10 +523,10 @@ public class InstallerDataHandler {
 						String internalPath = locationNode.getTextContent();
 						Path path = getPathToModule(model);
 						bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
-						log.infof("%s.getArtifactAsBytes: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),bytes.length);
+						log.infof("%s.getArtifactAsTemporaryFile: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),bytes.length);
 					}
 					else {
-						log.warnf("%s.getArtifactAsBytes: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
+						log.warnf("%s.getArtifactAsTemporaryFile: no location element for panel %d:%s",CLSS,panelIndex,artifactName);
 					}
 					break;
 				}
@@ -1259,10 +1340,13 @@ public class InstallerDataHandler {
 	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
 
-		File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
-		if( file != null ) {
+		//File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
+		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
+		int count = 1;
+		for( File file: files ) {
 			try {
-				log.infof("%s.loadArtifactAsTags: Installing %s as %s",CLSS,file.getName(),artifactName);
+				log.infof("%s.loadArtifactAsTags: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
+				count = count + TAG_CHUNK_SIZE;
 				tagUtil.importFromFile(file,providerName);
 			}
 			catch( SAXException saxe) {
@@ -1272,9 +1356,6 @@ public class InstallerDataHandler {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
 				log.warn("InstallerDataHandler.loadArtifactAsTags: EXCEPTION",ex);
 			}
-		}
-		else {
-			result = String.format( "Failed to find %s tags in bundle",artifactName);
 		}
 
 		return result;
