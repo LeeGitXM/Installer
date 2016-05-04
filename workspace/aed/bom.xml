@@ -140,11 +140,14 @@
 		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.34">
 			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
 		</artifact>
-		<artifact name="AED-RTA Installation Manual" type="documentation" subtype="docx" release="1.4">
-			<location>artifacts/doc/AEDInstallationManual.docx</location>
-		</artifact>
 		<artifact name="AED Expression Optimization" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/AEDHistoryExpressionOptimization.docx</location>
+		</artifact>
+		<artifact name="AED-RTA Functions Guide" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/AEDFunctionsGuide.docx</location>
+		</artifact>
+		<artifact name="AED-RTA Installation Manual" type="documentation" subtype="docx" release="1.4">
+			<location>artifacts/doc/AEDInstallationManual.docx</location>
 		</artifact>
 		<artifact name="Common Facilities User Interface" type="documentation" subtype="docx" release="2">
 			<location>artifacts/doc/CommonFacilitiesUserInterface.docx</location>

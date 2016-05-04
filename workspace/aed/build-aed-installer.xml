@@ -75,6 +75,7 @@
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDModuleProgrammersGuide.docx" tofile="${artifact.dir}/doc/AEDModuleProgrammersGuide.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDInstallationManual.docx" tofile="${artifact.dir}/doc/AEDInstallationManual.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-HistoryExpressionOptimization.docx" tofile="${artifact.dir}/doc/AEDHistoryExpressionOptimization.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-RTA Functions Guide.docx" tofile="${artifact.dir}/doc/AEDFunctionsGuide.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Common Facilities User Interface.docx" tofile="${artifact.dir}/doc/CommonFacilitiesUserInterface.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PCA User Interface.docx" tofile="${artifact.dir}/doc/PCAUserInterface.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PID Performance.docx" tofile="${artifact.dir}/doc/PIDPerformance.docx" />
