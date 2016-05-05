@@ -134,6 +134,9 @@
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
+		<artifact name="AED 7.0 Design Changes" type="documentation" subtype="docx" release="1.1">
+			<location>artifacts/doc/AedRtaDatabaseDesignChanges.docx</location>
+		</artifact>
 		<artifact name="AED-RTA Design Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/AedRtaDesignSpecification.docx</location>
 		</artifact>
