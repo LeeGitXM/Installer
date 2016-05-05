@@ -1252,6 +1252,7 @@ public class InstallerDataHandler {
 				project.setName(name);
 				String description = project.getDescription();
 				project.setDescription(updateProjectDescription(description,model));
+				project.setEnabled(false);
 				
 				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);	
 				GlobalProps globalProps = project.decodeOrCreate(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, context.createDeserializer(), GlobalProps.class);
