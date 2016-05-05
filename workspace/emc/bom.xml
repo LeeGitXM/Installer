@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+c<?xml version="1.0" encoding="UTF-8"?>
 <!-- For any panel, the type determines the layout and class. The combination of 
       type and subtype must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
@@ -279,7 +279,7 @@
 		          as delivered.
 		</preamble>
 		<artifact name="Vistalon - CSTR" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/cstrProductQuality</location>
+			<location>artifacts/migration/cstrProductQuality.json</location>
 		</artifact>
 		<artifact name="Vistalon - CRX" type="source" subtype="json" release="@RELEASE@">
 			<location>artifacts/migration/crxProductQuality.json</location>
