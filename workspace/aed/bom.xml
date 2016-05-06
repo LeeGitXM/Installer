@@ -88,10 +88,10 @@
 		<artifact name="Create AED Database" type="sql" subtype="create">
 			<location>artifacts/database/createAED.sql</location>
 		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear" dbms="SQLSERVER">
+		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearAED.sql</location>
 		</artifact>
-		<artifact name="Alter AED Database" type="sql" subtype="alter" dbms="SQLSERVER">
+		<artifact name="Alter AED Database" type="sql" subtype="alter">
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>

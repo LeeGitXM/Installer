@@ -311,7 +311,7 @@ public class InstallerDataHandler {
 					statements.add(sb.toString());
 					sb.setLength(0);
 				}
-				if( line.equalsIgnoreCase("go") ) {
+				if( line.trim().equalsIgnoreCase("go") ) {
 					statements.add(sb.toString());
 					sb.setLength(0);
 				}
