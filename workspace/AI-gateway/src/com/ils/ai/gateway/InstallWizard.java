@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.time.Duration;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
@@ -27,6 +28,8 @@ public class InstallWizard extends GatewayWizard {
         BasicInstallerPanel step = InstallerDataHandler.getInstance().getNextPanel(0,null,dataModel);
 
 		GatewayWizardModel wizardModel = new GatewayWizardModel(step);
+		// Set the page timeout to 5 minutes
+		this.getApplication().getRequestCycleSettings().setTimeout(Duration.minutes(5));
 		this.init(wizardModel);
 	}
 
