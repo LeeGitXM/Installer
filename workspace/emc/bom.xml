@@ -133,6 +133,8 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that are 
+			not overwritten by the tag resources in the installer.
 		</preamble>
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
