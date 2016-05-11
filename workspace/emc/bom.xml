@@ -1,4 +1,4 @@
-c<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- For any panel, the type determines the layout and class. The combination of 
       type and subtype must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
@@ -10,7 +10,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">2</property>
+	<property name="version">3</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -89,7 +89,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="1">
+	<panel type="database" essential="true" version="2">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -104,7 +104,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="1">
+	<panel type="database" essential="false" version="2">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -118,7 +118,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
+	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		</preamble>
@@ -129,12 +129,12 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="1">
+	<panel type="tag" subtype="production" essential="True" version="2">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that are 
-			not overwritten by the tag resources in the installer.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
 		</preamble>
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
@@ -144,7 +144,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="1">
+	<panel type="tag" subtype="test" essential="false" version="2">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -165,7 +165,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
+	<panel type="project" subtype="main" essential="true" version="2">
 		<title>Install a New XOM Project or Merge Changes into an Existing
 			Project
 		</title>
@@ -195,7 +195,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
+	<panel type="project" subtype="sfc" essential="true" version="2">
 		<title>Install SFC Charts in the Global Project
 		</title>
 		<preamble>This page handles installation of charts for various migrated SFC projects.
@@ -211,7 +211,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
 		</preamble>
-		<artifact name="Release Notes" type="documentation" subtype="pdf" release="0.1r17">
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="0.1r18">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 		<artifact name="Application Installer" type="documentation" subtype="docx" release="1.1">
@@ -220,7 +220,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/ApplicationTestFramework.docx</location>
 		</artifact>
-		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="0.1r17">
+		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="0.1r18">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
 		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.9">
@@ -229,13 +229,13 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="0.55">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.10">
+		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.12">
 			<location>artifacts/doc/EMCDatabaseDesign</location>
 		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.10">
+		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.12">
 			<location>artifacts/doc/EMCDatabaseER.pdf</location>
 		</artifact>
-		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.10">
+		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.12">
 			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.5">
@@ -253,10 +253,10 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
-		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="0.1r17">
+		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="0.1r18">
 			<location>artifacts/doc/SFCDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.5">
+		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.6">
 			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
 		</artifact>
 	</panel>
@@ -300,7 +300,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 		</artifact>
 	</panel>
 	
-	<panel type="toolkit" essential="true" version="1">
+	<panel type="toolkit" essential="true" version="2">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.
 			These particular parameters define extension functions that update

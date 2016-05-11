@@ -455,7 +455,9 @@ public class InstallerDataHandler {
 				index++;
 			}
 		}
-		// Strip header and trailer
+		// Strip header and trailer. Break on folders. We use these
+		// because they are guaranteed not to be nested. We assume 
+		// they are on one line.
 		Scanner scanner = new Scanner(contents);
 		scanner.useDelimiter("<Tag ");
 		if( scanner.hasNext() ) scanner.next();    // Skip over header
@@ -463,7 +465,8 @@ public class InstallerDataHandler {
 		sb.append(TAGS_HEADER);
 		int count = 0;
 		while( scanner.hasNext() ) {
-			if( count>=TAG_CHUNK_SIZE ) {
+			String next = scanner.next();
+			if( next.contains("type=\"Folder\"") && count>0) {
 				File file = null;
 				if( !sb.toString().endsWith(TAGS_TRAILER)) sb.append(TAGS_TRAILER);
 				try {
@@ -480,12 +483,13 @@ public class InstallerDataHandler {
 				sb.append(TAGS_HEADER);
 			}
 			sb.append("<Tag ");
-			sb.append(scanner.next());
+			sb.append(next);
 			count++;
 		}
 		scanner.close();
 		
 		if( count>0 ) {
+			// One last chunk
 			File file = null;
 			try {
 				file = File.createTempFile("tagartifacts",".xml");
@@ -1355,7 +1359,7 @@ public class InstallerDataHandler {
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
-				log.warn("InstallerDataHandler.loadArtifactAsTags: EXCEPTION",ex);
+				log.warn("InstallerDataHandler.loadArtifactAsTags: "+file.getAbsolutePath()+" EXCEPTION",ex);
 			}
 		}
 
