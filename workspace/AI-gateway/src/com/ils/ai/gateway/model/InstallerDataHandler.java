@@ -1340,8 +1340,6 @@ public class InstallerDataHandler {
 	
 	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
-
-		//File file = getArtifactAsTemporaryFile(panelIndex,artifactName,model);
 		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
 		int count = 1;
 		for( File file: files ) {
