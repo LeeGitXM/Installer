@@ -144,14 +144,25 @@
 			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="2">
-		<title>Install Tags Definitions for Test</title>
+	<panel type="tag" subtype="test1" essential="false" version="2">
+		<title>Install Tags Definitions for Test - Part I</title>
+		<preamble>This page defines tags that are used by the Ignition Applications
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode. We've split this 
+		operation into two parts to avoid page timeouts.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<artifact name="Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/testTags1.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="test2" essential="false" version="2">
+		<title>Install Tags Definitions for Test - Part II</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
 		</preamble>
 		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/testTags.xml</location>
+			<location>artifacts/tags/testTags2.xml</location>
 		</artifact>
 	</panel>
 	<panel type="scanclass" essential="true" version="1">

@@ -104,6 +104,7 @@
 		<mkdir dir="${artifact.dir}/external/jars" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/common/ils-common.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.1.1.jar.pack.gz" tofile="${artifact.dir}/external/jars/common/commons-math3-3.1.1.jar.pack.gz" />
 		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/gateway/block-definition.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/gateway/blt-gateway.jar" />
@@ -159,7 +160,8 @@
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags1.xml" tofile="${artifact.dir}/tags/testTags1.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags2.xml" tofile="${artifact.dir}/tags/testTags2.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />
