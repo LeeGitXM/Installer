@@ -3,13 +3,17 @@
  */
 package com.ils.ai.gateway.panel;
 
+import java.io.File;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.xml.sax.SAXException;
 
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
@@ -20,6 +24,7 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
 	private String provider = "";
+	private String statusString = "";
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
@@ -42,6 +47,16 @@ public class TagStep extends BasicInstallerPanel {
 			}
 		});
        
+		Model<String> statusModel = new Model<String>() {
+			@Override
+			public String getObject() {
+				return statusString;	
+			}
+		};
+		Label statusLabel = new Label("status",statusModel);
+		statusLabel.setOutputMarkupId(true);
+		add(statusLabel);
+		
         add(new Button("install") {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
@@ -52,15 +67,34 @@ public class TagStep extends BasicInstallerPanel {
             	StringBuilder success = new StringBuilder("");
             	StringBuilder failure = new StringBuilder("");
             	
-            	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsTags(index,provider,name,data);
+            	for(String artifactName:names) {
+            		//String result = dataHandler.loadArtifactAsTags(index,provider,name,data);
+            		String result = null;
+            		List<File> files = dataHandler.getArtifactAsListOfTagFiles(panelIndex, artifactName, data);
+            		int count = 0;
+            		for( File file:files ) {
+            			try {
+            				statusString = String.format("Installed ~ %d tags",count);
+            				count = count + InstallerDataHandler.TAG_CHUNK_SIZE;
+            				dataHandler.tagUtil.importFromFile(file,provider);
+            				setResponsePage(getPage());    // Supposedly this causes a page refresh()
+            				Thread.yield();
+            			}
+            			catch( SAXException saxe) {
+            				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
+            			}
+            			catch( Exception ex) {
+            				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
+            				statusString = String.format("EXCEPTION: file %s (%s)",file.getAbsolutePath(),ex.getMessage());
+            			}
+            		}
             		if( result==null ) {
             			if(success.length()>0) success.append(", ");
-            			success.append(name);
+            			success.append(artifactName);
             		}
             		else {
             			if(failure.length()>0) failure.append(", ");
-            			failure.append(String.format("%s(%s)", name,result));
+            			failure.append(String.format("%s(%s)", artifactName,result));
             		}
             	}
             	if(failure.length()==0 ) {
@@ -74,5 +108,6 @@ public class TagStep extends BasicInstallerPanel {
             }
         });
     }
-
+	
+	
 }

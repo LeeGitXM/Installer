@@ -83,7 +83,7 @@ public class InstallerDataHandler {
 	private final static String CLSS = "InstallerDataHandler";
 	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
-	private static final int TAG_CHUNK_SIZE = 1000;
+	public static final int TAG_CHUNK_SIZE = 1000;
 	private static final String TAGS_HEADER =  "<Tags>";
 	private static final String TAGS_TRAILER = "</Tags>";
 	private static InstallerDataHandler instance = null;
@@ -95,7 +95,7 @@ public class InstallerDataHandler {
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private ScanClassUtility scanUtil = null;
-	private TagUtility tagUtil = null;
+	public TagUtility tagUtil = null;
 	private TransactionGroupUtility transactionUtil = null;
 	private XMLUtility xmlUtil = null;
 	private final InstallerPanelFactory stepFactory;
@@ -466,7 +466,7 @@ public class InstallerDataHandler {
 		int count = 0;
 		while( scanner.hasNext() ) {
 			String next = scanner.next();
-			if( next.contains("type=\"Folder\"") && count>0) {
+			if( next.contains("type=\"Folder\"") && count>=TAG_CHUNK_SIZE) {
 				File file = null;
 				if( !sb.toString().endsWith(TAGS_TRAILER)) sb.append(TAGS_TRAILER);
 				try {

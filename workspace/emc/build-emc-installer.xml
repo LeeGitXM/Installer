@@ -160,8 +160,7 @@
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/sqlTags1.xml" tofile="${artifact.dir}/tags/testTags1.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/sqlTags2.xml" tofile="${artifact.dir}/tags/testTags2.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />
