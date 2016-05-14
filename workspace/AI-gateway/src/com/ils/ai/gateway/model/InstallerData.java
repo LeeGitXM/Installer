@@ -19,6 +19,8 @@ public class InstallerData implements Serializable  {
 	private String administrativeProfile = "1";
 	private String administrativeUser = null;
 	private Document bom = null;
+	private int chunkedTotal = 0;    // From the latest chunked operation
+	private Integer[] chunkCounts = new Integer[0];
 	private String modulePath = null;
 	private String productName = "";
 	private boolean ignoringOptional  = false;
@@ -28,6 +30,8 @@ public class InstallerData implements Serializable  {
 	public String getAdministrativeProfile() {return administrativeProfile;}
 	public String getAdministrativeUser() {return administrativeUser;}
 	public Document getBillOfMaterials() {return bom;}
+	public int getChunkedTotal() { return chunkedTotal; }
+	public Integer[] getChunkCounts() { return chunkCounts; }
 	public String getModulePath() {return this.modulePath;}
 	public Map<Integer,PanelData> getPanelMap() { return panelMap; }
 	public String getProductName() {return this.productName;}
@@ -36,6 +40,8 @@ public class InstallerData implements Serializable  {
 	public void setAdministrativeProfile(String profile) {administrativeProfile=profile;}
 	public void setAdministrativeUser(String user) {administrativeUser=user;}
     public void setBillOfMaterials(Document doc) {this.bom = doc;}
+    public void setChunkTotal(int total) { this.chunkedTotal = total; }
+    public void setChunkCounts(Integer[] counts) { this.chunkCounts = counts; }
     public void setIgnoringCurrent(boolean flag) { this.ignoringCurrent = flag; }
     public void setIgnoringOptional(boolean flag) { this.ignoringOptional = flag; }
     public void setModulePath(String path) {this.modulePath = path;}
