@@ -9,23 +9,17 @@
 	<property name="AIModule.version" value="2.0.1.${version.build}" />
 	<property name="AIModule.name" value="AI" />
 	<property name="AIModule.release" value="0.1" />
-	<property name="AIModule.description" value="Application Installer - Built for EMC Ignition Applications" />
+	<property name="AIModule.description" value="Application Installer - for Ignition Applications" />
 	<property name="jar.dir" value="${git.repo}/external/lib" />
 	<property name="deploy.dir" value="${build.dir}/deploy" />
 	<property name="stage.dir" value="${basedir}/../staging" />
 	<property name="ant.build.javac.source" value="1.8"/>
 	<property name="ant.build.javac.target" value="1.8"/>
-	
-	<!-- Common jar classpath -->
-	<!-- Gateway depends on the Common -->
-	<path id="AI_Common.classpath">
-		<path refid="ignition.classpath" />
-		<path refid="external.classpath" />
-	</path>
 		
 	<!-- Gateway jar classpath -->
 	<path id="AI_Gateway.classpath">
-		<path refid="AI_Common.classpath" />
+		<path refid="ignition.classpath" />
+		<path refid="external.classpath" />
 	</path>	
 
 	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
@@ -48,7 +42,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />	
 				
-	
 		<!-- Application Installer Gateway jar -->
 		<antcall target="MakeProject">
 			<param name="modName" value="${AIModule.name}_Gateway" />

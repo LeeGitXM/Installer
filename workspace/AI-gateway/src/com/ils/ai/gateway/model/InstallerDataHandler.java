@@ -429,11 +429,14 @@ public class InstallerDataHandler {
 	public List<File> getArtifactAsListOfTagFiles(int panelIndex,String artifactName,InstallerData model) {
 		List<File> files = new ArrayList<>();
 		String contents = "";
+		int total = 0;
+		List<Integer> chunkSizes = new ArrayList<>();
 		Element panel = getPanelElement(panelIndex,model);
 		if( panel!=null ) {
 			NodeList artifactNodes = panel.getElementsByTagName("artifact");
 			int acount = artifactNodes.getLength();
 			int index = 0;
+
 			while(index<acount) {
 				Node artifactNode = artifactNodes.item(index);
 		
@@ -453,6 +456,7 @@ public class InstallerDataHandler {
 					break;
 				}
 				index++;
+				total++;
 			}
 		}
 		// Strip header and trailer. Break on folders. We use these
@@ -473,6 +477,7 @@ public class InstallerDataHandler {
 					file = File.createTempFile("tagartifacts",".xml");
 					Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 					files.add(file);
+					chunkSizes.add(new Integer(count));
 				}
 				catch(IOException ioe) {
 					log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
@@ -495,13 +500,15 @@ public class InstallerDataHandler {
 				file = File.createTempFile("tagartifacts",".xml");
 				Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 				files.add(file);
+				chunkSizes.add(new Integer(count));
 			}
 			catch(IOException ioe) {
 				log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
 						                                                          panelIndex,artifactName,ioe.getLocalizedMessage());
 			}
 		}
-		
+		model.setChunkTotal(total);
+		model.setChunkCounts(chunkSizes.toArray(new Integer[chunkSizes.size()]));
 		return files;
 	}
 	/**

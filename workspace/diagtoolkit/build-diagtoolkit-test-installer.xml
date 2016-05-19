@@ -57,7 +57,7 @@
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
-		<copy file="${base.dir}/../../../../external/lib/wicket-jquery-ui-6.7.0.jar" todir="${staging.dir}/" />
+		<copy file="${git.repo}/external/lib/wicket-jquery-ui-6.7.0.jar" todir="${staging.dir}/" />
 
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
@@ -65,7 +65,6 @@
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
-	
 		<mkdir dir="${artifact.dir}/test" />
 		<copy todir="${artifact.dir}/test/pylib">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
@@ -77,8 +76,6 @@
 				<include name="Regression/**/*.txt" />
 			</fileset>
 		</copy>
-
-
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />

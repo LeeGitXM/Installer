@@ -3,9 +3,11 @@
  */
 package com.ils.ai.gateway.panel;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.file.File;
+import org.apache.wicket.util.time.Duration;
 
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
@@ -48,6 +50,7 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 		if(vers!=UNSET) currentVersionString = String.valueOf(vers);
 		this.futureVersion = panelData.getVersion();
 		if( futureVersion!=UNSET ) futureVersionString = String.valueOf(futureVersion);
+		Application.get().getRequestCycleSettings().setTimeout(Duration.minutes(5));
 		
 		// Retrieve some generic attributes ...
 		preamble = dataHandler.getStepPreamble(index, data);
