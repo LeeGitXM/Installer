@@ -12,7 +12,6 @@
 
 	<!-- Load in our jars for each scope -->
 	<export scope="G">ils-common.jar</export>
-	<export scope="G">wicket-jquery-ui-6.7.0.jar</export>
 	<jar scope="G">ai-gateway.jar</jar>
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
 	<hook scope="G">com.ils.ai.gateway.ApplicationInstallerGatewayHook</hook>

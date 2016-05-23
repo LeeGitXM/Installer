@@ -36,7 +36,7 @@
 		    Override them here with file contents in SVN Release area
 		    Update the BOM. "loadfile" does not overwrite existing properties.
 		-->
-		
+
 		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
 		<trim input="${raw}" property="version.build"/>
 		
@@ -57,7 +57,6 @@
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
-		<copy file="${git.repo}/external/lib/wicket-jquery-ui-6.7.0.jar" todir="${staging.dir}/" />
 
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
