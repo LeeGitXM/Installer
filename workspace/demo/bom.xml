@@ -166,6 +166,17 @@
 			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
 	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -194,17 +205,6 @@
 		<property name="provider" type="isolation"></property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/testTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="1">
-		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
