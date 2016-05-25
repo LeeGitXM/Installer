@@ -94,7 +94,6 @@ public class TagStep extends BasicInstallerPanel {
             				count = count + InstallerDataHandler.TAG_CHUNK_SIZE;
             				dataHandler.tagUtil.importFromFile(file,provider);
             				setResponsePage(getPage());    // Supposedly this causes a page refresh()
-            				notifyAll();
             				Thread.yield();
             			}
             			catch( SAXException saxe) {
