@@ -151,12 +151,14 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
+		<!-- 
 		<artifact name="Production Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 		<artifact name="LabData Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/labdataTags.xml</location>
 		</artifact>
+		 -->
 	</panel>
 	<panel type="tag" subtype="test" essential="false" version="2">
 		<title>Install Tags Definitions for Test</title>

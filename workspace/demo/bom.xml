@@ -186,15 +186,8 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
-		<artifact name="Tags Representing Connections" type="tag"
-			subtype="xml">
-			<location>artifacts/tags/connections.xml</location>
-		</artifact>
 		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
-		</artifact>
-		<artifact name="Vistalon Site Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/siteTags.xml</location>
+			<location>artifacts/tags/sqltags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="test" essential="False" version="1">
