@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
+<body>
+
+	<wicket:panel>
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
+			<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="spacer" />
+
+		<div>
+			<table>
+				<tr>
+					<td class="last"><span class="label">Tag provider: </span> <span
+						wicket:id="provider" /></td>
+				</tr>
+				<tr>
+					<td class="last"><span class="label">Status: </span> <span
+						wicket:id="status" /></td>
+				</tr>
+				<tr />
+			</table>
+		</div>
+		<br />
+		<div>
+			<table class="actiontable" style="width: 75%" cellpadding="0"
+				cellspacing="0">
+				<thead>
+					<tr>
+						<td class="last">Tag Resource</td>
+					</tr>
+					<tr />
+				</thead>
+				<tbody id="actiontable-tbody">
+					<tr wicket:id="tags">
+						<td class="last" style="width: 20%;"><span wicket:id="name" /></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<p class="spacer" />
+			<div>
+				<input type="submit" wicket:id="install" value="Install Tags" />
+			</div>
+
+			<br />
+		</div>
+	</wicket:panel>
+</body>
+</html>

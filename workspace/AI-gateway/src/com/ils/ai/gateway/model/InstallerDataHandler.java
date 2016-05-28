@@ -1558,6 +1558,9 @@ public class InstallerDataHandler {
     					datasource = prop.getValue();
     				}
     			}
+    			else {
+    				datasource = prop.getValue();
+    			}
     		}
     	}
 		return datasource;

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and subtype must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>LafargeHolcim POC</title>
+	<description>Installer for LafargeHolcim POC Application</description>
+	<property name="product">POC</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">3</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for POC Application</title>
+		<preamble>Welcome to the ILS Automation installer for the LafargeHolcim POC Ignition
+			Application. The table below compares the existing installation of
+			this product, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined the "Lafarge" tag provider. This is required by the application.
+		</preamble>
+	</panel>	
+	<panel type="icon" essential="true" version="1">
+		<title>Custom Icons for Ignition Applications</title>
+		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
+		          They may also be found in many of the user screens. </preamble>
+		<artifact name="Block Language Toolkit Icons" type="poc" subtype="icon">
+			<location>artifacts/icons/poc</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the POC application.
+		</preamble>
+		<artifact name="Block Language Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the application.
+		          The tag provider must be named "Lafarge".
+		</preamble>
+		<property name="provider">Lafarge</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="2">
+		<title>Install a New Main Project
+		</title>
+		<preamble>Lafarge is the main Ignition project. This page provides an
+			artifact for a clean, new installation, completely replacing any existing project of the same name.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="Lafarge" type="project" subtype="full">
+			<location>artifacts/projects/Lafarge.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="2">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of the SFC charts.
+		          These end up in the global project. 
+		</preamble>
+		<artifact name="sfc" type="project" subtype="global">
+			<location>artifacts/projects/SFC.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="2">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of global scripting associated with SFC charts.
+		          These end up in the global project. 
+		</preamble>
+		<artifact name="script" type="project" subtype="global">
+			<location>artifacts/projects/global_scripts.proj</location>
+		</artifact>
+	</panel>
+	<panel type="file" essential="true" version="1">
+		<title>Install test files</title>
+		<preamble>This step copies test data into your user home directory. Look for Test.csv. 
+		Use it in conjunction with the DataPump.     
+		</preamble>
+		<!-- paths are with respect to the file system root -->
+		<artifact name="Data Pump values" type="text">
+			<location>artifacts/file/datapump/Test.csv</location>
+			<destination type="home">Test.csv</destination>
+		</artifact>
+	</panel>
+	<!-- The conclusion panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of EMC Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<epilog>
+		<title>Ignition Applications - Installed</title>
+		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
+		          is complete, there are just a few more manual steps required. </preamble>
+		
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
+	</epilog>
+</installer>
+

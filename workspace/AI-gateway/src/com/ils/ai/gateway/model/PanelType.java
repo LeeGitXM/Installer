@@ -13,6 +13,7 @@ public enum PanelType
 			BACKUP,
 			CLEAR,
             DATABASE,
+            DATABASES,
             DEFINITION,
             DOCUMENTATION,
             FILE, 
@@ -21,10 +22,13 @@ public enum PanelType
             MODULE,         // 
             PROPERTY, 
             PROJECT,       // Replacement or new
+            PROJECTS,
             SCANCLASS,
+            SITE,
             SOURCE,
             SUMMARY,
             TAG,
+            TAGS,
             TOOLKIT,
             WELCOME
             ;

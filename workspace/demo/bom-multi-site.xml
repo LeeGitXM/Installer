@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>ACE Controls Application</title>
+	<description>Demonstration Installation (multi-site)</description>
+	<property name="product">ACE Controls</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">3</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="True">
+		<title>ILS Automation Installer for ACE Controls Applications</title>
+		<preamble>Welcome to demonstration version of the ILS Automation installer for Ignition Applications.
+		    Here we install a fictional product called ACE Controls and exercise
+		    the panel options of the installer that apply to multi-site installations.
+			The table below compares the existing installation of
+			this product, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined tag providers and database connections for both production and 
+			isolation (test) environments.
+		</preamble>
+		<artifact name="notes" type="pdf">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+	</panel>
+	<panel type="license" essential="True" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms to proceed.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Interface Definitions</title>
+		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		This product requires that both production and test mode versions are specified. 
+		The selections hare are used by subsequent screens.
+		</preamble>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Custom Icons for Ignition Applications</title>
+		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
+		          They may also be found in many of the user screens. </preamble>
+		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
+			<location>artifacts/icons/blt</location>
+		</artifact>
+	</panel>
+	<panel type="databases" essential="true" version="1">
+		<title>Database Create and Alter Scripts for the ACE Application</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against all datasources required for the site.
+		</preamble>
+		<property name="database" type="production"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="ACE Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+		<artifact name="ACE Database" type="sql" subtype="create">
+			<location>artifacts/database/createACE.sql</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the EMC applications.
+		</preamble>
+		<artifact name="SFC Enhancements" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+		<artifact name="Application Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" essential="false" version="1" subtype="test">
+		<title>Install Module for Testing</title>
+		<preamble>This step installs the module that holds the testing
+			framework.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-unsigned.modl</location>
+		</artifact>
+	</panel>
+	<panel type="tags" subtype="production" essential="true" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags for all providers defined at this site.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/sqltags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="projects" subtype="main" essential="true" version="1">
+		<title>Install ACE Projects for this site</title>
+		<preamble>ACE is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="ACE" type="project" subtype="full">
+			<location>artifacts/projects/ACE.proj</location>
+		</artifact>
+		<artifact name="ACE Partial Project" type="project" subtype="partial">
+			<location>artifacts/projects/ACE.proj</location>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of ACE Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of the ACE Control Ignition Application
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
+	</epilog>
+</installer>
+

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
+<body>
+	<wicket:panel>
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
+			<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="spacer" />
+		<div>
+			<p>
+				<span class="label">Datasource: </span> <span wicket:id="datasource" />
+			</p>
+		</div>
+		<p class="spacer" />
+
+		<table class="edittable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<td colspan="2">Database</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="clear">
+					<td class="trow-title">Clear instance</td>
+					<td class="trow-body">
+						<form wicket:id="clearForm" action="">
+							<table>
+								<tr>
+									<td />
+									<td><input style="align: right" type="submit"
+										wicket:id="clear" value="Clear" /></td>
+								</tr>
+							</table>
+
+							<p>Drop all tables in a database instance.</p>
+						</form>
+					</td>
+				</tr>
+				<tr wicket:id="create">
+					<td class="trow-title">Create new database instance</td>
+					<td class="trow-body">
+						<form wicket:id="createForm" action="">
+							<table>
+								<tr>
+									<td />
+									<td><input style="align: right" type="submit"
+										wicket:id="create" value="Create" /></td>
+								</tr>
+							</table>
+
+							<p>Create tables that support the application. The new tables will be populated with an initial
+								data set. The database must be cleared of any existing tables for this to succeed.</p>
+						</form>
+					</td>
+				</tr>
+				<tr wicket:id="alter">
+					<td class="trow-title">Update an existing instance</td>
+					<td class="trow-body">
+						<form wicket:id="alterForm" action="">
+							<table>
+								<tr>
+									<td />
+									<td><input style="align: right" type="submit"
+										wicket:id="alter" value="Alter" /></td>
+								</tr>
+							</table>
+							<p>Alter a previously created tables to bring them in line with
+								the current state of the application. Existing data will be
+								preserved. It is not necessary to perform this step in addition
+								to the previous.</p>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</wicket:panel>
+</body>
+</html>
