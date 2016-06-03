@@ -2,7 +2,7 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="BatchExpertPlusInstaller" basedir="." default="deploy">
+<project name="BatchExpertPlusInstaller" basedir="." default="build">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
@@ -56,9 +56,7 @@
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
-		<copy file="${git.repo}/external/lib/wicket-jquery-ui-6.7.0.jar" todir="${staging.dir}/" />
-
-
+		
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
@@ -96,7 +94,7 @@
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
-		<copy file="${git.repo}/py-sfc/workspace/sfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		<copy file="${git.repo}/py-sfc/workspace/sfc-build/modules/ILS-PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />

@@ -60,7 +60,7 @@
 		<mkdir dir="${artifact.dir}/icons" />
 		<mkdir dir="${artifact.dir}/icons/poc" />
 		<copy todir="${artifact.dir}/icons/poc">
-			<fileset dir="${git.repo}/lafarge/ProofOfConcept/config/icons">
+			<fileset dir="${git.repo}/blt/images">
 				<include name="**/*.png" />
 			</fileset>
 		</copy>
@@ -70,17 +70,16 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/lafarge/ProofOfConcept/project/lafarge.proj" tofile="${artifact.dir}/projects/Lafarge.proj" />
-		<copy file="${git.repo}/lafarge/ProofOfConcept/project/global_SFC.proj" tofile="${artifact.dir}/projects/SFC.proj" />
-		<copy file="${git.repo}/lafarge/ProofOfConcept/project/global_scripts.proj" tofile="${artifact.dir}/projects/global_scripts.proj" />
+		<copy file="${git.repo}/lafarge/apc/ProofOfConcept/project/lafarge.proj" tofile="${artifact.dir}/projects/Lafarge.proj" />
+		<copy file="${git.repo}/lafarge/apc/ProofOfConcept/project/global.proj" tofile="${artifact.dir}/projects/SFC.proj" />
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/lafarge/ProofOfConcept/config/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		<copy file="${git.repo}/lafarge/ProofOfConcept/config/sqltags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
+		<copy file="${git.repo}/lafarge/apc/ProofOfConcept/config/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
+		<copy file="${git.repo}/lafarge/apc/ProofOfConcept/config/sqltags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		
 		<!-- Files -->
-		<copy file="${git.repo}/lafarge/ProofOfConcept/SimulationData/Test.csv" tofile="${artifact.dir}/file/datapump/Test.csv" />
+		<copy file="${git.repo}/lafarge/apc/ProofOfConcept/SimulationData/Test.csv" tofile="${artifact.dir}/file/datapump/Test.csv" />
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
