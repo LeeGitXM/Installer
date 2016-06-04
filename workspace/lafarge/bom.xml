@@ -19,9 +19,19 @@
 			Application. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
-			defined the "Lafarge" tag provider. This is required by the application.
+			defined the "Lafarge" tag provider, plus one more for test, say "Holcim". 
+			These are required by the application.
 		</preamble>
-	</panel>	
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Update Toolkit Properties</title>
+		<preamble>Specify tag providers to be used by the PID diagram. 
+		Both production and isolation mode versions are needed. The production provider should be "Lafarge".
+		These are used by subsequent screens.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>		
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
@@ -43,7 +53,19 @@
 		<preamble>This page defines UDTs and tags that are needed by the application.
 		          The tag provider must be named "Lafarge".
 		</preamble>
-		<property name="provider">Lafarge</property>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="isolation" essential="True" version="1">
+		<title>Install Tags and UDT Definitions for Test Mode</title>
+		<preamble>This page defines UDTs and tags that used by the PID diagram when in "isolation" mode.
+		</preamble>
+		<property name="provider" type="isolation"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
@@ -74,14 +96,37 @@
 	</panel>
 	<panel type="file" essential="true" version="1">
 		<title>Install test files</title>
-		<preamble>This step copies test data into your user home directory. Look for Test.csv. 
+		<preamble>This step copies test data into C:\datapump. Look for Test.csv. 
 		Use it in conjunction with the DataPump.     
 		</preamble>
 		<!-- paths are with respect to the file system root -->
 		<artifact name="Data Pump values" type="text">
-			<location>artifacts/file/datapump/Test.csv</location>
-			<destination type="home">Test.csv</destination>
+			<location>artifacts/file</location>
+			<destination type="home">.</destination>
 		</artifact>
+	</panel>
+	<panel type="toolkit" essential="true" version="2">
+		<title>Update Toolkit Properties</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			These particular parameters define extension functions that update
+			the database in response to operator operations on diagrams.
+			In this case we clear the extensions.
+		</preamble>
+		<property name="com.ils.application(property-get-script)"></property>
+		<property name="com.ils.application(property-rename-script)"></property>
+		<property name="com.ils.application(property-set-script)"></property>
+		<property name="com.ils.family(property-get-script)"></property>
+		<property name="com.ils.family(property-rename-script)"></property>
+		<property name="com.ils.family(property-set-script)"></property>
+		<property name="com.ils.diagram(node-save-script)"></property>
+		<property
+			name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
+		<property
+			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
+		<property
+			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<property name="SecondaryTimeFactor">1.0</property>
+		
 	</panel>
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
