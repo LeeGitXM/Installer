@@ -51,14 +51,14 @@
 		<preference name="TestFramePreferences" key="TestPyPath"     type="home">pylib</preference>
 		<preference name="TestFramePreferences" key="TestTeardownPath" type="home">regression/CRX-C2-Tests/testscripts/teardown.txt</preference>
 		<!-- paths are with respect to the file system root -->
-		<artifact name="Test python scripts" type="directory" >
+		<artifact name="Test python scripts" type="text" >
 			<location>artifacts/test/pylib</location>
 			<destination type="home">.</destination>
 		</artifact>
-		<artifact name="Test framework scripts" type="directory">
+		<artifact name="Test framework scripts" type="text">
 			<location>artifacts/test/regression</location>
 			<destination type="home">.</destination>
-		</artifact>
+		</artifact>t
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>

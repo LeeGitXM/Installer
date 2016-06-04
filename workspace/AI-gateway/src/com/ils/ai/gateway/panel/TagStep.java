@@ -121,7 +121,7 @@ public class TagStep extends BasicInstallerPanel {
             	else {
             		warn(failure.insert(0,"Failed to load: ").toString());
             	}
-            	timer.stop(handler);
+            	if(handler!=null) timer.stop(handler);
             }
         });
     }

@@ -72,16 +72,6 @@
 			<location>artifacts/projects/SFC.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="2">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of global scripting associated with SFC charts.
-		          These end up in the global project. 
-		</preamble>
-		<artifact name="script" type="project" subtype="global">
-			<location>artifacts/projects/global_scripts.proj</location>
-		</artifact>
-	</panel>
 	<panel type="file" essential="true" version="1">
 		<title>Install test files</title>
 		<preamble>This step copies test data into your user home directory. Look for Test.csv. 
