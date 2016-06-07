@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>SonofiBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Sonofi</description>
+	<property name="product">BatchExpert+</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">3</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Batch Expert+ </title>
+		<preamble>ILS Automation installer for Batch Expert+ customized for Sonofi.
+		</preamble>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of ACE Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of Batch Expert+
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+

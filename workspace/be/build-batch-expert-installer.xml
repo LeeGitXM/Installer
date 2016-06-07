@@ -7,20 +7,16 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom.xml" />
-	<property name="module.name" value="beplus-installer" />
-	<property name="module.path" value="${basedir}/modules/beplus-installer-unsigned.modl" />
-	<property name="module.xml" value="${basedir}/batch-expert-installer-module.xml" />
+	<property name="bom" value="${basedir}/bom-batch-expert.xml" />
+	<property name="module.name" value="batch-expert-installer" />
+	<property name="module.path" value="${basedir}/modules/batch-expert-installer-unsigned.modl" />
+	<property name="module.xml" value="${basedir}/module-batch-expert-installer.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
-
-	<tstamp>
-		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
-	</tstamp>
 
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
@@ -31,13 +27,13 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both defined in build.xml 
-		    Override them here with file contents in SVN Release area
-		    Update the BOM. "loadfile" does not overwrite existing properties.
+		<!-- build.date and version.build are both in SVN Release area, in
+			files VERS and DATE.
 		-->
-		
-		<loadfile property="raw" srcFile="${git.repo}/batch-expert/artifacts/VERS"/>
-		<trim input="${raw}" property="version.build"/>
+		<loadfile property="rawdate" srcFile="${svn.repo}/BatchExpert/Release/DATE"/>
+		<trim input="${rawdate}" property="build.date" />
+		<loadfile property="rawvers" srcFile="${svn.repo}/BatchExpert/Release/VERS"/>
+		<trim input="${rawvers}" property="version.build"/>
 		
 		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
@@ -62,32 +58,36 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/BatchExpert/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 
-		
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/artifacts/license/license.html" tofile="${artifact.dir}/license/license.html" />
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/artifacts/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/artifacts/tags/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
+		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		
 		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${git.repo}/batch-expert/artifacts/db/createTables.sql" tofile="${artifact.dir}/database/createTables.sql" />
+		<mkdir dir="${artifact.dir}/database"/>
+		<copy file="${svn.repo}/BatchExpert/Database/universal/createTables.sql" tofile="${artifact.dir}/database/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/universal/dropTables.sql" tofile="${artifact.dir}/database/dropTables.sql" />
 		
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
 		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/python">
+			<fileset dir="${git.repo}/batch-expert/BE_Python">
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
 		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/python">
+			<fileset dir="${git.repo}/batch-expert/BE_Python">
 				<include name="xlsxwriter/**/*.py" />
+			</fileset>
+		</copy>
+		<copy todir="${artifact.dir}/external/ils">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
+				<include name="jChart/*.py" />
 			</fileset>
 		</copy>
 		
@@ -98,8 +98,8 @@
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFC.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${svn.repo}/BatchExpert/Ignition/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${svn.repo}/BatchExpert/Ignition/Global/global_partial_project.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+	<id>com.ils.installer</id>
+	<name>BatchExpertPlusSonofiInstaller</name>
+	<description>Batch Expert+ Installer for Sonofi</description>
+	<license></license>
+	<version>1.0.0.0</version>
+	<freemodule>true</freemodule>
+	<requiredignitionversion>7.8.0</requiredignitionversion>
+	<requiredframeworkversion>7</requiredframeworkversion>
+
+	<!-- Load in our jars for each scope -->
+	<export scope="G">ils-common.jar</export>
+	<jar scope="G">ai-gateway.jar</jar>
+	<!-- Tell the Gateway and/or Designer where to find the hooks -->
+	<hook scope="G">com.ils.ai.gateway.ApplicationInstallerGatewayHook</hook>
+</module>

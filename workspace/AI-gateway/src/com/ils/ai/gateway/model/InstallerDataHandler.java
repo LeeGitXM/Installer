@@ -253,6 +253,9 @@ public class InstallerDataHandler {
     					datasource = prop.getValue();
     				}
     			}
+    			else {
+    				datasource = prop.getValue();
+    			}
     		}
     	}
 		return datasource;
@@ -459,9 +462,9 @@ public class InstallerDataHandler {
 				total++;
 			}
 		}
-		// Strip header and trailer. Break on folders. We use these
-		// because they are guaranteed not to be nested. We assume 
-		// they are on one line.
+		// Strip header and trailer. Break on new Tag. We
+		// make the rash assumption that the XML format 
+		// matches what is dumped out by the Ignition export.
 		Scanner scanner = new Scanner(contents);
 		scanner.useDelimiter("<Tag ");
 		if( scanner.hasNext() ) scanner.next();    // Skip over header
@@ -470,7 +473,7 @@ public class InstallerDataHandler {
 		int count = 0;
 		while( scanner.hasNext() ) {
 			String next = scanner.next();
-			if( next.contains("type=\"Folder\"") && count>=TAG_CHUNK_SIZE) {
+			if( next.startsWith("   <Tag") && count>=TAG_CHUNK_SIZE) {
 				File file = null;
 				if( !sb.toString().endsWith(TAGS_TRAILER)) sb.append(TAGS_TRAILER);
 				try {
