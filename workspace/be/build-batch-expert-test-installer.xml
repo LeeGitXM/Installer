@@ -68,6 +68,11 @@
 		<copy file="${svn.repo}/BatchExpert/Database/universal/createTables.sql" tofile="${artifact.dir}/database/createTables.sql" />
 		<copy file="${svn.repo}/BatchExpert/Database/universal/dropTables.sql" tofile="${artifact.dir}/database/dropTables.sql" />
 		
+		<!-- Result Database -->
+		<mkdir dir="${artifact.dir}/resultsdb" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/create_result_tables.sql" tofile="${artifact.dir}/results/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_C1.sql" tofile="${artifact.dir}/results/C1.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_R1.sql" tofile="${artifact.dir}/results/R1.sql" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />

@@ -59,7 +59,7 @@
 		<property name="database">BEDB</property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="Drop Tables" type="sql" subtype="clear">
-			<location>artifacts/database/dropTables.sql</location>
+			<location>artifacts/database/clearTables.sql</location>
 		</artifact>
 		<artifact name="Create Tables" type="sql" subtype="create">
 			<location>artifacts/database/createTables.sql</location>
@@ -73,6 +73,9 @@
 		<property name="provider">default</property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+		<artifact name="Tag Instances" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >

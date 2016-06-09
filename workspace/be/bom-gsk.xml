@@ -5,8 +5,8 @@
       be unique. 
  -->
 <installer>
-	<title>SonofiBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Sonofi</description>
+	<title>GSKBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert for GSK</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -14,9 +14,38 @@
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for Batch Expert+ </title>
-		<preamble>ILS Automation installer for Batch Expert+ customizations for Sonofi.
+		<title>ILS Automation Installer for GSK Batch Expert</title>
+		<preamble>ILS Automation installer for Legacy version of Batch Expert as installed at GSK.
 		</preamble>
+	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Create Results Tables with data</title>
+		<preamble>Use the database instance BEDB. Create the results tables.
+		</preamble>
+		<property name="database">BEDB</property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Create Tables" type="sql" subtype="create">
+			<location>artifacts/results/createResultTables.sql</location>
+		</artifact>
+
+	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Insert R1 Results</title>
+		<preamble>Use the database instance BEDB. Insert results R1.
+		</preamble>
+		<property name="database">BEDB</property>
+		<artifact name="Insert into R1" type="sql" subtype="insert">
+			<location>artifacts/results/R1.sql</location>
+		</artifact>	
+	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Insert C1 Results</title>
+		<preamble>Use the database instance BEDB. Insert results C1.
+		</preamble>
+		<property name="database">BEDB</property>
+		<artifact name="Insert into C1" type="sql" subtype="insert">
+			<location>artifacts/results/C1.sql</location>
+		</artifact>	
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">

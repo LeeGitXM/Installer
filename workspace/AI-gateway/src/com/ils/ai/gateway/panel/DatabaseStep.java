@@ -27,9 +27,11 @@ public class DatabaseStep extends BasicInstallerPanel {
 	private boolean hasAlter = false;
 	private boolean hasClear = false;
 	private boolean hasCreate = false;
+	private boolean hasInsert = false;
 	private String clearName    = "";
 	private String createName    = "";
 	private String alterName = "";
+	private String insertName = "";
 
 	public DatabaseStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 	
@@ -54,7 +56,10 @@ public class DatabaseStep extends BasicInstallerPanel {
         		hasCreate = true;
         		createName = art.getName();
         	}
-        	
+        	else if( art.getSubtype().equalsIgnoreCase("insert")) {
+        		hasInsert = true;
+        		insertName = art.getName();
+        	}
         }
         
         datasource = dataHandler.datasourceNameFromProperties(index, data);
@@ -136,8 +141,34 @@ public class DatabaseStep extends BasicInstallerPanel {
         });
 		alter.add(alterSchemaForm);
 		add(alter);
-	}
+		
+		// Create database form
+        WebMarkupContainer insert = new WebMarkupContainer("insert");
+        insert.setVisible(hasInsert);
+		Form<InstallerData> insertSchemaForm = new Form<InstallerData>("insertForm", new CompoundPropertyModel<InstallerData>(data));
+        
+		insertSchemaForm.add(new Button("insert") {
+			private static final long serialVersionUID = 4440778774811578782L;
 
+			public void onSubmit() {
+				InstallerDataHandler handler = InstallerDataHandler.getInstance();
+				String result = handler.executeSQLFromArtifact(datasource,index,insertName,data);
+				if( result==null || result.isEmpty()) {
+					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+					panelData.setCurrentVersion(futureVersion);
+					info(String.format("Datasource %s rows inserted successfully", datasource));
+				}
+				else {
+					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
+						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
+					}
+					warn(result);
+				}
+            }
+        });
+		insert.add(insertSchemaForm);
+        add(insert);
+	}
 	
 
 }

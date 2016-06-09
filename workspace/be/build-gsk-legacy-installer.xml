@@ -2,21 +2,25 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="BatchExpertPlusInstaller" basedir="." default="build">
+<project name="BatchExpertLegacyInstaller" basedir="." default="build">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-batch-expert.xml" />
-	<property name="module.name" value="batch-expert-installer" />
-	<property name="module.path" value="${basedir}/modules/batch-expert-installer-unsigned.modl" />
-	<property name="module.xml" value="${basedir}/module-batch-expert-installer.xml" />
+	<property name="bom" value="${basedir}/bom-gsk.xml" />
+	<property name="module.name" value="sonofi-installer" />
+	<property name="module.path" value="${basedir}/modules/gsk-installer-unsigned.modl" />
+	<property name="module.xml" value="${basedir}//module-gsk-legacy-installer.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
+
+	<tstamp>
+		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
+	</tstamp>
 
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
@@ -58,61 +62,18 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-		<copy file="${svn.repo}/BatchExpert/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-
-		<!-- License -->
-		<mkdir dir="${artifact.dir}/license" />
-		<copy file="${git.repo}/batch-expert/artifacts/license/license.html" tofile="${artifact.dir}/license/license.html" />
-
-		<!-- Tags -->
-		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database"/>
-		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/gsk/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/gsk/create_result_tables.sql" tofile="${artifact.dir}/results/createResultTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/gsk/insert_result_data_R1.sql" tofile="${artifact.dir}/results/R1.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/gsk/insert_result_data_c1.sql" tofile="${artifact.dir}/results/C1.sql" />
 		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
-		
-		<!-- External -->
-		<mkdir dir="${artifact.dir}/external" />
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="ils/**/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="xlsxwriter/**/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
-				<include name="jChart/*.py" />
-			</fileset>
-		</copy>
-		
-		<!-- Modules -->
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
-		<copy file="${git.repo}/py-sfc/workspace/sfc-build/modules/ILS-PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-
-		<!-- Project -->
-		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/BatchExpert/Ignition/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${svn.repo}/BatchExpert/Ignition/Global/global_partial_project.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
-
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
 	</target>
 
-	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
-	<target name="deploy" depends="build">
-		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
-	</target>
-	
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">
 	   <attribute name="input" />
