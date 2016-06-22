@@ -95,6 +95,17 @@
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Help Table for AED-RTA Custom Functions</title>
+		<preamble>Update the help descriptions for the AED-RTA custom functions.  
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="UNIVERSAL"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="Update functions table" type="sql" subtype="alter">
+			<location>artifacts/database/functions.sql</location>
+		</artifact>
+	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.

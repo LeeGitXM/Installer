@@ -67,6 +67,7 @@
 		<copy file="${svn.repo}/EMRE/Database/Scripts/aed_create_v7_with_data.sql" tofile="${artifact.dir}/database/createAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/Scripts/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Ignition/properties/Functions.sql" tofile="${artifact.dir}/database/functions.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
