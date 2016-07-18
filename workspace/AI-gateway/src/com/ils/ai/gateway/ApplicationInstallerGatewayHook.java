@@ -31,6 +31,9 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     	BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
     }
 
+    // @Override // 7.8.3
+    public boolean isFreeModule() { return true; }
+    
     @Override
     public void setup(GatewayContext gatewayContext) {
         INSTANCE = this;

@@ -11,6 +11,7 @@
 	<property name="bom" value="${basedir}/bom.xml" />
 	<property name="module.name" value="blt-test-installer-unsigned" />
 	<property name="module.path" value="${basedir}/modules/blt-test-installer-unsigned.modl" />
+	<property name="module.path.signed" value="${basedir}/modules/blt-test-installer-signed.modl" />
 	<property name="module.xml" value="${basedir}/blt-test-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
@@ -18,7 +19,20 @@
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
-
+	
+	<!-- Generic SignModule: Reference Via Antcalls -->
+	<target name="SignModule">
+		<echo message="Signing ${moduleName}" />
+		<java jar="${git.repo}/external/lib/module-signer.jar"  fork="true">
+			<arg value="-keystore=${git.repo}/tools/keys/ILSA-keystore"/>
+			<arg value="-keystore-pwd=ILS-Automation"/>
+			<arg value="-alias=ILSAutomationKey"/>
+			<arg value="-alias-pwd=chromsmart" />
+			<arg value="-chain=${git.repo}/tools/keys/ilsautomationcertificate.p7b"/>
+			<arg value="-module-in=${modulein}"/>
+			<arg value="-module-out=${moduleout}"/>
+		</java>
+	</target>
 	<tstamp>
 		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
 	</tstamp>
@@ -135,6 +149,12 @@
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
+		<!-- Sign the module -->
+		<antcall target="SignModule">
+			<param name="moduleName" value="${module.name}-${TFModule.version}" />
+			<param name="modulein"   value="${module.path}" />
+			<param name="moduleout"  value="${module.path.signed}"/>
+		</antcall>
 	</target>
 
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
