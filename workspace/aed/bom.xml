@@ -85,7 +85,7 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
 		<artifact name="Create AED Database" type="sql" subtype="create">
 			<location>artifacts/database/createAED.sql</location>
 		</artifact>
@@ -96,15 +96,18 @@
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="2">
-		<title>Help Table for AED-RTA Custom Functions</title>
-		<preamble>Update the help descriptions for the AED-RTA custom functions.  
+	<panel type="database" essential="false" version="2">
+		<title>Sample Test Data</title>
+		<preamble>These options should NOT be applied to a production database. These are for test systems only.
 		</preamble>
-		<property name="database" type="production"></property>
+		<property name="database" type="test"></property>
 		<property name="dbms" type="UNIVERSAL"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="Update functions table" type="sql" subtype="alter">
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Update functions table help" type="sql" subtype="alter">
 			<location>artifacts/database/functions.sql</location>
+		</artifact>
+		<artifact name="Insert test data" type="sql" subtype="insert">
+			<location>artifacts/database/insertAED.sql</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="2" >

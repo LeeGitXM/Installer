@@ -3,7 +3,7 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="DiagToolkitTestInstaller" basedir="." default="deploy">
+<project name="DiagToolkitTestInstaller" basedir="." default="build">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />

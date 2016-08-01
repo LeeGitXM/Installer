@@ -11,8 +11,7 @@
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom.xml" />
 	<property name="module.name" value="aed-installer" />
-	<property name="module.path" value="${basedir}/modules/aed-installer-unsigned.modl" />
-	<property name="module.path.signed" value="${basedir}/modules/aed-installer-signed.modl" />
+	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/aed-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
@@ -38,7 +37,7 @@
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
 		<delete dir="${staging.dir}" />
-		<delete file="${module.path}" />
+		<delete dir="${module.path}" />
 	</target>
 
 	<!-- Builds the toolkit module jars and the final .modl file -->
@@ -79,10 +78,11 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/aed_create_v7_with_data.sql" tofile="${artifact.dir}/database/createAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/Functions.sql" tofile="${artifact.dir}/database/functions.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/createAED-6.2rc12.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/alterAED-6.1r12 to 6.2rc12.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/Functions.sql" tofile="${artifact.dir}/database/functions.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -162,13 +162,13 @@
 		<copy file="${svn.repo}/EMRE/Ignition/sqlTags.csv" tofile="${artifact.dir}/tags/sqlTags.csv" />
 
 		<!-- Zip it all up -->
-		<zip zipfile="${module.path}" basedir="${staging.dir}" />
+		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 		
 		<!-- Sign the module -->
 		<antcall target="SignModule">
 			<param name="moduleName" value="${module.name}-${version.build}" />
-			<param name="modulein"   value="${module.path}" />
-			<param name="moduleout"  value="${module.path.signed}"/>
+			<param name="modulein"   value="${module.path}/${module.name}-${version.build}-unsigned.modl" />
+			<param name="moduleout"  value="${module.path}/${module.name}-${version.build}-signed.modl" />
 		</antcall>
 		
 	</target>
@@ -180,8 +180,8 @@
 	
 	<target name="deploy" depends="build">
 		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
-		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
+		<copy file="${module.path}" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->
