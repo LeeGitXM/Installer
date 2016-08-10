@@ -121,6 +121,9 @@
 	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
+		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
 		</preamble>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>

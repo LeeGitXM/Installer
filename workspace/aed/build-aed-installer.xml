@@ -180,7 +180,7 @@
 	
 	<target name="deploy" depends="build">
 		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
-		<copy file="${module.path}" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
