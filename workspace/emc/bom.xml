@@ -96,6 +96,7 @@
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="XOM Database" type="sql" subtype="create">
 			<location>artifacts/database/createVistalon.sql</location>
@@ -111,6 +112,7 @@
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="isolation"></property>
+		<property name="dbms" type="SQLSERVER"></property>
 		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
 			<location>artifacts/database/createVistalon.sql</location>
 		</artifact>
@@ -220,31 +222,31 @@
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
 		</preamble>
-		<artifact name="Release Notes" type="documentation" subtype="pdf" release="0.1r18">
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 		<artifact name="Application Installer" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/ApplicationInstaller.docx</location>
 		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.0">
+		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/ApplicationTestFramework.docx</location>
 		</artifact>
-		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="0.1r18">
+		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.9">
+		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.10">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
-		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="0.55">
+		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="0.59">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.12">
+		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.14">
 			<location>artifacts/doc/EMCDatabaseDesign</location>
 		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.12">
+		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.14">
 			<location>artifacts/doc/EMCDatabaseER.pdf</location>
 		</artifact>
-		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.12">
+		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.14">
 			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.5">
@@ -259,10 +261,10 @@
 		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.2">
 			<location>artifacts/doc/RecipeDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.55">
+		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.59">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
-		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="0.1r18">
+		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/SFCDevelopmentScorecard.xslx</location>
 		</artifact>
 		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.6">
@@ -345,6 +347,9 @@
 		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
 		
+		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
+		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"
+		            screen on the Gateway page. Select the "install" option next to the listing each module.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
 	</epilog>
