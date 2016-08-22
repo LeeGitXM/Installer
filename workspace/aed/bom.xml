@@ -62,6 +62,10 @@
 		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
 		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
 		</preamble>
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib</destination>
+		</artifact>
 		<artifact name="External Python - AED" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
 			<destination>pylib/xom</destination>
@@ -75,7 +79,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="1">
+	<panel type="database" essential="true" version="2">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
@@ -96,16 +100,14 @@
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>
+ 
 	<panel type="database" essential="false" version="2">
 		<title>Sample Test Data</title>
 		<preamble>These options should NOT be applied to a production database. These are for test systems only.
 		</preamble>
-		<property name="database" type="test"></property>
+		<property name="database" type="production"></property>
 		<property name="dbms" type="UNIVERSAL"></property>
 		<!-- Recognized subtypes are: clear, create, alter, insert -->
-		<artifact name="Update functions table help" type="sql" subtype="alter">
-			<location>artifacts/database/functions.sql</location>
-		</artifact>
 		<artifact name="Insert test data" type="sql" subtype="insert">
 			<location>artifacts/database/insertAED.sql</location>
 		</artifact>
@@ -155,7 +157,7 @@
 		<artifact name="AED-RTA Design Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/AedRtaDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.36">
+		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.37">
 			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
 		</artifact>
 		<artifact name="AED Expression Optimization" type="documentation" subtype="docx" release="1.0">
@@ -208,8 +210,12 @@
 		<title>Ignition Applications - Installed</title>
 		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
+		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
+		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"
+		            screen on the Gateway page. Select the "install" option next to the listing of each module.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
-		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
+		            Restart the Gateway, then edit the project setting it to "enabled".</note>
 	</epilog>
 </installer>
 

@@ -349,9 +349,10 @@
 		
 		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
 		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"
-		            screen on the Gateway page. Select the "install" option next to the listing each module.</note>
+		            screen on the Gateway page. Select the "install" option next to the listing of each quarantined module.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
-		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. Restart the Gateway first.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
+		            Restart the Gateway, then edit each project setting it to "enabled".</note>
 	</epilog>
 </installer>
 

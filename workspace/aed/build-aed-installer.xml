@@ -4,7 +4,7 @@
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="AEDInstaller" basedir="." default="build">
+<project name="AEDInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
@@ -78,9 +78,9 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/createAED-6.2rc12.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/alterAED-6.1r12 to 6.2rc12.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/Functions.sql" tofile="${artifact.dir}/database/functions.sql" />
 		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
 
@@ -104,6 +104,13 @@
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM User Interface.docx" tofile="${artifact.dir}/doc/VFMUserInterface.docx" />
 
 		<!-- External -->
+		<mkdir dir="${artifact.dir}/external/ils-python" />
+		<copy todir="${artifact.dir}/external/ils-python">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+				<include name="ils/common/**/*.py" />
+				<include name="ils/dataset/**/*.py" />
+			</fileset>
+		</copy>
 		<mkdir dir="${artifact.dir}/external/xom-python" />
 		<copy todir="${artifact.dir}/external/xom-python">
 			<fileset dir="${git.repo}/xom-python/XOM_Python/src/xom">
@@ -180,7 +187,7 @@
 	
 	<target name="deploy" depends="build">
 		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
-		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../EMRE-AED/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
