@@ -745,7 +745,8 @@ public class InstallerDataHandler {
 		while(index<count) {
 			PanelData pd = getPanelData(index,data);
 			if( (pd.isEssential() || ignoreOptional==false) &&
-				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false) ) {
+				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false ||
+				 pd.getCurrentVersion()==InstallerConstants.UNSET) ) {
 				String title = getStepTitle(index,data);
 				PanelType type = getStepType(index,data);
 				BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 

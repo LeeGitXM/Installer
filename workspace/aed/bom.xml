@@ -10,7 +10,7 @@
 	<property name="product">AED-RTA</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -54,7 +54,7 @@
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="2">
+	<panel type="file" essential="true" version="3">
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
@@ -79,7 +79,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="2">
+	<panel type="database" essential="true" version="3">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
@@ -101,18 +101,18 @@
 		</artifact>
 	</panel>
  
-	<panel type="database" essential="false" version="2">
+	<panel type="database" essential="false" version="3">
 		<title>Sample Test Data</title>
 		<preamble>These options should NOT be applied to a production database. These are for test systems only.
 		</preamble>
 		<property name="database" type="production"></property>
-		<property name="dbms" type="UNIVERSAL"></property>
+		<property name="dbms" type="SQLSERVER"></property>
 		<!-- Recognized subtypes are: clear, create, alter, insert -->
 		<artifact name="Insert test data" type="sql" subtype="insert">
 			<location>artifacts/database/insertAED.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
+	<panel type="module" subtype="production" essential="true" version="3" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
@@ -157,7 +157,7 @@
 		<artifact name="AED-RTA Design Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/AedRtaDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.37">
+		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.38">
 			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
 		</artifact>
 		<artifact name="AED Expression Optimization" type="documentation" subtype="docx" release="1.0">
