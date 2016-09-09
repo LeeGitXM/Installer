@@ -283,6 +283,7 @@ public class InstallerDataHandler {
 	}
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
+		boolean debug = false;
 		// Search for DBMS
 		DBMS dbms = DBMS.ANSI;  // Default
 		List<PropertyItem> properties =  getPanelProperties(panelIndex,model);
@@ -294,7 +295,9 @@ public class InstallerDataHandler {
 				catch(IllegalArgumentException iae) {
 					log.infof("%s.executeSQLFromArtifact: Unrecognized DBMS type %s (ignored)", CLSS,property.getType());
 				}
-				break;
+			}
+			if( "debug".equalsIgnoreCase(property.getName()) ) {
+				debug = property.getValue().equalsIgnoreCase("true");
 			}
 		}
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
@@ -309,15 +312,19 @@ public class InstallerDataHandler {
 				String line = scanner.nextLine();
 				if( line.endsWith("\r")) line = line.substring(0, line.length()-1);
 				
-				if( !dbms.equals(DBMS.SQLSERVER) && line.endsWith(";")) {
-					sb.append(line.substring(0,line.length()-1));
-					statements.add(sb.toString());
-					sb.setLength(0);
-				}
+				// No matter what, a line of "go" is a terminator meaning "execute"
 				if( line.trim().equalsIgnoreCase("go") ) {
 					statements.add(sb.toString());
+					if( debug ) log.info(sb.toString());
 					sb.setLength(0);
 				}
+				else if( !dbms.equals(DBMS.SQLSERVER) && line.endsWith(";")) {
+					sb.append(line.substring(0,line.length()-1));
+					statements.add(sb.toString());
+					if( debug ) log.info(sb.toString());
+					sb.setLength(0);
+				}
+
 				else {
 					sb.append(line);
 					sb.append("\n");
@@ -327,6 +334,7 @@ public class InstallerDataHandler {
 			
 			try {
 				String statementArray[] = new String[statements.size()];
+				if( debug ) log.info("------- execute SQL ----------");
 				result = dbUtil.executeMultilineSQL(statements.toArray(statementArray), datasource);
 			}
 			catch( Exception ex) {

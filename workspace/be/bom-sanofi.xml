@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">4</property>
+	<property name="version">5</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -50,10 +50,10 @@
 	</panel>
 	<panel type="database" essential="true" version="1">
 		<title>Database Clear, Create and Alter Scripts for Batch Expert+</title>
-		<preamble>This page provides the opportunity for populating the BEDB Oracle database instance.
+		<preamble>This page provides the opportunity for populating the BEDB_Ignition Oracle database instance.
 		          As a safety measure, the database creation step will fail unless any previous instance is cleared.
 		</preamble>
-		<property name="database">BEDB</property>
+		<property name="database">BEDB_Ignition</property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="Drop Tables" type="sql" subtype="clear">
 			<location>artifacts/database/clearTables.sql</location>
