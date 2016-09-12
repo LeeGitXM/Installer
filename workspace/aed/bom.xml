@@ -84,7 +84,7 @@
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
 		&lt;b&gt;WARNING:&lt;/b&gt; Do NOT attempt to create a database at an existing AED-RTA installation.
-		The create script will succeed only on new empty database instance. The &lt;i&gt;alter:&lt;/i&gt; script
+		The create script will succeed only on a new empty database instance. The &lt;i&gt;alter&lt;/i&gt; script
 		should be used to modify/update existing database instances.
 		</preamble>
 		<property name="database" type="production"></property>
@@ -107,7 +107,7 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="ANSI"></property>
-		<property name="debug">true</property>
+		<property name="debug">false</property>
 		<!-- Recognized subtypes are: clear, create, alter, insert -->
 		<artifact name="Insert test data" type="sql" subtype="insert">
 			<location>artifacts/database/insertAED.sql</location>
