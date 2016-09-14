@@ -77,7 +77,7 @@
 
 		<!-- Site Definitions -->
 		<mkdir dir="${artifact.dir}/site" />
-		<copy file="${build.dir}/../demo/emc-sites.csv" tofile="${artifact.dir}/site/site-projects.csv" />
+		<copy file="${build.dir}/../emc/emc-sites.csv" tofile="${artifact.dir}/site/site-projects.csv" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
@@ -158,7 +158,8 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/project/XOM.proj" tofile="${artifact.dir}/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/BRPO.proj" tofile="${artifact.dir}/projects/BRPO.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
 

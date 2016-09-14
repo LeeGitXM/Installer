@@ -22,7 +22,6 @@ import com.ils.ai.gateway.panel.SiteStep;
 import com.ils.ai.gateway.panel.SourceStep;
 import com.ils.ai.gateway.panel.SummaryStep;
 import com.ils.ai.gateway.panel.TagStep;
-import com.ils.ai.gateway.panel.TagsStep;
 import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
@@ -74,8 +73,6 @@ public class InstallerPanelFactory  {
 			case SUMMARY: step = new SummaryStep(panelIndex,prior,title,model);
 				break;
 			case TAG: step = new TagStep(panelIndex,prior,title,model);
-				break;
-			case TAGS: step = new TagsStep(panelIndex,prior,title,model);
 				break;
 			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
 				break;

@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -25,7 +26,9 @@ import com.ils.ai.gateway.model.PersistenceHandler;
  */
 public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
+	private Label providerLabel = null;
 	private String provider = "";
+
 	private String statusString = "";
 	private final AbstractAjaxTimerBehavior timer;
 	private transient AjaxRequestHandler handler = null;
@@ -39,7 +42,8 @@ public class TagStep extends BasicInstallerPanel {
         
         InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
         provider = dataHandler.providerNameFromProperties(index, data);
-		add(new Label("provider",provider));
+        providerLabel = new Label("provider",provider);
+		add(providerLabel);
 		
 		List<String> resources = dataHandler.getArtifactNames(index,data);
 		add(new ListView<String>("tags",resources) {
@@ -131,4 +135,5 @@ public class TagStep extends BasicInstallerPanel {
 		handler = new AjaxRequestHandler(TagStep.this.getPage());
 		timer.restart(handler);
 	}
+
 }

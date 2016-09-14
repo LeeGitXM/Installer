@@ -144,6 +144,7 @@
 		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
 		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
 		</preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
@@ -158,18 +159,20 @@
 				Scanclasses determine tag poll rates.
 		</preamble>
 		<property name="provider" type="production"></property>
+		<property name="site">Vistalon</property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="True" version="3">
 		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the applications
+		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
 			differ from tag resources in the installer.
 		</preamble>
 		<property name="provider" type="production"></property>
+		<property name="site">Vistalon</property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
@@ -186,6 +189,7 @@
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
 		</preamble>
 		<property name="provider" type="isolation"></property>
+		<property name="site">Vistalon</property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/testTags.xml</location>
 		</artifact>
@@ -194,9 +198,7 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="3">
-		<title>Install a New XOM Project or Merge Changes into an Existing
-			Project
-		</title>
+		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
@@ -204,6 +206,25 @@
 			NOTE: For the current EMChemicals project, the merge capability is still in 
 			development and should NOT be used.
 		</preamble>
+		<property name="site">BRPO</property>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="XOM" type="project" subtype="full">
+			<location>artifacts/projects/XOM.proj</location>
+		</artifact>
+		<artifact name="XOM Partial Project" type="project" subtype="partial">
+			<location>artifacts/projects/XOM.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="3">
+		<title>Vistalon Main Project</title>
+		<preamble>XOM is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version. <br/>
+			NOTE: For the current EMChemicals project, the merge capability is still in 
+			development and should NOT be used.
+		</preamble>
+		<property name="site">Vistalon</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
 			<location>artifacts/projects/XOM.proj</location>
@@ -224,13 +245,13 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="3">
-		<title>Install SFC Charts in the Global Project
-		</title>
+		<title>Vistalon SFC Charts</title>
 		<preamble>This page handles installation of charts for various migrated SFC projects.
 			The charts are packaged as Ignition global projects. They completely replace
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="DrierRegen" type="project" subtype="global">
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
@@ -295,6 +316,7 @@
 		The source distribution comes complete with Eclipse project files and ant scripts for building. 
         Python source is available directly from its installation in the /user-lib/pylib sub-directory of the Ignition installation.
 		</preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="Block Language Toolkit Source Code" type="source" subtype="zip" release="@RELEASE@">
 			<location>artifacts/source/blt-@RELEASE@.zip</location>
 		</artifact>
@@ -308,6 +330,7 @@
 		          the most recent conversions. Vistalon-specific exports are already included in the XOM and global projects
 		          as delivered.
 		</preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="Vistalon - CSTR" type="source" subtype="json" release="@RELEASE@">
 			<location>artifacts/migration/cstrProductQuality.json</location>
 		</artifact>
@@ -334,6 +357,7 @@
 			These particular parameters define extension functions that update
 			the database in response to operator operations on diagrams.
 		</preamble>
+		<property name="site">Vistalon</property>
 		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
 		<property name="com.ils.application(property-rename-script)">xom.extensions.appProperties.rename</property>
 		<property name="com.ils.application(property-set-script)">xom.extensions.appProperties.setAux</property>
