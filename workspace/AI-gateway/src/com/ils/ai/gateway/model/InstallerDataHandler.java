@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
 
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
+import com.ils.ai.gateway.utility.CSVUtility;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.ScanClassUtility;
@@ -91,6 +92,7 @@ public class InstallerDataHandler {
 	private final LoggerEx log;
 	private GatewayContext context = null;
 	private final Preferences prefs;
+	private CSVUtility csvUtil;
 	private DBUtility dbUtil;
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
@@ -226,39 +228,46 @@ public class InstallerDataHandler {
 		
 	}
 	/**
-	 * Inspect the properties for the specified panel looking for a "database" property. If the property
-	 * has no value, return the name specified as a toolkit property.
+	 * Inspect the properties for the specified panel looking for a "database" property. 
+	 * First check for a list associated with the site, then from the definition page.
+	 * Finally, if the property has no value, return the name in the property. 
 	 * @return
 	 */
-	public String datasourceNameFromProperties(int index,InstallerData model) {
+	public List<String> datasourceNamesFromProperties(int index,InstallerData model) {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
-		String datasource = "";
+		List<String> datasources = new ArrayList<>();
         // If the production provider property has a value, use it. Otherwise get the toolkit property
 		List<PropertyItem> properties = getPanelProperties(index, model);
 		for(PropertyItem prop:properties) {
     		if(prop.getName().equalsIgnoreCase("database")) {
     			if(prop.getType().equalsIgnoreCase("production")) {
-    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
-    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
-    				}
-    				else {
-    					datasource = prop.getValue();
+    				datasources = model.getUniqueProductionDatasources();
+    				if(datasources.isEmpty()) {
+    					if(prop.getValue()==null || prop.getValue().isEmpty()) {
+        					datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
+        				}
+        				else {
+        					datasources.add(prop.getValue());
+        				}
     				}
     			}
     			else if(prop.getType().equalsIgnoreCase("isolation")) {
-    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
-    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE);
-    				}
-    				else {
-    					datasource = prop.getValue();
+    				datasources = model.getUniqueTestDatasources();
+    				if(datasources.isEmpty()) {
+    					if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    						datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE));
+    					}
+    					else {
+    						datasources.add(prop.getValue());
+    					}
     				}
     			}
     			else {
-    				datasource = prop.getValue();
+    				datasources.add(prop.getValue());
     			}
     		}
     	}
-		return datasource;
+		return datasources;
 	}
 	public String deleteFilesReferencedInArtifact(int panelIndex,Artifact artifact,InstallerData model) {
 		String result = null;
@@ -432,6 +441,41 @@ public class InstallerDataHandler {
 			}
 		}
 		return bytes;
+	}
+	/**
+	 * @param model
+	 * @return the contents of the csv artifact as a list of string lists.
+	 */
+	public List<List<String>> getArtifactAsCSV(int panelIndex,InstallerData model) {
+		List<List<String>> csv = new ArrayList<>();;
+		log.infof("%s.getArtifactAsCSV: panel %d",CLSS,panelIndex);
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList artifactNodes = panel.getElementsByTagName("artifact");
+			int acount = artifactNodes.getLength();
+			int index = 0;
+			while(index<acount) {
+				Node artifactNode = artifactNodes.item(index);
+				if( "csv".equalsIgnoreCase(xmlUtil.attributeValue(artifactNode, "type")) ) {
+					NodeList locationNodes = panel.getElementsByTagName("location");
+					int lcount = locationNodes.getLength();
+					if( lcount>0) {
+						Node locationNode = locationNodes.item(index);
+						String internalPath = locationNode.getTextContent();
+						Path path = getPathToModule(model);
+						byte[] bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
+						csv = csvUtil.listFromBytes(bytes);
+						log.infof("%s.getArtifactAsCSV: panel %d %s returned %d rows in csv",CLSS,panelIndex,path.toString(),csv.size());
+					}
+					else {
+						log.warnf("%s.getArtifactAsCSV: no location element for panel %d",CLSS,panelIndex);
+					}
+					break;
+				}
+				index++;
+			}
+		}
+		return csv;
 	}
 	/**
 	 * Assume that the artifact is a list of tags in XML format. Split the list into sets of approximately 1000
@@ -687,7 +731,7 @@ public class InstallerDataHandler {
 		}
 		return artifacts;
 	}
-	// Return property name value pairs associated with a particular panel
+	// Return authentication roles gleaned from this panel's properties
 	public List<PropertyItem> getAuthenticationRoles(int panelIndex,InstallerData model) {
 		List<PropertyItem> roles = new ArrayList<>();
 		Element panel = getPanelElement(panelIndex,model);
@@ -740,7 +784,7 @@ public class InstallerDataHandler {
 	/**
 	 * Beginning with the specified panel, search sequentially for a panel that meets the filter criteria
 	 * indicated in the data model.
-	 * @param index
+	 * @param index one more than current panel
 	 * @param prior
 	 * @param dataModel
 	 * @return
@@ -755,10 +799,14 @@ public class InstallerDataHandler {
 			if( (pd.isEssential() || ignoreOptional==false) &&
 				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false ||
 				 pd.getCurrentVersion()==InstallerConstants.UNSET) ) {
-				String title = getStepTitle(index,data);
-				PanelType type = getStepType(index,data);
-				BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
-				return panel;
+				// Test for proper site
+				String site = data.getSiteName();
+				if( site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site) ) {
+					String title = getStepTitle(index,data);
+					PanelType type = getStepType(index,data);
+					BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
+					return panel;
+				}
 			}
 			index++;
 		}
@@ -933,6 +981,9 @@ public class InstallerDataHandler {
 					Node titleElement = titles.item(0);
 					data.setTitle(titleElement.getTextContent());
 				}
+				// Analyze for Site-specificity
+				data.setSiteNames(getSiteNames(panelIndex,model));
+				
 			}
 			model.getPanelMap().put(key,data);
 		}
@@ -1000,6 +1051,16 @@ public class InstallerDataHandler {
 			}
 		}
 		return properties;
+	}
+	
+	// Return site names gleaned from this panel's properties
+	public List<String> getSiteNames(int panelIndex,InstallerData model) {
+		List<String> sites = new ArrayList<>();
+		List<PropertyItem> properties = getPanelProperties(panelIndex,model);
+		for(PropertyItem property:properties) {
+			if( property.getName().equalsIgnoreCase("site")) sites.add(property.getValue());
+		}
+		return sites;
 	}
 	
 	public int getStepCount(InstallerData model) {
@@ -1360,7 +1421,30 @@ public class InstallerDataHandler {
 
 		return result;
 	}
-	
+	// Load site entries obtained from CSV archive. We just "know" the columns
+	public void loadArtifactAsSiteEntries(int panelIndex,InstallerData model) {
+		List<SiteEntry> entries = new ArrayList<>();
+		List<List<String>> rows = getArtifactAsCSV(panelIndex,model);
+		
+		for(List<String>row:rows) {
+			SiteEntry se = new SiteEntry();
+			if(row.size() > 4) {
+				se.setSiteName(row.get(0));
+				se.setProjectName(row.get(1));
+				se.setArtifactName(row.get(2));
+				se.setDatasource(row.get(3));
+				se.setProvider(row.get(4));
+				
+				if(row.size() > 6) {
+					se.setTestDatasource(row.get(5));
+					se.setTestProvider(row.get(6));
+				}
+				entries.add(se);
+			}
+			
+		}
+		model.setSiteEntries(entries);
+	}
 	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
 		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
@@ -1583,6 +1667,7 @@ public class InstallerDataHandler {
 	 */
 	public void setContext(GatewayContext ctx) { 
 		this.context=ctx;
+		this.csvUtil= new CSVUtility();
 		this.dbUtil = new DBUtility(context);
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);

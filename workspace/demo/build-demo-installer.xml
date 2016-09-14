@@ -10,7 +10,7 @@
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom.xml" />
 	<property name="module.name" value="demo-installer" />
-	<property name="module.path" value="${basedir}/modules/demo-installer-unsigned.modl" />
+	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/demo-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
@@ -18,7 +18,19 @@
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
-
+	<!-- Generic SignModule: Reference Via Antcalls -->
+	<target name="SignModule">
+		<echo message="Signing ${moduleName}" />
+		<java jar="${git.repo}/external/lib/module-signer.jar"  fork="true">
+			<arg value="-keystore=${git.repo}/tools/keys/ILSA-keystore"/>
+			<arg value="-keystore-pwd=ILS-Automation"/>
+			<arg value="-alias=ILSAutomationKey"/>
+			<arg value="-alias-pwd=chromsmart" />
+			<arg value="-chain=${git.repo}/tools/keys/ilsautomationcertificate.p7b"/>
+			<arg value="-module-in=${modulein}"/>
+			<arg value="-module-out=${moduleout}"/>
+		</java>
+	</target>
 	<tstamp>
 		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
 	</tstamp>
@@ -73,7 +85,6 @@
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/InstallationManual.docx" tofile="${artifact.dir}/doc/InstallationManual.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
@@ -150,14 +161,20 @@
 		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
 
 		<!-- Zip it all up -->
-		<zip zipfile="${module.path}" basedir="${staging.dir}" />
+		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
+		
+		<!-- Sign the module -->
+		<antcall target="SignModule">
+			<param name="moduleName" value="${module.name}-${version.build}" />
+			<param name="modulein"   value="${module.path}/${module.name}-${version.build}-unsigned.modl" />
+			<param name="moduleout"  value="${module.path}/${module.name}-${version.build}-signed.modl" />
+		</antcall>
 	</target>
 
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
 		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}" tofile="${google.repo}/pre-0.1r17/${module.name}.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
+		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	
 	<!-- macro to trim newlines from a variable -->

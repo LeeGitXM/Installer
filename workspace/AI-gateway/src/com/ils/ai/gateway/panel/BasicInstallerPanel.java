@@ -57,7 +57,7 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 		product  = dataHandler.getProductName(data);
 		type     = dataHandler.getStepType(panelIndex, data);
 		subtype  = dataHandler.getStepSubtype(panelIndex, data);
-	}
+	} 
 
 	@Override
 	public boolean isLastStep() {
@@ -66,8 +66,6 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 		return last;
 	}
 	
-	
-
 	@Override
 	public IDynamicWizardStep previous() {
 		return prior;

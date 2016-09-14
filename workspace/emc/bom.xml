@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -20,7 +20,7 @@
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation-mode (test) environments.
+			isolation-mode (test) environments as appropriate.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -31,22 +31,20 @@
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
 			to indicate acceptance of the terms.
-			You must accept the license terms
-			to proceed.
+			You must accept the license terms before proceeding.
 		</preamble>
 		<artifact name="license" type="html">
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Update Toolkit Properties</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		Both production and isolation mode versions are needed. These are used by subsequent screens.
+	<panel type="site" essential="true">
+		<title>Site Selection</title>
+		<preamble>This install package contains site-specific information.
+		          Select the site appropriate to the current gateway.
 		</preamble>
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
+		<artifact name="Site List" type="csv" subtype="sites">
+			<location>artifacts/site/site-projects.csv</location>
+		</artifact>
 	</panel>	
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
@@ -69,7 +67,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="2">
+	<panel type="file" essential="true" version="3">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -89,14 +87,32 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="3">
-		<title>Database Create and Alter Scripts for Ignition Applications</title>
+	<panel type="database" essential="true" version="4">
+		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">BRPO</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="XOM Database" type="sql" subtype="create">
+			<location>artifacts/database/createBRPO.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	<panel type="database" essential="true" version="4">
+		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Vistalon</property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="XOM Database" type="sql" subtype="create">
 			<location>artifacts/database/createVistalon.sql</location>
@@ -113,6 +129,7 @@
 		</preamble>
 		<property name="database" type="isolation"></property>
 		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Vistalon</property>
 		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
 			<location>artifacts/database/createVistalon.sql</location>
 		</artifact>

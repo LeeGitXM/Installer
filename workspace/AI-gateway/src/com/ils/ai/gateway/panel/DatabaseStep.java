@@ -5,6 +5,7 @@ package com.ils.ai.gateway.panel;
 
 import java.util.List;
 
+import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -23,7 +24,9 @@ import com.ils.ai.gateway.model.PersistenceHandler;
  */
 public class DatabaseStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
+	private Label datasourceLabel = null;
 	private String datasource = "";
+	private List<String> datasources = null;
 	private boolean hasAlter = false;
 	private boolean hasClear = false;
 	private boolean hasCreate = false;
@@ -62,8 +65,12 @@ public class DatabaseStep extends BasicInstallerPanel {
         	}
         }
         
-        datasource = dataHandler.datasourceNameFromProperties(index, data);
-		add(new Label("datasource",datasource));
+        List<String> datasources = dataHandler.datasourceNamesFromProperties(index, data);
+        panelData.setIteration(0);
+        panelData.setIterations(datasources.size());
+        datasource = datasources.get(panelData.getItertion());
+        datasourceLabel = new Label("datasource",datasource);
+		add(datasourceLabel);
         
 		// Clear database form
         WebMarkupContainer clear = new WebMarkupContainer("clear");
@@ -169,6 +176,22 @@ public class DatabaseStep extends BasicInstallerPanel {
 		insert.add(insertSchemaForm);
         add(insert);
 	}
-	
-
+	/**
+	 * If we have another datasource to process, re-display self
+	 */
+	@Override
+	public IDynamicWizardStep next() {
+		IDynamicWizardStep next = null;
+		panelData.setIteration(panelData.getItertion()+1);
+		if(panelData.getItertion()< panelData.getIterations()) {
+	        datasource = datasources.get(panelData.getItertion());
+	        datasourceLabel = new Label("datasource",datasource);
+	        next = this;
+		}
+		if( !isLastStep() ) {
+			InstallerDataHandler handler = InstallerDataHandler.getInstance();
+			next = handler.getNextPanel(panelIndex+1,this,dataModel);
+		}
+		return next;
+	}
 }

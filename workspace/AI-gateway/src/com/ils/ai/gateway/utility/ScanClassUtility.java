@@ -17,7 +17,7 @@ import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.common.util.csv.CSVReader;
 
-/** Given a CSV file as a String, analyze and create Scan Class.
+/** Given a CSV file as a byte array, analyze and create Scan Class.
  * @See 
  */
 public class ScanClassUtility {

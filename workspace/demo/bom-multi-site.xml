@@ -39,28 +39,25 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Interface Definitions</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
-		The selections hare are used by subsequent screens.
+	<panel type="site" essential="true">
+		<title>Site Selection</title>
+		<preamble>This install package contains site-specific information.
+		          Select the site appropriate to the current gateway.
 		</preamble>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
+		<artifact name="Site List" type="csv" subtype="sites">
+			<location>artifacts/site/definitions.csv</location>
+		</artifact>
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
 			<location>artifacts/icons/blt</location>
 		</artifact>
 	</panel>
-	<panel type="databases" essential="true" version="1">
+	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for the ACE Application</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -95,7 +92,7 @@
 			<location>artifacts/modules/TF-module-unsigned.modl</location>
 		</artifact>
 	</panel>
-	<panel type="tags" subtype="production" essential="true" version="1">
+	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags for all providers defined at this site.
 		</preamble>
@@ -107,7 +104,7 @@
 			<location>artifacts/tags/sqltags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="projects" subtype="main" essential="true" version="1">
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install ACE Projects for this site</title>
 		<preamble>ACE is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,

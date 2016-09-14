@@ -1,0 +1,5 @@
+# SiteName,ProjectName,ProjectArtifact,Database,TagProvider,TestDatabase,TestTagProvider
+BRPO,DbManager.proj,DbManager.proj,XOM,XOM
+BRPO,XOM.proj,BRPO.proj,XOM,XOM
+Vistalon,DbManager.proj,DbManager.proj,XOM,XOM
+Vistalon,XOM.proj,Vistalon.proj,XOM,XOM,XOM_ISOLATION,XOM_ISOLATION

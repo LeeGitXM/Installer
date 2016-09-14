@@ -75,8 +75,13 @@
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
+		<!-- Site Definitions -->
+		<mkdir dir="${artifact.dir}/site" />
+		<copy file="${build.dir}/../demo/emc-sites.csv" tofile="${artifact.dir}/site/site-projects.csv" />
+		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
+		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/createXOM_BRPO.sql" tofile="${artifact.dir}/database/createBRPO.sql" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/createXOMvistalon.sql" tofile="${artifact.dir}/database/createVistalon.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
