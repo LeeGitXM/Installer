@@ -1,4 +1,0 @@
-# SiteName,ProjectName,ProjectArtifact,Database,TagProvider,TestDatabase,TestTagProvider
-BRPO,Recipe,Recipe,XOM,XOM
-Vistalon,Recipe,Recipe,XOM,XOM
-Vistalon,XOM.proj,XOM.proj,XOM,XOM,XOM_ISOLATION,XOM_ISOLATION

@@ -36,8 +36,8 @@ public class SiteStep extends BasicInstallerPanel {
     	add(productionProviderLabel);
 
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
-        handler.loadArtifactAsSiteEntries(index, data);
-        DropDownChoice<String> sites = new DropDownChoice<String>("sites", new PropertyModel<String>(this, "selectedSite"), data.getUniqueSiteNames()) {
+        handler.loadSiteEntries(index, data);
+        DropDownChoice<String> sites = new DropDownChoice<String>("sites", new PropertyModel<String>(this, "selectedSite"), data.getSiteNames()) {
 			private static final long serialVersionUID = 2602629544295913383L;
 			
 			@Override
@@ -65,18 +65,21 @@ public class SiteStep extends BasicInstallerPanel {
 	}
 
 	/**
-	 * The data model isn't quite correct. Loop through the site elements. 
-	 * Last database and provider definitions win.
+	 * If the site element defines site-wide defaults, assign them.
 	 */
 	private void defineDatabaseAndProvider(String site,List<SiteEntry> siteEntries) {
 		GatewayContext context =  InstallerDataHandler.getInstance().getContext();
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
 		for(SiteEntry se:siteEntries) {
 			if( site.equalsIgnoreCase(se.getSiteName()) ) {
-				toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE,se.getDatasource());
-				toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER,se.getProvider());
-				toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE,se.getTestDatasource());
-				toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER,se.getTestProvider());
+				if( !se.getProductionDatasources().isEmpty() ) 
+					toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE,se.getProductionDatasources().get(0));
+				if( !se.getProductionProviders().isEmpty() ) 
+					toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER,se.getProductionProviders().get(0));
+				if( !se.getIsolationDatasources().isEmpty() ) 
+					toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE,se.getIsolationDatasources().get(0));
+				if( !se.getIsolationProviders().isEmpty() ) 
+					toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER,se.getIsolationProviders().get(0));
 			}
 		}
 	}

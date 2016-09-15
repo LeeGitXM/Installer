@@ -56,17 +56,23 @@ public class InstallerData implements Serializable  {
     public void setSiteName(String name) {this.siteName = name;}
     
     // ================================ Helper Methods involving Sites ===============================
-	public List<String> getUniqueProductionDatasources() {
+    /**
+     * These are "global" to the site. 
+     *  @return a list of production datasources for the current site 
+     */
+	public List<String> getCurrentSiteProductionDatasources() {
 		List<String> datasources = new ArrayList<>();
 		if( !siteName.isEmpty() ) {
-			for(SiteEntry entry:siteEntries) {
-				String source = entry.getDatasource();
-				if( !source.isEmpty()  && !datasources.contains(source)) datasources.add(source);
+			for(SiteEntry se:siteEntries) {
+				if( se.getSiteName().equals(siteName) ) {
+					return se.getProductionDatasources();
+				}
 			}
 		}
 		return datasources;
 	}
-	public List<String> getUniqueSiteNames() {
+	// The SiteEntries *should* be a unique list
+	public List<String> getSiteNames() {
 		List<String> siteNames = new ArrayList<>();
 		for(SiteEntry entry:siteEntries) {
 			String site = entry.getSiteName();
@@ -74,12 +80,13 @@ public class InstallerData implements Serializable  {
 		}
 		return siteNames;
 	}
-	public List<String> getUniqueTestDatasources() {
+	public List<String> getCurrentSiteTestDatasources() {
 		List<String> datasources = new ArrayList<>();
 		if( !siteName.isEmpty() ) {
-			for(SiteEntry entry:siteEntries) {
-				String source = entry.getTestDatasource();
-				if( !source.isEmpty()  && !datasources.contains(source)) datasources.add(source);
+			for(SiteEntry se:siteEntries) {
+				if( se.getSiteName().equals(siteName) ) {
+					return se.getIsolationDatasources();
+				}
 			}
 		}
 		return datasources;

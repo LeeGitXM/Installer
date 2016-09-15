@@ -74,10 +74,6 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-
-		<!-- Site Definitions -->
-		<mkdir dir="${artifact.dir}/site" />
-		<copy file="${build.dir}/../emc/emc-sites.csv" tofile="${artifact.dir}/site/site-projects.csv" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />

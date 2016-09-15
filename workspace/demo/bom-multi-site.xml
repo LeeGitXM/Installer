@@ -44,9 +44,16 @@
 		<preamble>This install package contains site-specific information.
 		          Select the site appropriate to the current gateway.
 		</preamble>
-		<artifact name="Site List" type="csv" subtype="sites">
-			<location>artifacts/site/definitions.csv</location>
-		</artifact>
+		<site name="BRPO">
+			<property name="database" type="production">XOM</property>
+			<property name="provider" type="production">XOM</property>
+		</site>
+		<site name="Vistalon">
+			<property name="database" type="production">XOM</property>
+			<property name="isolation" type="production">XOM_ISOLATION</property>
+			<property name="provider" type="production">XOM</property>
+			<property name="provider" type="isolation">XOM_ISOLATION</property>
+		</site>
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>

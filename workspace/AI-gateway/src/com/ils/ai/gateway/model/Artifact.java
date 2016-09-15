@@ -4,6 +4,8 @@
 package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ils.ai.gateway.InstallerConstants;
 
@@ -20,19 +22,23 @@ public class Artifact implements Serializable  {
 	private String subtype = "";
 	private String type = "";         // Artifact type
 	private int version = InstallerConstants.UNSET;
+	private List<PropertyItem> properties = new ArrayList<>(); // Site-wide properties
 
 	public String getDestination() {return destination;}
-	public void setDestination(String dest) { this.destination = dest; }
 	public String getLocation() {return location;}
-	public void setLocation(String loc) { this.location = loc; }
 	public String getName() {return name;}
-	public void setName(String nam) { this.name = nam; }
+	public List<PropertyItem> getProperties() {return this.properties;}
 	public String getRelease() {return release;}
-	public int getVersion() { return version; }
-	public void setRelease(String rel) { this.release = rel; }
 	public String getSubtype() {return subtype;}
-	public void setSubtype(String st) { this.subtype = st; }
 	public String getType() {return type;}
+	public int getVersion() { return version; }
+	
+	public void setDestination(String dest) { this.destination = dest; }
+	public void setLocation(String loc) { this.location = loc; }
+	public void setName(String nam) { this.name = nam; }
+	public void setProperties(List<PropertyItem> props) {this.properties = props;}
+	public void setRelease(String rel) { this.release = rel; }
+	public void setSubtype(String st) { this.subtype = st; }
 	public void setType(String typ) { this.type = typ; }
 	public void setVersion(int vers) { this.version=vers; }
 }

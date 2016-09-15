@@ -14,6 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
+import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PropertyItem;
@@ -53,13 +54,13 @@ public class DefinitionStep extends BasicInstallerPanel {
 		List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
     
     	for(PropertyItem prop:properties) {
-    		if(prop.getName().equalsIgnoreCase("provider")) {
-    			if(prop.getType().equalsIgnoreCase("production")) showProductionProvider = true;
-    			else if(prop.getType().equalsIgnoreCase("isolation")) showIsolationProvider = true;
+    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
+    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionProvider = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showIsolationProvider = true;
     		}
-    		else if(prop.getName().equalsIgnoreCase("database")) {
-    			if(prop.getType().equalsIgnoreCase("production")) showProductionDatabase = true;
-    			else if(prop.getType().equalsIgnoreCase("isolation")) showIsolationDatabase = true;
+    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showIsolationDatabase = true;
     		}
     	}
 		

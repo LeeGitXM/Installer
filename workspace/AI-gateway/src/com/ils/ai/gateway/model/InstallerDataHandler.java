@@ -227,6 +227,7 @@ public class InstallerDataHandler {
 		return result;
 		
 	}
+	
 	/**
 	 * Inspect the properties for the specified panel looking for a "database" property. 
 	 * First check for a list associated with the site, then from the definition page.
@@ -241,7 +242,7 @@ public class InstallerDataHandler {
 		for(PropertyItem prop:properties) {
     		if(prop.getName().equalsIgnoreCase("database")) {
     			if(prop.getType().equalsIgnoreCase("production")) {
-    				datasources = model.getUniqueProductionDatasources();
+    				datasources = model.getCurrentSiteProductionDatasources();
     				if(datasources.isEmpty()) {
     					if(prop.getValue()==null || prop.getValue().isEmpty()) {
         					datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
@@ -252,7 +253,7 @@ public class InstallerDataHandler {
     				}
     			}
     			else if(prop.getType().equalsIgnoreCase("isolation")) {
-    				datasources = model.getUniqueTestDatasources();
+    				datasources = model.getCurrentSiteTestDatasources();
     				if(datasources.isEmpty()) {
     					if(prop.getValue()==null || prop.getValue().isEmpty()) {
     						datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE));
@@ -1421,26 +1422,42 @@ public class InstallerDataHandler {
 
 		return result;
 	}
-	// Load site entries obtained from CSV archive. We just "know" the columns
-	public void loadArtifactAsSiteEntries(int panelIndex,InstallerData model) {
+	// Site entries obtained from "site" elements within the panel XML.
+	// TODO: A deep analysis of the entries
+	public void loadSiteEntries(int panelIndex,InstallerData model) {
 		List<SiteEntry> entries = new ArrayList<>();
-		List<List<String>> rows = getArtifactAsCSV(panelIndex,model);
 		
-		for(List<String>row:rows) {
-			SiteEntry se = new SiteEntry();
-			if(row.size() > 4) {
-				se.setSiteName(row.get(0));
-				se.setProjectName(row.get(1));
-				se.setArtifactName(row.get(2));
-				se.setDatasource(row.get(3));
-				se.setProvider(row.get(4));
-				
-				if(row.size() > 6) {
-					se.setTestDatasource(row.get(5));
-					se.setTestProvider(row.get(6));
+		Element panel = getPanelElement(panelIndex,model);
+		if( panel!=null ) {
+			NodeList siteNodes = panel.getElementsByTagName("site");
+			int count = siteNodes.getLength();
+			int index = 0;
+			while(index<count) {
+				Node siteNode = siteNodes.item(index);
+				String entryName = xmlUtil.attributeValue(siteNode, "name");
+				SiteEntry se = new SiteEntry();
+				se.setSiteName(entryName);
+				// Add embedded properties and artifacts
+				List<PropertyItem> properties = new ArrayList<>(); 
+				NodeList children = siteNode.getChildNodes();
+				int childCount = children.getLength();
+				int childIndex = 0;
+				while(childIndex<childCount) {
+					Node childNode = children.item(childIndex);
+					// Add embedded properties
+					if( childNode.getNodeName().equalsIgnoreCase("property") ) {
+						String name = xmlUtil.attributeValue(childNode, "name");
+						String type = xmlUtil.attributeValue(childNode, "type");
+						String value = childNode.getTextContent();
+						properties.add(new PropertyItem(name,type,value));
+					}
+					childIndex++;
 				}
+				se.setProperties(properties);
 				entries.add(se);
+				index++;
 			}
+		
 			
 		}
 		model.setSiteEntries(entries);

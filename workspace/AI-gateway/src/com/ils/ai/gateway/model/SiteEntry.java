@@ -4,38 +4,65 @@
 package com.ils.ai.gateway.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ils.ai.gateway.InstallerConstants;
+
 
 /**
  *  This class holds the details of a project for a site. A particular
  *  site may have many projects defined. but the combination of site name
  *  and project name must be unique. 
  *  
- *  An instance of this class is equivalent to a line in the site data
- *  .csv file.
  */
 public class SiteEntry implements Serializable  {
 	private static final long serialVersionUID = -5650159030090459881L;
-	private String artifactName = "";
-	private String datasource = "";
-	private String projectName = "";
-	private String provider = "";
-	private String siteName = "";
-	private String testDatasource = "";
-	private String testProvider = "";
 
-	public String getArtifactName() {return this.artifactName;}
-	public String getDatasource() {return this.datasource;}
-	public String getProjectName() {return this.projectName;}
-	public String getProvider() {return this.provider;}
+	private String siteName = "";
+	private List<Artifact> artifacts = new ArrayList<>();      // Site-specific artifacts
+	private List<PropertyItem> properties = new ArrayList<>(); // Site-wide properties
+
+	public List<Artifact> getArtifacts() {return this.artifacts;}
+	public List<PropertyItem> getProperties() {return this.properties;}
 	public String getSiteName() {return this.siteName;}
-	public String getTestDatasource() {return this.testDatasource;}
-	public String getTestProvider() {return this.testProvider;}
-    public void setArtifactName(String name) {this.artifactName = name;}
-    public void setDatasource(String name) {this.datasource = name;}
-    public void setProjectName(String name) {this.projectName = name;}
-    public void setProvider(String name) {this.provider = name;}
+	public void setArtifacts(List<Artifact> facts) {this.artifacts = facts;}
+    public void setProperties(List<PropertyItem> props) {this.properties = props;}
     public void setSiteName(String name) {this.siteName = name;}
-    public void setTestDatasource(String name) {this.testDatasource = name;}
-    public void setTestProvider(String name) {this.testProvider = name;}
+    
+    // ================================== Helper Methods ==========================
+    // We allow multiple properties defining production databases. Here we iterate through them.
+    public List<String> getIsolationDatasources() {
+    	List<String> result = new ArrayList<>();
+    	for(PropertyItem pi:properties) {
+    		if( pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE) &&
+    			pi.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION) ) result.add(pi.getValue());	
+    	}
+    	return result;
+    }
+    public List<String> getIsolationProviders() {
+    	List<String> result = new ArrayList<>();
+    	for(PropertyItem pi:properties) {
+    		if( pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER) &&
+    			pi.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION) ) result.add(pi.getValue());	
+    	}
+    	return result;
+    }
+    public List<String> getProductionDatasources() {
+    	List<String> result = new ArrayList<>();
+    	for(PropertyItem pi:properties) {
+    		if( pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE) &&
+    			pi.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION) ) result.add(pi.getValue());	
+    	}
+    	return result;
+    }
+    public List<String> getProductionProviders() {
+    	List<String> result = new ArrayList<>();
+    	for(PropertyItem pi:properties) {
+    		if( pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER) &&
+    			pi.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION) ) result.add(pi.getValue());	
+    	}
+    	return result;
+    }
 }
 

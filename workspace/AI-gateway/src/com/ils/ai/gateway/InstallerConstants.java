@@ -19,11 +19,18 @@ public interface InstallerConstants   {
 	public final static String BOM_LOCATION = "artifacts/bom.xml";       // Location of bom within jar
 	public final static String MODULE_MARKER = ".application-installer"; // Name of file that marks the module as "the one"
 	
-	// These are the standard properties
+	// These are standard properties
+	public final static String PROPERTY_DATABASE = "database";
 	public final static String PROPERTY_DATE    = "date";
 	public final static String PROPERTY_PRODUCT = "product";
+	public final static String PROPERTY_PROVIDER = "provider";
 	public final static String PROPERTY_RELEASE = "release"; 
 	public final static String PROPERTY_VERSION = "version"; 
+
+	// Property types
+	public final static String PROPERTY_TYPE_PRODUCTION = "production";
+	public final static String PROPERTY_TYPE_ISOLATION  = "isolation";
+
 	
 	// Don't allow error messages longer than this ...
 	public final static int MAX_ERROR_LENGTH = 4000;
