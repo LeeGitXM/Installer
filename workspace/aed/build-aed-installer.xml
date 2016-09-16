@@ -162,6 +162,10 @@
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
 		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclasses" />
+		<copy file="${svn.repo}/EMRE/Ignition/scanclass.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
+			
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />

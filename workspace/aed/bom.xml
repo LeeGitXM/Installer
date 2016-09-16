@@ -121,6 +121,16 @@
 			<location>artifacts/modules/AED-module-signed.modl</location>
 		</artifact>
 	</panel>
+		<panel type="scanclass" essential="true" version="1">
+		<title>Create Custom Scan Classes</title>
+		<preamble>Create appropriate scanclasses. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
