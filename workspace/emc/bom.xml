@@ -236,10 +236,10 @@
 		<property name="site">BRPO</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/XOM.proj</location>
+			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 		<artifact name="XOM Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/XOM.proj</location>
+			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="3">
@@ -254,10 +254,10 @@
 		<property name="site">Vistalon</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/XOM.proj</location>
+			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 		<artifact name="XOM Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/XOM.proj</location>
+			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="dbmgr" essential="true" version="1">
