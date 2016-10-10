@@ -171,7 +171,6 @@
 		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
 		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
 		</preamble>
-		<property name="site">Vistalon</property>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
@@ -186,7 +185,6 @@
 				Scanclasses determine tag poll rates.
 		</preamble>
 		<property name="provider" type="production"></property>
-		<property name="site">Vistalon</property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
@@ -273,14 +271,25 @@
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="3">
 		<title>Vistalon SFC Charts</title>
-		<preamble>This page handles installation of charts for various migrated SFC projects.
+		<preamble>This page handles installation of charts for the hand-vetted SFC projects.
 			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
+			any existing charts of the same name. 
 		</preamble>
 		<property name="site">Vistalon</property>
-		<artifact name="DrierRegen" type="project" subtype="global">
+		<artifact name="Drier Regen" type="project" subtype="global">
 			<location>artifacts/projects/DrierRegen.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="3">
+		<title>Vistalon SFC Charts</title>
+		<preamble>This page handles installation of charts for auto-migrated SFC projects.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. These charts are incomplete and not tested.
+			Their inclusion is simply to provide an easy way of viewing progress to-date. 
+		</preamble>
+		<property name="site">Vistalon</property>
+		<artifact name="Vistalon Charts" type="project" subtype="global">
+			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
 	<panel type="documentation" essential="false">
@@ -299,19 +308,19 @@
 		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.10">
+		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.12">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
 		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="0.59">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.14">
+		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.15">
 			<location>artifacts/doc/EMCDatabaseDesign</location>
 		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.14">
+		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.15">
 			<location>artifacts/doc/EMCDatabaseER.pdf</location>
 		</artifact>
-		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.14">
+		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.15">
 			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.5">
@@ -331,6 +340,9 @@
 		</artifact>
 		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/SFCDevelopmentScorecard.xslx</location>
+		</artifact>
+		<artifact name="Toolchain Installation Manual" type="documentation" subtype="docx" release="0.1">
+			<location>artifacts/doc/ToolchainInstallationManual.docx</location>
 		</artifact>
 		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.6">
 			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
@@ -353,8 +365,8 @@
 	</panel>
 	<panel type="source" essential="false" version="2">
 		<title>Migration</title>
-		<preamble>The packages below contain exported-then-migrated diagrams and sequential control charts corresponding to
-		          the most recent conversions. Vistalon-specific exports are already included in the XOM and global projects
+		<preamble>The packages below contain exported-then-migrated diagnostic diagrams corresponding to
+		          the most recent conversions. Vistalon-specific exports are already included in the XOM project
 		          as delivered.
 		</preamble>
 		<property name="site">Vistalon</property>
@@ -373,8 +385,19 @@
 		<artifact name="VFU" type="source" subtype="json" release="@RELEASE@">
 			<location>artifacts/migration/vfuProductQuality.json</location>
 		</artifact>
+	</panel>
+	<panel type="source" essential="false" version="2">
+		<title>Migration</title>
+		<preamble>The packages below contain exported-then-migrated sequential control charts corresponding to
+		          the most recent conversions. These are the raw conversions. Completely vetted charts
+		          are included in the global project installed in a previous panel.
+		</preamble>
+		<property name="site">Vistalon</property>
 		<artifact name="Drier Regen" type="source" subtype="proj" release="@RELEASE@">
 			<location>artifacts/migration/DrierRegen.proj</location>
+		</artifact>
+		<artifact name="Vistalon Unit Procedure" type="source" subtype="proj" release="@RELEASE@">
+			<location>artifacts/migration/VistalonUnitProcedure.proj</location>
 		</artifact>
 	</panel>
 	

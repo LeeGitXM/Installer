@@ -84,6 +84,7 @@
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
 		<copy file="${git.repo}/installer/doc/ApplicationInstaller.docx" tofile="${artifact.dir}/doc/ApplicationInstaller.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
@@ -158,6 +159,7 @@
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
+		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 
 		<!-- Source -->
 		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
@@ -169,7 +171,7 @@
 		<copy file="${git.repo}/blt/migration/json/ignition/polyRateChange.json" tofile="${artifact.dir}/migration/polyRateChange.json" />
 		<copy file="${git.repo}/blt/migration/json/ignition/vfuProductQuality.json" tofile="${artifact.dir}/migration/vfuProductQuality.json" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/migration/DrierRegen.proj" />
-		
+		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/migration/VistalonUnitProcedure.proj" />
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />

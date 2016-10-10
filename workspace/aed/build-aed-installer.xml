@@ -164,7 +164,7 @@
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />
-		<copy file="${svn.repo}/EMRE/Ignition/scanclass.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
+		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
 			
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
