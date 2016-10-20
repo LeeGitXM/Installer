@@ -1,6 +1,8 @@
 package com.ils.ai.gateway;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ils.ai.gateway.model.ArtifactReleaseRecord;
 import com.ils.ai.gateway.model.InstalledVersionRecord;
@@ -16,22 +18,25 @@ import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.inductiveautomation.ignition.gateway.web.components.LinkConfigMenuNode;
+import com.inductiveautomation.ignition.gateway.web.models.ConfigCategory;
+import com.inductiveautomation.ignition.gateway.web.models.IConfigTab;
 
 public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
 	private final static String CLSS = "ApplicationInstallerGatewayHook";
-	public static final String ROOT_NODE = "ils";
-    public static final String SETUP_NODE = "setup";
+	public static final String BUNDLE_NAME = "ApplicationInstaller";
+	public static final String BUNDLE_ROOT = "ils";
+	private static final String CATEGORY_NAME = "InstallerCategory";
+	public static final ConfigCategory installerCategory = new ConfigCategory(CATEGORY_NAME,BUNDLE_ROOT+".menu.category");
 
     private static ApplicationInstallerGatewayHook INSTANCE = null;
     private GatewayContext context = null;
     private final LoggerEx log = LogUtil.getLogger(getClass().getPackage().getName());
     
     static {
-    	BundleUtil.get().addBundle("ils", ApplicationInstallerGatewayHook.class, "ApplicationInstaller");
+    	BundleUtil.get().addBundle(BUNDLE_ROOT, ApplicationInstallerGatewayHook.class, BUNDLE_NAME);
     }
 
-    // @Override // 7.8.3
+    @Override
     public boolean isFreeModule() { return true; }
     
     @Override
@@ -39,15 +44,11 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
         INSTANCE = this;
         this.context = gatewayContext;
         PersistenceHandler.getInstance().setContext(context);
-        InstallerDataHandler handler = InstallerDataHandler.getInstance();
+    	InstallerDataHandler handler = InstallerDataHandler.getInstance();
         handler.setContext(context);
         String title = handler.getTitle(new InstallerData());
-        log.infof("%s.setup: Custom title = %s",CLSS,title);
-        InstallerLabelConfigMenuNode rootNode = new InstallerLabelConfigMenuNode(ROOT_NODE, title);
-        LinkConfigMenuNode setupNode = new LinkConfigMenuNode(SETUP_NODE, "ils.menu.root.setup", ConfigurationPanel.class);
-        log.infof("%s.setup: ils.configpanel.title = %s",CLSS,BundleUtil.get().getString("ils.configpanel.title"));
-        gatewayContext.getConfigMenuModel().addConfigMenuNode(null, rootNode);
-        gatewayContext.getConfigMenuModel().addConfigMenuNode(new String[]{ ROOT_NODE }, setupNode);
+        ConfigurationPanel.setTitle(title);
+       
         
 		// Create ProductProperties and ProductVersion tables in the internal database if necessary.
         try {
@@ -70,24 +71,29 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     }
     
     @Override
+    public List<ConfigCategory> getConfigCategories() {
+    	List<ConfigCategory> categories = new ArrayList<>();
+    	categories.add(installerCategory);
+    	return categories;
+    }
+    
+    /**
+     * Add a configuration panel that starts the install.
+     * Give it a custom title derived from the package.
+     */
+    @Override
+    public List<IConfigTab> getConfigPanels() {
+    	List<IConfigTab>panels = new ArrayList<>();
+    	panels.add(ConfigurationPanel.MENU_ENTRY);
+    	return panels;
+    }
+    
+    @Override
     public void startup(LicenseState licenseState) {
 
     }
 
     @Override
     public void shutdown() {
-        uninstallMenuNodes(false);
-    }
-
-    public void uninstallMenuNodes(boolean uninstallModule){
-        context.getConfigMenuModel().removeConfigMenuNode(new String[]{ ROOT_NODE });
-        context.getConfigMenuModel().removeConfigMenuNode(new String[]{ ROOT_NODE, SETUP_NODE });
-
-        if(uninstallModule) {
-            try {
-                context.getModuleManager().uninstallModule(InstallerConstants.MODULE_ID);
-            } 
-            catch (Exception ignored) {}
-        }
     }
 }
