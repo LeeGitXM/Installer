@@ -39,7 +39,7 @@
 		</div>
 		<p class="spacer" />
 
-		<table class="edittable" cellspacing="0" cellpadding="0">
+		<table class="installtable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<td colspan="2">Database</td>
@@ -50,15 +50,13 @@
 					<td class="trow-title">Clear instance</td>
 					<td class="trow-body">
 						<form wicket:id="clearForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
-										wicket:id="clear" value="Clear" /></td>
+									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit" wicket:id="clear"
+										value="Clear" /></td>
+									<td><p>Drop all tables in a database instance.</p></td>
 								</tr>
 							</table>
-
-							<p>Drop all tables in a database instance.</p>
 						</form>
 					</td>
 				</tr>
@@ -66,16 +64,14 @@
 					<td class="trow-title">Create new database instance</td>
 					<td class="trow-body">
 						<form wicket:id="createForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
+									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
 										wicket:id="create" value="Create" /></td>
+									<td><p>Create tables that support the application. The new tables will be populated with an initial
+								data set. The database must be cleared of any existing tables for this to succeed.</p></td>
 								</tr>
 							</table>
-
-							<p>Create tables that support the application. The new tables will be populated with an initial
-								data set. The database must be cleared of any existing tables for this to succeed.</p>
 						</form>
 					</td>
 				</tr>
@@ -83,17 +79,17 @@
 					<td class="trow-title">Update an existing instance</td>
 					<td class="trow-body">
 						<form wicket:id="alterForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
+									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
 										wicket:id="alter" value="Alter" /></td>
+									<td><p>Alter a previously created tables to bring them in line with
+								the current state of the application. Existing data will be
+								preserved. It should not be necessary to perform this step in addition
+								to the previous.</p></td>
 								</tr>
 							</table>
-							<p>Alter a previously created tables to bring them in line with
-								the current state of the application. Existing data will be
-								preserved. It is not necessary to perform this step in addition
-								to the previous.</p>
+							
 						</form>
 					</td>
 				</tr>
@@ -101,14 +97,14 @@
 					<td class="trow-title">Populate database instance</td>
 					<td class="trow-body">
 						<form wicket:id="insertForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
+									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
 										wicket:id="insert" value="Insert" /></td>
+									<td><p>Populate tables that support the application or testing of it.</p></td>
 								</tr>
 							</table>
-							<p>Populate tables that support the application or testing of it.</p>
+							
 						</form>
 					</td>
 				</tr>

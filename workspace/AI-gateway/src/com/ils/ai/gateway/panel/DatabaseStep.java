@@ -87,7 +87,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					info(String.format("Datasource %s cleared (tables dropped).", datasource));
 				}
 				else {
-					warn(result);
+					error(result);
 				}
             }
         });
