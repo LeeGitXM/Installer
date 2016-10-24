@@ -33,18 +33,20 @@
 		</div>
 		<p class="spacer" />
 		<div>
-			<table>
+			<table class="ilsedit">
 				<tr>
-					<td><label>Authentication Profile: </label> 
-					<select class="chooser" wicket:id="profiles" /></td>
-					<td></td>
-					<td><label>Create backup:</label> 
-					<input type="checkbox" wicket:id="backup" /></td>
+					<td><p class="label">Authentication Profile:</p> <select
+						class="chooser" wicket:id="profiles" /></td>
+					<td />
+					<td />
+					<td><p class="label">Create backup:</p> <input type="checkbox"
+						wicket:id="backup" /></td>
+					<td />
 				</tr>
 			</table>
 		</div>
 		<p class="spacer" />
-		<table class="edittable" cellspacing="0" cellpadding="0">
+		<table class="installtable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<td colspan="2">Project</td>
@@ -55,20 +57,19 @@
 					<td class="trow-title">Install new project</td>
 					<td class="trow-body">
 						<form wicket:id="newForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td><span class="label">Source project: </span></td>
+									<td><p class="label">Source project:</p></td>
 									<td><span wicket:id="fullProject" /></td>
 								</tr>
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
-										wicket:id="new" value="Install" /></td>
+									<td><input
+										style="align: left; background-color: rgb(120, 20, 20)"
+										type="submit" wicket:id="new" value="Install" /></td>
+									<td colspan="2"><p>Install the specified project into the gateway,
+											overwriting any existing project of the same name.</p></td>
 								</tr>
 							</table>
-
-							<p>Install the specified project into the gateway, overwriting any existing
-								project of the same name.</p>
 						</form>
 					</td>
 				</tr>
@@ -76,24 +77,26 @@
 					<td class="trow-title">Merge with Existing Project</td>
 					<td class="trow-body">
 						<form wicket:id="mergeForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td><span class="label">Source project:</span></td>
+									<td><p class="label">Source project:</p></td>
 									<td><span wicket:id="partialProject" /></td>
 								</tr>
 								<tr>
-									<td><span class="label">Existing project:</span></td>
+									<td><p class="label">Existing project:</p></td>
 									<td><select wicket:id="projects" /></td>
 								</tr>
 								<tr>
-									<td />
-									<td><input style="align: right" type="submit"
-										wicket:id="merge" value="Merge" /></td>
+									<td><input
+										style="align: left; background-color: rgb(120, 20, 20)"
+										type="submit" wicket:id="merge" value="Merge" /></td>
+									<td colspan="2"><p>Merge new or modified project resources from
+											the source project into the selected existing project. The
+											name and permissions associated with the existing project do
+											not change.</p></td>
 								</tr>
 							</table>
-							<p>Merge new or modified project resources from the source
-								project into the selected existing project. The name
-								and permissions associated with the existing project do not change.</p>
+
 						</form>
 					</td>
 				</tr>
@@ -101,17 +104,20 @@
 					<td class="trow-title">Merge with Global Project</td>
 					<td class="trow-body">
 						<form wicket:id="globalForm" action="">
-							<table>
+							<table class="ilsedit">
 								<tr>
-									<td><span class="label">Source project: </span></td>
+									<td><p class="label">Source project:</p></td>
 									<td><span wicket:id="globalProject" /></td>
 								</tr>
-								<td />
-								<td><input style="align: right" type="submit"
-									wicket:id="mergeGlobal" value="Merge" /></td>
+								<tr>
+									<td><input
+										style="align: left; background-color: rgb(120, 20, 20)"
+										type="submit" wicket:id="mergeGlobal" value="Merge" /></td>
+									<td colspan="2"><p>Merge new or modified project resources from
+											the source project into the global project.</p></td>
+								</tr>
 							</table>
-							<p>Merge new or modified project resources from the source project into the global
-								project.</p>
+
 						</form>
 					</td>
 				</tr>

@@ -144,7 +144,7 @@ public class ProjectStep extends BasicInstallerPanel {
 					info(String.format("Project %s loaded successfully", fullProjectName));
 				}
 				else {
-					warn(result);
+					error(result);
 				}
 			}
         });
@@ -181,7 +181,7 @@ public class ProjectStep extends BasicInstallerPanel {
 					info(String.format("Project %s merged successfully", partialProjectName));
 				}
 				else {
-					warn(result);
+					error(result);
 				}
             }
         });
@@ -210,7 +210,7 @@ public class ProjectStep extends BasicInstallerPanel {
 					info(String.format("Global project updated successfully"));
 				}
 				else {
-					warn(result);
+					error(result);
 				}
 			}
 		});

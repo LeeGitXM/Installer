@@ -34,29 +34,36 @@
 		</div>
 		<p class="spacer" />
 		<div>
-			<p>
-				<span class="label">Tag provider: </span>
-				<span wicket:id="provider" />
-			</p>
+			<p />
+			<p class="label">Tag provider:</p>
+			<span wicket:id="provider" />
+			<p />
 		</div>
 		<br />
 		<div>
 			<table class="actiontable" style="width: 75%" cellpadding="0"
 				cellspacing="0">
 				<thead>
-					<td class="last">Scanclass Definition</td>
-					<tr />
+					<tr>
+						<td class="last">Scanclass Definition</td>
+					</tr>
 				</thead>
 				<tbody id="actiontable-tbody">
 					<tr wicket:id="scanclasses">
-						<td class="last" width="20%"><span wicket:id="name" /></td>
+						<td class="last" style="width: 20%"><span wicket:id="name" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<p class="spacer" />
 		<div>
-			<input type="submit" wicket:id="install" value="Install Scanclasses" />
+			<table class="ilsedit">
+				<tr>
+					<td><input
+						style="align: left; background-color: rgb(120, 20, 20)"
+						type="submit" wicket:id="install" value="Install Scanclasses" /></td>
+				</tr>
+			</table>
 		</div>
 		<p class="spacer" />
 	</wicket:panel>

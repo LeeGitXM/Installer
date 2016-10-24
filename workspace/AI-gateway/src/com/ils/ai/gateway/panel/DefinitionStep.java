@@ -145,7 +145,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 				}
 				else {
 					valid = false;  
-					warn(msg.toString());
+					error(msg.toString());
 				}
 				
 				saved = true;

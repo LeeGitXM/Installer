@@ -71,7 +71,7 @@ public class FileStep extends BasicInstallerPanel {
             	}
             	else {
             		System.out.println(String.format("FileStep:  failed to load"));
-            		warn(failure.insert(0,"Failed to load: ").toString());
+            		error(failure.insert(0,"Failed to load: ").toString());
             	}
             	System.out.println(String.format("FileStep:  on-submit complete"));
             }
