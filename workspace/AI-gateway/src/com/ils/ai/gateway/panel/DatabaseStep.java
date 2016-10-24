@@ -87,7 +87,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					info(String.format("Datasource %s cleared (tables dropped).", datasource));
 				}
 				else {
-					warn(result);
+					error(result);
 				}
             }
         });
@@ -114,7 +114,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
 						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
 					}
-					warn(result);
+					error(result);
 				}
             }
         });
@@ -142,7 +142,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
 						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
 					}
-					warn(result);
+					error(result);
 				}
             }
         });
@@ -169,7 +169,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {
 						result = result.substring(0,InstallerConstants.MAX_ERROR_LENGTH)+"...";
 					}
-					warn(result);
+					error(result);
 				}
             }
         });

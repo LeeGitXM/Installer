@@ -69,7 +69,7 @@ public class IconStep extends BasicInstallerPanel {
             		thisPage.info(success.insert(0,"Successfully loaded: ").toString());
             	}
             	else {
-            		thisPage.warn(failure.insert(0,"Failed to load: ").toString());
+            		thisPage.error(failure.insert(0,"Failed to load: ").toString());
             	}
             }
         });

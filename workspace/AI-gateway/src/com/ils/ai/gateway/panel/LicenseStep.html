@@ -15,32 +15,27 @@
 		<p class="preamble" wicket:id="preamble">should not appear</p>
 		<div class="version-box">
 			<table class="vers">
-				<thead>
 					<tr>
 						<td class="vers-header" />
 						<td class="vers-header">Accepted</td>
 						<td class="vers-header">New</td>
 					</tr>
-				</thead>
-				<tbody>
 					<tr>
 						<td class="vers-header">Version</td>
 						<td class="vers-body"><span wicket:id="currentVersion" /></td>
 						<td class="vers-body"><span wicket:id="futureVersion" /></td>
 					</tr>
-				</tbody>
 			</table>
 		</div>
 		</div>
 		<p class="spacer"/>
 		<p class="spacer"/>
-		<div>
-			<label>Accept :</label> <input type="checkbox" wicket:id="accept" />
-		</div>
-		<br />
-		<div>
-			<input type="button" wicket:id="view" value="View License" />
-		</div>
+		<table class="ilsedit">
+		<tr>
+			<td><p class="label">Accept :</p> <input type="checkbox" wicket:id="accept" /></td>
+			</tr><tr>
+			<td><input style="align: left; background-color: rgb(120, 20, 20)" type="button" wicket:id="view" value="View License" /></td>
+		</tr></table>
 		<p class="spacer"/>
 	</wicket:panel>
 </body>

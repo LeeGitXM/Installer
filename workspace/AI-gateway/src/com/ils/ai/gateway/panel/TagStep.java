@@ -123,7 +123,7 @@ public class TagStep extends BasicInstallerPanel {
             		info(success.insert(0,"Successfully loaded tags: ").toString());
             	}
             	else {
-            		warn(failure.insert(0,"Failed to load: ").toString());
+            		error(failure.insert(0,"Failed to load: ").toString());
             	}
             	if(handler!=null) timer.stop(handler);
             }

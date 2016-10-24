@@ -69,7 +69,7 @@ public class ClearStep extends BasicInstallerPanel {
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             	}
             	else {
-            		thisPage.warn(failure.insert(0,"Failed to delete files: ").toString());
+            		thisPage.error(failure.insert(0,"Failed to delete files: ").toString());
             	}
             }
         });

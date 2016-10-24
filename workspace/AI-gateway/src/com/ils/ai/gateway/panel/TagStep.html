@@ -37,11 +37,11 @@
 		<div>
 			<table>
 				<tr>
-					<td class="last"><span class="label">Tag provider: </span> <span
+					<td class="last"><p class="label">Tag provider: </p> <span
 						wicket:id="provider" /></td>
 				</tr>
 				<tr>
-					<td class="last"><span class="label">Status: </span> <span
+					<td class="last"><p class="label">Status: </p> <span
 						wicket:id="status" /></td>
 				</tr>
 				<tr />
@@ -67,10 +67,14 @@
 
 			<p class="spacer" />
 			<div>
-				<input type="submit" wicket:id="install" value="Install Tags" />
+				<table class="ilsedit">
+					<tr>
+						<td><input
+							style="align: left; background-color: rgb(120, 20, 20)"
+							type="submit" wicket:id="install" value="Install Tags" /></td>
+					</tr>
+				</table>
 			</div>
-
-			<br />
 		</div>
 	</wicket:panel>
 </body>

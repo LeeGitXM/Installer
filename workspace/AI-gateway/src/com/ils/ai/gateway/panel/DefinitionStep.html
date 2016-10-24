@@ -17,25 +17,31 @@
 
 		<table>
 			<tr>
-				<td><span class="label" wicket:id="productionProviderLabel" /></td>
+				<td><p class="label" wicket:id="productionProviderLabel" /></td>
 				<td><select class="chooser" wicket:id="productionProviders" /></td>
 				<td />
-				<td><span class="label" wicket:id="isolationProviderLabel" /></td>
+				<td><p class="label" wicket:id="isolationProviderLabel" /></td>
 				<td><select class="chooser" wicket:id="isolationProviders" /></td>
 			</tr>
 
 			<tr>
-				<td><span class="label" wicket:id="productionDatabaseLabel" /></td>
+				<td><p class="label" wicket:id="productionDatabaseLabel" /></td>
 				<td><select class="chooser" wicket:id="productionDatabases" /></td>
 				<td />
-				<td><span class="label" wicket:id="isolationDatabaseLabel" /></td>
+				<td><p class="label" wicket:id="isolationDatabaseLabel" /></td>
 				<td><select class="chooser" wicket:id="isolationDatabases" /></td>
 			</tr>
 			<tr />
 		</table>
 		<p class="spacer" />
 		<div>
-			<input type="submit" wicket:id="save" value="Save" />
+			<table class="ilsedit">
+				<tr>
+					<td><input
+						style="align: left; background-color: rgb(120, 20, 20)"
+						type="submit" wicket:id="save" value="Save" /></td>
+				</tr>
+			</table>
 		</div>
 		<p class="spacer" />
 	</wicket:panel>

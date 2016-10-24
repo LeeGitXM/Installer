@@ -14,40 +14,38 @@
 		<p wicket:id="preamble">should not appear</p>
 		<br />
 		<div>
-			<table class="actiontable" cellpadding="0" cellspacing="0">
+			<table class="installtable" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
-						<td>Name</td>
+						<td>Property</td>
 						<td>To be Installed</td>
-						<td class="last">Currently Installed</td>
-						<td class="action" />
+						<td>Currently Installed</td>
 					</tr>
 				</thead>
-				<tbody id="actiontable-tbody">
+				<tbody>
 					<tr wicket:id="properties">
-						<td><span wicket:id="name" /></td>
-						<td><span wicket:id="value" /></td>
-						<td class="last"><span wicket:id="previous" /></td>
-						<td class="action" />
+						<td class="trow-title"><span wicket:id="name" /></td>
+						<td class="trow-body"><span wicket:id="value" /></td>
+						<td class="trow-body"><span wicket:id="previous" /></td>
 					</tr>
 				</tbody>
 			</table>
 			<br />
-			<div>
-				<table>
-					<tr>
-						<td><label>Skip Up-to-date Resources:</label> <input
+			<table class="ilsedit">
+			<tr>
+				<td><p class="label">Skip Up-to-date Resources:</p>
+				    <input style="align: left"
 							type="checkbox" wicket:id="current" /></td>
-						<td><label>Skip Non-essential Resources:</label> <input
+				<td>  </td>
+				<td><p class="label">Skip Non-essential Resources:</p>
+				<input style="align: left"
 							type="checkbox" wicket:id="essential" /></td>
-					</tr>
-				</table>
-			</div>
-			<br />
-			<div>
-				<input type="button" wicket:id="notes" value="View Release Notes" />
-			</div>
-			<br />
+				</tr><tr>
+				<td></td>
+				<td></td>
+				<td><input style="align: left; background-color: rgb(120, 20, 20)" type="button" wicket:id="notes" value="View Release Notes" /></td>
+				</tr>
+			</table>
 		</div>
 	</wicket:panel>
 

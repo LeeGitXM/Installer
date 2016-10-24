@@ -218,8 +218,8 @@
 	</panel>
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
-		<title>Ignition Applications - Installed</title>
-		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
+		<title>AED-RTA - Installed</title>
+		<preamble>Now that all of the automated installation and configuration of the EMRE AED-RTA Applications
 		          is complete, there are just a few more manual steps required. </preamble>
 		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
 		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"

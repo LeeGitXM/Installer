@@ -63,7 +63,7 @@ public class InstallWizard extends GatewayWizard {
 			}
 		}
 		else {
-			warn("Product name is missing from configured properties. No properties update possible.");
+			error("Product name is missing from configured properties. No properties update possible.");
 		}
 	}
 	

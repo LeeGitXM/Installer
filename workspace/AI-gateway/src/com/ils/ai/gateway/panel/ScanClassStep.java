@@ -57,7 +57,7 @@ public class ScanClassStep extends BasicInstallerPanel {
             			panelData.setCurrentVersion(futureVersion);
             			info(String.format("Successfully loaded scanclass %s", name));
             		}
-            		else warn(result);
+            		else error(result);
             	}
             }
         });
