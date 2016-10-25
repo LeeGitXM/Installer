@@ -289,7 +289,7 @@
 		</preamble>
 		<property name="site">Vistalon</property>
 		<artifact name="Vistalon Charts" type="project" subtype="global">
-			<location>artifacts/projects/Vistalon.proj</location>
+			<location>artifacts/projects/VistalonUnitProcedure.proj</location>
 		</artifact>
 	</panel>
 	<panel type="documentation" essential="false">
