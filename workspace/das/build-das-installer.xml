@@ -1,0 +1,131 @@
+<!-- Create an installer for testing the Dow AgroSciences Robotics OEE Application.
+
+     We require that GIT_REPO and SVN_REPO be provided to this script.
+-->
+<project name="DiagToolkitTestInstaller" basedir="." default="deploy">
+	<property name="build.dir" value="${basedir}/../AI-build" />
+	<property name="staging.dir" value="${basedir}/staging" />
+	<property name="artifact.dir" value="${staging.dir}/artifacts" />
+	<property name="deploy.dir" value="${basedir}/modules" />
+	<property name="bom" value="${basedir}/bom.xml" />
+	<property name="module.name" value="norms-installer" />
+	<property name="module.path" value="${basedir}/modules" />
+	<property name="module.xml" value="${basedir}/das-installer-module.xml" />
+	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+
+	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
+	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
+		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
+	</taskdef>
+	<!-- Generic SignModule: Reference Via Antcalls -->
+	<target name="SignModule">
+		<echo message="Signing ${moduleName}" />
+		<java jar="${git.repo}/external/lib/module-signer.jar"  fork="true">
+			<arg value="-keystore=${git.repo}/tools/keys/ILSA-keystore"/>
+			<arg value="-keystore-pwd=ILS-Automation"/>
+			<arg value="-alias=ILSAutomationKey"/>
+			<arg value="-alias-pwd=chromsmart" />
+			<arg value="-chain=${git.repo}/tools/keys/ilsautomationcertificate.p7b"/>
+			<arg value="-module-in=${modulein}"/>
+			<arg value="-module-out=${moduleout}"/>
+		</java>
+	</target>
+					
+	<tstamp>
+		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
+	</tstamp>
+
+	<!-- Clean results of previous runs -->
+	<target name="clean" description="Remove existing archive">
+		<delete dir="${staging.dir}" />
+		<delete file="${module.path}" />
+	</target>
+
+	<!-- Builds the toolkit module jars and the final .modl file -->
+	<target name="build" depends="clean" description="Assemble the installer">
+
+		<!-- version.build are both defined in build.xml 
+		    Override them here with file contents in SVN Release area
+		    Update the BOM. "loadfile" does not overwrite existing properties.
+		-->
+
+		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<trim input="${raw}" property="version.build"/>
+		
+		<echo message="Build date:    ${build.date}" />
+		<echo message="Build version: ${version.build}" />
+
+
+		<!-- Create directories -->
+		<echo message="Making ${module.name} modl" />
+		<mkdir dir="${staging.dir}" />
+		<mkdir dir="${artifact.dir}" />
+		<mkdir dir="${deploy.dir}" />
+
+		<!-- Create module.xml, marker file and bill-of-materials -->
+		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
+		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
+
+		<!-- Copy Core jar files -->
+		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
+		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
+
+		<!-- Copy staged artifacts into the bundle. Update release and build date -->
+		<mkdir dir="${artifact.dir}" />
+		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
+		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
+
+		<mkdir dir="${artifact.dir}/test" />
+		<copy todir="${artifact.dir}/test/pylib">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+				<include name="pylib/**/*.py" />
+			</fileset>
+		</copy>
+		<copy todir="${artifact.dir}/test/regression">
+			<fileset dir="${svn.repo}/EMChemicals/Migration/Vistalon">
+				<include name="Regression/**/*.txt" />
+			</fileset>
+		</copy>
+
+		<!-- Modules -->
+		<mkdir dir="${artifact.dir}/modules" />
+		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
+
+
+		<!-- Zip it all up -->
+		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
+		
+		<!-- Sign the module -->
+		<antcall target="SignModule">
+			<param name="moduleName" value="${module.name}-${version.build}" />
+			<param name="modulein"   value="${module.path}/${module.name}-${version.build}-unsigned.modl" />
+			<param name="moduleout"  value="${module.path}/${module.name}-${version.build}-signed.modl" />
+		</antcall>
+				
+	</target>
+
+	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
+	<target name="deploy" depends="build">
+		<echo message="Installing ${module.name} on Ignition Gateway." />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
+	</target>
+	
+	<!-- macro to trim newlines from a variable -->
+	 <macrodef name="trim">
+	   <attribute name="input" />
+	   <attribute name="property" />
+	   <sequential>
+	     <tempfile property="temp.file" />
+	     <echo file="${temp.file}" message="@{input}" />
+	     <move file="${temp.file}" tofile="${temp.file}.2">
+	       <filterchain>
+	       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+	       </filterchain>
+	     </move>
+	     <loadfile property="@{property}" srcFile="${temp.file}.2" />
+	     <delete file="${temp.file}.2" failonerror="false" />
+	   </sequential>
+	 </macrodef>
+</project>

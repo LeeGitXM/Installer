@@ -170,6 +170,12 @@
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/sqlTags.csv" tofile="${artifact.dir}/tags/sqlTags.csv" />
+		
+		<!-- Test -->
+		<mkdir dir="${artifact.dir}/test/models" />
+		<mkdir dir="${artifact.dir}/test/tags" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/tags.xml" tofile="${artifact.dir}/test/tags/testtags.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModels.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />

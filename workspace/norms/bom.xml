@@ -58,7 +58,7 @@
 		<artifact name="Test framework scripts" type="text">
 			<location>artifacts/test/regression</location>
 			<destination type="home">.</destination>
-		</artifact>t
+		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>

@@ -113,6 +113,18 @@
 			<location>artifacts/database/insertAED.sql</location>
 		</artifact>
 	</panel>
+		<panel type="file" essential="false" version="1">
+		<title>Test Models</title>
+		<preamble>This step adds an importable XML file to the user's home directory (C: drive for a Windows  system).   
+		          The file contains a sample Model of each type.  
+		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.   
+		</preamble>
+		<!-- paths are with respect to the file system root -->
+		<artifact name="Model Import File" type="text">
+			<location>artifacts/test/models</location>
+			<destination type="home">.</destination>
+		</artifact>
+	</panel>
 	<panel type="module" subtype="production" essential="true" version="4" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
@@ -139,6 +151,16 @@
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="False" version="1">
+		<title>Install Tags for Test Models</title>
+		<preamble>This page defines tags that are referenced by the test models.
+		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Tags for Test Models" type="tag" subtype="xml">
+			<location>artifacts/test/tags/testtags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="4">
