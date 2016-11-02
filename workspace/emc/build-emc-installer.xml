@@ -170,8 +170,8 @@
 		<copy file="${git.repo}/blt/migration/json/ignition/polyFlyingSwitch.json" tofile="${artifact.dir}/migration/polyFlyingSwitch.json" />
 		<copy file="${git.repo}/blt/migration/json/ignition/polyRateChange.json" tofile="${artifact.dir}/migration/polyRateChange.json" />
 		<copy file="${git.repo}/blt/migration/json/ignition/vfuProductQuality.json" tofile="${artifact.dir}/migration/vfuProductQuality.json" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/migration/DrierRegen.proj" />
-		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/migration/VistalonUnitProcedure.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
+		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/projects/VistalonUnitProcedure.proj" />
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
