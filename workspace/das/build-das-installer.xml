@@ -49,7 +49,7 @@
 		    Update the BOM. "loadfile" does not overwrite existing properties.
 		-->
 
-		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<loadfile property="raw" srcFile="${svn.repo}/DAS/VERS"/>
 		<trim input="${raw}" property="version.build"/>
 		
 		<echo message="Build date:    ${build.date}" />
@@ -76,23 +76,30 @@
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
+		<!-- External python -->
 		<mkdir dir="${artifact.dir}/test" />
-		<copy todir="${artifact.dir}/test/pylib">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+		<copy todir="${artifact.dir}/oee/pylib">
+			<fileset dir="${git.repo}/das/python">
 				<include name="pylib/**/*.py" />
 			</fileset>
 		</copy>
+		<!-- Project -->
 		<copy todir="${artifact.dir}/test/regression">
-			<fileset dir="${svn.repo}/EMChemicals/Migration/Vistalon">
+			<fileset dir="${git.repo}/EMChemicals/Migration/Vistalon">
 				<include name="Regression/**/*.txt" />
 			</fileset>
 		</copy>
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
+		<copy file="${git.repo}/das/workspace/DR_Build/modules/DR-module-signed.modl" tofile="${artifact.dir}/modules/DR-module-signed.modl" />
 
-
+		<!-- Database (SQLSERVER/MySQL) -->
+		<mkdir dir="${artifact.dir}/database/sqlserver" />
+		<copy file="${git.repo}/das/sqlserver/KPIs.sql" tofile="${artifact.dir}/database/sqlserver/createKPI.sql" />
+		<copy file="${git.repo}/das/sqlserver/clearDatabase.sql" tofile="${artifact.dir}/database/sqlserver/clearDatabase.sql" />
+		<mkdir dir="${artifact.dir}/database/mysql" />
+		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 		

@@ -5,22 +5,33 @@
       be unique. 
  -->
 <installer>
-	<title>Diagnostic Toolkit Testing</title>
-	<description>Installer for the OEE Application Supporting Dow AgroSciences</description>
+	<title>Dow AgroSciences Robotics - OEE/KPI</title>
+	<description>Installer for the OEE/KPI Application Supporting Dow AgroSciences</description>
 	<property name="product">OEE</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">1</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>Dow AgroSciences Robotics - OEE/KPI</title>
 		<preamble>Welcome to the ILS Automation installer for the
 			Dwo AgroSciences Robotics OEE/KPI Application. Before continuing, please make sure that you have 
-			defined any necessary tag providers and database connections in your Ignition Gateway.
+			defined both tag provider and datasource in your Ignition Gateway.
 		</preamble>
 	</panel>
-		<panel type="definition" essential="true">
+	<panel type="license" essential="true" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms before proceeding.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
 		<title>Database and Tag Provider Definitions\</title>
 		<preamble>Specify tag provider and database connections as used by the DAS Robotics Application. 
 		A provider and datasource must be defined in the Ignition Gateway before installing the application.
@@ -37,11 +48,11 @@
 		</preamble>
 		<!-- paths are with respect to the file system root -->
 		<artifact name="External python scripts" type="text" >
-			<location>artifacts/test/pylib</location>
+			<location>artifacts/oee/pylib</location>
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-		<panel type="database" essential="true" version="5">
+	<panel type="database" essential="true" version="1">
 		<title>OEE/KPI Database Create and Alter Scripts </title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -51,13 +62,41 @@
 		<property name="dbms" type="SQLSERVER"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="OEE/KPI Database" type="sql" subtype="create">
-			<location>artifacts/database/createKPI.sql</location>
+			<location>artifacts/database/sqlserver/createKPI.sql</location>
 		</artifact>
 		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
+			<location>artifacts/database/sqlserver/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="4">
+	<panel type="database" essential="true" version="1">
+		<title>OEE/KPI Database Create and Alter Scripts </title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the previously-specified instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="MYSQL"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="OEE/KPI Database" type="sql" subtype="create">
+			<location>artifacts/database/mysql/createKPI.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/mysql/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Modules</title>
+		<preamble>This step installs the module which contains the parsing code for the DAS Robotics stacker
+		log file.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this modules on your system, 
+		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module's listing.
+		</preamble>
+		<artifact name="DAS Robotics Parsing Module" type="module">
+			<location>artifacts/modules/DR-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>DAS Robotics OEE Main Project</title>
 		<preamble>KPI is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -72,6 +111,15 @@
 		</artifact>
 		<artifact name="KPI Partial Project" type="project" subtype="partial">
 			<location>artifacts/projects/KPI.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="development" essential="false" version="1">
+		<title>DAS Robotics OEE Parser Development Project</title>
+		<preamble>This project is for developing and testing the stacker event log parser.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="DasPerserDevelopment" type="project" subtype="full">
+			<location>artifacts/projects/DasParserDevelopment.proj</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
