@@ -54,7 +54,7 @@
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="5">
+	<panel type="file" essential="true" version="6">
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
@@ -79,7 +79,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="5">
+	<panel type="database" essential="true" version="6">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
@@ -101,7 +101,7 @@
 		</artifact>
 	</panel>
  
-	<panel type="database" essential="false" version="5">
+	<panel type="database" essential="false" version="6">
 		<title>Sample Test Data</title>
 		<preamble>These options should NOT be applied to a production database. These are for test systems only.
 		</preamble>
@@ -125,7 +125,7 @@
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="4" >
+	<panel type="module" subtype="production" essential="true" version="5" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
@@ -163,7 +163,7 @@
 			<location>artifacts/test/tags/testtags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="4">
+	<panel type="project" subtype="main" essential="true" version="5">
 		<title>Install a New AED Project or Merge Changes into an Existing
 			Project
 		</title>
