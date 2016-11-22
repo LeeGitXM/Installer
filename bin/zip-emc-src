@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# Save the source tree for EMChemicals. This zip covers several git
+# projects, both Java, python and libraries. We archive enough to
+# execute a build of the product.  We do not intentionally include 
+# build products. The installer version includes only the python
+# and modules.
+# The resulting ziup file is copied onto the Google Drive.
+#
+#set -x
+SVN=${SVN_REPO}/EMChemicals
+VERS=`cat $SVN/Release/VERS`
+TMP=${GIT_REPO}/$VERS/git
+# Cleanup
+rm -rf $TMP
+cd ${GIT_REPO}
+rm -rf external/cachedir
+rm -rf ils-common/bin/*
+rm -rf ils-common/workspace/doc/*
+mkdir -p $TMP
+
+# In each case, Scrub the temp area before zipping
+# ================ BLT ==============
+mkdir -p $TMP/blt
+cd ${GIT_REPO}/blt
+for dir in Block BLT_Client BLT_Common BLT_Designer BLT_Gateway BLT_Migration
+do
+    mkdir -p ${TMP}/blt/workspace/${dir}
+	cp -a workspace/${dir}/src ${TMP}/blt/workspace/${dir}
+	cp -a workspace/${dir}/.classpath ${TMP}/blt/workspace/${dir}
+	cp -a workspace/${dir}/.project ${TMP}/blt/workspace/${dir}
+done
+mkdir -p ${TMP}/blt/workspace/BLT_Build/AntLib
+cp -a workspace/BLT_Build/AntLib/* $TMP/blt/workspace/BLT_Build/AntLib
+cp -a workspace/BLT_Build/*.xml $TMP/blt/workspace/BLT_Build
+cp -a workspace/BLT_Build/*.html $TMP/blt/workspace/BLT_Build
+cp -a workspace/BLT_Build/*.properties $TMP/blt/workspace/BLT_Build
+cp -a workspace/BLT_Build/.project $TMP/blt/workspace/BLT_Build
+
+# ================ EXTERNAL ==============
+mkdir -p $TMP/external/lib
+cd ${GIT_REPO}/external
+cp -a lib/antlr*.jar ${TMP}/external/lib
+cp -a lib/commons*.jar ${TMP}/external/lib
+cp -a lib/dom4j*.jar ${TMP}/external/lib
+cp -a lib/jama*.jar ${TMP}/external/lib
+cp -a lib/jackson*.jar ${TMP}/external/lib
+cp -a lib/jcommon*.jar ${TMP}/external/lib
+cp -a lib/jfree*.jar ${TMP}/external/lib
+cp -a lib/jgraphx*.jar ${TMP}/external/lib
+cp -a lib/jide*.jar ${TMP}/external/lib
+cp -a lib/jython*.jar ${TMP}/external/lib
+cp -a lib/guava*.jar ${TMP}/external/lib
+cp -a lib/log4j*.jar ${TMP}/external/lib
+cp -a lib/lucene*.jar ${TMP}/external/lib
+cp -a lib/miglayout*.jar ${TMP}/external/lib
+cp -a lib/module-signer.jar ${TMP}/external/lib
+cp -a lib/org.eclipse*.jar ${TMP}/external/lib
+cp -a lib/prefuse*.jar ${TMP}/external/lib
+cp -a lib/slf*.jar ${TMP}/external/lib
+cp -a lib/sqlite*.jar ${TMP}/external/lib
+cp -a .classpath ${TMP}/external
+cp -a .project ${TMP}/external
+# ================ IGNITION-79 ==============
+mkdir -p $TMP/ignition-79/lib
+cd ${GIT_REPO}/ignition-79
+cp -a lib/*.jar ${TMP}/ignition-79/lib
+cp -a .classpath ${TMP}/ignition-79
+cp -a .project ${TMP}/ignition-79
+# ================ ILS-COMMON ==============
+mkdir $TMP/ils-common
+cd ${GIT_REPO}/ils-common/ILS_Common
+mkdir -p ${TMP}/ils-common/ILS_Common
+cp -a src ${TMP}/ils-common/ILS_Common
+cp -a *.xml ${TMP}/ils-common/ILS_Common
+cp -a .classpath ${TMP}/ils-common/ILS_Common
+cp -a .project ${TMP}/ils-common/ILS_Common
+
+# ================ SFC ==============
+
+
+# Now zip and copy to google drive
+cd ${GIT_REPO}/$VERS
+zip -rq ../$VERS.zip *
+cp ../$VERS.zip "${GOOGLE_REPO}/$VERS"
+rm -rf ${GIT_REPO}/$VERS
