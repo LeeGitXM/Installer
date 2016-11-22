@@ -38,7 +38,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="1">
+	<panel type="file" essential="true" version="2">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -51,7 +51,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="1">
+	<panel type="database" essential="true" version="2">
 		<title>Database Clear, Create and Alter Scripts Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the BEDB database instance.
 		          As a safety measure, the database creation step will fail unless any previous instance is cleared.
@@ -65,7 +65,7 @@
 			<location>artifacts/database/createTables.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
+	<panel type="tag" subtype="production" essential="true" version="2">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
 		           These definitions are written to the default tag provider.
@@ -78,7 +78,7 @@
 			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
+	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
