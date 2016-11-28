@@ -77,7 +77,48 @@ cp -a .classpath ${TMP}/ils-common/ILS_Common
 cp -a .project ${TMP}/ils-common/ILS_Common
 
 # ================ SFC ==============
+mkdir -p $TMP/sfc
+cd ${GIT_REPO}/sfc
+for dir in sfc-build sfc-client sfc-common sfc-designer sfc-gateway sfc-migration sfc-step
+do
+    mkdir -p ${TMP}/sfc/workspace/${dir}
+	cp -a workspace/${dir}/src ${TMP}/sfc/workspace/${dir}
+	cp -a workspace/${dir}/.classpath ${TMP}/sfc/workspace/${dir}
+	cp -a workspace/${dir}/.project ${TMP}/sfc/workspace/${dir}
+done
+mkdir -p ${TMP}/sfc/workspace/sfc-build/AntLib
+cp -a workspace/sfc-build/AntLib/* $TMP/sfc/workspace/sfc-build/AntLib
+cp -a workspace/sfc-build/*.xml $TMP/sfc/workspace/sfc-build
+cp -a workspace/sfc-build/*.html $TMP/sfc/workspace/sfc-build
+cp -a workspace/sfc-build/*.properties $TMP/sfc/workspace/sfc-build
+cp -a workspace/sfc-build/.project $TMP/sfc/workspace/sfc-build
 
+# ================ Tools ==============
+mkdir -p $TMP/tools/module-signer
+cd ${GIT_REPO}/tools
+mkdir -p ${TMP}/tools/module-signer
+cp -a module-signer/pom.xml ${TMP}/tools/module-signer
+cp -a module-signer/README.md ${TMP}/tools/module-signer
+cp -a module-signer/src ${TMP}/tools/module-signer
+mkdir -p $TMP/tools/keys
+mkdir -p ${TMP}/tools/keys
+cp -a keys/* ${TMP}/tools/keys
+
+# ================ Installer ==============
+mkdir -p $TMP/installer
+cd ${GIT_REPO}/installer
+for dir in AI_Build AI_Gateway emc
+do
+    mkdir -p ${TMP}/installer/workspace/${dir}
+	cp -a workspace/${dir}/src ${TMP}/installer/workspace/${dir}
+	cp -a workspace/${dir}/.classpath ${TMP}/installer/workspace/${dir}
+	cp -a workspace/${dir}/.project ${TMP}/installer/workspace/${dir}
+done
+mkdir -p ${TMP}/sfc/workspace/AI_Build/AntLib
+cp -a workspace/AI_Build/AntLib/* $TMP/installer/workspace/build/AntLib
+cp -a workspace/AI_Build/*.xml $TMP/installer/workspace/AI_Build
+cp -a workspace/AI_Build/*.properties $TMP/installer/workspace/AI_Build
+cp -a workspace/AI_Build/.project $TMP/installer/workspace/AI_Build
 
 # Now zip and copy to google drive
 cd ${GIT_REPO}/$VERS
