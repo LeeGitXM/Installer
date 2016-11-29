@@ -161,9 +161,6 @@
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
 		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 
-		<!-- Source -->
-		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
 		<!-- Exports -->
 		<copy file="${git.repo}/blt/migration/json/ignition/crxProductQuality.json" tofile="${artifact.dir}/migration/crxProductQuality.json" />
 		<copy file="${git.repo}/blt/migration/json/ignition/cstrProductQuality.json" tofile="${artifact.dir}/migration/cstrProductQuality.json" />
