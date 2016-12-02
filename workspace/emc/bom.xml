@@ -222,7 +222,7 @@
 			<location>artifacts/tags/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="5">
+	<panel type="project" subtype="main" essential="true" version="6">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -240,7 +240,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="5">
+	<panel type="project" subtype="main" essential="true" version="6">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>EMChemicals - Custom Modules</title>
+	<description>Installer for EMC Custom Modules</description>
+	<property name="product">EMC modules source build</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">1</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Custom EMC Modules</title>
+		<preamble>Welcome to the ILS Automation installer
+			for ExxonMobil Chemicals built-from-source modules. This installer is designed to be
+			applied to an existing installation. It merely updates BLT and ILS-SFC modules. 
+			The table below compares the existing installation of built-from-source
+			modules, if any, with the versions contained in this new
+			installation.
+		</preamble>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="4" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the EMC applications.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
+		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
+		</preamble>
+		<artifact name="ILS-SFC Enhancements" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+		<artifact name="Block Language Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of ACE Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of the ACE Control Ignition Application
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Gateway Restart">Modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
