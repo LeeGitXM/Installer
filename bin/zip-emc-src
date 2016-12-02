@@ -79,7 +79,7 @@ cp -a .project ${TMP}/ils-common/ILS_Common
 # ================ SFC ==============
 mkdir -p $TMP/sfc
 cd ${GIT_REPO}/sfc
-for dir in sfc-build sfc-client sfc-common sfc-designer sfc-gateway sfc-migration sfc-step
+for dir in sfc-client sfc-common sfc-designer sfc-gateway sfc-migration
 do
     mkdir -p ${TMP}/sfc/workspace/${dir}
 	cp -a workspace/${dir}/src ${TMP}/sfc/workspace/${dir}
@@ -107,18 +107,27 @@ cp -a keys/* ${TMP}/tools/keys
 # ================ Installer ==============
 mkdir -p $TMP/installer
 cd ${GIT_REPO}/installer
-for dir in AI_Build AI_Gateway emc
+for dir in AI-gateway
 do
     mkdir -p ${TMP}/installer/workspace/${dir}
 	cp -a workspace/${dir}/src ${TMP}/installer/workspace/${dir}
 	cp -a workspace/${dir}/.classpath ${TMP}/installer/workspace/${dir}
 	cp -a workspace/${dir}/.project ${TMP}/installer/workspace/${dir}
 done
-mkdir -p ${TMP}/sfc/workspace/AI_Build/AntLib
-cp -a workspace/AI_Build/AntLib/* $TMP/installer/workspace/build/AntLib
-cp -a workspace/AI_Build/*.xml $TMP/installer/workspace/AI_Build
-cp -a workspace/AI_Build/*.properties $TMP/installer/workspace/AI_Build
-cp -a workspace/AI_Build/.project $TMP/installer/workspace/AI_Build
+mkdir -p ${TMP}/installer/workspace/AI-build/AntLib
+cp -a workspace/AI-build/AntLib/* $TMP/installer/workspace/AI-build/AntLib
+cp -a workspace/AI-build/*.xml $TMP/installer/workspace/AI-build
+cp -a workspace/AI-build/*.properties $TMP/installer/workspace/AI-build
+cp -a workspace/AI-build/.project $TMP/installer/workspace/AI-build
+mkdir -p ${TMP}/installer/workspace/emc
+cp -a workspace/emc/.project $TMP/installer/workspace/emc
+cp -a workspace/emc/*.xml $TMP/installer/workspace/emc
+
+# ==================== SVN ============
+TMP=${GIT_REPO}/${VERS}/svn
+mkdir -p ${TMP}/EMChemicals/Release
+cp ${SVN_REPO}/EMChemicals/Release/DATE ${TMP}/EMChemicals/Release
+cp ${SVN_REPO}/EMChemicals/Release/VERS ${TMP}/EMChemicals/Release
 
 # Now zip and copy to google drive
 cd ${GIT_REPO}/$VERS
