@@ -33,16 +33,21 @@ public class SummaryStep extends BasicInstallerPanel {
 		InstallerDataHandler handler = InstallerDataHandler.getInstance();
 		// By definition, this is the last panel. So we know the count.
 		int pindex = 0;
+		
+		String site= dataModel.getObject().getSiteName();
 		List<PropertyItem> panels = new ArrayList<>();
 		while( pindex<panelIndex ) {
 			PanelData pdata = handler.getPanelData(pindex,data);
-			// Create a PropertyItem for everything that is essential
-			if(pdata.isEssential() && pdata.getVersion()!=InstallerConstants.UNSET) {
-				System.out.println(String.format("SummaryStep: %s (%d vs %d)", pdata.getTitle(),pdata.getCurrentVersion(),pdata.getVersion()));
-				String value = "true";  // Up-to-date
-				if(pdata.getCurrentVersion()<pdata.getVersion() ) value = "false";
-				PropertyItem pi = new PropertyItem(pdata.getTitle(),value);
-				panels.add(pi);
+			// Create a PropertyItem for everything that is essential and matches the current site
+			if(site==null || site.isEmpty() || 
+					pdata.getSiteNames().size()==0 || pdata.getSiteNames().contains(site) ) {
+				if(pdata.isEssential() && pdata.getVersion()!=InstallerConstants.UNSET) {
+					System.out.println(String.format("SummaryStep: %s (%d vs %d)", pdata.getTitle(),pdata.getCurrentVersion(),pdata.getVersion()));
+					String value = "true";  // Up-to-date
+					if(pdata.getCurrentVersion()<pdata.getVersion() ) value = "false";
+					PropertyItem pi = new PropertyItem(pdata.getTitle(),value);
+					panels.add(pi);
+				}
 			}
 			pindex++;
 		}
