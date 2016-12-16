@@ -17,7 +17,8 @@
 		<title>Dow AgroSciences Robotics - OEE/KPI</title>
 		<preamble>Welcome to the ILS Automation installer for the
 			Dwo AgroSciences Robotics OEE/KPI Application. Before continuing, please make sure that you have 
-			defined both tag provider and datasource in your Ignition Gateway.
+			defined both a tag provider and two datasources in your Ignition Gateway. The first
+			datasource is the C3P0 event log and the second is for the KPI statistics.
 		</preamble>
 	</panel>
 	<panel type="license" essential="true" version="1">
@@ -31,86 +32,15 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Database and Tag Provider Definitions\</title>
-		<preamble>Specify tag provider and database connections as used by the DAS Robotics Application. 
-		A provider and datasource must be defined in the Ignition Gateway before installing the application.
-		</preamble>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="provider" type="production"></property>
-	</panel>
-	<panel type="file" essential="true" version="1">
+	<panel type="file" essential="true" version="1" >
 		<title>Install External Python</title>
 		<preamble>This step adds Python scripts that are utilized by the application. The term "external"
 		          refers to the fact that these scripts are global and not part of an Ignition project.     
 		</preamble>
 		<!-- paths are with respect to the file system root -->
-		<artifact name="External python scripts" type="text" >
+		<artifact name="External python scripts" type="text" subtype="user-lib" >
 			<location>artifacts/oee/pylib</location>
-			<destination type="home">.</destination>
-		</artifact>
-	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>OEE/KPI Database Create and Alter Scripts </title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the previously-specified instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="OEE/KPI Database" type="sql" subtype="create">
-			<location>artifacts/database/sqlserver/createKPI.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/sqlserver/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>OEE/KPI Database Create and Alter Scripts </title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the previously-specified instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="MYSQL"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="OEE/KPI Database" type="sql" subtype="create">
-			<location>artifacts/database/mysql/createKPI.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/mysql/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Modules</title>
-		<preamble>This step installs the module which contains the parsing code for the DAS Robotics stacker
-		log file.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this modules on your system, 
-		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module's listing.
-		</preamble>
-		<artifact name="DAS Robotics Parsing Module" type="module">
-			<location>artifacts/modules/DR-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
-		<title>DAS Robotics OEE Main Project</title>
-		<preamble>KPI is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
-		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="KPI" type="project" subtype="full">
-			<location>artifacts/projects/KPI.proj</location>
-		</artifact>
-		<artifact name="KPI Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/KPI.proj</location>
+			<destination>pylib</destination>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="development" essential="false" version="1">
@@ -133,10 +63,10 @@
 	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
 	<epilog>
 		<title>Installation Complete</title>
-		<preamble>The automated installation and configuration of the ACE Control Ignition Application
+		<preamble>The automated installation and configuration of the DAS KPI/OEE Application
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
-		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Database Creation">The Development project contains a setup page that provides for database creation.</note>
 	</epilog>
 </installer>
 

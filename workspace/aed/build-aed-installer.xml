@@ -78,10 +78,10 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
-		<copy file="${svn.repo}/EMRE/Database/Scripts/FromEMRE/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
+		<copy file="${svn.repo}/EMRE/Install/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Install/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<copy file="${svn.repo}/EMRE/Install/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Install/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -171,11 +171,16 @@
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/sqlTags.csv" tofile="${artifact.dir}/tags/sqlTags.csv" />
 		
+		
 		<!-- Test -->
+		<mkdir dir="${artifact.dir}/test/inputs" />
 		<mkdir dir="${artifact.dir}/test/models" />
 		<mkdir dir="${artifact.dir}/test/tags" />
-		<copy file="${svn.repo}/EMRE/Ignition/unittest/tags.xml" tofile="${artifact.dir}/test/tags/testtags.xml" />
-		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModels.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/simulationData/PCA-data.csv" tofile="${artifact.dir}/test/inputs/PCA-data.csv" />
+		<copy file="${svn.repo}/EMRE/Ignition/simulationData/SLED CUB APS TEMP PROFILE.csv" tofile="${artifact.dir}/test/inputs/SLED-data.csv" />
+		<copy file="${svn.repo}/EMRE/Install/AEDMemoryTags.xml" tofile="${artifact.dir}/test/tags/memoryTags.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModelsToImport.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDTags.xml" tofile="${artifact.dir}/test/models/AEDTagsToImport.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />

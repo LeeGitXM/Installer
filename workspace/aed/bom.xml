@@ -115,13 +115,18 @@
 	</panel>
 		<panel type="file" essential="false" version="1">
 		<title>Test Models</title>
-		<preamble>This step adds an importable XML file to the user's home directory (C: drive for a Windows  system).   
-		          The file contains a sample Model of each type.  
+		<preamble>This step adds importable XML files to the user's home directory (C: drive for a Windows  system).   
+		          The files contains sample Models of each type and appropriate input files for a data pump. 
+		          An additional file contains tag definitions for the test environment.
 		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.   
 		</preamble>
 		<!-- paths are with respect to the file system root -->
-		<artifact name="Model Import File" type="text">
+		<artifact name="Model and Tag Import Files" type="text">
 			<location>artifacts/test/models</location>
+			<destination type="home">.</destination>
+		</artifact>
+		<artifact name="PCA Input File" type="text">
+			<location>artifacts/test/inputs</location>
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
@@ -159,8 +164,8 @@
 		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.
 		</preamble>
 		<property name="provider" type="production"></property>
-		<artifact name="Tags for Test Models" type="tag" subtype="xml">
-			<location>artifacts/test/tags/testtags.xml</location>
+		<artifact name="Memory Tags to Overwrite OPC" type="tag" subtype="xml">
+			<location>artifacts/test/tags/memoryTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="5">
