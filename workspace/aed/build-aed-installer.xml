@@ -87,6 +87,7 @@
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMRE/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 6.0 Design Specification.docx" tofile="${artifact.dir}/doc/AedRtaDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/SLED/SLED-DesignSpecification.docx" tofile="${artifact.dir}/doc/SLEDDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 7.0 DB Design Changes.docx" tofile="${artifact.dir}/doc/AedRtaDatabaseDesignChanges.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDModuleProgrammersGuide.docx" tofile="${artifact.dir}/doc/AEDModuleProgrammersGuide.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDInstallationManual.docx" tofile="${artifact.dir}/doc/AEDInstallationManual.docx" />
