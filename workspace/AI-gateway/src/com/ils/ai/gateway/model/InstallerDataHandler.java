@@ -1747,7 +1747,7 @@ public class InstallerDataHandler {
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {
 		int pos = desc.indexOf("--");
-		if( pos>0 ) desc = desc.substring(pos);
+		if( pos>0 ) desc = desc.substring(0,pos);
 		String product = "";
 		String release = "";
 		String date = "";

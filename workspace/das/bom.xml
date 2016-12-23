@@ -43,6 +43,15 @@
 			<destination>pylib</destination>
 		</artifact>
 	</panel>
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install UDT Definition</title>
+		<preamble>The UDT defines attributes for tags that collect error statistics.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udtdef.xml</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="development" essential="false" version="1">
 		<title>DAS Robotics OEE Parser Development Project</title>
 		<preamble>This project is for developing and testing the stacker event log parser.

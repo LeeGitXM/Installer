@@ -83,6 +83,13 @@
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
+		<!-- Tags -->
+		<mkdir dir="${artifact.dir}/tags" />
+		<copy todir="${artifact.dir}/tags">
+		<fileset dir="${git.repo}/das">
+			<include name="udtdef.xml" />
+		</fileset>
+		</copy>
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy todir="${artifact.dir}/projects">
