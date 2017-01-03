@@ -27,19 +27,23 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /**
  * The definition step is where we define various parameters that are used in subsequent screens.
- * In particular, we define tag providers and database sources for production and, optionally, 
- * isolation modes.
+ * In particular, we define tag providers and database sources and DBMSs for production and, optionally, 
+ * secondary modes.
  */
 public class DefinitionStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
 	private boolean showProductionProvider = false;
-	private boolean showIsolationProvider  = false;
+	private boolean showSecondaryProvider  = false;
+	private boolean showProductionDBMS = false;
+	private boolean showSecondaryDBMS  = false;
 	private boolean showProductionDatabase = false;
-	private boolean showIsolationDatabase  = false;
+	private boolean showSecondaryDatabase  = false;
 	private SerializableDatasourceMeta productionDatabase=null;
-	private SerializableDatasourceMeta isolationDatabase=null;
+	private SerializableDatasourceMeta secondaryDatabase=null;
+	private String productionDBMS=null;
+	private String secondaryDBMS=null;
 	private TagProviderMeta productionProvider=null;
-	private TagProviderMeta isolationProvider=null;
+	private TagProviderMeta secondaryProvider=null;
 	private boolean saved = false;
 	private boolean valid = false;
 
@@ -56,11 +60,15 @@ public class DefinitionStep extends BasicInstallerPanel {
     	for(PropertyItem prop:properties) {
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
     			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionProvider = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showIsolationProvider = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
     		}
-    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
+    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
+    		}
+    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
     			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showIsolationDatabase = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
     		}
     	}
 		
@@ -69,43 +77,58 @@ public class DefinitionStep extends BasicInstallerPanel {
     	add(productionProviderLabel);
     	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProviderMeta>(this, "productionProvider"), getProviderList());
 		add(productionProviders);
-		Label isolationProviderLabel = new Label("isolationProviderLabel","Isolation Tag Provider: ");
-    	add(isolationProviderLabel);
-    	ProviderList isolationProviders = new ProviderList("isolationProviders", new PropertyModel<TagProviderMeta>(this, "isolationProvider"), getProviderList());
-		add(isolationProviders);
+		Label secondaryProviderLabel = new Label("secondaryProviderLabel","secondary Tag Provider: ");
+    	add(secondaryProviderLabel);
+    	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProviderMeta>(this, "secondaryProvider"), getProviderList());
+		add(secondaryProviders);
     	Label productionDatabaseLabel = new Label("productionDatabaseLabel","Production Database: ");
     	add(productionDatabaseLabel);
     	SourceList productionDatabases = new SourceList("productionDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "productionDatabase"), getDatasourceList());
 		add(productionDatabases);
-		Label isolationDatabaseLabel = new Label("isolationDatabaseLabel","Isolation Database: ");
-    	add(isolationDatabaseLabel);
-    	SourceList isolationDatabases = new SourceList("isolationDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "isolationDatabase"), getDatasourceList());
-		add(isolationDatabases);
-		
+		Label secondaryDatabaseLabel = new Label("secondaryDatabaseLabel","secondary Database: ");
+    	add(secondaryDatabaseLabel);
+    	SourceList secondaryDatabases = new SourceList("secondaryDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "secondaryDatabase"), getDatasourceList());
+		add(secondaryDatabases);
+		Label productionDBMSLabel = new Label("productionDBMSLabel","Production DBMS: ");
+    	add(productionDBMSLabel);
+    	DBMSList productionDBMSs = new DBMSList("productionDBMSs", new PropertyModel<String>(this, "productionDBMS"), getDBMSList());
+		add(productionDBMSs);
+		Label secondaryDBMSLabel = new Label("secondaryDBMSLabel","secondary DBMS: ");
+    	add(secondaryDBMSLabel);
+    	DBMSList secondaryDBMSs = new DBMSList("secondaryDBMSs", new PropertyModel<String>(this, "secondaryDBMS"), getDBMSList());
+		add(secondaryDBMSs);
 		
 		// Adjust visibility
 		productionDatabaseLabel.setVisible(showProductionDatabase);
-		isolationDatabaseLabel.setVisible(showIsolationDatabase);
-		
+		secondaryDatabaseLabel.setVisible(showSecondaryDatabase);
+		productionDBMSLabel.setVisible(showProductionDBMS);
+		secondaryDBMSLabel.setVisible(showSecondaryDBMS);
 		productionProviderLabel.setVisible(showProductionProvider);
-		isolationProviderLabel.setVisible(showIsolationProvider);
+		secondaryProviderLabel.setVisible(showSecondaryProvider);
+		
 		productionDatabases.setVisible(showProductionDatabase);
-		isolationDatabases.setVisible(showIsolationDatabase);
+		secondaryDatabases.setVisible(showSecondaryDatabase);
+		productionDBMSs.setVisible(showProductionDBMS);
+		secondaryDBMSs.setVisible(showSecondaryDBMS);
 		productionProviders.setVisible(showProductionProvider);
-		isolationProviders.setVisible(showIsolationProvider);
+		secondaryProviders.setVisible(showSecondaryProvider);
 		
 		// Select Defaults
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
-		isolationDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE));
+		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ALTERNATE_DATABASE));
+		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DBMS));
+		secondaryDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DBMS));
 		productionProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
-		isolationProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER));
+		secondaryProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER));
 		
 		// Check validity with no action
 		valid = true;
 		if( (showProductionDatabase && productionDatabase==null) ||
-			(showIsolationDatabase  && isolationDatabase==null) ||
+			(showSecondaryDatabase  && secondaryDatabase==null) ||
+			(showProductionDBMS     && productionDBMS==null) ||
+			(showSecondaryDBMS      && secondaryDBMS==null) ||
 			(showProductionProvider && productionProvider==null) ||
-			(showIsolationProvider  && isolationProvider==null)    )  {
+			(showSecondaryProvider  && secondaryProvider==null)    )  {
 			valid = false;
 		}
 		
@@ -118,24 +141,28 @@ public class DefinitionStep extends BasicInstallerPanel {
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
 				
 				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE,productionDatabase.getName());
-				if( isolationDatabase!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE,isolationDatabase.getName());
+				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ALTERNATE_DATABASE,secondaryDatabase.getName());
+				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DBMS,productionDBMS);
+				if( secondaryDBMS!=null )      toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DBMS,secondaryDBMS);
 				if( productionProvider!=null ) toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER,productionProvider.getName());
-				if( isolationProvider!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER,isolationProvider.getName());
+				if( secondaryProvider!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER,secondaryProvider.getName());
 				
 				// Check validity
 				StringBuilder msg = new StringBuilder();
 				if( showProductionDatabase && productionDatabase==null )msg.append("Production database is not defined. ");
-				if( showIsolationDatabase  && isolationDatabase==null)  msg.append("Isolation database is not defined. ");
+				if( showSecondaryDatabase  && secondaryDatabase==null)  msg.append("secondary database is not defined. ");
+				if( showProductionDBMS     && productionDBMS==null)     msg.append("Production DBMS is not defined. ");
+				if( showSecondaryDBMS      && secondaryDBMS==null)      msg.append("secondary DBMS is not defined. ");
 				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
-				if( showIsolationProvider  && isolationProvider==null)  msg.append("Isolation tag provider is not defined. ");
+				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("secondary tag provider is not defined. ");
 				if( msg.length()==0 ) {
-					if(showProductionDatabase&&showIsolationDatabase&&
-					  productionDatabase.getName().equalsIgnoreCase(isolationDatabase.getName())) {
-						msg.append("Production and isolation databases may not be the same. ");
+					if(showProductionDatabase&&showSecondaryDatabase&&
+					  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
+						msg.append("Production and secondary databases may not be the same. ");
 					}
-					if(showProductionProvider&&showIsolationProvider&&
-							  productionProvider.getName().equalsIgnoreCase(isolationProvider.getName())) {
-								msg.append("Production and isolation tag providers may not be the same. ");
+					if(showProductionProvider&&showSecondaryProvider&&
+							  productionProvider.getName().equalsIgnoreCase(secondaryProvider.getName())) {
+								msg.append("Production and secondary tag providers may not be the same. ");
 					}
 				}
 				
@@ -204,6 +231,50 @@ public class DefinitionStep extends BasicInstallerPanel {
 		}
 		return result;
 	}
+	// ================================= Classes for Listing DBMS  ==============================
+		public class DBMSList extends DropDownChoice<String> {
+			private static final long serialVersionUID = -8014391900949792300L;
+
+			public DBMSList(String key,PropertyModel<String>model,List<String> list) {
+				super(key,model,list,new DBMSRenderer());
+			}
+
+			@Override
+			public boolean wantOnSelectionChangedNotifications() { return true; }
+
+			@Override
+			protected void onSelectionChanged(final String newSelection) {
+				super.onSelectionChanged(newSelection);
+			} 
+		}
+		public class DBMSRenderer implements IChoiceRenderer<String> {
+			private static final long serialVersionUID = -8009556857350933828L;
+
+			@Override
+			public Object getDisplayValue(String source) {
+				return source;
+			}
+
+			@Override
+			public String getIdValue(String source, int i) {
+				return source;
+			}
+		}
+
+		private List<String> getDBMSList() {
+			InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+			return dataHandler.getDBMSList();
+		}
+		private String getDefaultDBMS(String name ) {
+			String result = null;
+			for(String meta:getDBMSList() ) {
+				if(meta.equalsIgnoreCase(name)) {
+					result = meta;
+					break;
+				}
+			}
+			return result;
+		}
 
 	// ================================= Classes for Listing Tag Provider  ==============================
 	public class ProviderList extends DropDownChoice<TagProviderMeta> {

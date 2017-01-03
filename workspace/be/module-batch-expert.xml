@@ -5,10 +5,10 @@
 	<name>BatchExpertPlusInstaller</name>
 	<description>Batch Expert+ Installer</description>
 	<license></license>
-	<version>1.0.0.0</version>
+	<version>2.0.0.0</version>
 	<freemodule>true</freemodule>
-	<requiredignitionversion>7.8.3</requiredignitionversion>
-	<requiredframeworkversion>7</requiredframeworkversion>
+	<requiredignitionversion>7.9.0</requiredignitionversion>
+	<requiredframeworkversion>8</requiredframeworkversion>
 
 	<!-- Load in our jars for each scope -->
 	<export scope="G">ils-common.jar</export>

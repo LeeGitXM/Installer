@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -19,7 +19,7 @@
 			The table below compares the existing installation of
 			Batch Expert+, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
-			defined the database connection "BEDB".
+			defined both database connection and tag provider.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -35,6 +35,15 @@
 		<artifact name="license" type="html">
 			<location>artifacts/license/license.html</location>
 		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Define tags provider and database connections</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          become the demonstration project defaults.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="DBMS" type="production"></property>
+		<property name="provider" type="production"></property>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
@@ -56,7 +65,7 @@
 		<preamble>This page provides the opportunity for populating the BEDB database instance.
 		          As a safety measure, the database creation step will fail unless any previous instance is cleared.
 		</preamble>
-		<property name="database">BEDB</property>
+		<property name="database" type="production"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="Drop Tables" type="sql" subtype="clear">
 			<location>artifacts/database/clearTables.sql</location>
@@ -65,12 +74,32 @@
 			<location>artifacts/database/createTables.sql</location>
 		</artifact>
 	</panel>
+	<panel type="database" essential="false" version="1">
+		<title>Insert R1 Sample Data</title>
+		<preamble>Insert results E1 into the production database.
+		          WARNING: Do not use in a "live" production system.
+		</preamble>
+		<property name="database" type="production"></property>
+		<artifact name="Insert into R1" type="sql" subtype="insert">
+			<location>artifacts/results/R1.sql</location>
+		</artifact>	
+	</panel>
+	<panel type="database" essential="true" version="1">
+		<title>Insert C1 Sample Data</title>
+		<preamble>Insert results C1 into the production database.
+		          WARNING: Do not use in a "live" production system.
+		</preamble>
+		<property name="database" type="production"></property>
+		<artifact name="Insert into C1" type="sql" subtype="insert">
+			<location>artifacts/results/C1.sql</location>
+		</artifact>	
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="2">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
-		<property name="provider">default</property>
+		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
@@ -119,7 +148,7 @@
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of ACE Ignition Applications in
+		 Selecting "Finish" will record the current version of Batch Expert+ in
 			the Gateway internal database.
 		</preamble>
 	</panel>

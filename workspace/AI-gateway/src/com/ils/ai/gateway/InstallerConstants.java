@@ -22,6 +22,7 @@ public interface InstallerConstants   {
 	// These are standard properties
 	public final static String PROPERTY_DATABASE = "database";
 	public final static String PROPERTY_DATE    = "date";
+	public final static String PROPERTY_DBMS    = "DBMS";
 	public final static String PROPERTY_PRODUCT = "product";
 	public final static String PROPERTY_PROVIDER = "provider";
 	public final static String PROPERTY_RELEASE = "release"; 
@@ -30,6 +31,7 @@ public interface InstallerConstants   {
 	// Property types
 	public final static String PROPERTY_TYPE_PRODUCTION = "production";
 	public final static String PROPERTY_TYPE_ISOLATION  = "isolation";
+	public final static String PROPERTY_TYPE_SECONDARY  = "secondary";
 
 	
 	// Don't allow error messages longer than this ...

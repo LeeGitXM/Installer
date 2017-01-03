@@ -10,7 +10,7 @@
 	<property name="bom" value="${basedir}/bom-batch-expert.xml" />
 	<property name="module.name" value="batch-expert-installer" />
 	<property name="module.path" value="${basedir}/modules" />
-	<property name="module.xml" value="${basedir}//module-batch-expert-installer.xml" />
+	<property name="module.xml" value="${basedir}//module-batch-expert.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -70,7 +70,7 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-		<copy file="${svn.repo}/BatchExpert/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
@@ -84,7 +84,13 @@
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database"/>
 		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
-		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/SQLServer/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
+		
+		<!-- Database - sample data -->
+		<mkdir dir="${artifact.dir}/resultsdb" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/create_result_tables.sql" tofile="${artifact.dir}/results/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_C1.sql" tofile="${artifact.dir}/results/C1.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_R1.sql" tofile="${artifact.dir}/results/R1.sql" />
 		
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />

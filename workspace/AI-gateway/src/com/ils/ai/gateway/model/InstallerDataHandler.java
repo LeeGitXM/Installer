@@ -783,6 +783,18 @@ public class InstallerDataHandler {
 	public GatewayContext getContext() { return context; }
 	
 	/**
+	 * The DBMS list is simply a fixed list of strings.
+	 */
+	public List<String> getDBMSList() {
+		List<String> results = new ArrayList<>();
+		results.add("ANSI");
+		results.add("MYSQL");
+		results.add("ORACLE");
+		results.add("POSTGRESS");
+		results.add("SQLSERVER");
+		return results;
+	}
+	/**
 	 * Beginning with the specified panel, search sequentially for a panel that meets the filter criteria
 	 * indicated in the data model.
 	 * @param index one more than current panel

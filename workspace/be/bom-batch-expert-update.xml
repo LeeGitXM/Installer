@@ -5,17 +5,17 @@
       be unique. 
  -->
 <installer>
-	<title>TestBatchExpert+</title>
-	<description>Installer for Testing ILS Automation's Batch Expert+</description>
-	<property name="product">BatchExpert+Test</property>
+	<title>BatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+</description>
+	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Testing Batch Expert+</title>
-		<preamble>Welcome to the ILS Automation installer for Testing Batch Expert+.
+		<preamble>Welcome to the ILS Automation installer for Batch Expert+.
 			The table below compares the existing installation of
 			Batch Expert+ Test, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
@@ -23,34 +23,40 @@
 			These are used exclusively for testing.
 		</preamble>
 	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>Database Clear and Create for Batch Expert+</title>
-		<preamble>The database instance BE_TEST can be used for testing Batch Expert.
-		          It becomes the default database when the test project is installed.
+	<panel type="site" essential="true">
+		<title>Site Selection</title>
+		<preamble>This install package contains customer-specific information.
+		          Select the customer appropriate to the current installation.
+		          WARNING: This package is intended for use by ILS Automation only 
+		          as it contains information from multiple customers.
 		</preamble>
-		<property name="database">BE_TEST</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="Drop Tables" type="sql" subtype="clear">
-			<location>artifacts/database/dropTables.sql</location>
-		</artifact>
-		<artifact name="Create Tables" type="sql" subtype="create">
-			<location>artifacts/database/createTables.sql</location>
-		</artifact>
+		<site name="Fermic"></site>
+		<site name="GSK Md"></site>
+		<site name="GSK UK"></site>
+		<site name="Sanofi"></site>
+		<site name="Synata"></site>
+		<site name="Trelys"></site>
 	</panel>
-	<panel type="database" essential="true" version="1">
-		<title>Create Results Tables with data</title>
-		<preamble>Use the database instance BE_TEST. Insert results C1 and R1.
+	<panel type="definition" essential="true">
+		<title>Define tags provider and database connections</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          become the demonstration project defaults.
 		</preamble>
-		<property name="database">BE_TEST</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="Create Tables" type="sql" subtype="create">
-			<location>artifacts/results/createTables.sql</location>
-		</artifact>
-		<artifact name="Insert into C1" type="sql" subtype="insert">
-			<location>artifacts/results/C1.sql</location>
-		</artifact>	
-		<artifact name="Insert into R1" type="sql" subtype="insert">
-			<location>artifacts/results/R1.sql</location>
+		<property name="database" type="production"></property>
+		<property name="DBMS" type="production"></property>
+		<property name="provider" type="production"></property>
+	</panel>
+	
+	<panel type="database" essential="true" version="1">
+		<title>Update schema for Batch Expert+</title>
+		<preamble>Alter the existing database schema to bring it up-to-date with 
+		          Batch Expert+. The datasource and DBMS type have been set on the definition 
+		          panel.
+		</preamble>
+		<property name="database" type="production"></property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Alter Tables" type="sql" subtype="alter">
+			<location>artifacts/database/alterTables.sql</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="1">
@@ -71,9 +77,10 @@
 			<location>artifacts/modules/TF-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Install a New BE Project or Merge Changes into an Existing
-			Project
+	<panel type="project" subtype="main" essential="true" version="2">
+		<title>Merge current Batch Expert+ windows into an existing
+			project. Select the option to create a backup before changes are made.
+			This update will not change anything in the "Site" directory.
 		</title>
 		<preamble>Batch Expert is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -81,23 +88,8 @@
 			modifications.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpert" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpert.proj</location>
-		</artifact>
 		<artifact name="BatchExpert Partial Project" type="project" subtype="partial">
 			<location>artifacts/projects/BatchExpert.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for sequential control of batch operations.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<artifact name="BatchExpert SFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFC.proj</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
