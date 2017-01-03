@@ -110,6 +110,10 @@
 			</fileset>
 		</copy>
 		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclass" />
+		<copy file="${svn.repo}/BatchExpert/Tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />

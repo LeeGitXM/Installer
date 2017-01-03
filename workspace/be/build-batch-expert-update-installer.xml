@@ -65,7 +65,7 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-
+		<copy file="${svn.repo}/BatchExpert/Database/gsk/create_result_tables.sql" tofile="${artifact.dir}/results/createResultTables.sql" />
 		
 
 		<!-- Modules -->

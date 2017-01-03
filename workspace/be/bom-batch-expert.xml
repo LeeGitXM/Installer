@@ -94,6 +94,16 @@
 			<location>artifacts/results/C1.sql</location>
 		</artifact>	
 	</panel>
+		<panel type="scanclass" essential="true" version="1">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by application tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider">default</property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclass/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="true" version="2">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
