@@ -32,7 +32,8 @@ public interface InstallerConstants   {
 	public final static String PROPERTY_TYPE_PRODUCTION = "production";
 	public final static String PROPERTY_TYPE_ISOLATION  = "isolation";
 	public final static String PROPERTY_TYPE_SECONDARY  = "secondary";
-
+	public final static String PROPERTY_TYPE_BATCH_EXPERT  = "batchexpert";
+	public final static String PROPERTY_TYPE_PYSFC         = "pysfc";
 	
 	// Don't allow error messages longer than this ...
 	public final static int MAX_ERROR_LENGTH = 4000;
