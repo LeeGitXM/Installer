@@ -60,18 +60,24 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="2">
+	<panel type="python" essential="true" version="2">
 		<title>Database Clear, Create and Alter Scripts Batch Expert+</title>
-		<preamble>This page provides the opportunity for populating the BEDB database instance.
-		          As a safety measure, the database creation step will fail unless any previous instance is cleared.
+		<preamble>This page provides the opportunity for populating the BEDB database instance specified
+		          on the 'definition' panel. The alter step is not required for a new installation.
+		          Likewise the drop and create steps should not be used for an existing installation.
+		          As a safety measure, the database creation step will fail unless any previous instance is explicitly cleared.
 		</preamble>
-		<property name="database" type="production"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="Drop Tables" type="sql" subtype="clear">
-			<location>artifacts/database/clearTables.sql</location>
+		<artifact name="Drop Tables">
+			<comment>Clear the existing database of all tables, procedures and indices.</comment>
+			<location>ils/BatchExpert/install/clearDatabase()</location>
 		</artifact>
-		<artifact name="Create Tables" type="sql" subtype="create">
-			<location>artifacts/database/createTables.sql</location>
+		<artifact name="Create Tables">
+			<location>ils/BatchExpert/install/createDatabase()</location>
+			<comment>Create tables and indices required for Batch Expert in the BE database.</comment>
+		</artifact>
+		<artifact name="Alter Tables">
+			<location>ils/BatchExpert/install/alterDatabase()</location>
+			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
 	<panel type="database" essential="false" version="1">

@@ -39,12 +39,12 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both in SVN Release area, in
+		<!-- build.date and version.build are both in GIT Release area, in
 			files VERS and DATE.
 		-->
-		<loadfile property="rawdate" srcFile="${svn.repo}/BatchExpert/Release/DATE"/>
+		<loadfile property="rawdate" srcFile="${git.repo}/batch-expert/release/DATE"/>
 		<trim input="${rawdate}" property="build.date" />
-		<loadfile property="rawvers" srcFile="${svn.repo}/BatchExpert/Release/VERS"/>
+		<loadfile property="rawvers" srcFile="${git.repo}/batch-expert/release/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
 		
 		<echo message="Build date:    ${build.date}" />

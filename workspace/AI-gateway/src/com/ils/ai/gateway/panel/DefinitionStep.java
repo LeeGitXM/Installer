@@ -60,6 +60,7 @@ public class DefinitionStep extends BasicInstallerPanel {
     	for(PropertyItem prop:properties) {
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
     			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionProvider = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
     			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
     		}
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
@@ -68,6 +69,7 @@ public class DefinitionStep extends BasicInstallerPanel {
     		}
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
     			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
+    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
     			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
     		}
     	}
