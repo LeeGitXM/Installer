@@ -29,6 +29,9 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  * The definition step is where we define various parameters that are used in subsequent screens.
  * In particular, we define tag providers and database sources and DBMSs for production and, optionally, 
  * secondary modes.
+ * 
+ * Recognized database options are: production, isolation, secondary, batchexpert, pysfc
+ * Recognized tag otions
  */
 public class DefinitionStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3742149120641480873L;
@@ -58,44 +61,54 @@ public class DefinitionStep extends BasicInstallerPanel {
 		List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
     
     	for(PropertyItem prop:properties) {
+    		String type = prop.getType();
+			if(type==null || type.isEmpty()) continue;
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
-    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionProvider = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
+		if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  showProductionProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      showProductionProvider = true;
     		}
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
-    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
+    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDBMS = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDBMS = true;
     		}
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
-    			if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
-    			else if(prop.getType().equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
+    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDatabase = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
     		}
     	}
 		
     	// Create all the wicket widgets, just don't make them all visible
-    	Label productionProviderLabel = new Label("productionProviderLabel","Production Tag Provider: ");
+    	
+    	Label productionProviderLabel = new Label("productionProviderLabel",dataHandler.getLabel(properties,true)+" Tag Provider: ");
     	add(productionProviderLabel);
     	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProviderMeta>(this, "productionProvider"), getProviderList());
 		add(productionProviders);
-		Label secondaryProviderLabel = new Label("secondaryProviderLabel","secondary Tag Provider: ");
+		Label secondaryProviderLabel = new Label("secondaryProviderLabel",dataHandler.getLabel(properties,false)+" Tag Provider: ");
     	add(secondaryProviderLabel);
     	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProviderMeta>(this, "secondaryProvider"), getProviderList());
 		add(secondaryProviders);
-    	Label productionDatabaseLabel = new Label("productionDatabaseLabel","Production Database: ");
+    	Label productionDatabaseLabel = new Label("productionDatabaseLabel",dataHandler.getLabel(properties,true)+" Database: ");
     	add(productionDatabaseLabel);
     	SourceList productionDatabases = new SourceList("productionDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "productionDatabase"), getDatasourceList());
 		add(productionDatabases);
-		Label secondaryDatabaseLabel = new Label("secondaryDatabaseLabel","secondary Database: ");
+		Label secondaryDatabaseLabel = new Label("secondaryDatabaseLabel",dataHandler.getLabel(properties,false)+" Database: ");
     	add(secondaryDatabaseLabel);
     	SourceList secondaryDatabases = new SourceList("secondaryDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "secondaryDatabase"), getDatasourceList());
 		add(secondaryDatabases);
-		Label productionDBMSLabel = new Label("productionDBMSLabel","Production DBMS: ");
+		Label productionDBMSLabel = new Label("productionDBMSLabel",dataHandler.getLabel(properties,true)+" DBMS: ");
     	add(productionDBMSLabel);
     	DBMSList productionDBMSs = new DBMSList("productionDBMSs", new PropertyModel<String>(this, "productionDBMS"), getDBMSList());
 		add(productionDBMSs);
-		Label secondaryDBMSLabel = new Label("secondaryDBMSLabel","secondary DBMS: ");
+		Label secondaryDBMSLabel = new Label("secondaryDBMSLabel",dataHandler.getLabel(properties,false)+" DBMS: ");
     	add(secondaryDBMSLabel);
     	DBMSList secondaryDBMSs = new DBMSList("secondaryDBMSs", new PropertyModel<String>(this, "secondaryDBMS"), getDBMSList());
 		add(secondaryDBMSs);
@@ -116,10 +129,11 @@ public class DefinitionStep extends BasicInstallerPanel {
 		secondaryProviders.setVisible(showSecondaryProvider);
 		
 		// Select Defaults
-		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
-		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ALTERNATE_DATABASE));
-		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DBMS));
-		secondaryDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DBMS));
+		
+		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
+		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
+		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
+		secondaryDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false)));
 		productionProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
 		secondaryProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER));
 		
@@ -142,12 +156,12 @@ public class DefinitionStep extends BasicInstallerPanel {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
 				
-				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE,productionDatabase.getName());
-				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ALTERNATE_DATABASE,secondaryDatabase.getName());
-				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DBMS,productionDBMS);
-				if( secondaryDBMS!=null )      toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DBMS,secondaryDBMS);
-				if( productionProvider!=null ) toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER,productionProvider.getName());
-				if( secondaryProvider!=null )  toolkitHandler.setToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER,secondaryProvider.getName());
+				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),productionDatabase.getName());
+				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),secondaryDatabase.getName());
+				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),productionDBMS);
+				if( secondaryDBMS!=null )      toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false),secondaryDBMS);
+				if( productionProvider!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,true),productionProvider.getName());
+				if( secondaryProvider!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,false),secondaryProvider.getName());
 				
 				// Check validity
 				StringBuilder msg = new StringBuilder();

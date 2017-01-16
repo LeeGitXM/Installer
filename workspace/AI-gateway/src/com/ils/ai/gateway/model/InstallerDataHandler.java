@@ -291,6 +291,9 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
+	public String executePythonFromArtifact(Artifact art) {
+		return "";
+	}
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		boolean debug = false;
@@ -726,6 +729,13 @@ public class InstallerDataHandler {
 					Node destinationNode = destinations.item(0);
 					artifact.setDestination(destinationNode.getTextContent());
 				}
+				// Destination is an element
+				NodeList comments = ((Element)artifactNode).getElementsByTagName("comment");
+				ncount = comments.getLength();
+				if(ncount>0) {  // There should be only one comment
+					Node commentNode = comments.item(0);
+					artifact.setDestination(commentNode.getTextContent());
+				}
 				artifacts.add(artifact);
 				index++;
 			}
@@ -884,6 +894,23 @@ public class InstallerDataHandler {
 			}
 		}
 		return text;
+	}
+	// Scan the property list looking for a type that is primary, or not,
+	// as directed. Return a one word description for use when page is rendered.
+	public String getLabel(List<PropertyItem> properties,boolean isPrimary) {
+		for(PropertyItem prop:properties) {
+    		String type = prop.getType();
+    		if( isPrimary ) {
+    			if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))        return "Production";
+    			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) return "Batch Expert";
+    			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))        return "Pysfc";
+    		}
+    		else {
+    			if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY))      return "Secondary";
+    			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) return "Isolation";
+    		}
+		}
+    	return "???";
 	}
 	// Return property name value pairs associated with a particular panel
 	public List<PropertyItem> getFinalNotes(InstallerData model) {
@@ -1118,6 +1145,45 @@ public class InstallerDataHandler {
 			}
 		}
 		return title;
+	}
+	// Scan the property list looking for a type that is primary, or not,
+	// as directed. Return the corresponding toolkit properties tag.
+	public String getToolkitTag(List<PropertyItem> properties,String property,boolean isPrimary) {
+		for(PropertyItem prop:properties) {
+    		String type = prop.getType();
+    		if( property.equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE))  {
+    			if( isPrimary ) {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))        return ToolkitProperties.TOOLKIT_PROPERTY_DATABASE;
+    				else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) return ToolkitProperties.TOOLKIT_PROPERTY_BE_DATABASE;
+        			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))        return ToolkitProperties.TOOLKIT_PROPERTY_PYSFC_DATABASE;
+    			}
+    			else {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY))      return ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DATABASE;
+        			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) return ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE;
+    			}
+    		}
+    		else if( property.equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS))  {
+    			if( isPrimary ) {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))        return ToolkitProperties.TOOLKIT_PROPERTY_DBMS;
+    				else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) return ToolkitProperties.TOOLKIT_PROPERTY_BE_DBMS;
+        			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))        return ToolkitProperties.TOOLKIT_PROPERTY_PYSFC_DBMS;
+    			}
+    			else {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY))      return ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_DBMS;
+        			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) return ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DBMS;
+    			}
+    		}
+    		else if( property.equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER))  {
+    			if( isPrimary ) {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))        return ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER;
+    			}
+    			else {
+    				if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY))      return ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER;
+        			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) return ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER;
+    			}
+    		}
+		}
+    	return "???";
 	}
 	public PanelType getStepType(int panelIndex,InstallerData model) {
 		PanelType type = PanelType.WELCOME;    // If all else fails

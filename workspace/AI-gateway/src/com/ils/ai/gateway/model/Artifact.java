@@ -15,6 +15,7 @@ import com.ils.ai.gateway.InstallerConstants;
  */
 public class Artifact implements Serializable  {
 	private static final long serialVersionUID = 7650179030090459881L;
+	private String comment = "";          // Textual commentary relating to this artifact
 	private String destination = "";      // Where we put it in the user's system
 	private String location = "";         // Where we find it in the release bundle
 	private String name = "";
@@ -24,6 +25,7 @@ public class Artifact implements Serializable  {
 	private int version = InstallerConstants.UNSET;
 	private List<PropertyItem> properties = new ArrayList<>(); // Site-wide properties
 
+	public String getComment() {return comment;}
 	public String getDestination() {return destination;}
 	public String getLocation() {return location;}
 	public String getName() {return name;}
@@ -33,6 +35,7 @@ public class Artifact implements Serializable  {
 	public String getType() {return type;}
 	public int getVersion() { return version; }
 	
+	public void setComment(String text) { this.comment = text; }
 	public void setDestination(String dest) { this.destination = dest; }
 	public void setLocation(String loc) { this.location = loc; }
 	public void setName(String nam) { this.name = nam; }
