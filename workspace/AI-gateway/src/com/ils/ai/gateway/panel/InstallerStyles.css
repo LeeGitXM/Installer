@@ -25,9 +25,10 @@ p.label {
 /*** Isolated widgets *****/
 input.ilsbutton {
 	height:40px;
-	width: 64px;
+	width: 80px;
 	text-color:white;
 	text-align: center;
+	vertical-align:middle;
 	background-color: rgb(120,20,20);
 	left:20px;
 }

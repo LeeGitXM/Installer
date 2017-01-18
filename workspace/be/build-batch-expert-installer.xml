@@ -81,11 +81,6 @@
 		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database"/>
-		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
-		<copy file="${svn.repo}/BatchExpert/Database/SQLServer/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
-		
 		<!-- Database - sample data -->
 		<mkdir dir="${artifact.dir}/resultsdb" />
 		<copy file="${svn.repo}/BatchExpert/Database/test/create_result_tables.sql" tofile="${artifact.dir}/results/createTables.sql" />

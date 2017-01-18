@@ -34,11 +34,12 @@ public class PythonUtility{
 
 	/**
 	 * Construct import and executable path from method name. The method name
-	 * may optionally include parentheses.
+	 * may optionally include parentheses. Path may be specified with either dots or slashes.
 	 * @param methodName
 	 * @throws JythonExecException
 	 */
 	public String execute(String methodName) throws JythonExecException {
+		methodName = methodName.replace("/", ".");
 		StringBuffer buf = new StringBuffer();
 		int pindex = methodName.lastIndexOf("(");
 		if( pindex>0 ) methodName = methodName.substring(0,pindex);   // Strip parentheses.
@@ -63,6 +64,7 @@ public class PythonUtility{
 	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
 		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
 		Object result = pyResult.__tojava__(returnType);
+		if( result==null ) result = String.format("No value returned from %s",methodName);
 		return result.toString();
 	}    
 }
