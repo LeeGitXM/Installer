@@ -5,10 +5,11 @@ package com.ils.ai.gateway.panel;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
@@ -21,7 +22,6 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
  */
 public class PythonStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = -3732149120641480873L;
-	private Artifact currentArtifact = null;
 
 
 	public PythonStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
@@ -34,78 +34,50 @@ public class PythonStep extends BasicInstallerPanel {
 		// Create a subpanel for each artifact (up to a maximum of three)
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 		List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
+		add(new ListView<Artifact>("scripts", artifacts) {
+			private static final long serialVersionUID = -4610581829722917953L;
+
+			protected void populateItem(ListItem<Artifact> item) {
+				Artifact art = item.getModelObject();
+                item.add(new Label("title",art.getName()));
+                
+                // location is the script
+                Form<InstallerData> form = new Form<InstallerData>("pythonform", new CompoundPropertyModel<InstallerData>(data));
+                PythonButton btn = new PythonButton("button",art);
+                form.add(btn);
+                form.add(new Label("comment", art.getComment()));
+                item.add(form);
+                
+            }
+        });
+	}
+	public class PythonButton extends Button {
+		private static final long serialVersionUID = 4880228774822578782L;
+		private final Artifact artifact;
 		
-		currentArtifact = null;
-		if( artifacts.size()>0 ) currentArtifact = artifacts.get(0);
-
-		// First form
-		WebMarkupContainer first = new WebMarkupContainer("first");
-		first.setVisible(currentArtifact!=null);
-		Form<InstallerData> firstForm = new Form<InstallerData>("firstForm", new CompoundPropertyModel<InstallerData>(data));
-		firstForm.add(new Button("firstButton") {
-			private static final long serialVersionUID = 4880228774822578782L;
-
-			public void onSubmit() {
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.executePythonFromArtifact(currentArtifact);
-				if( result==null || result.isEmpty()) {
-					info(String.format("%s complete.", currentArtifact.getName()));
+		public PythonButton(String id,Artifact art) {
+			super(id);
+			this.artifact = art;
+			if( !art.getType().isEmpty() ) {
+				String buttonTitle = art.getType().substring(0,1).toUpperCase();
+				if( art.getType().length()>1 ) {
+					buttonTitle = buttonTitle+art.getType().substring(1).toLowerCase();
 				}
-				else {
-					error(result);
-				}
+				Model<String> model = new Model<String>(buttonTitle);
+				this.setModel(model);
 			}
-		});
-		first.add(firstForm);
-		add(first);
+		}
 
-		currentArtifact = null;
-		if( artifacts.size()>0 ) currentArtifact = artifacts.get(0);
-
-		// Second form
-		WebMarkupContainer second = new WebMarkupContainer("second");
-		second.setVisible(currentArtifact!=null);
-		Form<InstallerData> secondForm = new Form<InstallerData>("secondForm", new CompoundPropertyModel<InstallerData>(data));
-		firstForm.add(new Button("secondButton") {
-			private static final long serialVersionUID = 4880228774822578782L;
-
-			public void onSubmit() {
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.executePythonFromArtifact(currentArtifact);
-				if( result==null || result.isEmpty()) {
-					info(String.format("%s complete.", currentArtifact.getName()));
-				}
-				else {
-					error(result);
-				}
+		@Override
+		public void onSubmit() {
+			InstallerDataHandler handler = InstallerDataHandler.getInstance();
+			String result = handler.executePythonFromArtifact(artifact);
+			if( result==null || result.isEmpty()) {
+				PythonStep.this.info(String.format("%s complete.", artifact.getName()));
 			}
-		});
-		second.add(secondForm);
-		add(second);
-
-		currentArtifact = null;
-		if( artifacts.size()>2 ) currentArtifact = artifacts.get(2);
-
-		// Third form
-		WebMarkupContainer third = new WebMarkupContainer("first");
-		first.setVisible(currentArtifact!=null);
-		Form<InstallerData> thirdForm = new Form<InstallerData>("thirdForm", new CompoundPropertyModel<InstallerData>(data));
-		thirdForm.add(new Button("thirdButton") {
-			private static final long serialVersionUID = 4880228774822578782L;
-
-			public void onSubmit() {
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.executePythonFromArtifact(currentArtifact);
-				if( result==null || result.isEmpty()) {
-					info(String.format("%s complete.", currentArtifact.getName()));
-				}
-				else {
-					error(result);
-				}
+			else {
+				PythonStep.this.error(result);
 			}
-		});
-		first.add(thirdForm);
-		add(third);
-		
+		}
 	}
 }

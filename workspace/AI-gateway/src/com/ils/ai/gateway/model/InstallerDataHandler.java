@@ -42,6 +42,7 @@ import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.utility.CSVUtility;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
+import com.ils.ai.gateway.utility.PythonUtility;
 import com.ils.ai.gateway.utility.ScanClassUtility;
 import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.TransactionGroupUtility;
@@ -56,6 +57,7 @@ import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectPublishMode;
 import com.inductiveautomation.ignition.common.project.ProjectResource;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
+import com.inductiveautomation.ignition.common.script.JythonExecException;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.user.AuthenticatedUser;
 import com.inductiveautomation.ignition.common.user.BasicAuthenticatedUser;
@@ -96,6 +98,7 @@ public class InstallerDataHandler {
 	private DBUtility dbUtil;
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
+	private PythonUtility pyUtil = null;
 	private ScanClassUtility scanUtil = null;
 	public TagUtility tagUtil = null;
 	private TransactionGroupUtility transactionUtil = null;
@@ -292,7 +295,15 @@ public class InstallerDataHandler {
 		return result;
 	}
 	public String executePythonFromArtifact(Artifact art) {
-		return "";
+		String pythonPath = art.getDestination();
+		String result = "";
+		try {
+			result =  pyUtil.execute(pythonPath);
+		}
+		catch(JythonExecException jee) {
+			result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
+		}
+		return result;
 	}
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
@@ -729,12 +740,12 @@ public class InstallerDataHandler {
 					Node destinationNode = destinations.item(0);
 					artifact.setDestination(destinationNode.getTextContent());
 				}
-				// Destination is an element
+				// Comment is an element
 				NodeList comments = ((Element)artifactNode).getElementsByTagName("comment");
 				ncount = comments.getLength();
 				if(ncount>0) {  // There should be only one comment
 					Node commentNode = comments.item(0);
-					artifact.setDestination(commentNode.getTextContent());
+					artifact.setComment(commentNode.getTextContent());
 				}
 				artifacts.add(artifact);
 				index++;
@@ -1766,6 +1777,7 @@ public class InstallerDataHandler {
 		this.dbUtil = new DBUtility(context);
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
+		this.pyUtil   = new PythonUtility(context);
 		this.scanUtil = new ScanClassUtility();
 		this.tagUtil  = new TagUtility(context);
 		this.transactionUtil = new TransactionGroupUtility(context);

@@ -33,62 +33,30 @@
 		</div>
 
 		<p class="spacer" />
-
-		<table class="installtable" cellspacing="0" cellpadding="0">
-			<thead>
-				<tr>
-					<td colspan="2">Python</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr wicket:id="first">
-					<td class="trow-title">Clear instance</td>
-					<td class="trow-body">
-						<form wicket:id="firstForm" action="">
+		<div>
+			<table class="installtable" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<td colspan="2">Python Scripts</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="scripts">
+						<td class="trow-title"><span wicket:id="title" /></td>
+						<td class="trow-body">
+						<form wicket:id="pythonform" action="">
 							<table class="ilsedit">
 								<tr>
-									<td><input style="align: left; background-color: rgb(120, 20, 20)" type="submit" wicket:id="firstButton"
-										value="Execute" /></td>
-									<td><p>Drop all tables in a database instance.</p></td>
+									<td><input style="align: left; background-color: rgb(120, 20, 20)" type="submit" wicket:id="button"/></td>
+									<td><span wicket:id="comment" /></td>
 								</tr>
 							</table>
 						</form>
 					</td>
-				</tr>
-				<tr wicket:id="second">
-					<td class="trow-title">Create new database instance</td>
-					<td class="trow-body">
-						<form wicket:id="secondForm" action="">
-							<table class="ilsedit">
-								<tr>
-									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
-										wicket:id="secondButton" value="Create" /></td>
-									<td><p>Create tables that support the application. The new tables will be populated with an initial
-								data set. The database must be cleared of any existing tables for this to succeed.</p></td>
-								</tr>
-							</table>
-						</form>
-					</td>
-				</tr>
-				<tr wicket:id="third">
-					<td class="trow-title">Update an existing instance</td>
-					<td class="trow-body">
-						<form wicket:id="thirdForm" action="">
-							<table class="ilsedit">
-								<tr>
-									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
-										wicket:id="thirdButton" value="Alter" /></td>
-									<td><p>Alter a previously created tables to bring them in line with
-								the current state of the application. Existing data will be
-								preserved. It should not be necessary to perform this step in addition
-								to the previous.</p></td>
-								</tr>
-							</table>
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</wicket:panel>
 </body>
 </html>

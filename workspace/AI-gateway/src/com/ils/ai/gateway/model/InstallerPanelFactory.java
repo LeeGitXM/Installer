@@ -17,6 +17,7 @@ import com.ils.ai.gateway.panel.IconStep;
 import com.ils.ai.gateway.panel.LicenseStep;
 import com.ils.ai.gateway.panel.ModuleStep;
 import com.ils.ai.gateway.panel.ProjectStep;
+import com.ils.ai.gateway.panel.PythonStep;
 import com.ils.ai.gateway.panel.ScanClassStep;
 import com.ils.ai.gateway.panel.SiteStep;
 import com.ils.ai.gateway.panel.SourceStep;
@@ -63,6 +64,8 @@ public class InstallerPanelFactory  {
 			case PROJECT: step = new ProjectStep(panelIndex,prior,title,model);
 				break;
 			case PROPERTY:
+				break;
+			case PYTHON: step = new PythonStep(panelIndex,prior,title,model);
 				break;
 			case SCANCLASS: step = new ScanClassStep(panelIndex,prior,title,model);
 				break;
