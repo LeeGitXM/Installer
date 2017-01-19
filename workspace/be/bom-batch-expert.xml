@@ -69,14 +69,14 @@
 		</preamble>
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices.</comment>
-			<destination>ils/be/install/clearDatabase()</destination>
+			<destination>ils/be/configuration/install/clearDatabase()</destination>
 		</artifact>
 		<artifact name="Create Tables" type="create">
-			<destination>ils/be/install/createDatabase()</destination>
+			<destination>ils/be/configuration/install/createDatabase()</destination>
 			<comment>Create tables and indices required for Batch Expert in the BE database.</comment>
 		</artifact>
 		<artifact name="Alter Tables" type="alter">
-			<destination>ils/be/install/alterDatabase()</destination>
+			<destination>ils/be/configuration/install/alterDatabase()</destination>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
