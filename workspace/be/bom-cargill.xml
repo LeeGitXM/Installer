@@ -15,7 +15,8 @@
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
-		<preamble>ILS Automation installer for Batch Expert+ with customizations for Cargill.
+		<preamble>ILS Automation installer for Batch Expert+ with customizations for Cargill. This installation 
+		assumes of the default tag provider and a SQL Server database source named BEDB.
 		</preamble>
 	</panel>
 	<panel type="license" essential="true" version="1">
