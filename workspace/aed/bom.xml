@@ -125,12 +125,12 @@
 			<location>artifacts/test/models</location>
 			<destination type="home">.</destination>
 		</artifact>
-		<artifact name="PCA Input File" type="text">
+		<artifact name="PCA/SLED Input Files" type="text">
 			<location>artifacts/test/inputs</location>
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="7" >
+	<panel type="module" subtype="production" essential="true" version="8" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
@@ -168,7 +168,7 @@
 			<location>artifacts/test/tags/memoryTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="7">
+	<panel type="project" subtype="main" essential="true" version="8">
 		<title>Install a New AED Project or Merge Changes into an Existing
 			Project
 		</title>
