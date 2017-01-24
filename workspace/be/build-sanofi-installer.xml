@@ -94,8 +94,8 @@
 				
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database"/>
-		<copy file="${svn.repo}/BatchExpert/Database/Oracle/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
-		<copy file="${svn.repo}/BatchExpert/Database/Oracle/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/Oracle Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
+		<copy file="${svn.repo}/BatchExpert/Database/Oracle Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
 				
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
