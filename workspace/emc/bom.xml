@@ -82,7 +82,7 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	<panel type="icon" essential="true" version="2">
+	<panel type="icon" essential="true" version="3">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -94,7 +94,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="5">
+	<panel type="file" essential="true" version="6">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -164,7 +164,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="5" >
+	<panel type="module" subtype="production" essential="true" version="6" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -222,7 +222,7 @@
 			<location>artifacts/tags/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="7">
+	<panel type="project" subtype="main" essential="true" version="8">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -240,7 +240,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="7">
+	<panel type="project" subtype="main" essential="true" version="8">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,

@@ -5,25 +5,18 @@
       be unique. 
  -->
 <installer>
-	<title>BatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+</description>
+	<title>SanofiBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Sanofi</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">4</property>
+	<property name="version">5</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for Batch Expert+</title>
-		<preamble>Welcome to the ILS Automation installer for Batch Expert+.
-			The table below compares the existing installation of
-			Batch Expert+, if any, with the versions contained in this new
-			installation. Before continuing, please make sure that you have 
-			defined both database connection and tag provider.
+		<title>ILS Automation Installer for Batch Expert+ </title>
+		<preamble>ILS Automation installer for Batch Expert+ with customizations for Sanofi Pasteur.
 		</preamble>
-		<artifact name="notes" type="pdf">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
 	</panel>
 	<panel type="license" essential="true" version="1">
 		<title>End User License Agreement (EULA)</title>
@@ -36,25 +29,9 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Define tags provider and database connections</title>
-		<preamble>Specify the database connection and DBMS-type that 
-		          become the demonstration project defaults.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="DBMS" type="production"></property>
-		<property name="provider" type="production"></property>
-	</panel>
-	<panel type="icon" essential="true" version="1">
-		<title>Icons</title>
-		<preamble>A small number of custom icons are used in Vision screens. </preamble>
-		<artifact name="Custom Icons" type="ils" subtype="icon">
-			<location>artifacts/icons</location>
-		</artifact>
-	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="2">
+	<panel type="file" essential="true" version="1">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -62,75 +39,30 @@
 			<location>artifacts/external/ils</location>
 			<destination>pylib/ils</destination>
 		</artifact>
+		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
+			<location>artifacts/external/pysfc</location>
+			<destination>pylib/ils/pysfc</destination>
+		</artifact>
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="2">
-		<title>Database Clear, Create and Alter Scripts Batch Expert+</title>
-		<preamble>This page provides the opportunity for populating the BEDB database instance specified
-		          on the 'definition' panel. The alter step is not required for a new installation.
-		          Likewise the drop and create steps should not be used for an existing installation.
-		          As a safety measure, the database creation step will fail unless any previous instance is explicitly cleared.
-		</preamble>
-		<artifact name="Drop Tables" type="drop">
-			<comment>Clear the existing database of all tables, procedures and indices.</comment>
-			<destination>ils/be/configuration/install/clearDatabase()</destination>
-		</artifact>
-		<artifact name="Create Tables" type="create">
-			<destination>ils/be/configuration/install/createDatabase()</destination>
-			<comment>Create tables and indices required for Batch Expert in the BE database.</comment>
-		</artifact>
-		<artifact name="Alter Tables" type="alter">
-			<destination>ils/be/configuration/install/alterDatabase()</destination>
-			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="1">
-		<title>Insert R1 Sample Data</title>
-		<preamble>Insert results E1 into the production database.
-		          WARNING: Do not use in a "live" production system.
-		</preamble>
-		<property name="database" type="production"></property>
-		<artifact name="Insert into R1" type="sql" subtype="insert">
-			<location>artifacts/results/R1.sql</location>
-		</artifact>	
-	</panel>
 	<panel type="database" essential="true" version="1">
-		<title>Insert C1 Sample Data</title>
-		<preamble>Insert results C1 into the production database.
-		          WARNING: Do not use in a "live" production system.
+		<title>Database Clear, Create and Alter Scripts for Batch Expert+</title>
+		<preamble>This page provides the opportunity for populating the BEDB_Ignition Oracle database instance.
+		          As a safety measure, the database creation step will fail unless any previous instance is cleared.
 		</preamble>
-		<property name="database" type="production"></property>
-		<artifact name="Insert into C1" type="sql" subtype="insert">
-			<location>artifacts/results/C1.sql</location>
-		</artifact>	
-	</panel>
-		<panel type="scanclass" essential="true" version="1">
-		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by application tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="provider">default</property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclass/scanclasses.csv</location>
+		<property name="database">BEDB_Ignition</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="Drop Tables" type="sql" subtype="clear">
+			<location>artifacts/database/clearTables.sql</location>
+		</artifact>
+		<artifact name="Create Tables" type="sql" subtype="create">
+			<location>artifacts/database/createTables.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
-		           These definitions are written to the default tag provider.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-		<artifact name="Tag Instances" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
+		<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -141,11 +73,34 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by application tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider">default</property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclass/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+		<artifact name="Tag Instances" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
+		<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install a New BE Project or Merge Changes into an Existing
 			Project
 		</title>
-		<preamble>Batch Expert is the main Ignition project. This page provides
+		<preamble>BatchExpert is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications.
@@ -171,7 +126,7 @@
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of Batch Expert+ in
+		 Selecting "Finish" will record the current version of BatchExpert+ in
 			the Gateway internal database.
 		</preamble>
 	</panel>

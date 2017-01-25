@@ -125,7 +125,6 @@ public class ProjectStep extends BasicInstallerPanel {
 			public void onSubmit() {
 				String result = null;
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				System.out.println(String.format("ProjectStep.onsubmit newForm: %s (profile %s)", fullProjectName,profileName));
 				if( profileName==null || profileName.isEmpty() ) {
 					result = "Please select an authentication profile";
 				}

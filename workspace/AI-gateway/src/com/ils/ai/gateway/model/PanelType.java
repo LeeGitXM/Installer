@@ -1,5 +1,5 @@
 /**
- *   (c) 2016  ILS Automation. All rights reserved. 
+ *   (c) 2016-2017  ILS Automation. All rights reserved. 
  */
 package com.ils.ai.gateway.model;
 
@@ -18,15 +18,15 @@ public enum PanelType
             FILE, 
             ICON, 
             LICENSE,
-            MODULE,         // 
+            MODULE,         //
             PROPERTY, 
             PROJECT,       // Replacement or new
+            PYTHON,
             SCANCLASS,
             SITE,
             SOURCE,
             SUMMARY,
             TAG,
-            TAGS,
             TOOLKIT,
             WELCOME
             ;

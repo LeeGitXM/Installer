@@ -179,6 +179,7 @@
 		<mkdir dir="${artifact.dir}/test/tags" />
 		<copy file="${svn.repo}/EMRE/Ignition/simulationData/PCA-data.csv" tofile="${artifact.dir}/test/inputs/PCA-data.csv" />
 		<copy file="${svn.repo}/EMRE/Ignition/simulationData/SLED CUB APS TEMP PROFILE.csv" tofile="${artifact.dir}/test/inputs/SLED-data.csv" />
+		<copy file="${svn.repo}/EMRE/Ignition/simulationData/SLED CUB APS TEMP FROZEN.csv" tofile="${artifact.dir}/test/inputs/SLED-frozen-data.csv" />
 		<copy file="${svn.repo}/EMRE/Install/AEDMemoryTags.xml" tofile="${artifact.dir}/test/tags/memoryTags.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModelsToImport.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDTags.xml" tofile="${artifact.dir}/test/models/AEDTagsToImport.xml" />
