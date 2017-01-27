@@ -54,7 +54,7 @@
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="9">
+	<panel type="file" essential="true" version="10">
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
@@ -113,7 +113,7 @@
 			<location>artifacts/database/insertAED.sql</location>
 		</artifact>
 	</panel>
-		<panel type="file" essential="false" version="2">
+		<panel type="file" essential="false" version="3">
 		<title>Test Models</title>
 		<preamble>This step adds importable XML files to the user's home directory (C: drive for a Windows  system).   
 		          The files contains sample Models of each type and appropriate input files for a data pump. 
@@ -130,7 +130,7 @@
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="9" >
+	<panel type="module" subtype="production" essential="true" version="10" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
