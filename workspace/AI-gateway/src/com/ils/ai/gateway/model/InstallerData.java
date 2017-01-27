@@ -29,6 +29,7 @@ public class InstallerData implements Serializable  {
 	private boolean ignoringOptional  = false;
 	private boolean ignoringCurrent   = false;   // Ignore artifacts that are up-to-date
 	private final Map<Integer,PanelData> panelMap = new HashMap<>();
+	private final Map<String,Boolean> featureMap = new HashMap<>();
 	private List<SiteEntry> siteEntries = new ArrayList<>();
 
 	public String getAdministrativeProfile() {return administrativeProfile;}
@@ -41,6 +42,12 @@ public class InstallerData implements Serializable  {
 	public String getProductName() {return this.productName;}
 	public  List<SiteEntry> getSiteEntries() {return this.siteEntries;}
 	public String getSiteName() {return this.siteName;}
+	// Default is false, should the feature not be found. Compare is case-insensitive.
+	public boolean hasFeature(String name) {
+		Boolean has = featureMap.get(name.toLowerCase());
+		if( has==null ) return false;
+		return has.booleanValue();
+	}
     public boolean isIgnoringCurrent() { return ignoringCurrent; }
     public boolean isIgnoringOptional() { return ignoringOptional; }
 	public void setAdministrativeProfile(String profile) {administrativeProfile=profile;}
@@ -48,6 +55,9 @@ public class InstallerData implements Serializable  {
     public void setBillOfMaterials(Document doc) {this.bom = doc;}
     public void setChunkTotal(int total) { this.chunkedTotal = total; }
     public void setChunkCounts(Integer[] counts) { this.chunkCounts = counts; }
+    public void setFeature(String name,boolean has) {
+    	featureMap.put(name.toLowerCase(), new Boolean(has));
+    }
     public void setIgnoringCurrent(boolean flag) { this.ignoringCurrent = flag; }
     public void setIgnoringOptional(boolean flag) { this.ignoringOptional = flag; }
     public void setModulePath(String path) {this.modulePath = path;}

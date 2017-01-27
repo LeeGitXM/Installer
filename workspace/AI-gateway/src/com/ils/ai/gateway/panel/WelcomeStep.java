@@ -78,10 +78,9 @@ public class WelcomeStep extends BasicInstallerPanel {
 		CheckBox checkbox = new CheckBox("current", (current.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE))) {
 			private static final long serialVersionUID = -890605923748905601L;
 			
-
-			protected boolean wantOnSelectionChangedNotifications() {
-				return true;
-			}
+			@Override
+			protected boolean wantOnSelectionChangedNotifications() {return true;}
+			
 			@Override
 			public void onSelectionChanged() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();

@@ -15,6 +15,7 @@ public enum PanelType
             DATABASE,
             DEFINITION,
             DOCUMENTATION,
+            FEATURE, 
             FILE, 
             ICON, 
             LICENSE,

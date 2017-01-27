@@ -12,6 +12,7 @@ import com.ils.ai.gateway.panel.ClearStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
+import com.ils.ai.gateway.panel.FeatureStep;
 import com.ils.ai.gateway.panel.FileStep;
 import com.ils.ai.gateway.panel.IconStep;
 import com.ils.ai.gateway.panel.LicenseStep;
@@ -52,7 +53,9 @@ public class InstallerPanelFactory  {
 			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
 				break;
 			case DEFINITION: step = new DefinitionStep(panelIndex,prior,title,model);
-				break;	
+				break;
+			case FEATURE:  step = new FeatureStep(panelIndex,prior,title,model);
+				break;
 			case FILE:  step = new FileStep(panelIndex,prior,title,model);
 				break;
 			case ICON:  step = new IconStep(panelIndex,prior,title,model);

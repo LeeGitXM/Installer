@@ -295,13 +295,28 @@ public class InstallerDataHandler {
 		return result;
 	}
 	public String executePythonFromArtifact(Artifact art) {
-		String pythonPath = art.getDestination();
 		String result = "";
-		try {
-			result =  pyUtil.execute(pythonPath);
+		String pythonPath = art.getDestination();
+		if( !pythonPath.isEmpty() ) {
+			try {
+				result =  pyUtil.execute(pythonPath);
+			}
+			catch(JythonExecException jee) {
+				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
+			}
 		}
-		catch(JythonExecException jee) {
-			result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
+		return result;
+	}
+	public String executePythonFromArtifact(Artifact art,String arg1,String arg2) {
+		String result = "";
+		String pythonPath = art.getDestination();
+		if( !pythonPath.isEmpty() ) {
+			try {
+				result =  pyUtil.execute(pythonPath);
+			}
+			catch(JythonExecException jee) {
+				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
+			}
 		}
 		return result;
 	}
@@ -1768,7 +1783,7 @@ public class InstallerDataHandler {
 		return datasource;
 	}
 	/**
-	 * This step is necessary before the instance is useful. Most other 
+	 * This step is necessary before the instance is useful. Most other
 	 * properties are initialized lazily.
 	 */
 	public void setContext(GatewayContext ctx) { 
