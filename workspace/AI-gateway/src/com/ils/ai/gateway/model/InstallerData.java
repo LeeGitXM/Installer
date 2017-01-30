@@ -81,6 +81,16 @@ public class InstallerData implements Serializable  {
 		}
 		return datasources;
 	}
+	// @return a list of active features
+	public List<String> getFeatures() {
+		List<String> feats = new ArrayList<>();
+		for( String key:featureMap.keySet()) {
+			if( featureMap.get(key) ) {
+				feats.add(key);
+			}
+		}
+		return feats;
+	}
 	// The SiteEntries *should* be a unique list
 	public List<String> getSiteNames() {
 		List<String> siteNames = new ArrayList<>();

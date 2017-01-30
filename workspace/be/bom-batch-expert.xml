@@ -45,13 +45,6 @@
 		<property name="DBMS" type="production"></property>
 		<property name="provider" type="production"></property>
 	</panel>
-	<panel type="icon" essential="true" version="1">
-		<title>Icons</title>
-		<preamble>A small number of custom icons are used in Vision screens. </preamble>
-		<artifact name="Custom Icons" type="ils" subtype="icon">
-			<location>artifacts/icons</location>
-		</artifact>
-	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="file" essential="true" version="2">
@@ -65,6 +58,24 @@
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
+		</artifact>
+	</panel>
+	<panel type="feature" essential="true">
+		<title>Batch-Expert Feature Selection</title>
+		<preamble>Configure your Batch-Expert+ installation with (or without)
+		          optional features.
+		</preamble>
+		<!-- destination defines python to execute on feature installation -->
+		<artifact name="SFC">
+		<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
+		         feature requires the Ignition SFC module.</comment>
+		<destination></destination></artifact>
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="2">

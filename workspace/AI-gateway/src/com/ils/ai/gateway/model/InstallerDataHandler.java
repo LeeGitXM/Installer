@@ -307,12 +307,12 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	public String executePythonFromArtifact(Artifact art,String arg1,String arg2) {
+	public String executePythonFromFeatureArtifact(Artifact art,String feature,String flag) {
 		String result = "";
 		String pythonPath = art.getDestination();
 		if( !pythonPath.isEmpty() ) {
 			try {
-				result =  pyUtil.execute(pythonPath);
+				result =  pyUtil.executeFeatureSetting(pythonPath,feature,flag);
 			}
 			catch(JythonExecException jee) {
 				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
@@ -848,9 +848,22 @@ public class InstallerDataHandler {
 			if( (pd.isEssential() || ignoreOptional==false) &&
 				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false ||
 				 pd.getCurrentVersion()==InstallerConstants.UNSET) ) {
-				// Test for proper site
+				// Test for proper site and/or features
 				String site = data.getSiteName();
-				if( site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site) ) {
+				List<String> features = data.getFeatures();
+				
+				// Feature check passes if 
+				// 1) Panel has no features or
+				// 2) All of panels features are included in the master data list and
+				// 3) None of the panels feature are included in the master "exclude" list.
+				boolean featureOK = features.isEmpty();  // If there aren't any features, go ahead
+				if( !featureOK ) {
+					featureOK = pd.matchFeature(features);
+					if(!featureOK) {
+						featureOK = pd.matchMissingFeature(features);
+					}
+				}
+				if( (site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site)) && featureOK) {
 					String title = getStepTitle(index,data);
 					PanelType type = getStepType(index,data);
 					BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
@@ -1049,6 +1062,22 @@ public class InstallerDataHandler {
 				}
 				// Analyze for Site-specificity
 				data.setSiteNames(getSiteNames(panelIndex,model));
+				// Analyze for features and non-features
+				List<PropertyItem> properties = getPanelProperties(panelIndex,model);
+				for(PropertyItem property:properties) {
+					if( property.getType().equalsIgnoreCase("feature")) {
+						String feature = property.getName();
+						String value = property.getValue();
+						boolean hasFeature = false;
+						if( value!=null && value.equalsIgnoreCase("true")) hasFeature = true;
+						if( hasFeature ) {
+							data.addFeature(feature);
+						}
+						else {
+							data.subtractFeature(feature);
+						}
+					}
+				}
 				
 			}
 			model.getPanelMap().put(key,data);

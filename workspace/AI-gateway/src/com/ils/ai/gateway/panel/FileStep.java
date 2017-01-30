@@ -76,7 +76,6 @@ public class FileStep extends BasicInstallerPanel {
             	System.out.println(String.format("FileStep:  on-submit complete"));
             }
         });
-        System.out.println(String.format("FileStep:  page layout complete"));
 	}
 
 }

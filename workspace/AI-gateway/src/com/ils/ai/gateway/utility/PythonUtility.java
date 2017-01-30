@@ -66,5 +66,47 @@ public class PythonUtility{
 		Object result = pyResult.__tojava__(returnType);
 		if( result==null ) result = String.format("No value returned from %s",methodName);
 		return result.toString();
-	}    
+	}
+	
+	/**
+	 * Construct import and executable path from method name. The method name
+	 * may optionally include parentheses. Path may be specified with either dots or slashes.
+	 * The python method takes 2 string arguments: "feature", "flag"
+	 * @param methodName
+	 * @param feature name of the feature
+	 * @param flag "true" if the feature is present
+	 * @throws JythonExecException
+	 */
+	public String executeFeatureSetting(String methodName,String feature,String flag) throws JythonExecException {
+		methodName = methodName.replace("/", ".");
+		StringBuffer buf = new StringBuffer();
+		int pindex = methodName.lastIndexOf("(");
+		if( pindex>0 ) methodName = methodName.substring(0,pindex);   // Strip parentheses.
+		
+		int dotIndex = methodName.lastIndexOf(".");
+		if(dotIndex != -1) {
+			buf.append("import ");
+			buf.append(methodName.substring(0, dotIndex));
+			buf.append("; ");
+		}
+		buf.append(RESULT_NAME);
+		buf.append(" = ");
+		buf.append(methodName);
+		buf.append("(feature,flag)");  // Two arguments
+
+		String script = buf.toString();
+		System.out.println(String.format("PythonUtility.executeFeatureSetting %s",script));
+		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
+		ScriptManager scriptManager = context.getScriptManager();
+		PyStringMap pyLocals = scriptManager.createLocalsMap();
+		pyLocals.__setitem__("feature", Py.java2py(feature));
+		pyLocals.__setitem__("flag", Py.java2py(flag));
+		
+	    PyStringMap pyGlobals= scriptManager.getGlobals();
+	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
+		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
+		Object result = pyResult.__tojava__(returnType);
+		if( result==null ) result = String.format("No value returned from %s",methodName);
+		return result.toString();
+	}  
 }
