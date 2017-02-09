@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">5</property>
+	<property name="version">9</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -94,7 +94,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="6">
+	<panel type="file" essential="true" version="7">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -164,7 +164,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="6" >
+	<panel type="module" subtype="production" essential="true" version="7" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -189,7 +189,7 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="4">
+	<panel type="tag" subtype="production" essential="True" version="5">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -208,7 +208,7 @@
 			<location>artifacts/tags/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="4">
+	<panel type="tag" subtype="test" essential="false" version="5">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -222,7 +222,7 @@
 			<location>artifacts/tags/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="8">
+	<panel type="project" subtype="main" essential="true" version="9">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -240,7 +240,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="8">
+	<panel type="project" subtype="main" essential="true" version="9">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -269,7 +269,7 @@
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="6">
+	<panel type="project" subtype="sfc" essential="true" version="7">
 		<title>Vistalon Drier-Regen Charts</title>
 		<preamble>This page handles installation of charts for vetted SFC charts for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -280,7 +280,7 @@
 			<location>artifacts/projects/DrierRegen.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="6">
+	<panel type="project" subtype="sfc" essential="true" version="7">
 		<title>Vistalon Unit Procedure Charts</title>
 		<preamble>This page handles installation of charts for the migrated SFC projects migrated for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -308,7 +308,7 @@
 		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.13">
+		<artifact name="Block Language Toolkit" type="documentation" subtype="docx" release="1.14">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
 		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="0.59">
@@ -371,7 +371,7 @@
 			<location>artifacts/migration/vfuProductQuality.json</location>
 		</artifact>
 	</panel>
-	<panel type="source" essential="false" version="3">
+	<panel type="source" essential="false" version="4">
 		<title>Migration</title>
 		<preamble>The packages below contain exported-then-migrated sequential control charts corresponding to
 		          the most recent conversions. These are the raw conversions. Completely vetted charts
