@@ -1,5 +1,5 @@
 /**
- *   (c) 2016  ILS Automation. All rights reserved. 
+ *   (c) 2016-2017  ILS Automation. All rights reserved. 
  */
 package com.ils.ai.gateway.model;
 
@@ -20,6 +20,7 @@ public class Artifact implements Serializable  {
 	private String location = "";         // Where we find it in the release bundle
 	private String name = "";
 	private String release = "";
+	private String script = "";
 	private String subtype = "";
 	private String type = "";         // Artifact type
 	private int version = InstallerConstants.UNSET;
@@ -31,6 +32,7 @@ public class Artifact implements Serializable  {
 	public String getName() {return name;}
 	public List<PropertyItem> getProperties() {return this.properties;}
 	public String getRelease() {return release;}
+	public String getScript() {return script;}
 	public String getSubtype() {return subtype;}
 	public String getType() {return type;}
 	public int getVersion() { return version; }
@@ -41,6 +43,7 @@ public class Artifact implements Serializable  {
 	public void setName(String nam) { this.name = nam; }
 	public void setProperties(List<PropertyItem> props) {this.properties = props;}
 	public void setRelease(String rel) { this.release = rel; }
+	public void setScript(String s) { this.script = s; }
 	public void setSubtype(String st) { this.subtype = st; }
 	public void setType(String typ) { this.type = typ; }
 	public void setVersion(int vers) { this.version=vers; }

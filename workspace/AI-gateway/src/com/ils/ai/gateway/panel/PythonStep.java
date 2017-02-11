@@ -71,7 +71,7 @@ public class PythonStep extends BasicInstallerPanel {
 		@Override
 		public void onSubmit() {
 			InstallerDataHandler handler = InstallerDataHandler.getInstance();
-			String result = handler.executePythonFromArtifact(artifact);
+			String result = handler.executePython(artifact.getScript());
 			if( result==null || result.isEmpty()) {
 				PythonStep.this.info(String.format("%s complete.", artifact.getName()));
 			}

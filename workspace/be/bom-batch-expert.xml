@@ -36,13 +36,30 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
+	<panel type="tag" subtype="production" essential="true" version="2">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+		<artifact name="Tag Instances" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
 	<panel type="definition" essential="true">
 		<title>Define tags provider and database connections</title>
 		<preamble>Specify the database connection and DBMS-type that 
 		          become the demonstration project defaults.
 		</preamble>
-		<property name="database" type="production"></property>
-		<property name="DBMS" type="production"></property>
+		<property name="database" type="production">
+			<script>ils.be.configuration.config.setDatasource</script>
+		</property>
+		<property name="DBMS" type="production">
+			<script>ils.be.configuration.config.setDBMS</script>
+		</property>
 		<property name="provider" type="production"></property>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
@@ -126,19 +143,6 @@
 		<property name="provider">default</property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
 			<location>artifacts/scanclass/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
-		           These definitions are written to the default tag provider.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-		<artifact name="Tag Instances" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="2" >

@@ -83,7 +83,7 @@ public class FeatureStep extends BasicInstallerPanel {
 			System.out.println(String.format("FeatureStep:  now has feature "+feature+"="+(hasFeature?"true":"false")));
 			handler.setPreference("feature"+feature, (hasFeature?"true":"false"));
 			// Use the destination string, if any, to inform the application of feature.
-			handler.executePythonFromFeatureArtifact(artifact,feature,(hasFeature?"True":"False")); 
+			handler.executePythonFromArtifact(artifact,hasFeature); 
 			data.setFeature(feature,hasFeature);
 		}
 	}

@@ -7,8 +7,8 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-cargill.xml" />
-	<property name="module.name" value="cargill-installer" />
+	<property name="bom" value="${basedir}/bom-synata.xml" />
+	<property name="module.name" value="synata-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -82,7 +82,7 @@
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
-		
+			
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />

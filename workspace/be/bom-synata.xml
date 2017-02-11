@@ -5,8 +5,8 @@
       be unique. 
  -->
 <installer>
-	<title>CargillBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Cargill</description>
+	<title>SynataBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Synata</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -15,9 +15,13 @@
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
-		<preamble>ILS Automation installer for Batch Expert+ with customizations for Cargill. This installation 
-		assumes of the default tag provider and a SQL Server database source named BEDB.
+		<preamble>This is a special version of the ILS Automation installer for Batch Expert+ built for
+		the express purpose of updating the existing Synata installation to Batch Expert+ 2.0. This installation 
+		expects a tag provider named &quot;default&quot; and a SQL Server database source named BEDB.
 		</preamble>
+		<artifact name="notes" type="pdf">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
 	</panel>
 	<panel type="license" essential="true" version="1">
 		<title>End User License Agreement (EULA)</title>
@@ -33,8 +37,8 @@
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="file" essential="true" version="1">
-		<title>Python Extensions for the Batch Expert+</title>
-		<preamble>This page loads custom Python modules that support Batch Expert+. 
+		<title>Python Extensions for Batch Expert+</title>
+		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
 		<artifact name="External Python for Batch Expert+" type="directory" subtype="user-lib">
 			<location>artifacts/external/ils</location>
@@ -47,6 +51,44 @@
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags for common BatchExpert controllers and
+					system configuration. These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+		<artifact name="Tag Instances" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Define tags provider and database connections</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          become the project defaults. Select &quot;default&quot; for the
+		          tag provider.
+		</preamble>
+		<property name="database" type="production">
+			<script>ils.be.configuration.config.setDatasource</script>
+		</property>
+		<property name="DBMS" type="production">
+			<script>ils.be.configuration.config.setDBMS</script>
+		</property>
+		<property name="provider" type="production"></property>
+	</panel>
+		<panel type="feature" essential="true">
+		<title>Batch-Expert Feature Selection</title>
+		<preamble>Configure your Batch-Expert+ installation to include the SFC feature.
+		</preamble>
+		<!-- destination defines python to execute on feature installation -->
+		<artifact name="SFC">
+			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
+		         feature requires the Ignition SFC module.</comment>
+			<script>ils.be.configuration.config.useSFC</script>
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
@@ -72,19 +114,6 @@
 		</artifact>
 		<artifact name="Rangeslider Component" type="module">
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
-		           These definitions are written to the default tag provider.
-		</preamble>
-		<property name="provider">default</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-		<artifact name="Tag Instances" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
 		</artifact>
 	</panel>
 		<panel type="project" subtype="main" essential="true" version="1">

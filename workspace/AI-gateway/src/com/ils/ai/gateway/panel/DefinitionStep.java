@@ -190,12 +190,17 @@ public class DefinitionStep extends BasicInstallerPanel {
 					valid = false;  
 					error(msg.toString());
 				}
-				
+				// If there are scripts attached to the properties, execute them
+				for(PropertyItem property:properties) {
+		    		String script = property.getScript();
+		    		if( !script.isEmpty() ) {
+		    			dataHandler.executePythonFromProperty(property);
+		    		}
+				}
 				saved = true;
             }
         });
 	}
-
 
 
 	// ================================= Classes for Listing Database Connections  ==============================

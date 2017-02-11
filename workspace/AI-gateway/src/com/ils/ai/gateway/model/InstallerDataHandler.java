@@ -294,9 +294,16 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	public String executePythonFromArtifact(Artifact art) {
+	/**
+	 * Execute a python method associated with the artifact. The argument
+	 * registers the user response.
+	 * @param art the artifact
+	 * @param response user response
+	 * @return an empty string on success, else an error description
+	 */
+	public String executePython(String pythonPath) {
 		String result = "";
-		String pythonPath = art.getDestination();
+		log.infof("%s.executePython: %s", CLSS,pythonPath);
 		if( !pythonPath.isEmpty() ) {
 			try {
 				result =  pyUtil.execute(pythonPath);
@@ -307,12 +314,39 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	public String executePythonFromFeatureArtifact(Artifact art,String feature,String flag) {
+	/**
+	 * Execute a python method associated with the artifact. The argument
+	 * registers the user response.
+	 * @param art the artifact
+	 * @param response user response
+	 * @return an empty string on success, else an error description
+	 */
+	public String executePythonFromArtifact(Artifact art,boolean response) {
 		String result = "";
-		String pythonPath = art.getDestination();
+		String pythonPath = art.getScript();
 		if( !pythonPath.isEmpty() ) {
+			log.infof("%s.executePythonFromArtifact: %s (%s)", CLSS,pythonPath,(response?"true":"false"));
 			try {
-				result =  pyUtil.executeFeatureSetting(pythonPath,feature,flag);
+				result =  pyUtil.processFlag(pythonPath,response);
+			}
+			catch(JythonExecException jee) {
+				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
+			}
+		}
+		return result;
+	}
+	/**
+	 * Execute the python referenced in a property, if any. The argument is the property value.
+	 * @param property the property
+	 * @return an empty string on success, else an error description
+	 */
+	public String executePythonFromProperty(PropertyItem property) {
+		String result = "";
+		String pythonPath = property.getScript();
+		if( !pythonPath.isEmpty() ) {
+			log.infof("%s.executePythonFromProperty: %s (%s-%s)", CLSS,pythonPath,property.getName(),property.getValue());
+			try {
+				result =  pyUtil.updateValue(pythonPath,property.getValue().toString());
 			}
 			catch(JythonExecException jee) {
 				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
@@ -748,6 +782,13 @@ public class InstallerDataHandler {
 					Node locationNode = locations.item(0);
 					artifact.setLocation(locationNode.getTextContent());
 				}
+				// Comment is an element
+				NodeList comments = ((Element)artifactNode).getElementsByTagName("comment");
+				ncount = comments.getLength();
+				if(ncount>0) {  // There should be only one comment
+					Node commentNode = comments.item(0);
+					artifact.setComment(commentNode.getTextContent());
+				}
 				// Destination is an element
 				NodeList destinations = ((Element)artifactNode).getElementsByTagName("destination");
 				ncount = destinations.getLength();
@@ -755,12 +796,12 @@ public class InstallerDataHandler {
 					Node destinationNode = destinations.item(0);
 					artifact.setDestination(destinationNode.getTextContent());
 				}
-				// Comment is an element
-				NodeList comments = ((Element)artifactNode).getElementsByTagName("comment");
-				ncount = comments.getLength();
-				if(ncount>0) {  // There should be only one comment
-					Node commentNode = comments.item(0);
-					artifact.setComment(commentNode.getTextContent());
+				// Script is an element
+				NodeList scripts = ((Element)artifactNode).getElementsByTagName("script");
+				ncount = scripts.getLength();
+				if(ncount>0) {  // There should be only one script
+					Node scriptNode = scripts.item(0);
+					artifact.setScript(scriptNode.getTextContent());
 				}
 				artifacts.add(artifact);
 				index++;
@@ -1140,7 +1181,15 @@ public class InstallerDataHandler {
 				if( propertyNode.getNodeName().equalsIgnoreCase("property") ) {
 					String name = xmlUtil.attributeValue(propertyNode, "name");
 					String value = propertyNode.getTextContent();
-					properties.add(new PropertyItem(name,value));
+					PropertyItem property = new PropertyItem(name,value);
+					// Script is an optional element
+					NodeList scripts = ((Element)propertyNode).getElementsByTagName("script");
+					int ncount = scripts.getLength();
+					if(ncount>0) {  // There should be only one script
+						Node scriptNode = scripts.item(0);
+						property.setScript(scriptNode.getTextContent());
+					}
+					properties.add(property);
 				}
 				index++;
 			}

@@ -49,9 +49,9 @@
 		<!-- build.date and version.build are both in SVN Release area, in
 			files VERS and DATE.
 		-->
-		<loadfile property="rawdate" srcFile="${svn.repo}/BatchExpert/Release/DATE"/>
+		<loadfile property="rawdate" srcFile="${git.repo}/batch-expert/release/DATE"/>
 		<trim input="${rawdate}" property="build.date" />
-		<loadfile property="rawvers" srcFile="${svn.repo}/BatchExpert/Release/VERS"/>
+		<loadfile property="rawvers" srcFile="${git.repo}/batch-expert/release/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
 		
 		<echo message="Build date:    ${build.date}" />
@@ -87,10 +87,6 @@
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-		
-		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${svn.repo}/BatchExpert/Tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
 				
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database"/>

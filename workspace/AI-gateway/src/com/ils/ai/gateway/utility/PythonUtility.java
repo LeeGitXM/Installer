@@ -71,13 +71,12 @@ public class PythonUtility{
 	/**
 	 * Construct import and executable path from method name. The method name
 	 * may optionally include parentheses. Path may be specified with either dots or slashes.
-	 * The python method takes 2 string arguments: "feature", "flag"
+	 * The python method takes a single boolean argument:  "flag"
 	 * @param methodName
-	 * @param feature name of the feature
-	 * @param flag "true" if the feature is present
+	 * @param flag user response, true or false
 	 * @throws JythonExecException
 	 */
-	public String executeFeatureSetting(String methodName,String feature,String flag) throws JythonExecException {
+	public String processFlag(String methodName,boolean flag) throws JythonExecException {
 		methodName = methodName.replace("/", ".");
 		StringBuffer buf = new StringBuffer();
 		int pindex = methodName.lastIndexOf("(");
@@ -92,15 +91,54 @@ public class PythonUtility{
 		buf.append(RESULT_NAME);
 		buf.append(" = ");
 		buf.append(methodName);
-		buf.append("(feature,flag)");  // Two arguments
+		buf.append("(flag)");  // Single arguments
 
 		String script = buf.toString();
-		System.out.println(String.format("PythonUtility.executeFeatureSetting %s",script));
+		System.out.println(String.format("PythonUtility.processFlag %s",script));
 		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
 		ScriptManager scriptManager = context.getScriptManager();
 		PyStringMap pyLocals = scriptManager.createLocalsMap();
-		pyLocals.__setitem__("feature", Py.java2py(feature));
 		pyLocals.__setitem__("flag", Py.java2py(flag));
+		
+	    PyStringMap pyGlobals= scriptManager.getGlobals();
+	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
+		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
+		Object result = pyResult.__tojava__(returnType);
+		if( result==null ) result = String.format("No value returned from %s",methodName);
+		return result.toString();
+	} 
+	
+	/**
+	 * Construct import and executable path from method name. The method name
+	 * may optionally include parentheses. Path may be specified with either dots or slashes.
+	 * The python method takes 2 string arguments: "feature", "flag"
+	 * @param methodName
+	 * @param value name of the property
+	 * @throws JythonExecException
+	 */
+	public String updateValue(String methodName,String value) throws JythonExecException {
+		methodName = methodName.replace("/", ".");
+		StringBuffer buf = new StringBuffer();
+		int pindex = methodName.lastIndexOf("(");
+		if( pindex>0 ) methodName = methodName.substring(0,pindex);   // Strip parentheses.
+		
+		int dotIndex = methodName.lastIndexOf(".");
+		if(dotIndex != -1) {
+			buf.append("import ");
+			buf.append(methodName.substring(0, dotIndex));
+			buf.append("; ");
+		}
+		buf.append(RESULT_NAME);
+		buf.append(" = ");
+		buf.append(methodName);
+		buf.append("(value)");  // Single argument
+
+		String script = buf.toString();
+		System.out.println(String.format("PythonUtility.updateValue %s(%s)",script,value));
+		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
+		ScriptManager scriptManager = context.getScriptManager();
+		PyStringMap pyLocals = scriptManager.createLocalsMap();
+		pyLocals.__setitem__("value", Py.java2py(value));
 		
 	    PyStringMap pyGlobals= scriptManager.getGlobals();
 	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
