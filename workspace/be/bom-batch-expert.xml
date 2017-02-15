@@ -72,6 +72,10 @@
 			<location>artifacts/external/ils</location>
 			<destination>pylib/ils</destination>
 		</artifact>
+		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
+		</artifact>
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>

@@ -306,7 +306,7 @@ public class InstallerDataHandler {
 		log.infof("%s.executePython: %s", CLSS,pythonPath);
 		if( !pythonPath.isEmpty() ) {
 			try {
-				result =  pyUtil.execute(pythonPath);
+				pyUtil.execute(pythonPath);
 			}
 			catch(JythonExecException jee) {
 				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
@@ -327,7 +327,7 @@ public class InstallerDataHandler {
 		if( !pythonPath.isEmpty() ) {
 			log.infof("%s.executePythonFromArtifact: %s (%s)", CLSS,pythonPath,(response?"true":"false"));
 			try {
-				result =  pyUtil.processFlag(pythonPath,response);
+				pyUtil.processFlag(pythonPath,response);
 			}
 			catch(JythonExecException jee) {
 				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
@@ -346,7 +346,7 @@ public class InstallerDataHandler {
 		if( !pythonPath.isEmpty() ) {
 			log.infof("%s.executePythonFromProperty: %s (%s-%s)", CLSS,pythonPath,property.getName(),property.getValue());
 			try {
-				result =  pyUtil.updateValue(pythonPath,property.getValue().toString());
+				pyUtil.updateValue(pythonPath,property.getValue().toString());
 			}
 			catch(JythonExecException jee) {
 				result = String.format("%s execution exception (%s)",pythonPath,jee.getLocalizedMessage());
@@ -1141,6 +1141,13 @@ public class InstallerDataHandler {
 				String value = propertyNode.getTextContent();
 				PropertyItem item = new PropertyItem(name,value);
 				item.setType(xmlUtil.attributeValue(propertyNode, "type"));
+				// Script is an element
+				NodeList scripts = ((Element)propertyNode).getElementsByTagName("script");
+				int ncount = scripts.getLength();
+				if(ncount>0) {  // There should be only one comment
+					Node scriptNode = scripts.item(0);
+					item.setScript(scriptNode.getTextContent());
+				}
 				properties.add(item);
 				index++;
 			}
@@ -1180,8 +1187,7 @@ public class InstallerDataHandler {
 				Node propertyNode = children.item(index);
 				if( propertyNode.getNodeName().equalsIgnoreCase("property") ) {
 					String name = xmlUtil.attributeValue(propertyNode, "name");
-					String value = propertyNode.getTextContent();
-					PropertyItem property = new PropertyItem(name,value);
+					PropertyItem property = new PropertyItem(name,"");
 					// Script is an optional element
 					NodeList scripts = ((Element)propertyNode).getElementsByTagName("script");
 					int ncount = scripts.getLength();
@@ -1189,6 +1195,12 @@ public class InstallerDataHandler {
 						Node scriptNode = scripts.item(0);
 						property.setScript(scriptNode.getTextContent());
 					}
+					else {
+						// For now we assume that, if there is a script, there is no fixed value
+						String value = propertyNode.getTextContent();
+						property.setValue(value);
+					}
+
 					properties.add(property);
 				}
 				index++;

@@ -105,6 +105,7 @@
 				<include name="xlsxwriter/**/*.py" />
 			</fileset>
 		</copy>
+		<mkdir dir="${artifact.dir}/external/ils" />
 		<copy todir="${artifact.dir}/external/ils">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
 				<include name="jChart/*.py" />
@@ -115,12 +116,20 @@
 				<include name="pysfc/**/*.py" />
 			</fileset>
 		</copy>
+		<mkdir dir="${artifact.dir}/external/lib" />
+		<copy todir="${artifact.dir}/external/lib">
+			<fileset dir="${git.repo}/external/lib">
+				<include name="ils-common*" />
+			</fileset>
+		</copy>
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
 		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
 		</delete>
+		<!-- Remove obsolete BatchExpert -->
+		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 			
 		<!-- Modules - must be compatible with Java-7 clients -->
 		<mkdir dir="${artifact.dir}/modules" />

@@ -176,7 +176,7 @@
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/labDataSqlTags.xml" tofile="${artifact.dir}/tags/labdataTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/labDataSqlTags.xml" tofile="${artifact.dir}/tags/labdataTestTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/labdataSqlTags.xml" tofile="${artifact.dir}/tags/labdataTestTags.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />

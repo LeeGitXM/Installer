@@ -64,20 +64,20 @@ public class DefinitionStep extends BasicInstallerPanel {
     		String type = prop.getType();
 			if(type==null || type.isEmpty()) continue;
     		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
-		if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  showProductionProvider = true;
+    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  showProductionProvider = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionProvider = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      showProductionProvider = true;
     		}
-    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
+    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
     			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
+    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDBMS = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDBMS = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDBMS = true;
     		}
-    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
     			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
     			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
@@ -129,7 +129,6 @@ public class DefinitionStep extends BasicInstallerPanel {
 		secondaryProviders.setVisible(showSecondaryProvider);
 		
 		// Select Defaults
-		
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
 		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
 		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
@@ -182,21 +181,54 @@ public class DefinitionStep extends BasicInstallerPanel {
 					}
 				}
 				
+				// If there are scripts attached to the properties, execute them. The scripts rely on the property value 
+				// being set. We don't bother setting unless there is a script involved.
+				for(PropertyItem property:properties) {
+					String type = property.getType();
+					if(type==null || type.isEmpty()) continue;
+		    		String script = property.getScript();
+		    		if( !script.isEmpty() ) {
+		        		if(property.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
+		        			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  property.setValue(productionProvider.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) property.setValue(secondaryProvider.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) property.setValue(secondaryProvider.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) property.setValue(productionProvider.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      property.setValue(productionProvider.getName());
+		        		}
+		        		else if(property.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
+		        			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) property.setValue(productionDBMS);
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) property.setValue(secondaryDBMS);
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) property.setValue(secondaryDBMS);
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) property.setValue(productionDBMS);
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDBMS);
+		        		}
+		        		else if(property.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+		        			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) property.setValue(productionDatabase.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) property.setValue(secondaryDatabase.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) property.setValue(secondaryDatabase.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) property.setValue(productionDatabase.getName());
+		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDatabase.getName());
+		        		}
+		    			String result = dataHandler.executePythonFromProperty(property);
+		    			System.out.println(String.format("DefinitionStep: Executing script: "+script));
+		    			if( !result.isEmpty()) {
+		    				System.out.println(String.format("DefinitionStep: Script error: \n"+result));
+		    				msg.append(result);
+		    				break;
+		    			}
+		    		}
+				}
+				
 				if( msg.length()==0) {
 					valid = true;
 					info("Datasource and tag provider definitions are complete.");
+					
 				}
 				else {
 					valid = false;  
 					error(msg.toString());
 				}
-				// If there are scripts attached to the properties, execute them
-				for(PropertyItem property:properties) {
-		    		String script = property.getScript();
-		    		if( !script.isEmpty() ) {
-		    			dataHandler.executePythonFromProperty(property);
-		    		}
-				}
+
 				saved = true;
             }
         });

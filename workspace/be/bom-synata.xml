@@ -44,6 +44,10 @@
 			<location>artifacts/external/ils</location>
 			<destination>pylib/ils</destination>
 		</artifact>
+		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
+		</artifact>
 		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
 			<location>artifacts/external/pysfc</location>
 			<destination>pylib/ils/pysfc</destination>
@@ -88,7 +92,7 @@
 		<artifact name="SFC">
 			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
 		         feature requires the Ignition SFC module.</comment>
-			<script>ils.be.configuration.config.useSFC</script>
+			<script>ils.be.configuration.install.useSFC</script>
 		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="1">
@@ -100,9 +104,11 @@
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="Drop Tables" type="sql" subtype="clear">
 			<location>artifacts/database/clearTables.sql</location>
+			<script>ils.be.configuration.install.clearDatabase</script>
 		</artifact>
 		<artifact name="Create Tables" type="sql" subtype="create">
 			<location>artifacts/database/createTables.sql</location>
+			<script>ils.be.configuration.install.createDatabase</script>
 		</artifact>
 	</panel>
 		<panel type="module" subtype="production" essential="true" version="1" >

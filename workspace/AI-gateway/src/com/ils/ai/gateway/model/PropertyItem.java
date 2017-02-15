@@ -29,6 +29,7 @@ public class PropertyItem implements Serializable {
 	public String getName() {return this.name;}
 	public String getScript() {return script;}
 	public String getValue() {return this.value;}
+	public void setValue(String val) { this.value = val; }
 	public String getType() {return this.type; }
 	public void setType(String typ) {this.type=typ; }
 	public String getPrevious() {return this.previous; }

@@ -46,7 +46,7 @@
 		<trim input="${rawdate}" property="build.date" />
 		<loadfile property="rawvers" srcFile="${git.repo}/batch-expert/release/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
-		
+
 		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
@@ -64,7 +64,7 @@
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
-		
+
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
@@ -75,7 +75,7 @@
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
-		
+
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
 		<copy todir="${artifact.dir}/icons">
@@ -84,18 +84,18 @@
 				<include name="**/*.jpg" />
 			</fileset>
 		</copy>
-		
+
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-		
+
 		<!-- Database - sample data -->
 		<mkdir dir="${artifact.dir}/resultsdb" />
 		<copy file="${svn.repo}/BatchExpert/Database/test/create_result_tables.sql" tofile="${artifact.dir}/results/createTables.sql" />
 		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_C1.sql" tofile="${artifact.dir}/results/C1.sql" />
 		<copy file="${svn.repo}/BatchExpert/Database/test/insert_result_data_R1.sql" tofile="${artifact.dir}/results/R1.sql" />
-		
+
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
 		<copy todir="${artifact.dir}/external">
@@ -108,16 +108,36 @@
 				<include name="xlsxwriter/**/*.py" />
 			</fileset>
 		</copy>
+		<mkdir dir="${artifact.dir}/external/ils" />
 		<copy todir="${artifact.dir}/external/ils">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
 				<include name="jChart/*.py" />
 			</fileset>
 		</copy>
-		
+		<copy todir="${artifact.dir}/external/ils">
+			<fileset dir="${git.repo}/py-sfc/pysfc-python/src/ils">
+				<include name="pysfc/**/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/external/lib" />
+		<copy todir="${artifact.dir}/external/lib">
+			<fileset dir="${git.repo}/external/lib">
+				<include name="ils-common*" />
+			</fileset>
+		</copy>
+		<!-- Remove examples -->
+		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
+		<delete>
+			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py" />
+			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py" />
+		</delete>
+		<!-- Remove obsolete BatchExpert -->
+		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
+
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclass" />
 		<copy file="${svn.repo}/BatchExpert/Tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
-		
+
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
@@ -130,7 +150,7 @@
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
-		
+
 		<!-- Sign the module -->
 		<antcall target="SignModule">
 			<param name="moduleName" value="${module.name}-${version.build}" />
@@ -144,21 +164,21 @@
 		<echo message="Copying ${module.name} to Google Drive." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
-	
+
 	<!-- macro to trim newlines from a variable -->
-	 <macrodef name="trim">
-	   <attribute name="input" />
-	   <attribute name="property" />
-	   <sequential>
-	     <tempfile property="temp.file" />
-	     <echo file="${temp.file}" message="@{input}" />
-	     <move file="${temp.file}" tofile="${temp.file}.2">
-	       <filterchain>
-	       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
-	       </filterchain>
-	     </move>
-	     <loadfile property="@{property}" srcFile="${temp.file}.2" />
-	     <delete file="${temp.file}.2" failonerror="false" />
-	   </sequential>
-	 </macrodef>
+	<macrodef name="trim">
+		<attribute name="input" />
+		<attribute name="property" />
+		<sequential>
+			<tempfile property="temp.file" />
+			<echo file="${temp.file}" message="@{input}" />
+			<move file="${temp.file}" tofile="${temp.file}.2">
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+				</filterchain>
+			</move>
+			<loadfile property="@{property}" srcFile="${temp.file}.2" />
+			<delete file="${temp.file}.2" failonerror="false" />
+		</sequential>
+	</macrodef>
 </project>

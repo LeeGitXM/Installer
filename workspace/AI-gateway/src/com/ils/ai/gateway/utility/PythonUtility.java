@@ -35,10 +35,11 @@ public class PythonUtility{
 	/**
 	 * Construct import and executable path from method name. The method name
 	 * may optionally include parentheses. Path may be specified with either dots or slashes.
+	 * There is no return expected. Bad results are gleaned from the exception.
 	 * @param methodName
 	 * @throws JythonExecException
 	 */
-	public String execute(String methodName) throws JythonExecException {
+	public void execute(String methodName) throws JythonExecException {
 		methodName = methodName.replace("/", ".");
 		StringBuffer buf = new StringBuffer();
 		int pindex = methodName.lastIndexOf("(");
@@ -50,8 +51,6 @@ public class PythonUtility{
 			buf.append(methodName.substring(0, dotIndex));
 			buf.append("; ");
 		}
-		buf.append(RESULT_NAME);
-		buf.append(" = ");
 		buf.append(methodName);
 		buf.append("()");  // No arguments
 
@@ -62,21 +61,17 @@ public class PythonUtility{
 		PyStringMap pyLocals = scriptManager.createLocalsMap();
 	    PyStringMap pyGlobals= scriptManager.getGlobals();
 	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
-		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
-		Object result = pyResult.__tojava__(returnType);
-		if( result==null ) result = String.format("No value returned from %s",methodName);
-		return result.toString();
 	}
 	
 	/**
 	 * Construct import and executable path from method name. The method name
 	 * may optionally include parentheses. Path may be specified with either dots or slashes.
-	 * The python method takes a single boolean argument:  "flag"
+	 * The python method takes a single boolean argument:  "flag". There is no return value.
 	 * @param methodName
 	 * @param flag user response, true or false
 	 * @throws JythonExecException
 	 */
-	public String processFlag(String methodName,boolean flag) throws JythonExecException {
+	public void processFlag(String methodName,boolean flag) throws JythonExecException {
 		methodName = methodName.replace("/", ".");
 		StringBuffer buf = new StringBuffer();
 		int pindex = methodName.lastIndexOf("(");
@@ -88,8 +83,6 @@ public class PythonUtility{
 			buf.append(methodName.substring(0, dotIndex));
 			buf.append("; ");
 		}
-		buf.append(RESULT_NAME);
-		buf.append(" = ");
 		buf.append(methodName);
 		buf.append("(flag)");  // Single arguments
 
@@ -102,21 +95,17 @@ public class PythonUtility{
 		
 	    PyStringMap pyGlobals= scriptManager.getGlobals();
 	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
-		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
-		Object result = pyResult.__tojava__(returnType);
-		if( result==null ) result = String.format("No value returned from %s",methodName);
-		return result.toString();
 	} 
 	
 	/**
 	 * Construct import and executable path from method name. The method name
 	 * may optionally include parentheses. Path may be specified with either dots or slashes.
-	 * The python method takes 2 string arguments: "feature", "flag"
+	 * The python method takes a single string arguments: "value". There is no return expected.
 	 * @param methodName
 	 * @param value name of the property
 	 * @throws JythonExecException
 	 */
-	public String updateValue(String methodName,String value) throws JythonExecException {
+	public void updateValue(String methodName,String value) throws JythonExecException {
 		methodName = methodName.replace("/", ".");
 		StringBuffer buf = new StringBuffer();
 		int pindex = methodName.lastIndexOf("(");
@@ -128,8 +117,6 @@ public class PythonUtility{
 			buf.append(methodName.substring(0, dotIndex));
 			buf.append("; ");
 		}
-		buf.append(RESULT_NAME);
-		buf.append(" = ");
 		buf.append(methodName);
 		buf.append("(value)");  // Single argument
 
@@ -142,9 +129,5 @@ public class PythonUtility{
 		
 	    PyStringMap pyGlobals= scriptManager.getGlobals();
 	    scriptManager.runCode(compiledCode, pyLocals, pyGlobals);
-		PyObject pyResult = pyLocals.__getitem__(RESULT_NAME);
-		Object result = pyResult.__tojava__(returnType);
-		if( result==null ) result = String.format("No value returned from %s",methodName);
-		return result.toString();
 	}  
 }
