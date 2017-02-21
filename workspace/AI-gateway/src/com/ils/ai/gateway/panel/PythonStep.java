@@ -31,7 +31,7 @@ public class PythonStep extends BasicInstallerPanel {
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
 
-		// Create a subpanel for each artifact (up to a maximum of three)
+		// Create a subpanel for each artifact
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 		List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
 		add(new ListView<Artifact>("scripts", artifacts) {

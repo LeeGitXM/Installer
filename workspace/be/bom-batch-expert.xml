@@ -37,30 +37,17 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="2">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
+		<title>Install UDT and Tag Definitions</title>
+		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
-		<property name="provider" type="production"></property>
+		<property name="provider" type="production">default</property>
+		<artifact name="Configuration Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
-		<artifact name="Tag Instances" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="definition" essential="true">
-		<title>Define tags provider and database connections</title>
-		<preamble>Specify the database connection and DBMS-type that 
-		          become the demonstration project defaults.
-		</preamble>
-		<property name="database" type="production">
-			<script>ils.be.configuration.config.setDatasource</script>
-		</property>
-		<property name="DBMS" type="production">
-			<script>ils.be.configuration.config.setDBMS</script>
-		</property>
-		<property name="provider" type="production"></property>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
@@ -81,16 +68,30 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
+	<panel type="definition" essential="true">
+		<title>Define the Database Connections</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          are used for BatchExpert+.
+		</preamble>
+		<property name="database" type="production">
+			<script>ils.be.configuration.config.setDatasource</script>
+		</property>
+		<property name="DBMS" type="production">
+			<script>ils.be.configuration.config.setDBMS</script>
+		</property>
+		<property name="provider" type="production">default</property>
+	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure your Batch-Expert+ installation with (or without)
 		          optional features.
 		</preamble>
-		<!-- destination defines python to execute on feature installation -->
+		<!-- script defines python to execute on feature installation -->
 		<artifact name="SFC">
-		<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
+			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
 		         feature requires the Ignition SFC module.</comment>
-		<destination></destination></artifact>
+			<script>ils.be.configuration.install.useSFC</script>
+		</artifact>
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Icons</title>
@@ -129,7 +130,7 @@
 			<location>artifacts/results/R1.sql</location>
 		</artifact>	
 	</panel>
-	<panel type="database" essential="true" version="1">
+	<panel type="database" essential="false" version="1">
 		<title>Insert C1 Sample Data</title>
 		<preamble>Insert results C1 into the production database.
 		          WARNING: Do not use in a "live" production system.
@@ -151,8 +152,10 @@
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom Modules</title>
-		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
+		          installations that include the SFC feature.
 		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
 		<artifact name="Python SFC" type="module">
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
@@ -160,18 +163,35 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
+	<panel type="module" subtype="production" essential="true" version="2" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">FALSE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Install a New BE Project or Merge Changes into an Existing
-			Project
+		<title>Install or Update a BatchExpert+ Project
 		</title>
-		<preamble>Batch Expert is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications.
+		<preamble>BatchExpert+ is the main Ignition project. This page provides
+			artifacts for a clean, new installation or
+			alternatively an update of an existing version. The update preserves any user
+			modifications to the original. For a new installation both install and merge steps are required.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpert.proj</location>
+			<comment>Install the BatchExpert+ project into the gateway,
+					 overwriting any existing project of the same name. When 
+					 complete, execute the merge step.</comment>
+		</artifact>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpertUpdate" type="project" subtype="partial">
+			<location>artifacts/projects/BatchExpertUpdate.proj</location>
+			<comment>Merge the latest BatchExpert+ project resources 
+					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="1">
@@ -182,8 +202,12 @@
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
-		<artifact name="BatchExpert SFC" type="project" subtype="global">
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
 			<location>artifacts/projects/BatchExpertSFC.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

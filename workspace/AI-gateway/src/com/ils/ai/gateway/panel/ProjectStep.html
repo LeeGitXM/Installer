@@ -66,8 +66,7 @@
 									<td><input
 										style="align: left; background-color: rgb(120, 20, 20)"
 										type="submit" wicket:id="new" value="Install" /></td>
-									<td colspan="2"><p>Install the specified project into the gateway,
-											overwriting any existing project of the same name.</p></td>
+									<td colspan="2"><span wicket:id="fullProjectComment" /></td>
 								</tr>
 							</table>
 						</form>
@@ -90,10 +89,7 @@
 									<td><input
 										style="align: left; background-color: rgb(120, 20, 20)"
 										type="submit" wicket:id="merge" value="Merge" /></td>
-									<td colspan="2"><p>Merge new or modified project resources from
-											the source project into the selected existing project. The
-											name and permissions associated with the existing project do
-											not change.</p></td>
+									<td colspan="2"><span wicket:id="partialProjectComment" /></td>
 								</tr>
 							</table>
 
@@ -113,8 +109,7 @@
 									<td><input
 										style="align: left; background-color: rgb(120, 20, 20)"
 										type="submit" wicket:id="mergeGlobal" value="Merge" /></td>
-									<td colspan="2"><p>Merge new or modified project resources from
-											the source project into the global project.</p></td>
+										<td colspan="2"><span wicket:id="globalProjectComment" /></td>
 								</tr>
 							</table>
 

@@ -85,8 +85,7 @@
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
+		<copy file="${git.repo}/batch-expert/projects/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 				
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database"/>

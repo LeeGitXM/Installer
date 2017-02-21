@@ -69,7 +69,7 @@ public class PanelData implements Serializable  {
 		return false;
 	}
 	/**
-	 * Test for absense of features. Return true if nothing that we describe as
+	 * Test for absence of features. Return true if nothing that we describe as
 	 * "must be missing" exists in the installer data.
 	 * @param panelFeatures
 	 * @return true if one or more features in the panel list

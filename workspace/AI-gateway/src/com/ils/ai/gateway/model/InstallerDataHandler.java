@@ -1,5 +1,5 @@
 /**
- *   (c) 2016  ILS Automation. All rights reserved. 
+ *   (c) 2016-2017  ILS Automation. All rights reserved. 
  */
 package com.ils.ai.gateway.model;
 
@@ -873,7 +873,7 @@ public class InstallerDataHandler {
 	}
 	/**
 	 * Beginning with the specified panel, search sequentially for a panel that meets the filter criteria
-	 * indicated in the data model.
+	 * indicated in the data model. Note that for a feature FALSE, that feature must not be present.
 	 * @param index one more than current panel
 	 * @param prior
 	 * @param dataModel
@@ -904,7 +904,7 @@ public class InstallerDataHandler {
 						featureOK = pd.matchMissingFeature(features);
 					}
 				}
-				if( (site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site)) && featureOK) {
+				if( (site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site)) && featureOK)  {
 					String title = getStepTitle(index,data);
 					PanelType type = getStepType(index,data);
 					BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
@@ -1112,9 +1112,11 @@ public class InstallerDataHandler {
 						boolean hasFeature = false;
 						if( value!=null && value.equalsIgnoreCase("true")) hasFeature = true;
 						if( hasFeature ) {
+							log.infof("%s.getPanelData: %d %s has feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
 							data.addFeature(feature);
 						}
 						else {
+							log.infof("%s.getPanelData: %d %s does NOT have feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
 							data.subtractFeature(feature);
 						}
 					}

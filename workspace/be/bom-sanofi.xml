@@ -76,20 +76,16 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags for common BatchExpert controllers.
+	<panel type="tag" subtype="production" essential="true" version="2">
+		<title>Install Tag Definitions</title>
+		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
 		</preamble>
-		<property name="provider">default</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-		<artifact name="Tag Instances" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
+		<artifact name="Configuration Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/configurationTags.xml</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="main" essential="true" version="1">
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install a New BE Project or Merge Changes into an Existing
 			Project
 		</title>

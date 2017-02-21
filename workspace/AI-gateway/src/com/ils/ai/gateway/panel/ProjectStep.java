@@ -1,5 +1,5 @@
 /**
- * Copyright 2016. ILS Automation. All rights reserved.
+ * Copyright 2016-2017. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway.panel;
 
@@ -23,6 +23,7 @@ import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProjectNameFinder;
+import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -35,6 +36,10 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String fullProjectName        = "UNUSED";
 	private String partialProjectName     = "UNUSED";
 	private String globalProjectName      = "UNUSED";
+	private String fullProjectComment     = "Install the specified project into the gateway, overwriting any existing project of the same name.";
+	private String partialProjectComment  = "Merge new or modified project resources from the source project into the selected existing project." +
+			                                "The name and permissions associated with the existing project do not change.";
+	private String globalProjectComment   = "Merge new or modified project resources from the source project into the global project.";
 	private String fullProjectLocation        = "";
 	private String partialProjectLocation     = "";
 	private String globalProjectLocation      = "";
@@ -56,14 +61,17 @@ public class ProjectStep extends BasicInstallerPanel {
         	if( art.getSubtype().equalsIgnoreCase("full")) {
         		fullProjectName = art.getName();
         		fullProjectLocation = art.getLocation();
+        		if( !art.getComment().isEmpty() ) fullProjectComment = art.getComment();
         	}
         	else if( art.getSubtype().equalsIgnoreCase("partial")) {
         		partialProjectName = art.getName();
         		partialProjectLocation = art.getLocation();
+        		if( !art.getComment().isEmpty() ) partialProjectComment = art.getComment();
         	}
         	else if( art.getSubtype().equalsIgnoreCase("global")) {
         		globalProjectName = art.getName();
         		globalProjectLocation = art.getLocation();
+        		if( !art.getComment().isEmpty() ) globalProjectComment = art.getComment();
         	}
         }
         
@@ -118,6 +126,8 @@ public class ProjectStep extends BasicInstallerPanel {
 		Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
         Label fullProject = new Label("fullProject",fullProjectName);
         newProjectForm.add(fullProject);
+        Label fullProjectCommentLabel = new Label("fullProjectComment",fullProjectComment);
+        newProjectForm.add(fullProjectCommentLabel);
         
         newProjectForm.add(new Button("new") {
 			private static final long serialVersionUID = 4110558774811578782L;
@@ -157,6 +167,8 @@ public class ProjectStep extends BasicInstallerPanel {
 
         Label partialProject = new Label("partialProject",partialProjectName);
         mergeProjectForm.add(partialProject);
+        Label partialProjectCommentLabel = new Label("partialProjectComment",partialProjectComment);
+        mergeProjectForm.add(partialProjectCommentLabel);
 
 		ProjectList projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
 		mergeProjectForm.add(projects);
@@ -192,6 +204,8 @@ public class ProjectStep extends BasicInstallerPanel {
 		Form<InstallerData> globalProjectForm = new Form<InstallerData>("globalForm", new CompoundPropertyModel<InstallerData>(data));
 		Label globalProject = new Label("globalProject",globalProjectName);
 		globalProjectForm.add(globalProject);
+        Label globalProjectCommentLabel = new Label("globalProjectComment",globalProjectComment);
+        globalProjectForm.add(globalProjectCommentLabel);
 
 		TextField<String> globalname = new TextField<String>("globalName", Model.of(""));
 		globalProjectForm.add(globalname);
@@ -223,6 +237,7 @@ public class ProjectStep extends BasicInstallerPanel {
 		
 		public ProjectList(String key,PropertyModel<Project>model,List<Project> list) {
 			super(key,model,list,new ProjectRenderer());
+			model.setObject(getProject(fullProjectName));
 		}
 		
 		@Override
@@ -252,6 +267,10 @@ public class ProjectStep extends BasicInstallerPanel {
 	private List<Project> getProjects() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
 		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
+	}
+	private Project getProject(String name) {
+		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
+		return context.getProjectManager().getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
 	}
 	// Find an unused name and copy the original to it.
 	private String createBackup(String oldName) {

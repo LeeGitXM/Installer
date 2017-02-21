@@ -83,16 +83,6 @@
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
 			
-		<!-- Tags -->
-		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
-				
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database"/>
-		<copy file="${svn.repo}/BatchExpert/Database/SQL Server DB Create Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
-		<copy file="${svn.repo}/BatchExpert/Database/universal/dropTables.sql" tofile="${artifact.dir}/database/clearTables.sql" />
-				
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
 		<copy todir="${artifact.dir}/external">
@@ -122,6 +112,11 @@
 				<include name="ils-common*" />
 			</fileset>
 		</copy>
+		
+		<!-- Special handling for the Synata alter script  -->
+		<move file="${artifact.dir}/external/ils/be/database/customer/synata.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
+			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
@@ -138,9 +133,14 @@
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/BatchExpert/Ignition/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BiostatCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertUpdate.proj" tofile="${artifact.dir}/projects/BatchExpertUpdate.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFC.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
+		<!-- Update release and build date in version python file -->
+		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@RELEASE@" value="${version.build}" />
+		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 		

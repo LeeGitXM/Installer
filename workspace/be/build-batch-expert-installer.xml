@@ -87,8 +87,8 @@
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BEDataTypesTags.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${svn.repo}/BatchExpert/Tags/BETagInstances.xml" tofile="${artifact.dir}/tags/sqlTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 
 		<!-- Database - sample data -->
 		<mkdir dir="${artifact.dir}/resultsdb" />
@@ -136,7 +136,7 @@
 
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${svn.repo}/BatchExpert/Tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -145,9 +145,15 @@
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/BatchExpert/Ignition/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${svn.repo}/BatchExpert/Ignition/Global/global_partial_project.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertUpdate.proj" tofile="${artifact.dir}/projects/BatchExpertUpdate.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFC.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
+		<!-- Update release and build date in version python file -->
+		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@RELEASE@" value="${version.build}" />
+		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 
