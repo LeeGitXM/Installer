@@ -183,6 +183,7 @@ public class ProjectStep extends BasicInstallerPanel {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
 
 				if( result==null ) {
+					if( selectedProject==null) selectedProject = getProject(fullProjectName);
 					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,partialProjectName,data);
 				}
 				if( result==null ) {
