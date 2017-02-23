@@ -2,7 +2,7 @@
      are determined by artifacts copied into the module bundle. For now we use
      the "Ignition Applications" package for Exxon-Mobil Chemicals.
 -->
-<project name="ApplicationInstaller" basedir="../" default="BuildAndInstallModule">
+<project name="ApplicationInstaller" basedir="../" default="BuildAndInstallJar">
 	<import file="./build.xml"/>
 	<property name="version.build" value="3" />	
 	<property name="version.beta" value="-development" />		
@@ -23,7 +23,7 @@
 	</path>	
 
 	<!-- This target will build the toolkit module and deploy it to the local Ignition gateway -->
-	<target name="BuildAndInstallModule" depends="clean, build" />
+	<target name="BuildAndInstallJar" depends="clean, build" />
 
 	<!-- Cleans all previously built files (leaves doc) -->
 	<target name="clean" description="Remove existing build products" >

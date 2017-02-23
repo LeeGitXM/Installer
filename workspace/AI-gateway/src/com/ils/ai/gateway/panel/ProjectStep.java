@@ -43,9 +43,10 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String fullProjectLocation        = "";
 	private String partialProjectLocation     = "";
 	private String globalProjectLocation      = "";
-	private String profileName= null;                       // Authentication profile
+	private String profileName= null;  // Authentication profile
 	private Project selectedProject = null;                 // Project to be merged
 	private boolean backupProject = false;
+	public ProjectList projects;
 	
 	public ProjectStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel) {
 		super(index,previous, title, dataModel);
@@ -53,47 +54,47 @@ public class ProjectStep extends BasicInstallerPanel {
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));
-		
+
 		// Search for the various artifact types
-        InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-        List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
-        for(Artifact art:artifacts) {
-        	if( art.getSubtype().equalsIgnoreCase("full")) {
-        		fullProjectName = art.getName();
-        		fullProjectLocation = art.getLocation();
-        		if( !art.getComment().isEmpty() ) fullProjectComment = art.getComment();
-        	}
-        	else if( art.getSubtype().equalsIgnoreCase("partial")) {
-        		partialProjectName = art.getName();
-        		partialProjectLocation = art.getLocation();
-        		if( !art.getComment().isEmpty() ) partialProjectComment = art.getComment();
-        	}
-        	else if( art.getSubtype().equalsIgnoreCase("global")) {
-        		globalProjectName = art.getName();
-        		globalProjectLocation = art.getLocation();
-        		if( !art.getComment().isEmpty() ) globalProjectComment = art.getComment();
-        	}
-        }
-        
-        // Set the default profile
-        PersistenceHandler ph = PersistenceHandler.getInstance();
-        profileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
-        DropDownChoice<String> profiles=new DropDownChoice<String>("profiles", new PropertyModel<String>(this, "profileName"), ph.getProfileNames()) {
+		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
+		List<Artifact> artifacts = dataHandler.getArtifacts(index, data);
+		for(Artifact art:artifacts) {
+			if( art.getSubtype().equalsIgnoreCase("full")) {
+				fullProjectName = art.getName();
+				fullProjectLocation = art.getLocation();
+				if( !art.getComment().isEmpty() ) fullProjectComment = art.getComment();
+			}
+			else if( art.getSubtype().equalsIgnoreCase("partial")) {
+				partialProjectName = art.getName();
+				partialProjectLocation = art.getLocation();
+				if( !art.getComment().isEmpty() ) partialProjectComment = art.getComment();
+			}
+			else if( art.getSubtype().equalsIgnoreCase("global")) {
+				globalProjectName = art.getName();
+				globalProjectLocation = art.getLocation();
+				if( !art.getComment().isEmpty() ) globalProjectComment = art.getComment();
+			}
+		}
+
+		// Set the default profile
+		PersistenceHandler ph = PersistenceHandler.getInstance();
+		profileName = dataHandler.getPreference(AUTH_PREFERENCE_NAME);
+		DropDownChoice<String>profiles=new DropDownChoice<String>("profiles", new PropertyModel<String>(this, "profileName"), ph.getProfileNames()) {
 			private static final long serialVersionUID = 2602629544295913483L;
-			
-		
+
+
 			@Override
 			protected CharSequence getDefaultChoice(String selectedValue) {
 				return profileName;
 			}
-        	@Override
-        	public void onSelectionChanged(String newSelection) {
-        		profileName = newSelection;
-        		InstallerDataHandler.getInstance().setPreference(AUTH_PREFERENCE_NAME,profileName);
-        	}
+			@Override
+			public void onSelectionChanged(String newSelection) {
+				profileName = newSelection;
+				InstallerDataHandler.getInstance().setPreference(AUTH_PREFERENCE_NAME,profileName);
+			}
 			@Override
 			protected boolean wantOnSelectionChangedNotifications() {return true;}
-        };
+		};
 		add(profiles);
 
 		// Set whether or not to skip panels that are up-to-date
@@ -119,17 +120,17 @@ public class ProjectStep extends BasicInstallerPanel {
 			}
 		};
 		add(checkbox);
-		
+
 		// New Project form
-        WebMarkupContainer full = new WebMarkupContainer("full");
-        full.setVisible(!fullProjectLocation.isEmpty());
+		WebMarkupContainer full = new WebMarkupContainer("full");
+		full.setVisible(!fullProjectLocation.isEmpty());
 		Form<InstallerData> newProjectForm = new Form<InstallerData>("newForm", new CompoundPropertyModel<InstallerData>(data));
-        Label fullProject = new Label("fullProject",fullProjectName);
-        newProjectForm.add(fullProject);
-        Label fullProjectCommentLabel = new Label("fullProjectComment",fullProjectComment);
-        newProjectForm.add(fullProjectCommentLabel);
-        
-        newProjectForm.add(new Button("new") {
+		Label fullProject = new Label("fullProject",fullProjectName);
+		newProjectForm.add(fullProject);
+		Label fullProjectCommentLabel = new Label("fullProjectComment",fullProjectComment);
+		newProjectForm.add(fullProjectCommentLabel);
+
+		newProjectForm.add(new Button("new") {
 			private static final long serialVersionUID = 4110558774811578782L;
 
 			public void onSubmit() {
@@ -143,6 +144,9 @@ public class ProjectStep extends BasicInstallerPanel {
 					if(backupProject) result = createBackup(fullProjectName);
 					if( result==null) {
 						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,profileName,data);
+						System.out.println(String.format("ProjectStep.onSubmit: Created full project %s",fullProjectName));
+						ProjectStep parent = ProjectStep.this;
+						parent.projects = new ProjectList("projects", new PropertyModel<Project>(parent, "selectedProject"), parent.getProjects());
 					}
 				}
 				if( result==null ) {
@@ -155,22 +159,22 @@ public class ProjectStep extends BasicInstallerPanel {
 					error(result);
 				}
 			}
-        });
+		});
 		full.add(newProjectForm);
-        add(full);
-		
-        // Merge project form
+		add(full);
+
+		// Merge project form
 		WebMarkupContainer partial = new WebMarkupContainer("partial");
 		partial.setVisible(!partialProjectLocation.isEmpty());
-		
+
 		Form<InstallerData> mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
 
-        Label partialProject = new Label("partialProject",partialProjectName);
-        mergeProjectForm.add(partialProject);
-        Label partialProjectCommentLabel = new Label("partialProjectComment",partialProjectComment);
-        mergeProjectForm.add(partialProjectCommentLabel);
+		Label partialProject = new Label("partialProject",partialProjectName);
+		mergeProjectForm.add(partialProject);
+		Label partialProjectCommentLabel = new Label("partialProjectComment",partialProjectComment);
+		mergeProjectForm.add(partialProjectCommentLabel);
 
-		ProjectList projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
+		projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
 		mergeProjectForm.add(projects);
 
 		mergeProjectForm.add(new Button("merge") {
@@ -184,7 +188,14 @@ public class ProjectStep extends BasicInstallerPanel {
 
 				if( result==null ) {
 					if( selectedProject==null) selectedProject = getProject(fullProjectName);
-					result = handler.mergeWithProjectFromLocation(selectedProject,partialProjectLocation,partialProjectName,data);
+					if( selectedProject!=null) {
+						System.out.println(String.format("ProjectStep.onSubmit: Merging project %s with %s",selectedProject.getName(),partialProjectName));
+						result = handler.mergeWithProjectFromArtifact(selectedProject,partialProjectLocation,partialProjectName,data);
+						System.out.println(String.format("ProjectStep.onSubmit: Merged project name is now %s",selectedProject.getName()));
+					}
+					else {
+						result = "No project selected as the target of the merge";
+					}
 				}
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
@@ -194,19 +205,19 @@ public class ProjectStep extends BasicInstallerPanel {
 				else {
 					error(result);
 				}
-            }
-        });
+			}
+		});
 		partial.add(mergeProjectForm);
 		add(partial);
-		
+
 		// Global project form
 		WebMarkupContainer global = new WebMarkupContainer("global");
 		global.setVisible(!globalProjectLocation.isEmpty());
 		Form<InstallerData> globalProjectForm = new Form<InstallerData>("globalForm", new CompoundPropertyModel<InstallerData>(data));
 		Label globalProject = new Label("globalProject",globalProjectName);
 		globalProjectForm.add(globalProject);
-        Label globalProjectCommentLabel = new Label("globalProjectComment",globalProjectComment);
-        globalProjectForm.add(globalProjectCommentLabel);
+		Label globalProjectCommentLabel = new Label("globalProjectComment",globalProjectComment);
+		globalProjectForm.add(globalProjectCommentLabel);
 
 		TextField<String> globalname = new TextField<String>("globalName", Model.of(""));
 		globalProjectForm.add(globalname);
@@ -216,7 +227,7 @@ public class ProjectStep extends BasicInstallerPanel {
 
 			public void onSubmit() {
 				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.mergeWithGlobalProjectFromLocation(globalProjectLocation,data);
+				String result = handler.mergeWithGlobalProjectFromArtifact(globalProjectLocation,data);
 				if( result==null ) {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 					panelData.setCurrentVersion(futureVersion);
@@ -230,22 +241,22 @@ public class ProjectStep extends BasicInstallerPanel {
 		global.add(globalProjectForm);
 		add(global);
 	}
-	
+
 
 	// ================================= Classes for Listing Projects  ==============================
 	public class ProjectList extends DropDownChoice<Project> {
 		private static final long serialVersionUID = -6176535065911396528L;
-		
+
 		public ProjectList(String key,PropertyModel<Project>model,List<Project> list) {
 			super(key,model,list,new ProjectRenderer());
 			model.setObject(getProject(fullProjectName));
 		}
-		
+
 		@Override
 		public boolean wantOnSelectionChangedNotifications() { return true; }
-		
+
 		@Override
-		protected void onSelectionChanged(final Project newSelection) {
+		public void onSelectionChanged(final Project newSelection) {
 			super.onSelectionChanged(newSelection);
 		}
 	}

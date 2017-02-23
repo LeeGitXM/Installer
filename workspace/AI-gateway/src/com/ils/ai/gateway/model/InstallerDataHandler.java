@@ -1512,6 +1512,7 @@ public class InstallerDataHandler {
 
 	/**
 	 * Create a new project. Leave it disabled. 
+	 * NOTE: This fails if the project has no resources.
 	 * @param location
 	 * @param name
 	 * @param profile
@@ -1706,7 +1707,7 @@ public class InstallerDataHandler {
 	}
 
 	// Start with the existing global project and merge in resources from a project in the bundle.
-	public String mergeWithGlobalProjectFromLocation(String location,InstallerData model) {
+	public String mergeWithGlobalProjectFromArtifact(String location,InstallerData model) {
 		String result = null;
 
 		ProjectManager pmgr = getContext().getProjectManager();
@@ -1765,46 +1766,57 @@ public class InstallerDataHandler {
 		return result;
 	}
 	/**
-	 *  Start with an existing project and create a new one with resources overridden from another.
+	 *  Start with an existing project and copy resources into it from a named partial project.
 	 *  Leave it disabled.
-	 * @param existing
+	 * @param originalLite a "lite" version of the project. It does not have all the resources.
 	 * @param location
 	 * @param name
 	 * @param model
 	 * @return
 	 */
 	
-	public String mergeWithProjectFromLocation(Project existing,String location,String name,InstallerData model) {
+	public String mergeWithProjectFromArtifact(Project originalLite,String location,String name,InstallerData model) {
 		String result = null;
-		if( existing!=null) {
+		if( originalLite!=null) {
 			ProjectManager pmgr = getContext().getProjectManager();
 			Path internalPath = getPathToModule(model);
 			InputStream projectReader = null;
 			JarFile jar = null;
 			try {
-				pmgr.copyProject(existing.getName(), name, true); // Will overwrite
-				Project originalProject = pmgr.getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
-				String description = originalProject.getDescription();
-				originalProject.setDescription(updateProjectDescription(description,model));
-				originalProject.setEnabled(false);
+				Project original = pmgr.getProject(originalLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
+				String description = original.getDescription();
+				original.setDescription(updateProjectDescription(description,model));
+				original.setEnabled(false);
 				
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(location);
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
 					Project updateProject = Project.fromXML(projectReader);
-					mergeProject(originalProject,updateProject);
-					pmgr.addProject(originalProject, true);      // Overwrite itself
-					originalProject = pmgr.getProject(originalProject.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
-					originalProject.setEnabled(false);
+					mergeProject(original,updateProject);
+					try {
+						pmgr.addProject(original, true);      // Overwrite itself
+						original = pmgr.getProject(original.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+						original.setEnabled(false);
+					}
+					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
+					catch(Exception ex) {
+						log.errorf("InstellerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
+					}
 					
-					GlobalProps props = pmgr.getProps(originalProject.getId(), ProjectVersion.Published);
+					GlobalProps props = pmgr.getProps(original.getId(), ProjectVersion.Published);
 					
 					String adminProfile = getAdministrativeProfile(model);
 					String adminUser = getAdministrativeUser(model);
 					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-					pmgr.saveProject(originalProject, user, "n/a", 
+					try {
+						pmgr.saveProject(original, user, "n/a", 
 							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
+					}
+					// We get an error notifying project listeners. It appears not to matter with us.
+					catch(Exception ex) {
+						log.errorf("InstellerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
+					}
 				}
 				else {
 					result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -1908,12 +1920,13 @@ public class InstallerDataHandler {
 	
 	// Merge resources from the partial project into the original
 	private void mergeProject(Project original,Project partial) {
+		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
 		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
 		// Create map of partial resources.
 		for( ProjectResource res:partial.getResources() ) {
 			String path = partial.getFolderPath(res.getResourceId());
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.debugf("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
+			log.infof("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
 			partialResources.put(key, res);
 		}
 		// Delete any resources in the original that are in the partial
@@ -1922,11 +1935,11 @@ public class InstallerDataHandler {
 			String path = original.getFolderPath(res.getResourceId());
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
 			if( partialResources.get(key)!=null ) {
-				log.debugf("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+				log.infof("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
 				toBeDeleted.add(res);
 			}
 			else{
-				log.debugf("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+				log.infof("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
 			}
 		}
 		for( ProjectResource res:toBeDeleted ) {

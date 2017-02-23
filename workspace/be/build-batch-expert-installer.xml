@@ -146,6 +146,7 @@
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertExamples.proj" tofile="${artifact.dir}/projects/BatchExpertExamples.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertUpdate.proj" tofile="${artifact.dir}/projects/BatchExpertUpdate.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFC.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
@@ -167,8 +168,9 @@
 
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying ${module.name} to Google Drive." />
+		<echo message="Copying ${module.name} to Google Drive (and examples project)." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertExamples.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertExamples.proj" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->
