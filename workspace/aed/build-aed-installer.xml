@@ -185,6 +185,7 @@
 		<copy file="${svn.repo}/EMRE/Install/AEDMemoryTags.xml" tofile="${artifact.dir}/test/tags/memoryTags.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModelsToImport.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDTags.xml" tofile="${artifact.dir}/test/models/AEDTagsToImport.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/SLED2TagModel.xml" tofile="${artifact.dir}/test/models/SLED2TagModel.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
