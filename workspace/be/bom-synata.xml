@@ -58,13 +58,27 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="2">
-		<title>Install Tag Definitions</title>
-		<preamble>This page creates BatchExpert configuration tags.
+		<title>Install UDT and Tag Definitions</title>
+		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="2">
+		<title>Install Tag Definitions for TEST</title>
+		<preamble>This page creates memory tags corresponding to the Synata production tags.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="Synata Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/synataTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">

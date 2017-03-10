@@ -1,8 +1,8 @@
-<!-- Create an application installer for Batch-Expert+ - Cargill (Oracle)
+<!-- Create an application installer for Batch-Expert+ - Synata
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="BatchExpertPlusInstaller" basedir="." default="deploy">
+<project name="BatchExpertSynataInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
@@ -130,7 +130,13 @@
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-
+		
+		<!-- Tags -->
+		<mkdir dir="${artifact.dir}/tags" />
+		<copy file="${git.repo}/batch-expert/updates/SynataSandbox/SynataMemoryTags.xml" tofile="${artifact.dir}/tags/synataTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertUpdate.proj" tofile="${artifact.dir}/projects/BatchExpertUpdate.proj" />

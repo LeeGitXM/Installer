@@ -186,6 +186,8 @@
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDModels.xml" tofile="${artifact.dir}/test/models/AEDModelsToImport.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/AEDTags.xml" tofile="${artifact.dir}/test/models/AEDTagsToImport.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/SLED2TagModel.xml" tofile="${artifact.dir}/test/models/SLED2TagModel.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDTags.xml" tofile="${artifact.dir}/test/models/PCASLEDTags.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDBadTagModels.xml" tofile="${artifact.dir}/test/models/PCASLEDBadTagModels.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
