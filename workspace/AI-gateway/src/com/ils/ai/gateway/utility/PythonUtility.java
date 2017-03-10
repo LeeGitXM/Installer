@@ -8,7 +8,6 @@ import org.python.core.CompileMode;
 import org.python.core.CompilerFlags;
 import org.python.core.Py;
 import org.python.core.PyCode;
-import org.python.core.PyObject;
 import org.python.core.PyStringMap;
 
 import com.inductiveautomation.ignition.common.script.JythonExecException;
