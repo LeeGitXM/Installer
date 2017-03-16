@@ -158,14 +158,12 @@
 		</antcall>
 	</target>
 	
-	<!-- Installs the installer module - this is not part of the default target
-	  1) In the local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. 
-	  2) Onto the Google Drive
-	 -->
+	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
+		<echo message="Copying Synata installer module onto Google Drive." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertUpdate.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertUpdate.proj" />
+		<copy file="${git.repo}/batch-expert/updates/SynataSandbox/BatchExpertSynataBare.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertSynataBare.proj" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">
