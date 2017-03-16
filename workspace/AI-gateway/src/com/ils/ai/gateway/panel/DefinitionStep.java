@@ -375,10 +375,10 @@ public class DefinitionStep extends BasicInstallerPanel {
 		return result;
 	}
 	
-	// If they've pressed "Save", allow user to proceed,
-	// no matter what -- they've been warned.
+	// If they've pressed "Save" and made all selections,
+	// allow user to proceed,
 	@Override
 	public boolean isNextAvailable() {
-		return valid || saved;
+		return valid && saved;
 	}
 }

@@ -46,6 +46,7 @@ public class ProjectStep extends BasicInstallerPanel {
 	private String profileName= null;  // Authentication profile
 	private Project selectedProject = null;                 // Project to be merged
 	private boolean backupProject = false;
+	public Form<InstallerData> mergeProjectForm = null;
 	public ProjectList projects;
 	
 	public ProjectStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel) {
@@ -147,6 +148,7 @@ public class ProjectStep extends BasicInstallerPanel {
 						System.out.println(String.format("ProjectStep.onSubmit: Created full project %s",fullProjectName));
 						ProjectStep parent = ProjectStep.this;
 						parent.projects = new ProjectList("projects", new PropertyModel<Project>(parent, "selectedProject"), parent.getProjects());
+						parent.mergeProjectForm.addOrReplace(parent.projects);
 					}
 				}
 				if( result==null ) {
@@ -167,7 +169,7 @@ public class ProjectStep extends BasicInstallerPanel {
 		WebMarkupContainer partial = new WebMarkupContainer("partial");
 		partial.setVisible(!partialProjectLocation.isEmpty());
 
-		Form<InstallerData> mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
+		mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
 
 		Label partialProject = new Label("partialProject",partialProjectName);
 		mergeProjectForm.add(partialProject);
