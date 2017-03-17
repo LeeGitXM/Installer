@@ -114,7 +114,7 @@
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
+	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -139,6 +139,19 @@
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
+	<panel type="project" subtype="alarm" essential="true" version="1">
+		<title>Install the Global Project
+		</title>
+		<preamble>This page handles installation of the BatchExpert global project.
+			The basic global project contains the default alarm pipeline configuration. 
+		</preamble>
+		<artifact name="BatchExpertGlobal" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<comment>Create the baseline global resources for
+					 the BatchExpert+.
+					 These consist of an alarm pipeline. </comment>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="1">
 		<title>Install SFC Charts in the Global Project
 		</title>
@@ -148,7 +161,7 @@
 			from this one page. 
 		</preamble>
 		<artifact name="BatchExpertSFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFC.proj</location>
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
 			<comment>Merge new or modified global resources from
 					 the BatchExpert+ update into the global project.
 					 These consist of SFC properties. </comment>

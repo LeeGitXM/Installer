@@ -42,13 +42,15 @@ public class SummaryStep extends BasicInstallerPanel {
 			if(site==null || site.isEmpty() || pdata.getSiteNames().size()==0 || pdata.getSiteNames().contains(site) ) {
 				List<String> features = dataModel.getObject().getFeatures();
 				// Now weed out panels that correspond to features we don't have
-				if( pdata.getFeatures().isEmpty() || pdata.matchFeature(features) || pdata.matchMissingFeature(features)) {
-					if(pdata.isEssential() && pdata.getVersion()!=InstallerConstants.UNSET) {
-						System.out.println(String.format("SummaryStep: %s (%d vs %d)", pdata.getTitle(),pdata.getCurrentVersion(),pdata.getVersion()));
-						String value = "true";  // Up-to-date
-						if(pdata.getCurrentVersion()<pdata.getVersion() ) value = "false";
-						PropertyItem pi = new PropertyItem(pdata.getTitle(),value);
-						panels.add(pi);
+				if( pdata.getFeatures().isEmpty() || !pdata.matchMissingFeature(features) ) {
+					if( pdata.getFeatures().isEmpty() || pdata.matchFeature(features)) {
+						if(pdata.isEssential() && pdata.getVersion()!=InstallerConstants.UNSET) {
+							System.out.println(String.format("SummaryStep: %s (%d vs %d)", pdata.getTitle(),pdata.getCurrentVersion(),pdata.getVersion()));
+							String value = "true";  // Up-to-date
+							if(pdata.getCurrentVersion()<pdata.getVersion() ) value = "false";
+							PropertyItem pi = new PropertyItem(pdata.getTitle(),value);
+							panels.add(pi);
+						}
 					}
 				}
 			}
