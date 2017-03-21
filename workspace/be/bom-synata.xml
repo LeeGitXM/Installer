@@ -105,7 +105,7 @@
 			<script>ils.be.configuration.setUseSFC</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="2">
+	<panel type="python" essential="true" version="3">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>

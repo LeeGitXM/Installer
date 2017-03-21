@@ -105,7 +105,7 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="2">
+	<panel type="python" essential="true" version="3">
 		<title>Database Create Scripts for Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the BEDB database instance specified
 		          on the 'definition' panel. This script is appropriate for a new installation only.
