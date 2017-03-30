@@ -81,6 +81,13 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
+	<panel type="authentication" essential="false">
+		<title>Verify User Roles</title>
+		<preamble>Check the authentication profiles to verify that at least one of them
+		includes a user assigned to the &quot;Operator&quot; role as required by BatchExpert.
+		</preamble>
+		<role name="Operator">Operator</role>
+	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure your Batch-Expert+ installation with (or without)

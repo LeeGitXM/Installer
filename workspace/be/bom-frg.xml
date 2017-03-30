@@ -94,7 +94,7 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
-		<panel type="feature" essential="true">
+	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC feature.
 		</preamble>
@@ -110,7 +110,7 @@
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
-			<script>ils/be/configuration/install/alterDatabase()</script>
+			<script>ils/be/database/alter/alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
@@ -126,15 +126,15 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Merge BtchExpert+ 2.0 Changes into an Existing
+		<title>Merge BatchExpert+ 2.0 Changes into an Existing
 			Project
 		</title>
 		<preamble>Merge 2.0 updates into the existing BatchExpert Ignition project. 
 				This merge preserves any existing user modifications.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertUpdate" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertUpdate.proj</location>
+		<artifact name="BatchExpertMaster" type="project" subtype="partial">
+			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Merge the latest BatchExpert+ project resources 
 					 into the selected existing project. </comment>
 		</artifact>

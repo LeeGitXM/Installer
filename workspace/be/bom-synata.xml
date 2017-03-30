@@ -94,7 +94,7 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
-		<panel type="feature" essential="true">
+	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC feature.
 		</preamble>

@@ -114,7 +114,8 @@
 		</copy>
 		
 		<!-- Special handling for the Dow FRG alter script  -->
-		<move file="${artifact.dir}/external/ils/be/database/customer/frg.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<mkdir dir="${artifact.dir}/external/ils/be/database" />
+		<copy file="${artifact.dir}/external/ils/be/database/customer/frg.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
 		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
 			
 		<!-- Remove examples -->
