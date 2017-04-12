@@ -161,7 +161,7 @@
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/vistalon/DrierRegen.proj" />
 		<copy file="${git.repo}/sfc/migration/projects/Vistalon/VistalonUnitProcedure.proj" tofile="${artifact.dir}/projects/vistalon/VistalonUnitProcedure.proj" />
-		<copy file="${git.repo}/sfc/migration/projects/Vistalon/GetMlLimitsFomRecipe.proj" tofile="${artifact.dir}/projects/vistalon/GetMlLimitsFomRecipe.proj" />
+		<copy file="${git.repo}/sfc/migration/projects/Vistalon/GetMlLimitsFromRecipe.proj" tofile="${artifact.dir}/projects/vistalon/GetMlLimitsFromRecipe.proj" />
 
 		<!-- Exports -->
 		<copy file="${git.repo}/blt/migration/json/ignition/crxProductQuality.json" tofile="${artifact.dir}/migration/crxProductQuality.json" />

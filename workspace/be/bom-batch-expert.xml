@@ -90,19 +90,37 @@
 	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
-		<preamble>Configure your Batch-Expert+ installation with (or without)
-		          optional features.
+		<preamble>Configure the Batch-Expert+ installation to include the SFC feature.
 		</preamble>
-		<artifact name="Examples">
-			<comment>Include example windows and templates. These are useful for configuration of
-					 first-time installations. These can easily be deleted before the project
-			         is production-ready.</comment>
-		</artifact>
 		<!-- script defines python to execute on feature installation -->
+		<artifact name="CUSTOMER">
+			<comment>Configure Batch Expert+ to add customer as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCustomer</script>
+		</artifact>
+		<artifact name="EFT">
+			<comment>Configure Batch Expert+ to add auto EFT clearance as a feature.</comment>
+			<script>ils.be.configuration.config.setAutoClearEFT</script>
+		</artifact>
+		<artifact name="ENHANCED">
+			<comment>Configure Batch Expert+ to add enhanced batch tracking. Additional parameters include: camapign, condition, resource, setup and batch code</comment>
+			<script>ils.be.configuration.config.setEnhancedBatchTracking</script>
+		</artifact>
+		<artifact name="PRODUCT">
+			<comment>Configure Batch Expert+ to add product as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProject</script>
+		</artifact>
+		<artifact name="PROJECT">
+			<comment>Configure Batch Expert+ to add project as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProduct</script>
+		</artifact>
 		<artifact name="SFC">
 			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
 		         feature requires the Ignition SFC module.</comment>
-			<script>ils.be.configuration.install.useSFC</script>
+			<script>ils.be.configuration.config.setUseSFC</script>
+		</artifact>
+		<artifact name="VESSEL">
+			<comment>Configure Batch Expert+ to add vessel id as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
 	<panel type="icon" essential="true" version="1">
@@ -121,10 +139,10 @@
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
 			         if the database is to be completely re-created.</comment>
-			<script>ils/be/configuration/install/clearDatabase()</script>
+			<script>ils/be/database/bedb/clearDatabase()</script>
 		</artifact>
 		<artifact name="Create Tables" type="create">
-			<script>ils/be/configuration/install/createDatabase()</script>
+			<script>ils/be/database/bedb/createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert in the BE database.</comment>
 		</artifact>
 	</panel>
@@ -168,6 +186,7 @@
 			alternatively an update of an existing version. The update preserves any user
 			modifications to the original. For a new installation both install and merge steps are required.
 		</preamble>
+		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
 		<artifact name="BatchExpert" type="project" subtype="full">

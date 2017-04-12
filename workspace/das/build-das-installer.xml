@@ -75,7 +75,20 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-
+		
+		<!-- License -->
+		<mkdir dir="${artifact.dir}/license" />
+		<copy file="${git.repo}/das/license/license.html" tofile="${artifact.dir}/license/license.html" />
+		
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<copy todir="${artifact.dir}/icons">
+			<fileset dir="${git.repo}/das/images">
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+			</fileset>
+		</copy>
+		
 		<!-- External python -->
 		<mkdir dir="${artifact.dir}/oee/pylib" />
 		<copy todir="${artifact.dir}/oee/pylib">
@@ -83,13 +96,15 @@
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
+		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy todir="${artifact.dir}/tags">
-		<fileset dir="${git.repo}/das">
-			<include name="udtdef.xml" />
+		<fileset dir="${git.repo}/das/tags">
+			<include name="*.xml" />
 		</fileset>
 		</copy>
+		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy todir="${artifact.dir}/projects">

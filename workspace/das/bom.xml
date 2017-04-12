@@ -16,9 +16,9 @@
 	<panel type="welcome" essential="true">
 		<title>Dow AgroSciences Robotics - OEE/KPI</title>
 		<preamble>Welcome to the ILS Automation installer for the
-			Dwo AgroSciences Robotics OEE/KPI Application. Before continuing, please make sure that you have 
-			defined both a tag provider and two datasources in your Ignition Gateway. The first
-			datasource is the C3P0 event log and the second is for the KPI statistics.
+			Dwo AgroSciences Robotics OEE/KPI Application - Phase II. Before continuing, please make sure that you have 
+			defined both a tag provider and at least one datasource in your Ignition Gateway. The datasource must point
+			to the database that will hold configuration information and the KPI statistics.
 		</preamble>
 	</panel>
 	<panel type="license" essential="true" version="1">
@@ -43,6 +43,31 @@
 			<destination>pylib</destination>
 		</artifact>
 	</panel>
+	<panel type="definition" essential="true">
+		<title>Define the KPI Database Connection</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          is used for configuration and KPI statistics.
+		          Configuration tags are created and populated.
+		</preamble>
+		<!--  These configuration tags are in the default provider. -->
+		<property name="provider" type="production">
+			<script>ils.das.configuration.config.setProviderName</script>
+		</property>
+		<property name="database" type="production">
+			<script>ils.das.configuration.config.setKpiDatasource</script>
+		</property>
+		<property name="DBMS" type="production">
+			<script>ils.das.configuration.config.setKpiDBMS</script>
+		</property>
+
+	</panel>
+	<panel type="icon" essential="true" version="4">
+		<title>DAS Logo Icon</title>
+		<preamble>The application makes use of the Dow DAS logo. </preamble>
+		<artifact name="Logo Icon" type="app" subtype="icon">
+			<location>artifacts/icons</location>
+		</artifact>
+	</panel>
 	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install UDT Definition</title>
 		<preamble>The UDT defines attributes for tags that collect error statistics.
@@ -52,7 +77,7 @@
 			<location>artifacts/tags/udtdef.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="development" essential="false" version="1">
+	<panel type="project" subtype="production" essential="false" version="1">
 		<title>DAS Robotics OEE Parser Development Project</title>
 		<preamble>This project is for developing and testing the stacker event log parser.
 		</preamble>

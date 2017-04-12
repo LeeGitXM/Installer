@@ -127,6 +127,15 @@
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 			
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<copy todir="${artifact.dir}/icons">
+		<fileset dir="${git.repo}/batch-expert/images">
+			<include name="**/*.gif" />
+			<include name="**/*.jpg" />
+			</fileset>
+		</copy>
+		
 		<!-- Modules - must be compatible with Java-7 clients -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
@@ -140,6 +149,7 @@
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
+		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
@@ -162,7 +172,7 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying Dow FRG installer module onto Google Drive." />
+		<echo message="Copying Dow FRG installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRGBare.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertFRGBare.proj" />

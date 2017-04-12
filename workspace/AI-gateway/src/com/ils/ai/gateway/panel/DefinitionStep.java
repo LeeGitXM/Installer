@@ -60,30 +60,59 @@ public class DefinitionStep extends BasicInstallerPanel {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
 		List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
     
+		// If the property already has a value, don't show the field.
     	for(PropertyItem prop:properties) {
     		String type = prop.getType();
 			if(type==null || type.isEmpty()) continue;
-    		if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
-    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  showProductionProvider = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionProvider = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      showProductionProvider = true;
-    		}
-    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
-    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDBMS = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDBMS = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDBMS = true;
-    		}
-    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
-    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDatabase = true;
-    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
-    		}
+			// If the property has a fixed value, set the defaults directly, don't show.
+			if( prop.getValue()!=null && !prop.getValue().isEmpty() ) {
+				String value = prop.getValue();
+				if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,true),value);
+	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),value);
+	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),value);
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),value);
+	    		}
+			}
+			else {
+				if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION))  showProductionProvider = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryProvider = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryProvider = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionProvider = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC))      showProductionProvider = true;
+	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DBMS)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDBMS = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDBMS = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDBMS = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDBMS = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDBMS = true;
+	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_DATABASE)) {
+	    			if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PRODUCTION)) showProductionDatabase = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SECONDARY)) showSecondaryDatabase = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDatabase = true;
+	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
+	    		}
+			}
+    		
     	}
 		
     	// Create all the wicket widgets, just don't make them all visible
@@ -183,6 +212,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 				
 				// If there are scripts attached to the properties, execute them. The scripts rely on the property value 
 				// being set. We don't bother setting unless there is a script involved.
+				// If the property has a value already, use it.
 				for(PropertyItem property:properties) {
 					String type = property.getType();
 					if(type==null || type.isEmpty()) continue;

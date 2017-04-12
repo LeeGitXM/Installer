@@ -1140,15 +1140,19 @@ public class InstallerDataHandler {
 			while(index<count) {
 				Node propertyNode = propertyNodes.item(index);
 				String name = xmlUtil.attributeValue(propertyNode, "name");
-				String value = propertyNode.getTextContent();
-				PropertyItem item = new PropertyItem(name,value);
+				
+				PropertyItem item = new PropertyItem(name,"");
 				item.setType(xmlUtil.attributeValue(propertyNode, "type"));
-				// Script is an element
+				// Script is an element. For now we don't allow both scripts and fixed values
 				NodeList scripts = ((Element)propertyNode).getElementsByTagName("script");
 				int ncount = scripts.getLength();
 				if(ncount>0) {  // There should be only one comment
 					Node scriptNode = scripts.item(0);
 					item.setScript(scriptNode.getTextContent());
+				}
+				else {
+					String value = propertyNode.getTextContent();
+					item.setValue(value);
 				}
 				properties.add(item);
 				index++;

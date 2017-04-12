@@ -99,10 +99,34 @@
 		<preamble>Configure the Batch-Expert+ installation to include the SFC feature.
 		</preamble>
 		<!-- script defines python to execute on feature installation -->
+		<artifact name="CUSTOMER">
+			<comment>Configure Batch Expert+ to add customer as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCustomer</script>
+		</artifact>
+		<artifact name="EFT">
+			<comment>Configure Batch Expert+ to add auto EFT clearance as a feature.</comment>
+			<script>ils.be.configuration.config.setAutoClearEFT</script>
+		</artifact>
+		<artifact name="ENHANCED">
+			<comment>Configure Batch Expert+ to add enhanced batch tracking. Additional parameters include: camapign, condition, resource, setup and batch code</comment>
+			<script>ils.be.configuration.config.setEnhancedBatchTracking</script>
+		</artifact>
+		<artifact name="PRODUCT">
+			<comment>Configure Batch Expert+ to add product as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProject</script>
+		</artifact>
+		<artifact name="PROJECT">
+			<comment>Configure Batch Expert+ to add project as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProduct</script>
+		</artifact>
 		<artifact name="SFC">
 			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
 		         feature requires the Ignition SFC module.</comment>
-			<script>ils.be.configuration.setUseSFC</script>
+			<script>ils.be.configuration.config.setUseSFC</script>
+		</artifact>
+		<artifact name="VESSEL">
+			<comment>Configure Batch Expert+ to add vessel id as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="2">
@@ -112,6 +136,13 @@
 		<artifact name="Alter Tables" type="alter">
 			<script>ils/be/database/alter/alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
+		</artifact>
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
@@ -125,6 +156,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
+	<!--  
 	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Merge BatchExpert+ 2.0 Changes into an Existing
 			Project
@@ -132,11 +164,22 @@
 		<preamble>Merge 2.0 updates into the existing BatchExpert Ignition project. 
 				This merge preserves any existing user modifications.
 		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpertMaster" type="project" subtype="partial">
 			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Merge the latest BatchExpert+ project resources 
 					 into the selected existing project. </comment>
+		</artifact>
+	</panel>
+	-->
+	<panel type="project" subtype="main" essential="true" version="1">
+		<title>Install BatchExpert+ 2.0 - Specially assembled for DOW FRG
+		</title>
+		<preamble>Create Batch Expert+ 2.0 for DOW FRG.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertFRG.proj</location>
+			<comment>Create a BatchExpert+ 2.0 project for DOW FRG. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">

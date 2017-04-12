@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">11</property>
+	<property name="version">12</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -94,7 +94,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="10">
+	<panel type="file" essential="true" version="11">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -114,7 +114,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="10">
+	<panel type="database" essential="true" version="11">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -131,7 +131,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="10">
+	<panel type="database" essential="true" version="11">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -164,7 +164,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="10" >
+	<panel type="module" subtype="production" essential="true" version="11" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -192,7 +192,7 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="7">
+	<panel type="tag" subtype="production" essential="True" version="8">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -211,7 +211,7 @@
 			<location>artifacts/tags/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="7">
+	<panel type="tag" subtype="test" essential="false" version="8">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -225,7 +225,7 @@
 			<location>artifacts/tags/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="12">
+	<panel type="project" subtype="main" essential="true" version="13">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -243,7 +243,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="12">
+	<panel type="project" subtype="main" essential="true" version="13">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -261,7 +261,7 @@
 			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="dbmgr" essential="true" version="4">
+	<panel type="project" subtype="dbmgr" essential="true" version="5">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.
@@ -283,7 +283,7 @@
 			<location>artifacts/projects/vistalon/DrierRegen.proj</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="sfc" essential="true" version="9">
+		<panel type="project" subtype="sfc" essential="true" version="10">
 		<title>Vistalon Limits from Recipe Charts</title>
 		<preamble>This page handles installation of charts for SFC projects migrated for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -291,10 +291,10 @@
 		</preamble>
 		<property name="site">Vistalon</property>
 		<artifact name="Vistalon Limits from Recipe Charts" type="project" subtype="global">
-			<location>artifacts/projects/vistalon/GetMlLimitsFomRecipe.proj</location>
+			<location>artifacts/projects/vistalon/GetMlLimitsFromRecipe.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="9">
+	<panel type="project" subtype="sfc" essential="true" version="10">
 		<title>Vistalon Unit Procedure Charts</title>
 		<preamble>This page handles installation of charts for the migrated SFC projects migrated for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -336,7 +336,7 @@
 		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.16">
 			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
 		</artifact>
-		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.5">
+		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.6">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
 		</artifact>
 		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.9">
