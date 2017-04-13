@@ -89,6 +89,12 @@
 			</fileset>
 		</copy>
 		
+		<!-- Documentation -->
+		<mkdir dir="${artifact.dir}/doc" />
+		<copy file="${git.repo}/das/doc/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${git.repo}/das/doc/ProgrammersManual.docx" tofile="${artifact.dir}/doc/ProgrammersManual.docx" />
+
+		
 		<!-- External python -->
 		<mkdir dir="${artifact.dir}/oee/pylib" />
 		<copy todir="${artifact.dir}/oee/pylib">
@@ -104,6 +110,10 @@
 			<include name="*.xml" />
 		</fileset>
 		</copy>
+		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclasses" />
+		<copy file="${git.repo}/das/tags/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
@@ -128,7 +138,7 @@
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
 		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../DAS Robotics/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	

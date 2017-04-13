@@ -3,7 +3,7 @@
 <module>
 	<id>com.ils.installer</id>
 	<name>DASInstaller</name>
-	<description>Dow AgroSciences - Robotics KPI- Installer</description>
+	<description>DOW AgroSciences - Robotics KPI Installer - Phase II</description>
 	<license></license>
 	<version>1.0.0.0</version>
 	<freemodule>true</freemodule>
