@@ -103,6 +103,13 @@
 			</fileset>
 		</copy>
 		
+		<!-- SQL -->
+		<mkdir dir="${artifact.dir}/sql" />
+		<copy todir="${artifact.dir}/sql">
+			<fileset dir="${git.repo}/das/sql">
+				<include name="populateForTest.sql" />
+			</fileset>
+		</copy>
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy todir="${artifact.dir}/tags">

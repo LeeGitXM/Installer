@@ -73,8 +73,14 @@
 		every role utilized by this application is assigned to at least one user. Results of the verification are advisory only.
 		</preamble>
 		<role name="Administrator">Administrator</role>
+		<role name="BBRD">BBRD</role>
+		<role name="DNA">DNA</role>
 		<role name="HTMA">HTMA</role>
-		<role name="Guest">Guest</role>
+		<role name="MABL">MABL</role>
+		<role name="MarkerDev">MarkerDev</role>
+		<role name="ProTeam">ProTeam</role>
+		<role name="RNA">RNA</role>
+		<role name="TAG">TAG</role>
 	</panel>
 	<panel type="icon" essential="true" version="4">
 		<title>DAS Logo Icon</title>
@@ -112,7 +118,7 @@
 		          on the 'definition' panel. Options on the page handle both new and existing installations.
 		          As a safety measure, the database creation step will fail unless any previous instance is explicitly cleared.
 		          
-		          The step below have no interaction with the logfile tables associated with individual systems.
+		          The steps below have no interaction with the logfile tables associated with individual systems.
 		</preamble>
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices. This step is appropriate only
@@ -124,10 +130,21 @@
 			<comment>Create tables and indices required for a completely new installation. Do not execute this step against an existing project.
 			If this step is executed, there is no need execute an &quot;alter&quot; action.</comment>
 		</artifact>
-		<artifact name="Alter Tables" type="create">
+		<artifact name="Alter Tables" type="alter">
 			<script>ils/das/database/dasdb/alterDatabase()</script>
-			<comment>Update the OEE/KPI database to the current Phase II configuration. This step requires that the existing target database be at the Phase I version or newer. 
+			<comment>Update the OEE/KPI database to the current Phase II configuration. This step requires that the existing target database be
+			 at the original Phase II version or newer. 
 			This step may be executed repeatedly with no adverse ramifications.</comment>
+		</artifact>
+	</panel>
+	<panel type="database" essential="false" version="1">
+		<title>Populate Database for Testing</title>
+		<preamble>This page executes a script that populates an empty database with C3P0 artifacts.
+		The intent is to setup a system for testing. It must &lt;b&gt;NOT&lt;/b&gt; be executed in a production environment.
+		</preamble>
+		<property name="database" type="production"></property>
+		<artifact name="Populate KPI database for C3P0" type="sql" subtype="create">
+			<location>artifacts/sql/populateForTest.sql</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="production" essential="false" version="1">
@@ -135,7 +152,7 @@
 		<preamble>This step installs the Phase II project. It does not overwrite a Phase I project, if it exists.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="Phase II Project" type="project" subtype="full">
+		<artifact name="RDAG_20" type="project" subtype="full">
 			<location>artifacts/projects/RDAG_2.proj</location>
 		</artifact>
 	</panel>
@@ -148,6 +165,17 @@
 		</artifact>
 		<artifact name="Programmer's Manual" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/ProgrammersManual.docx</location>
+		</artifact>
+	</panel>
+	<panel type="python" essential="true" version="1">
+		<title>Halt Parsing</title>
+		<preamble>This page guarantees that the system starts in a &quot;sane&quot; state when it first starts up.
+		          The selection executes a script that places all parsers in a disabled state. Manual intervention
+		          in the project is required to re-enable the parsers for each system once they are correctly configured.
+		</preamble>
+		<artifact name="Disable Parsers" type="disable">
+			<comment>Disable parsers for all systems.</comment>
+			<script>ils/das/parse/command/disableAll()</script>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
@@ -164,7 +192,7 @@
 		<preamble>The automated installation and configuration of the DAS KPI/OEE Application
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
-		<note name="Database Creation">The Development project contains a setup page that provides for database creation.</note>
+		<note name="Additional Systems">The installation does not overwrite the configuration of existing systems, nor does it create new systems.</note>
 	</epilog>
 </installer>
 

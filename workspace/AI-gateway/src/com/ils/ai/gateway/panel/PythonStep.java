@@ -16,6 +16,7 @@ import org.apache.wicket.model.Model;
 import com.ils.ai.gateway.model.Artifact;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
  * 
@@ -74,6 +75,8 @@ public class PythonStep extends BasicInstallerPanel {
 			String result = handler.executePython(artifact.getScript());
 			if( result==null || result.isEmpty()) {
 				PythonStep.this.info(String.format("%s complete.", artifact.getName()));
+				PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+				panelData.setCurrentVersion(futureVersion);
 			}
 			else {
 				PythonStep.this.error(result);
