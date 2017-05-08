@@ -7,8 +7,8 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-batch-expert.xml" />
-	<property name="module.name" value="batch-expert-installer" />
+	<property name="bom" value="${basedir}/bom-fresh.xml" />
+	<property name="module.name" value="batch-expert-fresh-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />

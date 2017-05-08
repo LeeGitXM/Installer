@@ -10,16 +10,17 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">6</property>
+	<property name="version">18</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+</title>
-		<preamble>Welcome to the ILS Automation installer for Batch Expert+.
-			The table below compares the existing installation of
-			Batch Expert+, if any, with the versions contained in this new
-			installation. Before continuing, please make sure that you have 
-			defined both database connection and tag provider.
+		<preamble>Welcome to the ILS Automation installer for Batch Expert+. 
+			This version of the installer is designed for new installations.
+			It installs a &quot;bare-bones&quot; project along with a collection 
+			of example screens to accelerate configuration.
+			Before continuing, please make sure that you have 
+			defined a database connection, e.g. BEDB, to hold your configuration and results.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -69,7 +70,7 @@
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
-		<title>Define the Database Connections</title>
+		<title>Define Database Connections</title>
 		<preamble>Specify the database connection and DBMS-type that 
 		          are used for BatchExpert+.
 		</preamble>
@@ -83,14 +84,14 @@
 	</panel>
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
-		<preamble>Check the authentication profiles to verify that at least one of them
+		<preamble>This is an optional step that provides a check of authentication profiles to verify that at least one of them
 		includes a user assigned to the &quot;Operator&quot; role as required by BatchExpert.
 		</preamble>
 		<role name="Operator">Operator</role>
 	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
-		<preamble>Configure the Batch-Expert+ installation to include the SFC feature.
+		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features.
 		</preamble>
 		<!-- script defines python to execute on feature installation -->
 		<artifact name="CUSTOMER">
@@ -125,14 +126,14 @@
 	</panel>
 	<panel type="icon" essential="true" version="1">
 		<title>Icons</title>
-		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<preamble>A small number of custom icons are used in Vision screens. This panel installs them. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="3">
 		<title>Database Create Scripts for Batch Expert+</title>
-		<preamble>This page provides the opportunity for populating the BEDB database instance specified
+		<preamble>This page provides the opportunity for populating the database instance specified
 		          on the 'definition' panel. This script is appropriate for a new installation only.
 		          As a safety measure, the database creation step will fail unless any previous instance is explicitly cleared.
 		</preamble>
@@ -143,7 +144,7 @@
 		</artifact>
 		<artifact name="Create Tables" type="create">
 			<script>ils/be/database/bedb/createDatabase()</script>
-			<comment>Create tables and indices required for Batch Expert in the BE database.</comment>
+			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
 	</panel>
 	<panel type="scanclass" essential="true" version="1">
@@ -182,9 +183,10 @@
 		<title>Install the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
-			artifacts for a clean, new installation or
-			alternatively an update of an existing version. The update preserves any user
-			modifications to the original. For a new installation both install and merge steps are required.
+			artifacts for a clean, new installation. The first step involves installing a minimal project
+			that provides the application structure. The second step is to merge the latest version of 
+			the &quot;Master&quot;, global, artifacts. A third step on the next panel provides an opportunity
+			to merge a set of example screens to speed final configuration of the application.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
@@ -197,7 +199,7 @@
 		</artifact>
 		<artifact name="BatchExpertMaster" type="project" subtype="partial">
 			<location>artifacts/projects/BatchExpertMaster.proj</location>
-			<comment>Merge the latest BatchExpert+ project resources 
+			<comment>Merge the latest BatchExpert+ project generic resources 
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
@@ -222,7 +224,7 @@
 		<title>Install the Global Project
 		</title>
 		<preamble>This page handles installation of the BatchExpert global project.
-			The basic global project contains the default alarm pipeline configuration. 
+			The basic global project contains a default alarm pipeline configuration. 
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
 			<location>artifacts/projects/BatchExpertGlobal.proj</location>

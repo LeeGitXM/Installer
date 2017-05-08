@@ -10,7 +10,7 @@
 	<property name="product">OEE</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">1</property>
+	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -139,11 +139,11 @@
 	</panel>
 	<panel type="database" essential="false" version="1">
 		<title>Populate Database for Testing</title>
-		<preamble>This page executes a script that populates an empty database with C3P0 artifacts.
+		<preamble>This page executes a script that populates an empty database with system definitions as well as C3P0 artifacts.
 		The intent is to setup a system for testing. It must &lt;b&gt;NOT&lt;/b&gt; be executed in a production environment.
 		</preamble>
 		<property name="database" type="production"></property>
-		<artifact name="Populate KPI database for C3P0" type="sql" subtype="create">
+		<artifact name="Populate KPI database for C3P0" type="sql" subtype="insert">
 			<location>artifacts/sql/populateForTest.sql</location>
 		</artifact>
 	</panel>
