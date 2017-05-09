@@ -897,14 +897,15 @@ public class InstallerDataHandler {
 				// 1) Panel has no features or
 				// 2) All of panels features are included in the master data list and
 				// 3) None of the panels feature are included in the master "exclude" list.
-				boolean featureOK = features.isEmpty();  // If there aren't any features, go ahead
-				if( !featureOK ) {
-					featureOK = pd.matchFeature(features);
-					if(!featureOK) {
-						featureOK = pd.matchMissingFeature(features);
-					}
+				boolean featuresOK = true;  // If there aren't any features, go ahead
+				if( !pd.getFeatures().isEmpty() && !pd.matchFeature(features)) {  
+					featuresOK = false;
 				}
-				if( (site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site)) && featureOK)  {
+				if( !pd.getMissingFeatures().isEmpty() && !pd.verifyMissingFeature(features)) {  // If there aren't any features, go ahead
+					featuresOK = false;
+				}
+
+				if( (site.isEmpty() || pd.getSiteNames().isEmpty() || pd.getSiteNames().contains(site)) && featuresOK)  {
 					String title = getStepTitle(index,data);
 					PanelType type = getStepType(index,data);
 					BasicInstallerPanel panel = stepFactory.createPanel(index,prior,type,title,dataModel); 
@@ -1109,14 +1110,14 @@ public class InstallerDataHandler {
 					if( property.getType().equalsIgnoreCase("feature")) {
 						String feature = property.getName();
 						String value = property.getValue();
-						boolean hasFeature = false;
-						if( value!=null && value.equalsIgnoreCase("true")) hasFeature = true;
-						if( hasFeature ) {
-							log.infof("%s.getPanelData: %d %s has feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
+						boolean requiresFeature = false;
+						if( value!=null && value.equalsIgnoreCase("true")) requiresFeature = true;
+						if( requiresFeature ) {
+							log.infof("%s.getPanelData: %d %s requires feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
 							data.addFeature(feature);
 						}
 						else {
-							log.infof("%s.getPanelData: %d %s does NOT have feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
+							log.infof("%s.getPanelData: %d %s must NOT have feature %s (%s)",CLSS,panelIndex,type.name(),feature,value);
 							data.subtractFeature(feature);
 						}
 					}

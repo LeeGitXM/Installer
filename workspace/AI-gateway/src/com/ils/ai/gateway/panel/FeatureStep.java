@@ -69,6 +69,9 @@ public class FeatureStep extends BasicInstallerPanel {
 	        data.setFeature(feature,hasFeature.equalsIgnoreCase("true"));
 			Model<Boolean> model = (hasFeature.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE));
 			this.setModel(model);
+			
+			// If there is a script attached to the feature, execute it to guarantee we are synched.
+			handler.executePythonFromArtifact(artifact,hasFeature.equalsIgnoreCase("true"));
 		}
 		
 		@Override

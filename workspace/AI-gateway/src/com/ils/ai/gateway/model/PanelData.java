@@ -55,30 +55,31 @@ public class PanelData implements Serializable  {
 	public void subtractFeature(String feature) { missingFeatures.add(feature); }
 	
 	/**
-	 * Test features
+	 * Test features. If the features list is empty, return false.
 	 * @param panelFeatures
 	 * @return true if one or more features in the panel list
 	 *         match one of the features assigned to the install.
 	 */
-	public boolean matchFeature(List<String> installFeatures) {
+	public boolean matchFeature(List<String> definedFeatures) {
 		for(String panelFeature:features) {
-			for(String installFeature:installFeatures) {
-				if( panelFeature.equalsIgnoreCase(installFeature)) return true;
+			for(String installedFeature:definedFeatures) {
+				if( panelFeature.equalsIgnoreCase(installedFeature)) return true;
 			}
 		}
 		return false;
 	}
 	/**
-	 * Test for absence of features. Return true if nothing that we describe as
-	 * "must be missing" exists in the installer data.
+	 * Test for absence of features. Return true if the feature that we describe as
+	 * "must be missing" does not exist in the installed feature set. If the missing
+	 * features list is empty, we return true.
 	 * @param panelFeatures
-	 * @return true if one or more features in the panel list
-	 *         match one of the features assigned to the install.
+	 * @return true if none of the features in the install list
+	 *         match one of the features designated as must be missing.
 	 */
-	public boolean matchMissingFeature(List<String> installFeatures) {
+	public boolean verifyMissingFeature(List<String> definedFeatures) {
 		for(String panelNonFeature:missingFeatures) {
-			for(String installFeature:installFeatures) {
-				if( panelNonFeature.equalsIgnoreCase(installFeature)) return false;
+			for(String installedFeature:definedFeatures) {
+				if( panelNonFeature.equalsIgnoreCase(installedFeature)) return false;
 			}
 		}
 		return true;
