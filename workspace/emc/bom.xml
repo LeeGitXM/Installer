@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">14</property>
+	<property name="version">16</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -42,10 +42,9 @@
 		<preamble>This install package contains site-specific information.
 		          Select the site appropriate to the current gateway.
 		</preamble>
-		<site name="BRPO">
-		</site>
-		<site name="Vistalon">
-		</site>
+		<site name="BRPO" />
+		<site name="Halobutyl" />
+		<site name="Vistalon" />
 	</panel>
 	<panel type="definition" essential="true">
 		<title>Interface Definitions for BRPO</title>
@@ -53,6 +52,17 @@
 		The selections here are used by subsequent screens.
 		</preamble>
 		<property name="site">BRPO</property>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
+		<property name="database" type="production"></property>
+		<property name="provider" type="production"></property>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Interface Definitions for Halobutyl</title>
+		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		The selections here are used by subsequent screens.
+		</preamble>
+		<property name="site">Halobutyl</property>
 		<!--  Allowed names are: database, provider -->
 		<!--  Allowed types are: production, isolation -->
 		<property name="database" type="production"></property>
@@ -94,7 +104,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="13">
+	<panel type="file" essential="true" version="15">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -114,7 +124,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="13">
+	<panel type="database" essential="true" version="14">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -131,7 +141,24 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="13">
+		<panel type="database" essential="true" version="1">
+		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Halobutyl</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="XOM Database" type="sql" subtype="create">
+			<location>artifacts/database/createHalobutyl.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	<panel type="database" essential="true" version="14">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -148,7 +175,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="7">
+	<panel type="database" essential="false" version="8">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -164,7 +191,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="13" >
+	<panel type="module" subtype="production" essential="true" version="15" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -189,7 +216,23 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="10">
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the Halobutyl applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="site">Halobutyl</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="11">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -202,13 +245,13 @@
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
 		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/sqlTags.xml</location>
+			<location>artifacts/tags/vistalon/sqlTags.xml</location>
 		</artifact>
 		<artifact name="LabData Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/labdataTags.xml</location>
+			<location>artifacts/tags/vistalon/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="10">
+	<panel type="tag" subtype="test" essential="false" version="11">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -216,13 +259,13 @@
 		<property name="provider" type="isolation"></property>
 		<property name="site">Vistalon</property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/testTags.xml</location>
+			<location>artifacts/tags/vistalon/testTags.xml</location>
 		</artifact>
 		<artifact name="LabDataTest Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/labdataTestTags.xml</location>
+			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="15">
+	<panel type="project" subtype="main" essential="true" version="16">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -236,11 +279,23 @@
 		<artifact name="XOM" type="project" subtype="full">
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
-		<artifact name="XOM Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/BRPO.proj</location>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="1">
+		<title>Halobutyl Main Project</title>
+		<preamble>XOM is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version. <br/>
+			NOTE: For the current EMChemicals project, the merge capability is still in 
+			development and should NOT be used.
+		</preamble>
+		<property name="site">Halobutyl</property>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="XOM" type="project" subtype="full">
+			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="15">
+	<panel type="project" subtype="main" essential="true" version="16">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -264,12 +319,14 @@
 			application databases. It is not generally user-customizable.
 			The action on this page completely replaces any existing copy.
 		</preamble>
+		<property name="site">BRPO</property>
+		<property name="site">Vistalon</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="11">
+	<panel type="project" subtype="sfc" essential="true" version="13">
 		<title>Vistalon Drier-Regen Charts</title>
 		<preamble>This page handles installation of charts for vetted SFC charts for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -280,26 +337,15 @@
 			<location>artifacts/projects/vistalon/DrierRegen.proj</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="sfc" essential="true" version="12">
+		<panel type="project" subtype="sfc" essential="true" version="13">
 		<title>Vistalon Limits from Recipe Charts</title>
 		<preamble>This page handles installation of charts for SFC projects migrated for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. These charts are in development.
+			any existing charts of the same name.
 		</preamble>
 		<property name="site">Vistalon</property>
-		<artifact name="Vistalon Limits from Recipe Charts" type="project" subtype="global">
-			<location>artifacts/projects/vistalon/GetMlLimitsFromRecipe.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="12">
-		<title>Vistalon Unit Procedure Charts</title>
-		<preamble>This page handles installation of charts for the migrated SFC projects migrated for Vistalon.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. These charts are in development.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Vistalon Unit Procedure Charts" type="project" subtype="global">
-			<location>artifacts/projects/vistalon/VistalonUnitProcedure.proj</location>
+		<artifact name="Vistalon Polymerize EPDM" type="project" subtype="global">
+			<location>artifacts/projects/vistalon/PolymerizeEPDM.proj</location>
 		</artifact>
 	</panel>
 	<panel type="documentation" essential="false">
@@ -312,7 +358,7 @@
 		<artifact name="Application Installer" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/ApplicationInstaller.docx</location>
 		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.1">
+		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.2">
 			<location>artifacts/doc/ApplicationTestFramework.docx</location>
 		</artifact>
 		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
@@ -345,7 +391,7 @@
 		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.7">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>
-		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.2">
+		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.3">
 			<location>artifacts/doc/RecipeDesignSpecification.docx</location>
 		</artifact>
 		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.60">
@@ -361,44 +407,6 @@
 			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
 		</artifact>
 	</panel>
-	<panel type="source" essential="false" version="5">
-		<title>Migration</title>
-		<preamble>The packages below contain exported-then-migrated diagnostic diagrams corresponding to
-		          the most recent conversions. Vistalon-specific exports are already included in the XOM project
-		          as delivered.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Vistalon - CSTR" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/cstrProductQuality.json</location>
-		</artifact>
-		<artifact name="Vistalon - CRX" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/crxProductQuality.json</location>
-		</artifact>
-		<artifact name="Poly Flying Switch" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/polyFlyingSwitch.json</location>
-		</artifact>
-		<artifact name="Poly Rate Change" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/polyRateChange.json</location>
-		</artifact>
-		<artifact name="VFU" type="source" subtype="json" release="@RELEASE@">
-			<location>artifacts/migration/vfuProductQuality.json</location>
-		</artifact>
-	</panel>
-	<panel type="source" essential="false" version="7">
-		<title>Migration</title>
-		<preamble>The packages below contain exported-then-migrated sequential control charts corresponding to
-		          the most recent conversions. These are the raw conversions. Completely vetted charts
-		          are included in the global project installed in a previous panel.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Drier Regen" type="source" subtype="proj" release="@RELEASE@">
-			<location>artifacts/migration/DrierRegen.proj</location>
-		</artifact>
-		<artifact name="Vistalon Unit Procedure" type="source" subtype="proj" release="@RELEASE@">
-			<location>artifacts/migration/VistalonUnitProcedure.proj</location>
-		</artifact>
-	</panel>
-	
 	<panel type="toolkit" essential="true" version="2">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.

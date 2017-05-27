@@ -1,14 +1,14 @@
-<!-- Create an application installer for Batch-Expert+ - Dow FRG
+<!-- Create an application installer for Batch-Expert+ - GSK MD
      
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
-<project name="BatchExpertFRGInstaller" basedir="." default="deploy">
+<project name="BatchExpertGSKMDInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-frg.xml" />
-	<property name="module.name" value="frg-installer" />
+	<property name="bom" value="${basedir}/bom-gskmd.xml" />
+	<property name="module.name" value="gskmd-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -113,9 +113,9 @@
 			</fileset>
 		</copy>
 		
-		<!-- Special handling for the Dow FRG alter script  -->
+		<!-- Special handling for the GSK MD alter script  -->
 		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
-		<copy file="${artifact.dir}/external/ils/be/database/customer/frg.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<copy file="${artifact.dir}/external/ils/be/database/customer/gskmd.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
 		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
 			
 		<!-- Remove examples -->
@@ -136,24 +136,25 @@
 			</fileset>
 		</copy>
 		
-		<!-- Modules - must be compatible with Java-7 clients -->
+		<!-- Modules - must be compatible with Java-7 clients 
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-		
-		<!-- Tags -->
+		-->
+		<!-- Tags 
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/FRGMemoryTags.xml" tofile="${artifact.dir}/tags/frgTags.xml" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/tags.xml" tofile="${artifact.dir}/tags/gskmdTags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		
-		<!-- Project -->
+		-->
+		<!-- Project
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
+		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertGSKMD-2.0.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
-
+ 		-->
+		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
@@ -172,10 +173,10 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying Dow FRG installer module onto Google Drive (${google.repo})." />
+		<echo message="Copying GSK MD installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertFRG-2.0.proj" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.0.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertGSKMD-2.0.proj" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">

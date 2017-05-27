@@ -52,7 +52,8 @@
 	<panel type="definition" essential="true">
 		<title>Define the KPI Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
-		          is used for configuration and KPI statistics.
+		          is used for configuration and KPI statistics. NOTE: This is not
+		          necessarily the same database as is used for system logfiles.
 		          Configuration tags are created and populated during this step.
 		</preamble>
 		<!--  These configuration tags are in the default provider. -->

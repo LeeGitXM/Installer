@@ -25,14 +25,6 @@
 		    the Ignition SFC module must be installed.
 		</preamble>
 	</panel>
-	<panel type="definition" essential="true">
-		<title>Define tags provider and database connections</title>
-		<preamble>Specify the database connection and DBMS-type that 
-		          become the demonstration project defaults.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="DBMS" type="production"></property>
-	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="file" essential="true" version="2">
