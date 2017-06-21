@@ -149,7 +149,7 @@
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
+		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0b21.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />

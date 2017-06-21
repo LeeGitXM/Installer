@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">20</property>
+	<property name="version">21</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -37,7 +37,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install UDT and Tag Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -52,7 +52,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="4">
+	<panel type="file" essential="true" version="5">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -149,14 +149,14 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true" version="2">
+	<panel type="icon" essential="true" version="3">
 		<title>Icons</title>
 		<preamble>A small number of custom icons are used in Vision screens. This panel installs them. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="4">
 		<title>Database Create Scripts for Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the database instance specified
 		          on the 'definition' panel. This script is appropriate for a new installation only.
@@ -208,9 +208,10 @@
 		<title>Install the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
-			artifacts for a clean, new installation. The first step involves installing a minimal project
-			that provides the application structure. The second step is to merge the latest version of 
-			the &quot;Master&quot;, global, artifacts. A third step on the next panel provides an opportunity
+			artifacts for a clean, new installation. This first step involves installing a minimal project
+			that provides the application structure. It includes example screens for those portions of the application
+			that are site specific. This project also contains the latest version of 
+			the &quot;Master&quot;, global, artifacts. An additional step on the next panel provides an opportunity
 			to merge a set of example screens to speed final configuration of the application.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -221,28 +222,6 @@
 			<comment>Install an empty BatchExpert+ project into the gateway,
 					 overwriting any existing project of the same name. When 
 					 complete, execute the merge step with the Master project.</comment>
-		</artifact>
-		<artifact name="BatchExpertMaster" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertMaster.proj</location>
-			<comment>Merge the latest BatchExpert+ project generic resources 
-					 into the selected existing project. </comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Add Examples to a BatchExpert+ Project
-		</title>
-		<preamble>Merge the examples project into the main BatchExpert+ project.
-		          The examples are guaranteed not to override any production resources.
-		          Examples are sample screens ready for copying into the &quot;site&quot;
-		          folder. The example screens should be deleted before the project is production-ready.
-		</preamble>
-		<property name="Examples" type="feature">TRUE</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can only be one artifact of each type -->
-		<artifact name="BatchExpertExamples" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertExamples.proj</location>
-			<comment>Merge BatchExpert+ example resources 
-					 into the main project. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
@@ -271,6 +250,17 @@
 			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
 			<comment>Merge default SFC charts into the global project.
 			</comment>
+		</artifact>
+	</panel>
+		<panel type="documentation" essential="false">
+		<title>Product Documentation</title>
+		<preamble>In addition to the release notes, documentation includes a getting started guide.
+		</preamble>
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+		<artifact name="Getting Started Guide" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/BEGettingStarted.docx</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

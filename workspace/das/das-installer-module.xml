@@ -5,7 +5,7 @@
 	<name>DASInstaller</name>
 	<description>DOW AgroSciences - Robotics KPI Installer - Phase II</description>
 	<license></license>
-	<version>1.0.0.0</version>
+	<version>10.42.0.4</version>
 	<freemodule>true</freemodule>
 	<requiredignitionversion>7.9.1</requiredignitionversion>
 	<requiredframeworkversion>8</requiredframeworkversion>

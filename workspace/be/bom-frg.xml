@@ -10,13 +10,13 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">8</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		the express purpose of updating the existing Dow FRG installation to Batch Expert+ 2.0. This installation 
+		the express purpose of updating the existing Dow FRG installation to the latest version of Batch Expert+ 2.0. This installation 
 		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
 		</preamble>
 		<artifact name="notes" type="pdf">
@@ -70,7 +70,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="2">
+	<panel type="tag" subtype="production" essential="false" version="3">
 		<title>Install Tag Definitions for TEST</title>
 		<preamble>This page creates memory tags corresponding to the Dow FRG production tags.
 		          Do NOT use in for production. These tags are for test systems only.
@@ -154,7 +154,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="2">
+	<panel type="python" essential="true" version="3">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>
@@ -163,7 +163,7 @@
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true" version="2">
+	<panel type="icon" essential="true" version="3">
 		<title>Icons</title>
 		<preamble>A small number of custom icons are used in Vision screens. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
@@ -202,7 +202,7 @@
 		</artifact>
 	</panel>
 	-->
-	<panel type="project" subtype="main" essential="true" version="3">
+	<panel type="project" subtype="main" essential="true" version="4">
 		<title>Install BatchExpert+ 2.0 - Specially assembled for DOW FRG
 		</title>
 		<preamble>Create Batch Expert+ 2.0 for DOW FRG.

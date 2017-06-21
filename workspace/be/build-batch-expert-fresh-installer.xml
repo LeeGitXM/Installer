@@ -136,11 +136,14 @@
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-
+		
+		<!-- Documentation -->
+		<mkdir dir="${artifact.dir}/doc" />
+		<copy file="${git.repo}/batch-expert/doc/BEGettingStarted.docx" tofile="${artifact.dir}/doc/BEGettingStarted.docx" />
+		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertBare.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertExamples.proj" tofile="${artifact.dir}/projects/BatchExpertExamples.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
@@ -165,7 +168,7 @@
 	<target name="deploy" depends="build">
 		<echo message="Copying ${module.name} to Google Drive ${google.repo} (and examples project)." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertExamples.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertExamples.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertStarter.proj" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

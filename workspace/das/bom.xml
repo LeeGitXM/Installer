@@ -10,14 +10,15 @@
 	<property name="product">OEE</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">2</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>DOW AgroSciences Robotics - OEE/KPI</title>
 		<preamble>Welcome to the ILS Automation installer for the
 			DOW AgroSciences Robotics OEE/KPI Application - Phase II. Before continuing, please make sure that you have 
-			defined both a tag provider and at least one datasource in your Ignition Gateway. The datasource must point
+			defined both the &quot;default&quot; provider and a real-time tag provider to hold current status of the various
+			systems. In addition, there must be at least one datasource in your Ignition Gateway. This source must point
 			to the database that will hold configuration information and the KPI statistics.
 			
 			This second phase of the application handles multiple VWorks systems.
@@ -37,7 +38,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="file" essential="true" version="1" >
+	<panel type="file" essential="true" version="3" >
 		<title>Install External Python</title>
 		<preamble>This step adds Python scripts that are utilized by the application. The term "external"
 		          refers to the fact that these scripts are global and not part of an Ignition project. 
@@ -75,6 +76,7 @@
 		</preamble>
 		<role name="Administrator">Administrator</role>
 		<role name="BBRD">BBRD</role>
+		<role name="Developer">Developer</role>
 		<role name="DNA">DNA</role>
 		<role name="HTMA">HTMA</role>
 		<role name="MABL">MABL</role>
@@ -93,17 +95,22 @@
 	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install UDT Definition</title>
 		<preamble>The UDTs define attributes for tags that collect statistics as the logfiles are parsed.
-		          In addition the installer creates instances for each system.
 		</preamble>
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udtdef.xml</location>
 		</artifact>
+	</panel>
+		<panel type="tag" subtype="test" essential="False" version="1">
+		<title>Install System Status Tags</title>
+		<preamble>For a new installation or test system, the installer creates instances for each system.
+		</preamble>
+		<property name="provider" type="production"></property>
 		<artifact name="System instances" type="tag" subtype="xml">
 			<location>artifacts/tags/tags.xml</location>
 		</artifact>
 	</panel>
-		<panel type="scanclass" essential="true" version="1">
+	<panel type="scanclass" essential="true" version="1">
 		<title>Create Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
 				Scanclasses determine tag poll rates.
@@ -113,7 +120,7 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="4">
 		<title>Database Scripts for the DAS Robotics Application</title>
 		<preamble>This page provides the opportunity for configuring the OEE/KPI database instance specified
 		          on the 'definition' panel. Options on the page handle both new and existing installations.
@@ -148,13 +155,17 @@
 			<location>artifacts/sql/populateForTest.sql</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="production" essential="false" version="1">
+	<panel type="project" subtype="production" essential="true" version="3">
 		<title>DAS Robotics OEE Phase II Project</title>
 		<preamble>This step installs the Phase II project. It does not overwrite a Phase I project, if it exists.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="RDAG_20" type="project" subtype="full">
 			<location>artifacts/projects/RDAG_2.proj</location>
+		</artifact>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="RDAG_20_Update" type="project" subtype="partial">
+			<location>artifacts/projects/RDAG_2_Update.proj</location>
 		</artifact>
 	</panel>
 	<panel type="documentation" essential="false">
@@ -168,7 +179,7 @@
 			<location>artifacts/doc/ProgrammersManual.docx</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="1">
+	<panel type="python" essential="true" >
 		<title>Halt Parsing</title>
 		<preamble>This page guarantees that the system starts in a &quot;sane&quot; state when it first starts up.
 		          The selection executes a script that places all parsers in a disabled state. Manual intervention

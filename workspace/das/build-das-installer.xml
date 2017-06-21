@@ -126,7 +126,7 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy todir="${artifact.dir}/projects">
 			<fileset dir="${git.repo}/das/project">
-				<include name="*.proj" />
+				<include name="RDAG_2*.proj" />
 			</fileset>
 		</copy>
 		
