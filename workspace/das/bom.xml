@@ -10,7 +10,7 @@
 	<property name="product">OEE</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">4</property>
+	<property name="version">7</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -38,7 +38,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="file" essential="true" version="3" >
+	<panel type="file" essential="true" version="6" >
 		<title>Install External Python</title>
 		<preamble>This step adds Python scripts that are utilized by the application. The term "external"
 		          refers to the fact that these scripts are global and not part of an Ignition project. 
@@ -85,15 +85,15 @@
 		<role name="RNA">RNA</role>
 		<role name="TAG">TAG</role>
 	</panel>
-	<panel type="icon" essential="true" version="4">
+	<panel type="icon" essential="true" version="5">
 		<title>DAS Logo Icon</title>
-		<preamble>The application makes use of the DOW DAS logo. </preamble>
+		<preamble>The application makes use of the DOW DAS logo and a few icons taken from the Ignition source. </preamble>
 		<artifact name="Logo Icon" type="app" subtype="icon">
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="1">
-		<title>Install UDT Definition</title>
+	<panel type="tag" subtype="production" essential="True" version="3">
+		<title>Install UDT Definitions</title>
 		<preamble>The UDTs define attributes for tags that collect statistics as the logfiles are parsed.
 		</preamble>
 		<property name="provider" type="production"></property>
@@ -101,7 +101,7 @@
 			<location>artifacts/tags/udtdef.xml</location>
 		</artifact>
 	</panel>
-		<panel type="tag" subtype="test" essential="False" version="1">
+		<panel type="tag" subtype="test" essential="False" version="3">
 		<title>Install System Status Tags</title>
 		<preamble>For a new installation or test system, the installer creates instances for each system.
 		</preamble>
@@ -120,7 +120,7 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="4">
+	<panel type="python" essential="true" version="5">
 		<title>Database Scripts for the DAS Robotics Application</title>
 		<preamble>This page provides the opportunity for configuring the OEE/KPI database instance specified
 		          on the 'definition' panel. Options on the page handle both new and existing installations.
@@ -155,9 +155,10 @@
 			<location>artifacts/sql/populateForTest.sql</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="production" essential="true" version="3">
+	<panel type="project" subtype="production" essential="true" version="6">
 		<title>DAS Robotics OEE Phase II Project</title>
-		<preamble>This step installs the Phase II project. It does not overwrite a Phase I project, if it exists.
+		<preamble>This step installs the Phase II project. The Install option will overwrite any existing project name &quot;RDAG_20&quot;.
+		          The merge option will update all parts of the project, except for the system detail pages.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="RDAG_20" type="project" subtype="full">
@@ -175,7 +176,7 @@
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
-		<artifact name="Programmer's Manual" type="documentation" subtype="docx" release="1.0">
+		<artifact name="Programmer's Manual" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/ProgrammersManual.docx</location>
 		</artifact>
 	</panel>

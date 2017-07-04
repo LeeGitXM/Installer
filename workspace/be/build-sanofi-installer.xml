@@ -85,12 +85,8 @@
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/projects/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-				
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database"/>
-		<copy file="${svn.repo}/BatchExpert/Database/Oracle Scripts/create.sql" tofile="${artifact.dir}/database/createTables.sql" />
-		<copy file="${svn.repo}/BatchExpert/Database/Oracle Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearTables.sql" />
+		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 				
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
@@ -120,6 +116,11 @@
 		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
 		</delete>
+		
+		<!-- Special handling for the Sanofi alter script  -->
+		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
+		<copy file="${artifact.dir}/external/ils/be/database/customer/sanofi.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
 			
 		<!-- Modules - must be compatible with Java-7 clients -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -128,8 +129,8 @@
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertSanofi.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BiostatCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/BatchExpertSanofi.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/SanofiGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
