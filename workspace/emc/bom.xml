@@ -10,14 +10,14 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">17</property>
+	<property name="version">19</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for EMC Ignition Applications</title>
 		<preamble>Welcome to the ILS Automation installer for EMC Ignition
 			Applications. The table below compares the existing installation of
-			this product, if any, with the versions contained in this new
+			this product on this system, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
 			isolation-mode (test) environments as appropriate.
@@ -43,6 +43,8 @@
 		          Select the site appropriate to the current gateway.
 		</preamble>
 		<site name="BRPO" />
+		<site name="Escorez" />
+		<site name="GLine" />
 		<site name="Halobutyl" />
 		<site name="Vistalon" />
 	</panel>
@@ -68,6 +70,34 @@
 		<property name="database" type="production"></property>
 		<property name="provider" type="production"></property>
 	</panel>
+		<panel type="definition" essential="true">
+		<title>Interface Definitions for Escorez</title>
+		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		This product requires that both production and test mode versions are specified. 
+		The selections here are used by subsequent screens.
+		</preamble>
+		<property name="site">Escorez</property>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>
+		<panel type="definition" essential="true">
+		<title>Interface Definitions for GLine</title>
+		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		This product requires that both production and test mode versions are specified. 
+		The selections here are used by subsequent screens.
+		</preamble>
+		<property name="site">GLine</property>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>
 	<panel type="definition" essential="true">
 		<title>Interface Definitions for Vistalon</title>
 		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
@@ -92,7 +122,7 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	<panel type="icon" essential="true" version="4">
+	<panel type="icon" essential="true" version="5">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -104,7 +134,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="16">
+	<panel type="file" essential="true" version="18">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -158,7 +188,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="15">
+	<panel type="database" essential="true" version="16">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -232,7 +262,7 @@
 			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="12">
+	<panel type="tag" subtype="production" essential="True" version="14">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -254,7 +284,7 @@
 	<panel type="tag" subtype="test" essential="false" version="11">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon.
 		</preamble>
 		<property name="provider" type="isolation"></property>
 		<property name="site">Vistalon</property>
@@ -265,7 +295,7 @@
 			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="17">
+	<panel type="project" subtype="main" essential="true" version="18">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -280,7 +310,37 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="2">
+		<panel type="project" subtype="main" essential="true" version="18">
+		<title>Escorez Main Project</title>
+		<preamble>XOM is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version. <br/>
+			NOTE: For the current EMChemicals project, the merge capability is still in 
+			development and should NOT be used.
+		</preamble>
+		<property name="site">Escorez</property>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="XOM" type="project" subtype="full">
+			<location>artifacts/projects/Escorez.proj</location>
+		</artifact>
+	</panel>
+		<panel type="project" subtype="main" essential="true" version="18">
+		<title>GLine Main Project</title>
+		<preamble>XOM is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version. <br/>
+			NOTE: For the current EMChemicals project, the merge capability is still in 
+			development and should NOT be used.
+		</preamble>
+		<property name="site">GLine</property>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="XOM" type="project" subtype="full">
+			<location>artifacts/projects/BRPO.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="3">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -295,7 +355,7 @@
 			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="17">
+	<panel type="project" subtype="main" essential="true" version="18">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -320,6 +380,7 @@
 			The action on this page completely replaces any existing copy.
 		</preamble>
 		<property name="site">BRPO</property>
+		<property name="site">GLine</property>
 		<property name="site">Vistalon</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="DbManager" type="project" subtype="full">
@@ -337,7 +398,7 @@
 			<location>artifacts/projects/vistalon/DrierRegen.proj</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="sfc" essential="true" version="14">
+		<panel type="project" subtype="sfc" essential="true" version="15">
 		<title>Vistalon Limits from Recipe Charts</title>
 		<preamble>This page handles installation of charts for SFC projects migrated for Vistalon.
 			The charts are packaged as Ignition global projects. They completely replace
@@ -388,7 +449,7 @@
 		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.8">
+		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.9">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>
 		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.3">
@@ -403,7 +464,7 @@
 		<artifact name="Toolchain Installation Manual" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/ToolchainInstallationManual.docx</location>
 		</artifact>
-		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.7">
+		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
 		</artifact>
 	</panel>
@@ -413,6 +474,8 @@
 			These particular parameters define extension functions that update
 			the database in response to operator operations on diagrams.
 		</preamble>
+		<property name="site">Escorez</property>
+		<property name="site">GLine</property>
 		<property name="site">Vistalon</property>
 		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
 		<property name="com.ils.application(property-rename-script)">xom.extensions.appProperties.rename</property>

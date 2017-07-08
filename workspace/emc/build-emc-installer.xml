@@ -159,6 +159,8 @@
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects/vistalon" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/BRPO.proj" tofile="${artifact.dir}/projects/BRPO.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/Escorez.proj" tofile="${artifact.dir}/projects/Escorez.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/project/GLine.proj" tofile="${artifact.dir}/projects/GLine.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Halobutyl.proj" tofile="${artifact.dir}/projects/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
