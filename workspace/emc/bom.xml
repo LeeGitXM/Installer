@@ -337,7 +337,7 @@
 		<property name="site">GLine</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/BRPO.proj</location>
+			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="3">

@@ -10,7 +10,7 @@
 	<property name="product">OEE</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">8</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -38,7 +38,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="file" essential="true" version="6" >
+	<panel type="file" essential="true" version="7" >
 		<title>Install External Python</title>
 		<preamble>This step adds Python scripts that are utilized by the application. The term "external"
 		          refers to the fact that these scripts are global and not part of an Ignition project. 
