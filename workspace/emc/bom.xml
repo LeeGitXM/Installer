@@ -428,6 +428,9 @@
 		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.15">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
+		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
+			<location>artifacts/doc/blt/javadoc.zip</location>
+		</artifact>
 		<artifact name="Diagnostic Toolkit User Interface Test Spec" type="documentation" subtype="docx" release="1.00">
 			<location>artifacts/doc/DiagnosticToolkitUserInterfaceTestSpec.docx</location>
 		</artifact>
