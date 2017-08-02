@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">19</property>
+	<property name="version">21</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -49,62 +49,11 @@
 		<site name="Vistalon" />
 	</panel>
 	<panel type="definition" essential="true">
-		<title>Interface Definitions for BRPO</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
+		<title>Common interface Definitions</title>
+		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
+		Both production and test mode versions of provider and database must be specified. 
 		The selections here are used by subsequent screens.
 		</preamble>
-		<property name="site">BRPO</property>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="provider" type="production"></property>
-	</panel>
-	<panel type="definition" essential="true">
-		<title>Interface Definitions for Halobutyl</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		The selections here are used by subsequent screens.
-		</preamble>
-		<property name="site">Halobutyl</property>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="provider" type="production"></property>
-	</panel>
-		<panel type="definition" essential="true">
-		<title>Interface Definitions for Escorez</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
-		The selections here are used by subsequent screens.
-		</preamble>
-		<property name="site">Escorez</property>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
-	</panel>
-		<panel type="definition" essential="true">
-		<title>Interface Definitions for GLine</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
-		The selections here are used by subsequent screens.
-		</preamble>
-		<property name="site">GLine</property>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
-		<property name="database" type="production"></property>
-		<property name="database" type="isolation"></property>
-		<property name="provider" type="production"></property>
-		<property name="provider" type="isolation"></property>
-	</panel>
-	<panel type="definition" essential="true">
-		<title>Interface Definitions for Vistalon</title>
-		<preamble>Specify tag provider and database connections as used by the Ignition Applications. 
-		This product requires that both production and test mode versions are specified. 
-		The selections here are used by subsequent screens.
-		</preamble>
-		<property name="site">Vistalon</property>
 		<!--  Allowed names are: database, provider -->
 		<!--  Allowed types are: production, isolation -->
 		<property name="database" type="production"></property>
@@ -122,7 +71,7 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	<panel type="icon" essential="true" version="5">
+	<panel type="icon" essential="true" version="7">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -134,7 +83,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="18">
+	<panel type="file" essential="true" version="20">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -154,7 +103,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="15">
+	<panel type="database" essential="true" version="16">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -188,7 +137,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="16">
+	<panel type="database" essential="true" version="17">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -235,18 +184,120 @@
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="1">
-		<title>Create alternative Scan Classes</title>
+	<panel type="scanclass" essential="true" version="2">
+		<title>Create BRPO-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
 				Scanclasses determine tag poll rates.
 		</preamble>
+		<property name="site">BRPO</property>
 		<property name="provider" type="production"></property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/scanclasses.csv</location>
+			<location>artifacts/scanclasses/brpo/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Escorez-specific Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">Escorez</property>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/escorez/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Halobutyl-specific Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">Halobutyl</property>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/halobutyl/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create G-line-specific Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">GLine</property>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/gline/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Vistalon-specific Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">Vistalon</property>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="True" version="2">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="site">BRPO</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/brpo/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="test" essential="false" version="2">
+		<title>Install Tags Definitions for Test</title>
+		<preamble>This page defines memory tags that are used by the Ignition Applications
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at BRPO.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<property name="site">BRPO</property>
+		<artifact name="Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/brpo/testTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the Escorez applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="site">Escorez</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the G-Line applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="site">GLine</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="4">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Halobutyl applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -262,7 +313,18 @@
 			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="14">
+	<panel type="tag" subtype="test" essential="false" version="4">
+		<title>Install Tags Definitions for Test</title>
+		<preamble>This page defines memory tags that are used by the Ignition Applications
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Halobutyl.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<property name="site">Halobutyl</property>
+		<artifact name="Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/halobutyl/testTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="16">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -281,7 +343,7 @@
 			<location>artifacts/tags/vistalon/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="11">
+	<panel type="tag" subtype="test" essential="false" version="16">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon.
@@ -291,11 +353,20 @@
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/vistalon/testTags.xml</location>
 		</artifact>
+	</panel>
+	<panel type="tag" subtype="test" essential="false" version="15">
+		<title>Install Lab Tag Definitions for Test</title>
+		<preamble>This page defines tags that are used by the Ignition Applications
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon. These are the
+		tags for lab data.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<property name="site">Vistalon</property>
 		<artifact name="LabDataTest Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="18">
+	<panel type="project" subtype="main" essential="true" version="19">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -310,7 +381,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="main" essential="true" version="18">
+	<panel type="project" subtype="main" essential="true" version="19">
 		<title>Escorez Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -325,7 +396,18 @@
 			<location>artifacts/projects/Escorez.proj</location>
 		</artifact>
 	</panel>
-		<panel type="project" subtype="main" essential="true" version="18">
+	<panel type="project" subtype="sfc" essential="true" version="15">
+		<title>Escorez SFC</title>
+		<preamble>This page handles installation of charts for SFC projects migrated for Escorez.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name.
+		</preamble>
+		<property name="site">Escorez</property>
+		<artifact name="Escorez Global Project" type="project" subtype="global">
+			<location>artifacts/globals/Escorez.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="19">
 		<title>GLine Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -340,7 +422,7 @@
 			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="3">
+	<panel type="project" subtype="main" essential="true" version="19">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -355,7 +437,7 @@
 			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="18">
+	<panel type="project" subtype="main" essential="true" version="20">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -373,6 +455,17 @@
 			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="13">
+		<title>Vistalon SFCs</title>
+		<preamble>This page handles installation of vetted SFC charts for Vistalon.
+			The charts are packaged as an Ignition global project. They completely replace
+			any existing charts of the same name. 
+		</preamble>
+		<property name="site">Vistalon</property>
+		<artifact name="SFC Global Project" type="project" subtype="global">
+			<location>artifacts/globals/Vistalon.proj</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="dbmgr" essential="true" version="6">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
@@ -385,28 +478,6 @@
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="13">
-		<title>Vistalon Drier-Regen Charts</title>
-		<preamble>This page handles installation of charts for vetted SFC charts for Vistalon.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. 
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Drier Regen" type="project" subtype="global">
-			<location>artifacts/projects/vistalon/DrierRegen.proj</location>
-		</artifact>
-	</panel>
-		<panel type="project" subtype="sfc" essential="true" version="15">
-		<title>Vistalon Limits from Recipe Charts</title>
-		<preamble>This page handles installation of charts for SFC projects migrated for Vistalon.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Vistalon Polymerize EPDM" type="project" subtype="global">
-			<location>artifacts/projects/vistalon/PolymerizeEPDM.proj</location>
 		</artifact>
 	</panel>
 	<panel type="documentation" essential="false">
@@ -425,7 +496,7 @@
 		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.15">
+		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.16">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
 		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">

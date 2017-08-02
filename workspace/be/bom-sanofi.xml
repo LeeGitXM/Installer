@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">6</property>
+	<property name="version">8</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="1">
+	<panel type="file" essential="true" version="3">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -53,7 +53,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install UDT and Tag Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -66,7 +66,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="1">
+	<panel type="tag" subtype="production" essential="false" version="2">
 		<title>Install Tag Definitions for TEST</title>
 		<preamble>This page creates memory tags corresponding to the Sanofi production tags.
 		          Do NOT use in for production. These tags are for test systems only.
@@ -150,7 +150,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="5">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>
@@ -168,6 +168,13 @@
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
+	<panel type="icon" essential="true" version="3">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
+		</artifact>
+	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
@@ -180,7 +187,7 @@
 		</artifact>
 	</panel>
 
-	<panel type="project" subtype="main" essential="true" version="1">
+	<panel type="project" subtype="main" essential="true" version="2">
 		<title>Install BatchExpert+ 2.1 - Specially assembled for Sanofi
 		</title>
 		<preamble>BatchExpert is the main Ignition project. This page provides
@@ -191,7 +198,20 @@
 			<location>artifacts/projects/BatchExpert.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
+	<panel type="project" subtype="alarm" essential="true" version="1">
+		<title>Install the Global Project
+		</title>
+		<preamble>This page handles merging the standard BatchExpert global project.
+			The basic global project contains the default alarm pipeline configuration. 
+		</preamble>
+		<artifact name="BatchExpertGlobal" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<comment>Create the baseline global resources for
+					 the BatchExpert+.
+					 These consist of an alarm pipeline. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="2">
 		<title>Install SFC Charts in the Global Project
 		</title>
 		<preamble>This page handles installation of charts for sequential control of batch operations.

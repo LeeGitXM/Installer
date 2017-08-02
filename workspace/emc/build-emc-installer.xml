@@ -78,7 +78,7 @@
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/createXOM_BRPO.sql" tofile="${artifact.dir}/database/createBRPO.sql" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutl/createXOM_Halobutyl.sql" tofile="${artifact.dir}/database/createHalobutyl.sql" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/createXOM_Halobutyl.sql" tofile="${artifact.dir}/database/createHalobutyl.sql" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/createXOMvistalon.sql" tofile="${artifact.dir}/database/createVistalon.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
@@ -159,30 +159,49 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
 
 		<!-- Projects -->
-		<mkdir dir="${artifact.dir}/projects/vistalon" />
+		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/BRPO.proj" tofile="${artifact.dir}/projects/BRPO.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Escorez.proj" tofile="${artifact.dir}/projects/Escorez.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/GLine.proj" tofile="${artifact.dir}/projects/GLine.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Halobutyl.proj" tofile="${artifact.dir}/projects/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/Vetted/driedRegen.proj" tofile="${artifact.dir}/projects/vistalon/DrierRegen.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/Vetted/polymerizeEPDM.proj" tofile="${artifact.dir}/projects/vistalon/PolymerizeEPDM.proj" />
+		<!-- Global Projects -->
+		<mkdir dir="${artifact.dir}/globals" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
+
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags/brpo" />
+		<mkdir dir="${artifact.dir}/tags/escorez" />
+		<mkdir dir="${artifact.dir}/tags/gline" />
 		<mkdir dir="${artifact.dir}/tags/halobutyl" />
 		<mkdir dir="${artifact.dir}/tags/vistalon" />
+		
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutl/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/sqlTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/sqlTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/brpo/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/testTags.xml" />
+		
+		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/sqlTags.xml" />
+		<copy file="${git.repo}/sfc/migration/tags/halobutyl/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/testTags.xml" />
+		
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/labDataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/vistalon/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/testTags.xml" />
 		<copy file="${git.repo}/sfc/migration/tags/vistalon/labdataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTestTags.xml" />
 		
-		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclasses" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
+		<!-- Scanclass (if not otherwise specified, use vistalon) -->
+		<mkdir dir="${artifact.dir}/scanclasses/brpo" />
+		<mkdir dir="${artifact.dir}/scanclasses/escorez" />
+		<mkdir dir="${artifact.dir}/scanclasses/gline" />
+		<mkdir dir="${artifact.dir}/scanclasses/halobutyl" />
+		<mkdir dir="${artifact.dir}/scanclasses/vistalon" />
+		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/brpo/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/escorez/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/gline/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/halobutyl/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/scanclasses.csv" tofile="${artifact.dir}/scanclasses/vistalon/scanclasses.csv" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
