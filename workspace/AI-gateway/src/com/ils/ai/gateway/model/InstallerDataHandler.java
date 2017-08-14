@@ -1806,7 +1806,7 @@ public class InstallerDataHandler {
 					}
 					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
 					catch(Exception ex) {
-						log.errorf("InstellerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
+						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
 					}
 					
 					GlobalProps props = pmgr.getProps(original.getId(), ProjectVersion.Published);
@@ -1820,7 +1820,7 @@ public class InstallerDataHandler {
 					}
 					// We get an error notifying project listeners. It appears not to matter with us.
 					catch(Exception ex) {
-						log.errorf("InstellerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
+						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
 					}
 				}
 				else {

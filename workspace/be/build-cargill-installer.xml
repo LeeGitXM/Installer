@@ -83,6 +83,16 @@
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
 		
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<copy todir="${artifact.dir}/icons">
+		<fileset dir="${git.repo}/batch-expert/images">
+			<include name="**/*.gif" />
+			<include name="**/*.jpg" />
+			<include name="**/*.png" />
+		</fileset>
+		</copy>
+		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${git.repo}/batch-expert/projects/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />

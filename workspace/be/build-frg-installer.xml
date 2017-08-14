@@ -133,7 +133,8 @@
 		<fileset dir="${git.repo}/batch-expert/images">
 			<include name="**/*.gif" />
 			<include name="**/*.jpg" />
-			</fileset>
+			<include name="**/*.png" />
+		</fileset>
 		</copy>
 		
 		<!-- Modules - must be compatible with Java-7 clients -->
@@ -149,7 +150,7 @@
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0b21.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
+		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.1.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
@@ -175,7 +176,6 @@
 		<echo message="Copying Dow FRG installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertFRG-2.0.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertFRG-2.0.proj" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">

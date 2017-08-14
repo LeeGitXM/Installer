@@ -3,6 +3,9 @@
       type and sub-type must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
       be unique. 
+      
+      NOTE: For a fresh installer, keep the versions ==1. In that way an update
+            installer can easily guarantee that it installs newer versions
  -->
 <installer>
 	<title>BatchExpert+</title>
@@ -10,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">21</property>
+	<property name="version">1</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -37,7 +40,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
+	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install UDT and Tag Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -52,7 +55,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="5">
+	<panel type="file" essential="true" version="1">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -149,14 +152,14 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true" version="3">
+	<panel type="icon" essential="true" version="1">
 		<title>Icons</title>
 		<preamble>A small number of custom icons are used in Vision screens. This panel installs them. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="4">
+	<panel type="python" essential="true" version="1">
 		<title>Database Create Scripts for Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the database instance specified
 		          on the 'definition' panel. This script is appropriate for a new installation only.
@@ -182,7 +185,7 @@
 			<location>artifacts/scanclass/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
+	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
 		          installations that include the SFC feature.
@@ -195,7 +198,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
+	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -204,7 +207,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="3">
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Install the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides

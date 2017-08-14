@@ -129,7 +129,8 @@
 		<fileset dir="${git.repo}/batch-expert/images">
 			<include name="**/*.gif" />
 			<include name="**/*.jpg" />
-			</fileset>
+			<include name="**/*.png" />
+		</fileset>
 		</copy>
 		
 		<!-- Modules - must be compatible with Java-7 clients -->
