@@ -140,7 +140,7 @@
 
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/BatchExpertSanofi-2.1.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
+		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/BatchExpertSanofi-2.2.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/SanofiGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />

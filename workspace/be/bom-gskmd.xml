@@ -5,12 +5,12 @@
       be unique. 
  -->
 <installer>
-	<title>DowFRGBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Dow FRG</description>
+	<title>GSKMDBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for GSK MD</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">6</property>
+	<property name="version">7</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="2">
+	<panel type="file" essential="true" version="3">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -55,6 +55,30 @@
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="3">
+		<title>Install UDT Definitions</title>
+		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="Configuration Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="1">
+		<title>Install Tag Definitions for TEST</title>
+		<preamble>This page creates memory tags corresponding to the GSK MD production tags.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="GSK MD Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/gskmdTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -132,11 +156,79 @@
 	</panel>
 	<panel type="python" essential="true" version="2">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.2.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils/be/database/alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
+		</artifact>
+	</panel>
+	<panel type="icon" essential="true" version="3">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">FALSE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom SFC Module</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="5">
+		<title>Install BatchExpert+ 2.2 - Specially assembled for DOW FRG
+		</title>
+		<preamble>Create Batch Expert+ 2.2 for GSK MD.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertFRG.proj</location>
+			<comment>Create a BatchExpert+ 2.2 project for GSK MD. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="alarm" essential="true" version="1">
+		<title>Install the Global Project
+		</title>
+		<preamble>This page handles installation of the BatchExpert global project.
+			The basic global project contains the default alarm pipeline configuration. 
+		</preamble>
+		<artifact name="BatchExpertGlobal" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<comment>Create the baseline global resources for
+					 the BatchExpert+.
+					 These consist of an alarm pipeline. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="1">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of charts for sequential control of batch operations.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. Multiple chart hierarchies can be updated
+			from this one page. 
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

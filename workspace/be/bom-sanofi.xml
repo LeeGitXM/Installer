@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">8</property>
+	<property name="version">9</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="3">
+	<panel type="file" essential="true" version="4">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -150,7 +150,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="5">
+	<panel type="python" essential="true" version="6">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>
@@ -187,8 +187,8 @@
 		</artifact>
 	</panel>
 
-	<panel type="project" subtype="main" essential="true" version="2">
-		<title>Install BatchExpert+ 2.1 - Specially assembled for Sanofi
+	<panel type="project" subtype="main" essential="true" version="3">
+		<title>Install BatchExpert+ 2.2 - Specially assembled for Sanofi
 		</title>
 		<preamble>BatchExpert is the main Ignition project. This page provides
 			artifacts for a replacement installation. This project is a restructured version of the Sanofi project as of 07/19/2017. 

@@ -52,6 +52,9 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
+		<artifact name="Site-specific UDT Template" type="tag" subtype="xml">
+			<location>artifacts/tags/udts_new.xml</location>
+		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->

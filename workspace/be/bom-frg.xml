@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">9</property>
+	<property name="version">10</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="4">
+	<panel type="file" essential="true" version="5">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -57,7 +57,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -154,7 +154,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="4">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.1.
 		</preamble>
@@ -187,30 +187,16 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<!--  
-	<panel type="project" subtype="main" essential="true" version="1">
-		<title>Merge BatchExpert+ 2.0 Changes into an Existing
-			Project
+
+	<panel type="project" subtype="main" essential="true" version="6">
+		<title>Install BatchExpert+ 2.2 - Specially assembled for DOW FRG
 		</title>
-		<preamble>Merge 2.0 updates into the existing BatchExpert Ignition project. 
-				This merge preserves any existing user modifications.
-		</preamble>
-		<artifact name="BatchExpertMaster" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertMaster.proj</location>
-			<comment>Merge the latest BatchExpert+ project resources 
-					 into the selected existing project. </comment>
-		</artifact>
-	</panel>
-	-->
-	<panel type="project" subtype="main" essential="true" version="5">
-		<title>Install BatchExpert+ 2.1 - Specially assembled for DOW FRG
-		</title>
-		<preamble>Create Batch Expert+ 2.1 for DOW FRG.
+		<preamble>Create Batch Expert+ 2.2 for DOW FRG.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertFRG.proj</location>
-			<comment>Create a BatchExpert+ 2.1 project for DOW FRG. </comment>
+			<comment>Create a BatchExpert+ 2.2 project for DOW FRG. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">

@@ -137,24 +137,24 @@
 		</fileset>
 		</copy>
 		
-		<!-- Modules - must be compatible with Java-7 clients 
+		<!-- Modules - are compatible with Java-7 clients -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-		-->
-		<!-- Tags 
+
+		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/tags.xml" tofile="${artifact.dir}/tags/gskmdTags.xml" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/GSKMDMemoryTags.xml" tofile="${artifact.dir}/tags/gskmdTags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		-->
-		<!-- Project
+		
+		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/FRGSandbox/BatchExpertGSKMD-2.0.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.2.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
- 		-->
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
+
 		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
@@ -177,7 +177,7 @@
 		<echo message="Copying GSK MD installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.0.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertGSKMD-2.0.proj" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.1.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertGSKMD-2.1.proj" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">
