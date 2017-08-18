@@ -192,13 +192,13 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="5">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for DOW FRG
+		<title>Install BatchExpert+ 2.2 - Specially assembled for GSK MD
 		</title>
 		<preamble>Create Batch Expert+ 2.2 for GSK MD.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpertFRG.proj</location>
+			<location>artifacts/projects/BatchExpertGSKMD.proj</location>
 			<comment>Create a BatchExpert+ 2.2 project for GSK MD. </comment>
 		</artifact>
 	</panel>

@@ -177,7 +177,6 @@
 		<echo message="Copying GSK MD installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.1.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertGSKMD-2.1.proj" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">
