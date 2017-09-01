@@ -169,6 +169,7 @@
 		<!-- Global Projects -->
 		<mkdir dir="${artifact.dir}/globals" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/global/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Halobutyl.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/global/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
 
 		
