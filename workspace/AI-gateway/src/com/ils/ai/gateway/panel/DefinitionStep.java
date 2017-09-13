@@ -200,10 +200,13 @@ public class DefinitionStep extends BasicInstallerPanel {
 				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
 				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("secondary tag provider is not defined. ");
 				if( msg.length()==0 ) {
-					if(showProductionDatabase&&showSecondaryDatabase&&
+					/*
+					 * We want to allow this in the EMC installation.
+					if(showPoductionDatabase&&showSecondaryDatabase&&
 					  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
 						msg.append("Production and secondary databases may not be the same. ");
 					}
+					*/
 					if(showProductionProvider&&showSecondaryProvider&&
 							  productionProvider.getName().equalsIgnoreCase(secondaryProvider.getName())) {
 								msg.append("Production and secondary tag providers may not be the same. ");
