@@ -24,7 +24,7 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  *   
  *  This class is a singleton for easy access throughout the wizard screens.
  *  WARNING: This class is not serializable and cannot be assigned as an 
- *           instance variable for any pagoe or nested class within a page.
+ *           instance variable for any page or nested class within a page.
  */
 public class PersistenceHandler {
 	private final static String CLSS = "PersistenceHandler";
