@@ -14,6 +14,7 @@ public enum PanelType
 			CLEAR,
             DATABASE,
             DEFINITION,
+            DEFAULTS,
             DOCUMENTATION,
             FEATURE, 
             FILE, 

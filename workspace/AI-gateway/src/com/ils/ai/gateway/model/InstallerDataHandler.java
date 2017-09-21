@@ -18,10 +18,12 @@ import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -1856,6 +1858,105 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
+	
+	/**
+	 *  Start with an existing project and copy scripting resources into it from a named partial project.
+	 *  Only insert new resources if the existing project does not already have that resource. Leave it disabled.
+	 * @param originalLite a "lite" version of the project. It does not have all the resources.
+	 * @param location
+	 * @param name
+	 * @param model
+	 * @return
+	 */
+	
+	public String mergeWithDefaultsFromArtifact(Project originalLite,String location,String name,InstallerData model) {
+		String result = null;
+		if( originalLite!=null) {
+			ProjectManager pmgr = getContext().getProjectManager();
+			Path internalPath = getPathToModule(model);
+			InputStream projectReader = null;
+			JarFile jar = null;
+			try {
+				Project original = pmgr.getProject(originalLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
+				String description = original.getDescription();
+				original.setDescription(updateProjectDescription(description,model));
+				original.setEnabled(false);
+				
+				// List existing scripting resources:
+				Set<String> existingScripts = new HashSet<>();
+				for( ProjectResource pr:original.getResourcesOfType(InstallerConstants.MODULE_ID,"Script")) {
+					String path = original.getFolderPath(pr.getResourceId());
+					log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: %s",path);
+				}
+				
+				
+				jar = new JarFile(internalPath.toFile());
+				JarEntry entry = jar.getJarEntry(location);
+				if( entry!=null ) {
+					projectReader = jar.getInputStream(entry);
+					Project updateProject = Project.fromXML(projectReader);
+					mergeProject(updateProject,original);
+					try {
+						updateProject.setName(original.getName());
+						updateProject.setTitle(original.getTitle());
+						updateProject.setDescription(original.getDescription());
+						pmgr.addProject(updateProject, true);      // Overwrite original
+						original = pmgr.getProject(updateProject.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+						original.setEnabled(false);
+					}
+					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
+					catch(Exception ex) {
+						log.errorf("InstallerDataHandler.mergeWithDefaultsFromArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
+					}
+					
+					GlobalProps props = pmgr.getProps(original.getId(), ProjectVersion.Published);
+					
+					String adminProfile = getAdministrativeProfile(model);
+					String adminUser = getAdministrativeUser(model);
+					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
+					try {
+						pmgr.saveProject(original, user, "n/a", 
+							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
+					}
+					// We get an error notifying project listeners. It appears not to matter with us.
+					catch(Exception ex) {
+						log.errorf("InstallerDataHandler.mergeWithDefaultsFromArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
+					}
+				}
+				else {
+					result = String.format("Project location %s does not match a path in the release bundle", location);
+				}
+			}
+			catch(SAXException saxe) {
+				result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
+			}
+			catch(IOException ioe) {
+				result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
+			}
+			catch(Exception ex) {
+				result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
+			}
+			finally{
+				if(projectReader!=null) {
+					try {
+						projectReader.close();
+					}
+					catch(IOException ignore) {}
+				}
+				if( jar!=null ) {
+					try {
+						jar.close();
+					}
+					catch(IOException ignore) {}
+				}
+			}
+		}
+		else {
+			result = String.format("You must select an existing project to be the target of the merge");
+		}
+		return result;
+	}
+	
 	/**
 	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
 	 * has no value, return the name specified as a toolkit property.

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
+<body>
+	<wicket:panel>
+		<div>
+			<p class="preamble" wicket:id="preamble">should not appear</p>
+			<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="spacer" />
+		<table class="installtable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<td colspan="2">Project</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="partial">
+					<td class="trow-title">Merge New Interfaces with Existing Project</td>
+					<td class="trow-body">
+						<form wicket:id="mergeForm" action="">
+							<table class="ilsedit">
+								<tr>
+									<td><p class="label">Source project:</p></td>
+									<td><span wicket:id="partialProject" /></td>
+								</tr>
+								<tr>
+									<td><p class="label">Existing project:</p></td>
+									<td><select wicket:id="projects" /></td>
+								</tr>
+								<tr>
+									<td><input
+										style="align: left; background-color: rgb(120, 20, 20)"
+										type="submit" wicket:id="merge" value="Merge" /></td>
+									<td colspan="2"><span wicket:id="partialProjectComment" /></td>
+								</tr>
+							</table>
+
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</wicket:panel>
+</body>
+</html>

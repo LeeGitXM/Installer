@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>ACMEBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Acme Corporation</description>
+	<property name="product">BatchExpert+</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">7</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Batch Expert+ </title>
+		<preamble>This is a special version of the ILS Automation installer built for
+		the express purpose of updating the existing Acme installation to Batch Expert+ 2.0. This installation 
+		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
+		</preamble>
+		<artifact name="notes" type="pdf">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+	</panel>
+	<panel type="license" essential="true" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms to proceed.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="3">
+		<title>Python Extensions for Batch Expert+</title>
+		<preamble>This page loads the custom Python modules that support Batch Expert+. 
+		</preamble>
+		<artifact name="External Python for Batch Expert+" type="directory" subtype="user-lib">
+			<location>artifacts/external/ils</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
+		</artifact>
+		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
+			<location>artifacts/external/pysfc</location>
+			<destination>pylib/ils/pysfc</destination>
+		</artifact>
+		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
+			<location>artifacts/external/xlsxwriter</location>
+			<destination>pylib/xlsxwriter</destination>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="3">
+		<title>Install UDT Definitions</title>
+		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="Configuration Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="1">
+		<title>Install Tag Definitions for TEST</title>
+		<preamble>This page creates memory tags corresponding to the Acme production tags.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="Acme Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/gskmdTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Define the Database Connection</title>
+		<preamble>Specify the database connection and DBMS-type that 
+		          are used for BatchExpert+.
+		</preamble>
+		<property name="database" type="production">
+			<script>ils.be.configuration.config.setDatasource</script>
+		</property>
+		<property name="DBMS" type="production">
+			<script>ils.be.configuration.config.setDBMS</script>
+		</property>
+		<property name="provider" type="production">default</property>
+	</panel>
+	<panel type="feature" essential="true">
+		<title>Batch-Expert Feature Selection</title>
+		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features. Note that these
+		          features are record as tag values. These decisions are, therefore, easily reversed. 
+		</preamble>
+		<!-- script defines python to execute on feature installation -->
+		<artifact name="CAMPAIGN">
+			<comment>Configure Batch Expert+ to add campaign as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCamapign</script>
+		</artifact>
+				<artifact name="CONDITION">
+			<comment>Configure Batch Expert+ to add condition as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCondition</script>
+		</artifact>
+		<artifact name="CUSTOMER">
+			<comment>Configure Batch Expert+ to add customer as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCustomer</script>
+		</artifact>
+		<artifact name="EFT">
+			<comment>Configure Batch Expert+ to add auto EFT clearance as a feature.</comment>
+			<script>ils.be.configuration.config.setAutoClearEFT</script>
+		</artifact>
+		<artifact name="FERMENTATION">
+			<comment>Configure Batch Expert+ to add fermentation (organism) as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByFermentation</script>
+		</artifact>
+		<artifact name="OWNER">
+			<comment>Configure Batch Expert+ to add owner as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByOwner</script>
+		</artifact>
+		<artifact name="PRODUCT">
+			<comment>Configure Batch Expert+ to add product as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProject</script>
+		</artifact>
+		<artifact name="PROJECT">
+			<comment>Configure Batch Expert+ to add project as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByProduct</script>
+		</artifact>
+		<artifact name="RESOURCE">
+			<comment>Configure Batch Expert+ to add resource as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByResource</script>
+		</artifact>
+		<artifact name="SETUP">
+			<comment>Configure Batch Expert+ to add setup as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchBySetup</script>
+		</artifact>
+		<artifact name="SFC">
+			<comment>Enable Sequential Functional Charts (SFCs) within Batch-Expert. Use of this 
+		         feature requires the Ignition SFC module and involves installation of a custom SFC module from ILS.</comment>
+			<script>ils.be.configuration.config.setUseSFC</script>
+		</artifact>
+		<artifact name="STRAIN">
+			<comment>Configure Batch Expert+ to add strain as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByStrain</script>
+		</artifact>
+		<artifact name="VESSEL">
+			<comment>Configure Batch Expert+ to add vessel id as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
+		</artifact>
+	</panel>
+	<panel type="python" essential="true" version="2">
+		<title>Alter Scripts for Batch Expert+</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.2.
+		</preamble>
+		<artifact name="Alter Tables" type="alter">
+			<script>ils/be/database/alter.alterDatabase()</script>
+			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
+		</artifact>
+	</panel>
+	<panel type="icon" essential="true" version="3">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">FALSE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom SFC Module</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="5">
+		<title>Install BatchExpert+ 2.2 - Specially assembled for Acme Corporation
+		</title>
+		<preamble>Create Batch Expert+ 2.2 for Acme Corporation.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertACME.proj</location>
+			<comment>Create a BatchExpert+ 2.2 project for Acme Corporation. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="alarm" essential="true" version="1">
+		<title>Install the Global Project
+		</title>
+		<preamble>This page handles installation of the BatchExpert global project.
+			The basic global project contains the default alarm pipeline configuration. 
+		</preamble>
+		<artifact name="BatchExpertGlobal" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<comment>Create the baseline global resources for
+					 the BatchExpert+.
+					 These consist of an alarm pipeline. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="true" version="1">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of charts for sequential control of batch operations.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. Multiple chart hierarchies can be updated
+			from this one page. 
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
+		</artifact>
+	</panel>
+	<panel type="defaults" essential="true" version="1">
+		<title>Ensure Existence of All Required Interfaces</title>
+		<preamble>Create default versions of all script interfaces 
+			required of the product. Existing interfaces 
+			are unaffected.
+		</preamble>
+	    <!-- The  artifact subtype will always be "partial" -->
+		<artifact name="Defaults" type="project" subtype="partial">
+			<location>artifacts/projects/defaults.proj</location>
+		</artifact>
+	</panel>
+	
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of BatchExpert+ in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of Batch Expert+
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
