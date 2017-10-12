@@ -166,11 +166,13 @@
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Halobutyl.proj" tofile="${artifact.dir}/projects/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Release/src/project/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
+		
 		<!-- Global Projects -->
 		<mkdir dir="${artifact.dir}/globals" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/global/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/global/Halobutyl.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/global/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
+<!--		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/SFCs/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
+-->
+		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/SFCs/Halobutyl.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/Vetted/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
 
 		
 		<!-- Tags -->
@@ -182,15 +184,15 @@
 		
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/sqlTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/brpo/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/testTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/Imports/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/brpo/testTags.xml" />
 		
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/sqlTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/halobutyl/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/testTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Imports/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/halobutyl/testTags.xml" />
 		
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/labDataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/vistalon/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/testTags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/vistalon/labdataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTestTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/vistalon/testTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/labDataSqlTagsIsolation.xml" tofile="${artifact.dir}/tags/vistalon/labdataTestTags.xml" />
 		
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses/brpo" />
