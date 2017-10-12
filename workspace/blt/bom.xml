@@ -56,7 +56,7 @@
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>
 	</panel>
-	<panel type="icon" essential="true" version="1">
+	<panel type="icon" essential="true" version="2">
 		<title>Icons for BLT Blocks</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit. </preamble>
 		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
@@ -65,7 +65,7 @@
 	</panel>
 	<!-- 'user-lib" subtypes are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="1">
+	<panel type="file" essential="true" version="2">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Block Language Toolkit. 
 		Additionally, Java jar files that are referenced by the Python are installed.

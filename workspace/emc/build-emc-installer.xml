@@ -123,14 +123,14 @@
 		<mkdir dir="${artifact.dir}/external/jars" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/common/ils-common.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.1.1.jar.pack.gz" tofile="${artifact.dir}/external/jars/common/commons-math3-3.1.1.jar.pack.gz" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar.pack.gz" tofile="${artifact.dir}/external/jars/common/commons-math3-3.6.1.jar.pack.gz" />
 		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/gateway/block-definition.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/gateway/blt-gateway.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/jackson-core-2.2.3.jar" tofile="${artifact.dir}/external/jars/gateway/jackson-core-2.2.3.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/jackson-databind-2.2.3.jar" tofile="${artifact.dir}/external/jars/gateway/jackson-databind-2.2.3.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/jackson-annotations-2.2.3.jar" tofile="${artifact.dir}/external/jars/gateway/jackson-annotations-2.2.3.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.1.1.jar" tofile="${artifact.dir}/external/jars/gateway/commons-math3-3.1.1.jar" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar" tofile="${artifact.dir}/external/jars/gateway/commons-math3-3.6.1.jar" />
 		
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
@@ -169,10 +169,17 @@
 		
 		<!-- Global Projects -->
 		<mkdir dir="${artifact.dir}/globals" />
+<<<<<<< HEAD
 <!--		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/SFCs/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
 -->
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/SFCs/Halobutyl.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/Vetted/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
+=======
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Halobutyl.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
+		<copy file="${svn.repo}/EMChemicals/Release/src/global/Vistalon.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Imports/global_alarm_pipelines.proj" tofile="${artifact.dir}/globals/VistalonAlarms.proj" />
+>>>>>>> c8f9ce0540a93075c073950e32bb4a4851f6679a
 
 		
 		<!-- Tags -->

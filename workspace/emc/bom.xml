@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">23</property>
+	<property name="version">24</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -72,7 +72,7 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	<panel type="icon" essential="true" version="8">
+	<panel type="icon" essential="true" version="9">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -84,7 +84,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="22">
+	<panel type="file" essential="true" version="23">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -104,7 +104,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="18">
+	<panel type="database" essential="true" version="19">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -121,7 +121,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="4">
+	<panel type="database" essential="true" version="5">
 		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -138,7 +138,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="11">
+	<panel type="database" essential="false" version="12">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -154,7 +154,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="19">
+	<panel type="database" essential="true" version="20">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -171,7 +171,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="11">
+	<panel type="database" essential="false" version="12">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -187,7 +187,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="17" >
+	<panel type="module" subtype="production" essential="true" version="18" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -261,7 +261,7 @@
 			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="4">
+	<panel type="tag" subtype="production" essential="True" version="5">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -277,7 +277,7 @@
 			<location>artifacts/tags/brpo/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="4">
+	<panel type="tag" subtype="test" essential="false" version="5">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at BRPO.
@@ -383,7 +383,7 @@
 			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="21">
+	<panel type="project" subtype="main" essential="true" version="22">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -398,7 +398,7 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="21">
+	<panel type="project" subtype="main" essential="true" version="22">
 		<title>Escorez Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -424,7 +424,7 @@
 			<location>artifacts/globals/Escorez.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="21">
+	<panel type="project" subtype="main" essential="true" version="22">
 		<title>GLine Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -439,7 +439,7 @@
 			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="21">
+	<panel type="project" subtype="main" essential="true" version="22">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -465,9 +465,9 @@
 			<location>artifacts/globals/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="22">
+	<panel type="project" subtype="main" essential="true" version="23">
 		<title>Vistalon Main Project</title>
-		<preamble>XOM is the maivn Ignition project. This page provides
+		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications from a previous version. <br/>
@@ -483,7 +483,7 @@
 			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="15">
+	<panel type="project" subtype="sfc" essential="true" version="16 ">
 		<title>Vistalon SFCs</title>
 		<preamble>This page handles installation of vetted SFC charts for Vistalon.
 			The charts are packaged as an Ignition global project. They completely replace
@@ -494,7 +494,18 @@
 			<location>artifacts/globals/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="dbmgr" essential="true" version="7">
+	<panel type="project" subtype="alarms" essential="true" version="1">
+		<title>Vistalon Alarm Pipeline</title>
+		<preamble>This page handles installation of the alarm pipeline for Vistalon.
+			The pipeline is an Ignition global project that becomes merged into the
+			global project.   
+		</preamble>
+		<property name="site">Vistalon</property>
+		<artifact name="Alarm Pipeline" type="project" subtype="global">
+			<location>artifacts/globals/VistalonAlarms.proj</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="dbmgr" essential="true" version="8">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.
@@ -533,7 +544,7 @@
 		<artifact name="Diagnostic Toolkit User Interface Test Spec" type="documentation" subtype="docx" release="1.00">
 			<location>artifacts/doc/DiagnosticToolkitUserInterfaceTestSpec.docx</location>
 		</artifact>
-		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="1.0">
+		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
 		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.19">
@@ -548,7 +559,7 @@
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.6">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.9">
+		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.11">
 			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
 		</artifact>
 		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.9">
@@ -557,7 +568,7 @@
 		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.3">
 			<location>artifacts/doc/RecipeDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.60">
+		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.63">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
 		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
