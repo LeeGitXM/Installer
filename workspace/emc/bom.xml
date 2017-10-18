@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">24</property>
+	<property name="version">25</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -84,7 +84,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="23">
+	<panel type="file" essential="true" version="25">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -104,7 +104,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="19">
+	<panel type="database" essential="true" version="21">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -121,7 +121,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="5">
+	<panel type="database" essential="true" version="7">
 		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -138,7 +138,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="12">
+	<panel type="database" essential="false" version="14">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -154,7 +154,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="20">
+	<panel type="database" essential="true" version="22">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -171,7 +171,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="12">
+	<panel type="database" essential="false" version="14">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -187,7 +187,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="18" >
+	<panel type="module" subtype="production" essential="true" version="20" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -261,7 +261,7 @@
 			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="5">
+	<panel type="tag" subtype="production" essential="True" version="7">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -277,7 +277,7 @@
 			<location>artifacts/tags/brpo/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="5">
+	<panel type="tag" subtype="test" essential="false" version="7">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at BRPO.
@@ -314,7 +314,7 @@
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="6">
+	<panel type="tag" subtype="production" essential="True" version="8">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Halobutyl applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -330,7 +330,7 @@
 			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="5">
+	<panel type="tag" subtype="test" essential="false" version="8">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Halobutyl.
@@ -341,7 +341,7 @@
 			<location>artifacts/tags/halobutyl/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="18">
+	<panel type="tag" subtype="production" essential="True" version="20">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -360,7 +360,7 @@
 			<location>artifacts/tags/vistalon/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="18">
+	<panel type="tag" subtype="test" essential="false" version="20">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon.
@@ -371,7 +371,7 @@
 			<location>artifacts/tags/vistalon/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="16">
+	<panel type="tag" subtype="test" essential="false" version="20">
 		<title>Install Lab Tag Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon. These are the
@@ -383,7 +383,7 @@
 			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="22">
+	<panel type="project" subtype="main" essential="true" version="24">
 		<title>BRPO Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -398,6 +398,19 @@
 			<location>artifacts/projects/BRPO.proj</location>
 		</artifact>
 	</panel>
+	
+	<panel type="project" subtype="sfc" essential="true" version="1">
+		<title>BRPO Alarm Pipeline</title>
+		<preamble>This page handles installation of Alarm Pipelines for BRPO.
+			It is packaged as an Ignition global projects and completely replaces
+			any existing pipelines of the same name.
+		</preamble>
+		<property name="site">BRPO</property>
+		<artifact name="BRPO Global Project" type="project" subtype="global">
+			<location>artifacts/globals/BRPO.proj</location>
+		</artifact>
+	</panel>
+	
 	<panel type="project" subtype="main" essential="true" version="22">
 		<title>Escorez Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
@@ -439,7 +452,7 @@
 			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="22">
+	<panel type="project" subtype="main" essential="true" version="23">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -454,9 +467,9 @@
 			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Halobutyl SFC</title>
-		<preamble>This page handles installation of charts for SFC projects migrated for Escorez.
+	<panel type="project" subtype="sfc" essential="true" version="2">
+		<title>Halobutyl SFC and Alarm Pipeline</title>
+		<preamble>This page handles installation of vetted SFC charts and Alarm Pipelines for Halobutyl.
 			The charts are packaged as Ignition global projects. They completely replace
 			any existing charts of the same name.
 		</preamble>
@@ -465,7 +478,7 @@
 			<location>artifacts/globals/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="23">
+	<panel type="project" subtype="main" essential="true" version="24">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -483,9 +496,9 @@
 			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="16 ">
-		<title>Vistalon SFCs</title>
-		<preamble>This page handles installation of vetted SFC charts for Vistalon.
+	<panel type="project" subtype="sfc" essential="true" version="17">
+		<title>Vistalon SFCs and Alarm Pipelines</title>
+		<preamble>This page handles installation of vetted SFC charts and Alarm Pipelines for Vistalon.
 			The charts are packaged as an Ignition global project. They completely replace
 			any existing charts of the same name. 
 		</preamble>
@@ -494,18 +507,8 @@
 			<location>artifacts/globals/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="alarms" essential="true" version="1">
-		<title>Vistalon Alarm Pipeline</title>
-		<preamble>This page handles installation of the alarm pipeline for Vistalon.
-			The pipeline is an Ignition global project that becomes merged into the
-			global project.   
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="Alarm Pipeline" type="project" subtype="global">
-			<location>artifacts/globals/VistalonAlarms.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="dbmgr" essential="true" version="8">
+
+	<panel type="project" subtype="dbmgr" essential="true" version="9">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.
@@ -535,7 +538,7 @@
 		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
 			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
 		</artifact>
-		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.17">
+		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.18">
 			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
 		</artifact>
 		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
@@ -556,13 +559,13 @@
 		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.19">
 			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
 		</artifact>
-		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.6">
+		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.11">
+		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.12">
 			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.9">
+		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.11">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>
 		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.3">
