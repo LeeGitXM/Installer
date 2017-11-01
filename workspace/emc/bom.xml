@@ -84,7 +84,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="25">
+	<panel type="file" essential="true" version="26">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -104,7 +104,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="21">
+	<panel type="database" essential="true" version="22">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -121,7 +121,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="7">
+	<panel type="database" essential="true" version="8">
 		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -138,7 +138,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="14">
+	<panel type="database" essential="false" version="15">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -154,7 +154,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="22">
+	<panel type="database" essential="true" version="23">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -171,7 +171,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="14">
+	<panel type="database" essential="false" version="15">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -187,7 +187,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="20" >
+	<panel type="module" subtype="production" essential="true" version="21" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -261,7 +261,7 @@
 			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="7">
+	<panel type="tag" subtype="production" essential="True" version="8">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -400,9 +400,9 @@
 	</panel>
 	
 	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>BRPO Alarm Pipeline</title>
-		<preamble>This page handles installation of Alarm Pipelines for BRPO.
-			It is packaged as an Ignition global projects and completely replaces
+		<title>BRPO Alarm Pipeline and Shared Python</title>
+		<preamble>This page handles installation of Alarm Pipelines and shared Python for BRPO.
+			These are packaged as an Ignition global projects and completely replaces
 			any existing pipelines of the same name.
 		</preamble>
 		<property name="site">BRPO</property>
@@ -427,9 +427,9 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="16">
-		<title>Escorez SFC</title>
-		<preamble>This page handles installation of charts for SFC projects migrated for Escorez.
-			The charts are packaged as Ignition global projects. They completely replace
+		<title>Escorez SFCs, Alarm Pipeline, and shared Python</title>
+		<preamble>This page handles installation of SFCs, Alarm Pipelines, and shared Python for Escorez.
+			These are packaged as Ignition global projects. They completely replace
 			any existing charts of the same name.
 		</preamble>
 		<property name="site">Escorez</property>
@@ -437,7 +437,7 @@
 			<location>artifacts/globals/Escorez.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="22">
+	<panel type="project" subtype="main" essential="true" version="23">
 		<title>GLine Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -452,7 +452,7 @@
 			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="23">
+	<panel type="project" subtype="main" essential="true" version="24">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -467,10 +467,10 @@
 			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="2">
-		<title>Halobutyl SFC and Alarm Pipeline</title>
-		<preamble>This page handles installation of vetted SFC charts and Alarm Pipelines for Halobutyl.
-			The charts are packaged as Ignition global projects. They completely replace
+	<panel type="project" subtype="sfc" essential="true" version="3">
+		<title>Halobutyl SFCs, Alarm Pipelines and shared Python</title>
+		<preamble>This page handles installation of SFCs, Alarm pipelines, and shared Python for Halobutyl.
+			These are packaged as an Ignition global project. They completely replace
 			any existing charts of the same name.
 		</preamble>
 		<property name="site">Halobutyl</property>
@@ -478,7 +478,7 @@
 			<location>artifacts/globals/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="24">
+	<panel type="project" subtype="main" essential="true" version="25">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -496,10 +496,10 @@
 			<location>artifacts/projects/Vistalon.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="17">
-		<title>Vistalon SFCs and Alarm Pipelines</title>
-		<preamble>This page handles installation of vetted SFC charts and Alarm Pipelines for Vistalon.
-			The charts are packaged as an Ignition global project. They completely replace
+	<panel type="project" subtype="sfc" essential="true" version="18">
+		<title>Vistalon SFCs, Alarm Pipelines and Shared Python</title>
+		<preamble>This page handles installation of SFCs, Alarm Pipelines and shared Python for Vistalon.
+			These are packaged as an Ignition global project. They completely replace
 			any existing charts of the same name. 
 		</preamble>
 		<property name="site">Vistalon</property>
@@ -609,6 +609,19 @@
 		<property name="SecondaryTimeFactor">1.0</property>
 		
 	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Test Framework Module</title>
+		<preamble>This step installs the test framework module.
+			The test framework is optional and should not be used on a production system.
+			When used on a hybrid Production / Development system then great caution
+			must be used to insure that test data does not leak to the production FCS.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
