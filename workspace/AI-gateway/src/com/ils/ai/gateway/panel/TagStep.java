@@ -1,20 +1,20 @@
 /**
- * Copyright 2016. ILS Automation. All rights reserved.
+ * Copyright 2016-2017. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway.panel;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 
-import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
-import org.apache.wicket.ajax.AjaxRequestHandler;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.time.Duration;
 import org.xml.sax.SAXException;
 
 import com.ils.ai.gateway.model.InstallerData;
@@ -27,10 +27,7 @@ public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
 	private Label providerLabel = null;
 	private String provider = "";
-
 	private String statusString = "";
-	private final AbstractAjaxTimerBehavior timer;
-	private transient AjaxRequestHandler handler = null;
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
@@ -54,27 +51,6 @@ public class TagStep extends BasicInstallerPanel {
 			}
 		});
 
-		// =================================== Status Label =====================================
-		final Model<String> statusModel = new Model<String>();
-		Label statusLabel = new Label("status",statusModel);
-		statusLabel.setOutputMarkupId(true);
-		add(statusLabel);
-
-
-		
-		// =================================== Timer =====================================
-		// Drive the progress bar with a timer
-		timer = new AbstractAjaxTimerBehavior(Duration.ONE_SECOND) {
-			private static final long serialVersionUID = 9100894639351169111L;
-
-			@Override
-			protected void onTimer(AjaxRequestTarget target) {
-				System.out.println("TagStep: timer status = "+statusString);
-				statusModel.setObject(statusString);
-			}
-		};
-		add(timer);
-	
         add(new Button("install") {
 			private static final long serialVersionUID = 4110778774811578782L;
 			
@@ -85,17 +61,21 @@ public class TagStep extends BasicInstallerPanel {
             	StringBuilder success = new StringBuilder("");
             	StringBuilder failure = new StringBuilder("");
             	
+            	
             	for(String artifactName:names) {
             		String result = null;
             		List<File> files = dataHandler.getArtifactAsListOfTagFiles(panelIndex, artifactName, data);
-            		int count = 0;
+            		long count = 0;
+            		statusString = String.format("installed ~ %d tags",count);
+            		
             		for( File file:files ) {
             			try {
-            				statusString = String.format("Installed ~ %d tags",count);
-            				statusModel.setObject(statusString);
-            				System.out.println("TagStep: processing status = "+statusString);
-            				count = count + InstallerDataHandler.TAG_CHUNK_SIZE;
             				dataHandler.tagUtil.importFromFile(file,provider);
+            				count = getTagCount(file.toPath());
+            				statusString = String.format("~ %d tags",count);
+            				
+            				System.out.println("TagStep: processing status = "+statusString);
+            				
             				setResponsePage(getPage());    // Supposedly this causes a page refresh()
             				Thread.yield();
             			}
@@ -110,6 +90,7 @@ public class TagStep extends BasicInstallerPanel {
             		if( result==null ) {
             			if(success.length()>0) success.append(", ");
             			success.append(artifactName);
+            			success.append(String.format("%s(%s)", artifactName,statusString));
             		}
             		else {
             			if(failure.length()>0) failure.append(", ");
@@ -124,15 +105,26 @@ public class TagStep extends BasicInstallerPanel {
             	else {
             		error(failure.insert(0,"Failed to load: ").toString());
             	}
-            	if(handler!=null) timer.stop(handler);
             }
         });
     }
-	@Override
-	public void onInitialize() {
-		super.onInitialize();
-		handler = new AjaxRequestHandler(TagStep.this.getPage());
-		timer.restart(handler);
+	
+	/**
+	 * Analyze the XML file counting <tag> elements.
+	 * @param path
+	 * @return the tag count
+	 */
+	private long getTagCount(Path path) {
+		long count = 0;
+		try {
+			Stream<String> lines = Files.lines(path);
+			count = lines.filter(line->line.indexOf("</Tag>")>0).count();
+			lines.close();
+		}
+		catch(IOException ioe) {
+			System.out.println("TagStep.getTagCount: Exception "+ioe.getMessage());
+		}
+		return count;
 	}
 
 }

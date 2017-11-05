@@ -5,7 +5,7 @@
       be unique. 
  -->
 <installer>
-	<title>DowFRGBatchExpert+</title>
+	<title>DupontFDLBatchExpert+</title>
 	<description>Installer for ILS Automation's Batch Expert+ for Dow FRG</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
@@ -16,7 +16,7 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		the express purpose of updating the existing Dow FRG installation to the latest version of Batch Expert+ 2.0. This installation 
+		the express purpose of updating the existing Dupont FDL FRG installation for the latest version of Batch Expert+ 2.3. This installation 
 		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
 		</preamble>
 		<artifact name="notes" type="pdf">
@@ -72,13 +72,13 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="3">
 		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates memory tags corresponding to the Dow FRG production tags.
+		<preamble>This page creates memory tags corresponding to the Dupont FDL production tags.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="Dow FRG Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/frgTags.xml</location>
+		<artifact name="Dupont FDL Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/fdlTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -189,14 +189,15 @@
 	</panel>
 
 	<panel type="project" subtype="main" essential="true" version="6">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for DOW FRG
+		<title>Install BatchExpert+ 2.3 - Specially assembled for Dupont FDL
 		</title>
-		<preamble>Create Batch Expert+ 2.2 for DOW FRG.
+		<preamble>Create Batch Expert+ 2.3 for Dupont FDL. This project contains the entire
+		          FDL application, even those parts outside of Batch Expert.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpertFRG.proj</location>
-			<comment>Create a BatchExpert+ 2.2 project for DOW FRG. </comment>
+			<location>artifacts/projects/BatchExpertFDL.proj</location>
+			<comment>Create a BatchExpert+ 2.3 project for Dupont FDL. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
@@ -207,25 +208,8 @@
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
 			<location>artifacts/projects/BatchExpertGlobal.proj</location>
-			<comment>Create the baseline global resources for
-					 the BatchExpert+.
-					 These consist of an alarm pipeline. </comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for sequential control of batch operations.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="BatchExpertSFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
-			<comment>Merge new or modified global resources from
-					 the BatchExpert+ update into the global project.
-					 These consist of SFC properties. </comment>
+			<comment>Install the global resources for Dupont FDL.
+					 These consist of several alarm pipelines. </comment>
 		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="1">
