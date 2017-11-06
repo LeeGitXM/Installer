@@ -82,14 +82,6 @@
 		<copy file="${svn.repo}/EMChemicals/Database/createXOM.sql" tofile="${artifact.dir}/database/createACE.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
-		<!-- Documentation -->
-		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
-		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesigneSpecification.docx" />
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
 		<copy todir="${artifact.dir}/external/ils-python">
@@ -144,21 +136,14 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${artifact.dir}/projects/ACE.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/SFCs/drierRegen.proj" tofile="${artifact.dir}/projects/DrierRegen.proj" />
 		<mkdir dir="${artifact.dir}/scanclasses" />
 		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
 
-		<!-- Source -->
-		<mkdir dir="${artifact.dir}/source" />
-		<!-- BLT source is 150mb, too big to auto load module (copy sfc twice)-->
-		<copy file="${svn.repo}/EMChemicals/Release/src/blt-${version.build}.zip" tofile="${artifact.dir}/source/blt-${version.build}.zip" />
-		<copy file="${svn.repo}/EMChemicals/Release/src/sfc-${version.build}.zip" tofile="${artifact.dir}/source/sfc-${version.build}.zip" />
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		<copy file="${git.repo}/blt/regression/basic/config/sqltags.xml" tofile="${artifact.dir}/tags/sqltags.xml" />
-		<copy file="${git.repo}/sfc/migration/tags/sqlTags.xml" tofile="${artifact.dir}/tags/testTags.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
