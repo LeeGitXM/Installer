@@ -209,7 +209,7 @@
 		</preamble>
 		<property name="site">BRPO</property>
 		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+		<artifact name="Production ScanClasses" subtype="csv">
 			<location>artifacts/scanclasses/brpo/scanclasses.csv</location>
 		</artifact>
 	</panel>
