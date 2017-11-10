@@ -144,6 +144,7 @@
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/SanofiGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />

@@ -140,6 +140,7 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${svn.repo}/BatchExpert/Ignition/BatchExpert.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BiostatCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />

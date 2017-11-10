@@ -153,7 +153,8 @@
 		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.3.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGSKGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		
 		<!-- Update release and build date in version python file -->
