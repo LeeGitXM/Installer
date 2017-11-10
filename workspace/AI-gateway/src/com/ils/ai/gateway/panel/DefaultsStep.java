@@ -33,7 +33,7 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 public class DefaultsStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 9066858944253432239L;
 	private String partialProjectName     = "UNUSED";
-	private String partialProjectComment  = "Merge scriptt resources from the source project into the selected existing project (if they don't already exist).";
+	private String partialProjectComment  = "Merge script resources from the source project into the selected existing project (if they don't already exist).";
 	private String partialProjectLocation     = "";
 	private Project selectedProject = null;                 // Project to be merged
 	public Form<InstallerData> mergeProjectForm = null;

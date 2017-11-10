@@ -173,7 +173,8 @@
 	<target name="deploy" depends="build">
 		<echo message="Copying ${module.name} to Google Drive ${google.repo} (and examples project)." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
+		<copy file="${git.repo}/batch-expert/release/CAUTION.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/CAUTION.txt" />
+		<copy file="${git.repo}/batch-expert/release/README.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/README.txt" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

@@ -43,7 +43,8 @@
 	<panel type="tag" subtype="production" essential="true" version="1">
 		<title>Install UDT and Tag Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
+		           These definitions are written to the default tag provider. Feel free to delete tags and
+		           UDTs that are not relevant to your installation.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
@@ -217,8 +218,7 @@
 			artifacts for a clean, new installation. This first step involves installing a minimal project
 			that provides the application structure. It includes example screens for those portions of the application
 			that are site specific. This project also contains the latest version of 
-			the &quot;Master&quot;, global, artifacts. An additional step on the next panel provides an opportunity
-			to merge a set of example screens to speed final configuration of the application.
+			the &quot;Master&quot; project that .
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
@@ -226,8 +226,12 @@
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpert.proj</location>
 			<comment>Install an empty BatchExpert+ project into the gateway,
-					 overwriting any existing project of the same name. When 
-					 complete, execute the merge step with the Master project.</comment>
+					 overwriting any existing project of the same name.</comment>
+		</artifact>
+		<artifact name="Master" type="project" subtype="merge">
+			<location>artifacts/projects/BatchExpert.proj</location>
+			<comment>Install the latest Master project merging it into the
+			         project which was just installed in the step above.</comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">

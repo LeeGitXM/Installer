@@ -10,13 +10,13 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">10</property>
+	<property name="version">2</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		the express purpose of updating the existing Dupont FDL FRG installation for the latest version of Batch Expert+ 2.3. This installation 
+		the express purpose of updating the existing DOW FDL installation for the latest version of Batch Expert+ 2.3. This installation 
 		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
 		</preamble>
 		<artifact name="notes" type="pdf">

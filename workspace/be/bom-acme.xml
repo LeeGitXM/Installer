@@ -10,13 +10,13 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">8</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		the express purpose of updating the existing Acme installation to Batch Expert+ 2.0. This installation 
+		the express purpose of updating the existing Acme installation to Batch Expert+ 2.3. This installation 
 		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
 		</preamble>
 		<artifact name="notes" type="pdf">
@@ -156,7 +156,7 @@
 	</panel>
 	<panel type="python" essential="true" version="2">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.2.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.3.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils/be/database/alter.alterDatabase()</script>
@@ -192,14 +192,15 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="5">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for Acme Corporation
+		<title>Install BatchExpert+ 2.3 - Specially assembled for Acme Corporation
 		</title>
-		<preamble>Create Batch Expert+ 2.2 for Acme Corporation.
+		<preamble>Create Batch Expert+ 2.3 for Acme Corporation. This project includes 
+		          the latest Master screens.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertACME.proj</location>
-			<comment>Create a BatchExpert+ 2.2 project for Acme Corporation. </comment>
+			<comment>Create a BatchExpert+ 2.3 project for Acme Corporation. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
