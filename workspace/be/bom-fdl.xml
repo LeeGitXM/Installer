@@ -5,7 +5,7 @@
       be unique. 
  -->
 <installer>
-	<title>DupontFDLBatchExpert+</title>
+	<title>DOWFDLBatchExpert+</title>
 	<description>Installer for ILS Automation's Batch Expert+ for Dow FRG</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
@@ -72,12 +72,12 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="3">
 		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates memory tags corresponding to the Dupont FDL production tags.
+		<preamble>This page creates memory tags corresponding to the DOW FDL production tags.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="Dupont FDL Test Tags" type="tag" subtype="xml">
+		<artifact name="DOW FDL Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/fdlTags.xml</location>
 		</artifact>
 	</panel>
@@ -189,15 +189,15 @@
 	</panel>
 
 	<panel type="project" subtype="main" essential="true" version="6">
-		<title>Install BatchExpert+ 2.3 - Specially assembled for Dupont FDL
+		<title>Install BatchExpert+ 2.3 - Specially assembled for DOW FDL
 		</title>
-		<preamble>Create Batch Expert+ 2.3 for Dupont FDL. This project contains the entire
+		<preamble>Create Batch Expert+ 2.3 for DOW FDL. This project contains the entire
 		          FDL application, even those parts outside of Batch Expert.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertFDL.proj</location>
-			<comment>Create a BatchExpert+ 2.3 project for Dupont FDL. </comment>
+			<comment>Create a BatchExpert+ 2.3 project for DOW FDL. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
@@ -208,7 +208,7 @@
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
 			<location>artifacts/projects/BatchExpertGlobal.proj</location>
-			<comment>Install the global resources for Dupont FDL.
+			<comment>Install the global resources for DOW FDL.
 					 These consist of several alarm pipelines. </comment>
 		</artifact>
 	</panel>

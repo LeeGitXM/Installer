@@ -60,7 +60,8 @@
 	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
+		           These definitions are written to the default tag provider. NOTE: This action does NOT
+		           install production tags, as these are assumed to pre-exist.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
@@ -78,7 +79,7 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="RWDC Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/rwdcTags.xml</location>
+			<location>artifacts/tags/rwdcMemoryTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -189,14 +190,14 @@
 	</panel>
 
 	<panel type="project" subtype="main" essential="true" version="6">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for RWDC
+		<title>Install BatchExpert+ 2.3 - Specially assembled for RWDC
 		</title>
-		<preamble>Create Batch Expert+ 2.2 for RWDC.
+		<preamble>Create Batch Expert+ 2.3 for RWDC.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertRWDC.proj</location>
-			<comment>Create a BatchExpert+ 2.2 project for RWDC. </comment>
+			<comment>Create a BatchExpert+ 2.3 project for RWDC. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
@@ -210,22 +211,6 @@
 			<comment>Create the baseline global resources for
 					 the BatchExpert+.
 					 These consist of an alarm pipeline. </comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for sequential control of batch operations.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="BatchExpertSFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
-			<comment>Merge new or modified global resources from
-					 the BatchExpert+ update into the global project.
-					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="1">

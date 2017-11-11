@@ -152,7 +152,7 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/DupontFDL2.3.proj" tofile="${artifact.dir}/projects/BatchExpertFDL.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/AlarmPipelines.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/DOWFDLGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Update release and build date in version python file -->

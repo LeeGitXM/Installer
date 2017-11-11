@@ -113,10 +113,8 @@
 			</fileset>
 		</copy>
 		
-		<!-- Special handling for the RWDC alter script  -->
-		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
-		<copy file="${artifact.dir}/external/ils/be/database/customer/rwdc.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
-		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
+		<!-- No Special handling for the RWDC alter script (use the Master)  -->
+		<copy file="${artifact.dir}/external/ils/be/database/alter.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
 			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
@@ -144,16 +142,17 @@
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/updates/RWDCSandbox/RWDCMemoryTags.xml" tofile="${artifact.dir}/tags/rwdcTags.xml" />
+		<copy file="${git.repo}/batch-expert/updates/RWDCSandbox/sqlTags-memory.xml" tofile="${artifact.dir}/tags/rwdcMemoryTags.xml" />
+		<copy file="${git.repo}/batch-expert/updates/RWDCSandbox/sqlTags-opc.xml" tofile="${artifact.dir}/tags/rwdcOPCTags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/RWDCSandbox/BatchExpertRWDC-2.2.proj" tofile="${artifact.dir}/projects/BatchExpertRWDC.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
+		<copy file="${git.repo}/batch-expert/updates/RWDCSandbox/RWDC-2.3.proj" tofile="${artifact.dir}/projects/BatchExpertRWDC.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
