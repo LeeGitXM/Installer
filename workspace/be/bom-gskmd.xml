@@ -156,7 +156,7 @@
 	</panel>
 	<panel type="python" essential="true" version="2">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.2.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.3.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils/be/database/alter.alterDatabase()</script>
@@ -192,43 +192,27 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="5">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for GSK MD
+		<title>Install BatchExpert+ 2.3 - Specially assembled for GSK MD
 		</title>
-		<preamble>Create Batch Expert+ 2.2 for GSK MD.
+		<preamble>Create Batch Expert+ 2.3 for GSK MD.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertGSKMD.proj</location>
-			<comment>Create a BatchExpert+ 2.2 project for GSK MD. </comment>
+			<comment>Create a BatchExpert+ 2.3 project for GSK MD. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
 		<title>Install the Global Project
 		</title>
-		<preamble>This page handles installation of the BatchExpert global project.
-			The basic global project contains the default alarm pipeline configuration. 
+		<preamble>This page handles installation of the BatchExpert global project for GSK MD.
+			The basic global project contains shared methods and 
+			the default alarm pipeline configuration. 
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<location>artifacts/projects/BatchExpertGSKGlobal.proj</location>
 			<comment>Create the baseline global resources for
-					 the BatchExpert+.
-					 These consist of an alarm pipeline. </comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for sequential control of batch operations.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="BatchExpertSFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
-			<comment>Merge new or modified global resources from
-					 the BatchExpert+ update into the global project.
-					 These consist of SFC properties. </comment>
+					 the BatchExpert+. These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="1">

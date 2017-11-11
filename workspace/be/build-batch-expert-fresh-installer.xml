@@ -143,6 +143,7 @@
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${git.repo}/batch-expert/doc/BEGettingStarted.docx" tofile="${artifact.dir}/doc/BEGettingStarted.docx" />
 		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
