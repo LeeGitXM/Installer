@@ -273,17 +273,6 @@
 			<location>artifacts/doc/BEGettingStarted.docx</location>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="1">
-		<title>Ensure Existence of All Required Interfaces</title>
-		<preamble>Create default versions of any missing interfaces 
-			required of the product. Scripts already in place
-			are unaffected.
-		</preamble>
-	    <!-- The  artifact subtype will always be "partial" -->
-		<artifact name="Defaults" type="project" subtype="partial">
-			<location>artifacts/projects/defaults.proj</location>
-		</artifact>
-	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
