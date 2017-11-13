@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">2</property>
+	<property name="version">3</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="5">
+	<panel type="file" essential="true" version="6">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -178,7 +178,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
+	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom SFC Module</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -188,7 +188,7 @@
 		</artifact>
 	</panel>
 
-	<panel type="project" subtype="main" essential="true" version="6">
+	<panel type="project" subtype="main" essential="true" version="7">
 		<title>Install BatchExpert+ 2.3 - Specially assembled for DOW FDL
 		</title>
 		<preamble>Create Batch Expert+ 2.3 for DOW FDL. This project contains the entire
@@ -212,7 +212,7 @@
 					 These consist of several alarm pipelines. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="1">
+	<panel type="defaults" essential="true" version="2">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

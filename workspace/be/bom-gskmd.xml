@@ -179,7 +179,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
+	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Install Custom SFC Module</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -215,7 +215,7 @@
 					 the BatchExpert+. These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="1">
+	<panel type="defaults" essential="true" version="2">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
