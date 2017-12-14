@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">24</property>
+	<property name="version">25</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -66,17 +66,24 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
-		<title>Install UDT and Tag Definitions</title>
-		<preamble>This page verifies the presence of all necessary BatchExpert configuration tags and updates UDTs for common  controllers.
+	<panel type="tag" subtype="production" essential="true" version="4">
+		<title>Install UDT Definitions</title>
+		<preamble>This page defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="4">
+		<title>Install Configuration Tags</title>
+		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
-		</artifact>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -217,7 +224,7 @@
 			<location>artifacts/doc/BEGettingStarted.docx</location>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="2">
+	<panel type="defaults" essential="true" version="3">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

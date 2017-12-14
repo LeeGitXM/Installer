@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">11</property>
+	<property name="version">25</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -213,7 +213,7 @@
 					 These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="2">
+	<panel type="defaults" essential="true" version="3">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of all script interfaces 
 			required of the product. Existing interfaces 
