@@ -81,7 +81,7 @@
 	<panel type="tag" subtype="production" essential="false" version="1">
 		<title>Install Tag Definitions for TEST</title>
 		<preamble>This page creates memory tags corresponding to the GSK MD production tags.
-		          Do NOT use in for production. These tags are for test systems only.
+		          Do NOT use in production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
