@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">25</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -36,7 +36,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="3">
+	<panel type="file" essential="true" version="5">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -57,23 +57,31 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
+	<!--  Separate tag definitions because we are approaching the minute timeout mark -->
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install UDT Definitions</title>
-		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
+		<preamble>This page defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="4">
+		<title>Install Configuration Tags</title>
+		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
 		</artifact>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="1">
 		<title>Install Tag Definitions for TEST</title>
 		<preamble>This page creates memory tags corresponding to the GSK MD production tags.
-		          Do NOT use in for production. These tags are for test systems only.
+		          Do NOT use in production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -215,7 +223,7 @@
 					 the BatchExpert+. These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="2">
+	<panel type="defaults" essential="true" version="3">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

@@ -150,7 +150,7 @@
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.3.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
+		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKMD-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertGSKGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGSKGlobal.proj" />

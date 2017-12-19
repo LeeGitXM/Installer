@@ -1883,10 +1883,9 @@ public class InstallerDataHandler {
 				original.setEnabled(false);
 				
 				// List existing scripting resources:
-				Set<String> existingScripts = new HashSet<>();
 				for( ProjectResource pr:original.getResourcesOfType(InstallerConstants.MODULE_ID,"Script")) {
 					String path = original.getFolderPath(pr.getResourceId());
-					log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: %s",path);
+					log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: existing %s",path);
 				}
 				
 				
@@ -1895,6 +1894,10 @@ public class InstallerDataHandler {
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
 					Project updateProject = Project.fromXML(projectReader);
+					for( ProjectResource pr:updateProject.getResourcesOfType(InstallerConstants.MODULE_ID,"Script")) {
+						String path = updateProject.getFolderPath(pr.getResourceId());
+						log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: update %s",path);
+					}
 					mergeProject(updateProject,original);
 					try {
 						updateProject.setName(original.getName());
@@ -2026,26 +2029,27 @@ public class InstallerDataHandler {
 	
 	// Merge resources from the partial project into the original
 	private void mergeProject(Project original,Project partial) {
-		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
+		log.debugf("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
 		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
 		// Create map of partial resources.
 		for( ProjectResource res:partial.getResources() ) {
 			String path = partial.getFolderPath(res.getResourceId());
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.infof("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
+			log.debugf("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
 			partialResources.put(key, res);
 		}
 		// Delete any resources in the original that are in the partial
 		List<ProjectResource> toBeDeleted = new ArrayList<>();
 		for( ProjectResource res:original.getResources() ) {
 			String path = original.getFolderPath(res.getResourceId());
+			// Don't delete folders from the original as deleting the folder deletes its children
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			if( partialResources.get(key)!=null ) {
-				log.infof("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+				log.debugf("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
 				toBeDeleted.add(res);
 			}
 			else{
-				log.infof("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+				log.debugf("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
 			}
 		}
 		for( ProjectResource res:toBeDeleted ) {
