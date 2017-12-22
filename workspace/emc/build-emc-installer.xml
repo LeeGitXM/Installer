@@ -101,7 +101,9 @@
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/SequentialControlUserManual.docx" />
 		<copy file="${svn.repo}/EMChemicals/Project Management/SFCStepScorecard.xlsx" tofile="${artifact.dir}/doc/SFCDevelopmentScorecard.xslx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/BRPO Design Specification.docx" tofile="${artifact.dir}/doc/BRPODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Halobutyl Design Specification.docx" tofile="${artifact.dir}/doc/HalobutylDesignSpecification.docx" />
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
 
@@ -154,7 +156,7 @@
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/sfc/SFC-module.modl" tofile="${artifact.dir}/modules/SFC-module.modl" />
+		<!-- <copy file="${git.repo}/sfc/SFC-module.modl" tofile="${artifact.dir}/modules/SFC-module.modl" />  -->
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
