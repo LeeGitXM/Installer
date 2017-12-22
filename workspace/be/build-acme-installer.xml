@@ -146,7 +146,7 @@
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/AcmeSandbox/BatchExpertACME-2.2.proj" tofile="${artifact.dir}/projects/BatchExpertACME.proj" />
+		<copy file="${git.repo}/batch-expert/updates/AcmeSandbox/BatchExpertACME-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertACME.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/updates/GSKMDSandbox/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />

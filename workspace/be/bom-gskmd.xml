@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">25</property>
+	<property name="version">26</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -68,7 +68,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="4">
+	<panel type="tag" subtype="production" essential="true" version="5">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
@@ -164,10 +164,10 @@
 	</panel>
 	<panel type="python" essential="true" version="2">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.3.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
-			<script>ils/be/database/alter.alterDatabase()</script>
+			<script>ils.be.database.alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
@@ -199,15 +199,15 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="5">
-		<title>Install BatchExpert+ 2.3 - Specially assembled for GSK MD
+	<panel type="project" subtype="main" essential="true" version="8">
+		<title>Install BatchExpert+ 2.4 - Specially assembled for GSK MD
 		</title>
-		<preamble>Create Batch Expert+ 2.3 for GSK MD.
+		<preamble>Create Batch Expert+ 2.4 for GSK MD.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertGSKMD.proj</location>
-			<comment>Create a BatchExpert+ 2.3 project for GSK MD. </comment>
+			<comment>Create a BatchExpert+ 2.4 project for GSK MD. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
@@ -223,7 +223,7 @@
 					 the BatchExpert+. These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="3">
+	<panel type="defaults" essential="true" version="4">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

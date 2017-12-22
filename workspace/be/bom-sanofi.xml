@@ -157,14 +157,14 @@
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
 			         if the database is to be completely re-created.</comment>
-			<script>ils/be/database/bedb/clearDatabase()</script>
+			<script>ils.be.database.bedb/clearDatabase()</script>
 		</artifact>
 		<artifact name="Create Tables" type="create">
-			<script>ils/be/database/bedb/createDatabase()</script>
+			<script>ils.be.database.bedb/createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
 		<artifact name="Alter Tables" type="alter">
-			<script>ils/be/database/alter.alterDatabase()</script>
+			<script>ils.be.database.alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>

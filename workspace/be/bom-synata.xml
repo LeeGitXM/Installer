@@ -110,7 +110,7 @@
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
-			<script>ils/be/configuration/install/alterDatabase()</script>
+			<script>ils.be.database.alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
