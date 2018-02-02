@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">27</property>
+	<property name="version">28</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -72,7 +72,7 @@
 		<role name="AE">Application engineer</role>
 		<role name="OE">Operations engineer</role>
 	</panel>
-	<panel type="icon" essential="true" version="9">
+	<panel type="icon" essential="true" version="10">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -84,7 +84,7 @@
 		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="28">
+	<panel type="file" essential="true" version="29">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -104,7 +104,8 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="24">
+	
+	<panel type="database" essential="true" version="25">
 		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -121,7 +122,25 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="9">
+	<panel type="database" essential="true" version="25">
+		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="isolation"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">BRPO</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="XOM Database" type="sql" subtype="create">
+			<location>artifacts/database/createBRPO.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="true" version="10">
 		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -138,8 +157,8 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="16">
-		<title>Database Create and Alter Scripts for Test</title>
+	<panel type="database" essential="false" version="17">
+		<title>Halobutyl Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
@@ -154,7 +173,42 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="25">
+	
+	<panel type="database" essential="true" version="10">
+		<title>Escorez Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Escorez</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="XOM Database" type="sql" subtype="create">
+			<location>artifacts/database/createEscorez.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	<panel type="database" essential="false" version="17">
+		<title>Escorez Database Create and Alter Scripts for Test</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="isolation"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Escorez</property>
+		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
+			<location>artifacts/database/createEscorez.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="true" version="26">
 		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -171,7 +225,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="25">
+	<panel type="database" essential="false" version="26">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -187,7 +241,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="23" >
+	<panel type="module" subtype="production" essential="true" version="24" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
@@ -202,7 +256,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="4">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create BRPO-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
@@ -214,7 +268,7 @@
 			<location>artifacts/scanclasses/brpo/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="4">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create BRPO-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
@@ -227,7 +281,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="2">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Escorez-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
@@ -239,7 +293,7 @@
 			<location>artifacts/scanclasses/escorez/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="2">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Escorez-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
@@ -252,7 +306,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="2">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Halobutyl-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
@@ -264,7 +318,7 @@
 			<location>artifacts/scanclasses/halobutyl/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="2">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Halobutyl-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
@@ -302,7 +356,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="3">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Vistalon-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
@@ -314,7 +368,7 @@
 			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="3">
+	<panel type="scanclass" essential="true" version="5">
 		<title>Create Vistalon-specific Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
@@ -354,7 +408,7 @@
 			<location>artifacts/tags/brpo/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="3">
+	<panel type="tag" subtype="production" essential="True" version="4">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Escorez applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -365,6 +419,20 @@
 		<property name="site">Escorez</property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+		<artifact name="Production Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/escorez/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="test" essential="false" version="10">
+		<title>Install Tags Definitions for Test</title>
+		<preamble>This page defines memory tags that are used by the Ignition Applications
+		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Escorez.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<property name="site">Escorez</property>
+		<artifact name="Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/escorez/testTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="True" version="2">
@@ -380,7 +448,7 @@
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="9">
+	<panel type="tag" subtype="production" essential="True" version="10">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Halobutyl applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -396,7 +464,7 @@
 			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="9">
+	<panel type="tag" subtype="test" essential="false" version="10">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Halobutyl.
@@ -407,7 +475,7 @@
 			<location>artifacts/tags/halobutyl/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="True" version="22">
+	<panel type="tag" subtype="production" essential="True" version="23">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
@@ -426,7 +494,7 @@
 			<location>artifacts/tags/vistalon/labdataTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="22">
+	<panel type="tag" subtype="test" essential="false" version="23">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon.
@@ -437,7 +505,7 @@
 			<location>artifacts/tags/vistalon/testTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="22">
+	<panel type="tag" subtype="test" essential="false" version="23">
 		<title>Install Lab Tag Definitions for Test</title>
 		<preamble>This page defines tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon. These are the
@@ -477,7 +545,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="project" subtype="main" essential="true" version="22">
+	<panel type="project" subtype="main" essential="true" version="23">
 		<title>Escorez Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -492,7 +560,7 @@
 			<location>artifacts/projects/Escorez.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="16">
+	<panel type="project" subtype="sfc" essential="true" version="17">
 		<title>Escorez SFCs, Alarm Pipeline, and shared Python</title>
 		<preamble>This page handles installation of SFCs, Alarm Pipelines, and shared Python for Escorez.
 			These are packaged as Ignition global projects. They completely replace
@@ -518,7 +586,7 @@
 			<location>artifacts/projects/GLine.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="25">
+	<panel type="project" subtype="main" essential="true" version="26">
 		<title>Halobutyl Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -533,7 +601,7 @@
 			<location>artifacts/projects/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="4">
+	<panel type="project" subtype="sfc" essential="true" version="5">
 		<title>Halobutyl SFCs, Alarm Pipelines and shared Python</title>
 		<preamble>This page handles installation of SFCs, Alarm pipelines, and shared Python for Halobutyl.
 			These are packaged as an Ignition global project. They completely replace
@@ -544,7 +612,7 @@
 			<location>artifacts/globals/Halobutyl.proj</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="27">
+	<panel type="project" subtype="main" essential="true" version="28">
 		<title>Vistalon Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
@@ -583,6 +651,7 @@
 		<property name="site">BRPO</property>
 		<property name="site">GLine</property>
 		<property name="site">Vistalon</property>
+		<property name="site">Escorez</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
