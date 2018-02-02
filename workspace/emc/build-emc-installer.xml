@@ -78,16 +78,17 @@
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/createXOM_BRPO.sql" tofile="${artifact.dir}/database/createBRPO.sql" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/createXOM_Escorez.sql" tofile="${artifact.dir}/database/createEscorez.sql" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/createXOM_Halobutyl.sql" tofile="${artifact.dir}/database/createHalobutyl.sql" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/createXOMvistalon.sql" tofile="${artifact.dir}/database/createVistalon.sql" />
-		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/file="${git.repo}/installer/doc/ApplicationInstaller.docx" tofile="${artifact.dir}/doc/ApplicationInstaller.docx" />
+		<copy file="${svn.repo}/EMCheclearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
-		<copy file="${git.repo}/installer/doc/ApplicationInstaller.docx" tofile="${artifact.dir}/doc/ApplicationInstaller.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
+		<copy micals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Testing/Diagnostic Toolkit User Interface Test Specification.docx" tofile="${artifact.dir}/doc/DiagnosticToolkitUserInterfaceTestSpec.docx" />
 		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
@@ -172,8 +173,7 @@
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
 		<mkdir dir="${artifact.dir}/globals" />
-<!--		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/SFCs/Escorez.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
--->
+		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/EscorezGlobal.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/BRPOGlobal.proj" tofile="${artifact.dir}/globals/BRPO.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/HalobutylGlobal.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/VistalonGlobal.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
@@ -191,6 +191,9 @@
 		
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/halobutyl/testTags.xml" />
+		
+		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/escorez/sqlTags.xml" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/escorez/testTags.xml" />
 		
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/labDataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTags.xml" />
