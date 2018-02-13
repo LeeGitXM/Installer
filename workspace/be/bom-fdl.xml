@@ -6,11 +6,11 @@
  -->
 <installer>
 	<title>DOWFDLBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Dow FRG</description>
+	<description>Installer for ILS Automation's Batch Expert+ for Dow FDL</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">25</property>
+	<property name="version">26</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -154,7 +154,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="4">
+	<panel type="python" essential="true" version="5">
 		<title>Alter Scripts for Batch Expert+</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.1.
 		</preamble>
@@ -192,7 +192,8 @@
 		<title>Install BatchExpert+ 2.3 - Specially assembled for DOW FDL
 		</title>
 		<preamble>Create Batch Expert+ 2.3 for DOW FDL. This project contains the entire
-		          FDL application, even those parts outside of Batch Expert.
+		          FDL application, even those parts outside of Batch Expert. 
+		          The project is has been updated to BE 2.3b8. 
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">

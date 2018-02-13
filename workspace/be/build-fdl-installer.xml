@@ -113,7 +113,7 @@
 			</fileset>
 		</copy>
 		
-		<!-- Special handling for the Dupont FDL alter script  -->
+		<!-- Special handling for the DOW FDL alter script  -->
 		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
 		<copy file="${artifact.dir}/external/ils/be/database/customer/fdl.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
 		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
@@ -150,7 +150,7 @@
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/DOWFDL2.4.proj" tofile="${artifact.dir}/projects/BatchExpertFDL.proj" />
+		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/DOWFDL2.3.proj" tofile="${artifact.dir}/projects/BatchExpertFDL.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/updates/FDLSandbox/DOWFDLGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
