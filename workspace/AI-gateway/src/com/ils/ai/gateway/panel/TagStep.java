@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2017. ILS Automation. All rights reserved.
+ * Copyright 2016-2018. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway.panel;
 
@@ -89,7 +89,6 @@ public class TagStep extends BasicInstallerPanel {
             		}
             		if( result==null ) {
             			if(success.length()>0) success.append(", ");
-            			success.append(artifactName);
             			success.append(String.format("%s(%s)", artifactName,statusString));
             		}
             		else {
@@ -126,5 +125,4 @@ public class TagStep extends BasicInstallerPanel {
 		}
 		return count;
 	}
-
 }
