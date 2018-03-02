@@ -53,9 +53,6 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
-		<artifact name="Client Tag Examples" type="tag" subtype="xml">
-			<location>artifacts/tags/client_tags.xml</location>
-		</artifact>
 		<artifact name="Site-specific UDT Template" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
