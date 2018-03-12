@@ -229,7 +229,7 @@
 					 overwriting any existing project of the same name.</comment>
 		</artifact>
 		<artifact name="Master" type="project" subtype="merge">
-			<location>artifacts/projects/BatchExpert.proj</location>
+			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Install the latest Master project merging it into the
 			         project which was just installed in the step above.</comment>
 		</artifact>
