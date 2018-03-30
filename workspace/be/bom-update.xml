@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">27</property>
+	<property name="version">28</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -229,8 +229,8 @@
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
 			are unaffected. NOTE: If this is the first update beyond BE+ 2.2,
-			then check for existing entries project.customer.callbacks.py that
-			need to moved to the appropriate module in the project.customer.callback package.
+			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
+			These need to moved to the appropriate module in the project.customer.callback package.
 		</preamble>
 	    <!-- The  artifact subtype will always be "partial" -->
 		<artifact name="Defaults" type="project" subtype="partial">
