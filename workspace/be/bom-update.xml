@@ -45,7 +45,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="6">
+	<panel type="file" essential="true" version="7">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -161,7 +161,7 @@
 	</panel>
 	<panel type="python" essential="true" version="6">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.3.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
@@ -197,7 +197,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="9">
+	<panel type="project" subtype="main" essential="true" version="10">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
@@ -213,15 +213,13 @@
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
-	<panel type="documentation" essential="false">
-		<title>Product Documentation</title>
-		<preamble>In addition to the release notes, documentation includes a getting started guide.
+	<panel type="python" essential="true" version="1">
+		<title>Configuration Scripts</title>
+		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.3.
 		</preamble>
-		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
-		<artifact name="Getting Started Guide" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/BEGettingStarted.docx</location>
+		<artifact name="Configure Pen Palette" type="alter">
+			<script>ils.be.configuration.config.configurePenColorTag()</script>
+			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="5">
@@ -235,6 +233,17 @@
 	    <!-- The  artifact subtype will always be "partial" -->
 		<artifact name="Defaults" type="project" subtype="partial">
 			<location>artifacts/projects/defaults.proj</location>
+		</artifact>
+	</panel>
+	<panel type="documentation" essential="false">
+		<title>Product Documentation</title>
+		<preamble>In addition to the release notes, documentation includes a getting started guide.
+		</preamble>
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+		<artifact name="Getting Started Guide" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/BEGettingStarted.docx</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

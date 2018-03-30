@@ -53,9 +53,6 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
-		<artifact name="Client Tag Examples" type="tag" subtype="xml">
-			<location>artifacts/tags/client_tags.xml</location>
-		</artifact>
 		<artifact name="Site-specific UDT Template" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
@@ -232,7 +229,7 @@
 					 overwriting any existing project of the same name.</comment>
 		</artifact>
 		<artifact name="Master" type="project" subtype="merge">
-			<location>artifacts/projects/BatchExpert.proj</location>
+			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Install the latest Master project merging it into the
 			         project which was just installed in the step above.</comment>
 		</artifact>

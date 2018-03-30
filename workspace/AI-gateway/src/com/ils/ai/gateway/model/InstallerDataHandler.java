@@ -1543,7 +1543,18 @@ public class InstallerDataHandler {
 				project.setDescription(updateProjectDescription(description,model));
 				project.setEnabled(false);
 				
-				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);	
+				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
+				long propsResoureceId = -1;
+				if( propsResource!=null ) {
+					propsResoureceId = propsResource.getResourceId();
+				}
+				else {
+					// Look for an unused resourceId
+					propsResoureceId = 1L;
+					while(project.getResource(propsResoureceId)!=null ) {
+						propsResoureceId = propsResoureceId + 1;
+					}
+				}
 				GlobalProps globalProps = project.decodeOrCreate(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, context.createDeserializer(), GlobalProps.class);
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
 				globalProps.setAuthProfileName(profile);
@@ -1554,7 +1565,7 @@ public class InstallerDataHandler {
 				serializer.getClassNameMap().addDefaults();
 				serializer.addObject(globalProps);
 				byte[] bytes = serializer.serializeBinary(true);
-				ProjectResource resource = new ProjectResource(propsResource.getResourceId(), GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.GATEWAY, bytes);
+				ProjectResource resource = new ProjectResource(propsResoureceId, GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.GATEWAY, bytes);
 				project.putResource(resource, true);
 
 				pmgr.addProject(project, true);
