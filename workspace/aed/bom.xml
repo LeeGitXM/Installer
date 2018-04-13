@@ -10,7 +10,7 @@
 	<property name="product">AED-RTA</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">8</property>
+	<property name="version">9</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -51,7 +51,7 @@
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="14">
+	<panel type="file" essential="true" version="15">
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
@@ -76,7 +76,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="10">
+	<panel type="database" essential="true" version="11">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
@@ -127,7 +127,7 @@
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="12" >
+	<panel type="module" subtype="production" essential="true" version="13" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
@@ -195,7 +195,7 @@
 		<artifact name="SLED Design Specification" type="documentation" subtype="docx" release="1.4">
 			<location>artifacts/doc/SLEDDesignSpecification.docx</location>
 		</artifact>
-		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.40">
+		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.42">
 			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
 		</artifact>
 		<artifact name="AED Expression Optimization" type="documentation" subtype="docx" release="1.0">
