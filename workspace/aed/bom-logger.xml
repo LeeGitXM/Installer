@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and subtype must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>AED-RTA</title>
+	<description>Installer for the AED-RTA Application, version 7</description>
+	<property name="product">AED-RTA</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">9</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for AED-RTA</title>
+		<preamble>Welcome to the ILS Automation installer for the Abnormal Event Detection and 
+		    Real-Time Advisory(AED-RTA) application. The table below compares the existing installation of
+			this product, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined tag providers and database connections.
+		</preamble>
+	</panel>
+	<panel type="license" essential="true" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms
+			to proceed.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Define Tag and Database Providers</title>
+		<preamble>Specify the tag provider and database connection to be used by AED-RTA. 
+		These values are used by subsequent screens.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="provider" type="production"></property>
+	</panel>	
+	<panel type="icon" essential="true" version="1">
+		<title>Custom Icons for AED-RTA</title>
+		<preamble>Custom icons may be found in many of the user screens. </preamble>
+		<artifact name="Application Icons" type="app" subtype="icon">
+			<location>artifacts/icons</location>
+		</artifact>
+	</panel>
+		<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="15">
+		<title>Python Code for AED-RTA</title>
+		<preamble>This page loads Python code specific to the AED application. The Python
+		is stored outside of the AED project in the Ignition installation directory.
+		A second category consists of Java jar files that are referenced by this Python.<br/>
+		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
+		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
+		</preamble>
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib</destination>
+		</artifact>
+		<artifact name="External Python - AED" type="text" subtype="user-lib">
+			<location>artifacts/external/xom-python</location>
+			<destination>pylib/xom</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
+			<location>artifacts/external/jars/core</location>
+			<destination>core</destination>
+		</artifact>
+		<artifact name="Text Translations" type="text" subtype="user-lib">
+			<location>artifacts/properties</location>
+			<destination>properties/aed</destination>
+		</artifact>
+	</panel>
+	<panel type="database" essential="true" version="11">
+		<title>Database Create and Alter Scripts for AED-RTA</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. 
+		&lt;b&gt;WARNING:&lt;/b&gt; Do NOT attempt to create a database at an existing AED-RTA installation.
+		The create script will succeed only on a new empty database instance. The &lt;i&gt;alter&lt;/i&gt; script
+		should be used to modify/update existing database instances.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Create AED Database" type="sql" subtype="create">
+			<location>artifacts/database/createAED.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearAED.sql</location>
+		</artifact>
+		<artifact name="Alter AED Database" type="sql" subtype="alter">
+			<location>artifacts/database/alterAED.sql</location>
+		</artifact>
+	</panel>
+ 
+	<panel type="database" essential="false" version="7">
+		<title>Sample Test Data</title>
+		<preamble>These options should NOT be applied to a production database. These are for test systems only.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="ANSI"></property>
+		<property name="debug">false</property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Insert test data" type="sql" subtype="insert">
+			<location>artifacts/database/insertAED.sql</location>
+		</artifact>
+	</panel>
+		<panel type="file" essential="false" version="4">
+		<title>Test Models</title>
+		<preamble>This step adds importable XML files to the user's home directory (C: drive for a Windows  system).   
+		          The files contains sample Models of each type and appropriate input files for a data pump. 
+		          An additional file contains tag definitions for the test environment.
+		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.   
+		</preamble>
+		<!-- paths are with respect to the file system root -->
+		<artifact name="Model and Tag Import Files" type="text">
+			<location>artifacts/test/models</location>
+			<destination type="home">.</destination>
+		</artifact>
+		<artifact name="PCA/SLED Input Files" type="text">
+			<location>artifacts/test/inputs</location>
+			<destination type="home">.</destination>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="13" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
+		</preamble>
+		<artifact name="Model Calculations" type="module">
+			<location>artifacts/modules/AED-module-signed.modl</location>
+		</artifact>
+	</panel>
+		<panel type="scanclass" essential="true" version="1">
+		<title>Create Custom Scan Classes</title>
+		<preamble>Create appropriate scanclasses. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclasses/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="True" version="2">
+		<title>Install Tags and UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by the applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="False" version="2">
+		<title>Install Tags for Test Models</title>
+		<preamble>This page defines tags that are referenced by the test models.
+		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Memory Tags to Overwrite OPC" type="tag" subtype="xml">
+			<location>artifacts/test/tags/memoryTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="13">
+		<title>Install a New AED Project or Merge Changes into an Existing
+			Project
+		</title>
+		<preamble>AED is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="AED" type="project" subtype="full">
+			<location>artifacts/projects/AED.proj</location>
+		</artifact>
+	</panel>
+	<panel type="documentation" essential="false">
+		<title>Product Documentation</title>
+		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
+		</preamble>
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+		<artifact name="AED 7.0 Design Changes" type="documentation" subtype="docx" release="1.5">
+			<location>artifacts/doc/AedRtaDatabaseDesignChanges.docx</location>
+		</artifact>
+		<artifact name="AED-RTA Design Specification" type="documentation" subtype="docx" release="1.9">
+			<location>artifacts/doc/AedRtaDesignSpecification.docx</location>
+		</artifact>
+		<artifact name="SLED Design Specification" type="documentation" subtype="docx" release="1.4">
+			<location>artifacts/doc/SLEDDesignSpecification.docx</location>
+		</artifact>
+		<artifact name="AED Module Programmers Guide" type="documentation" subtype="docx" release="1.42">
+			<location>artifacts/doc/AEDModuleProgrammersGuide.docx</location>
+		</artifact>
+		<artifact name="AED Expression Optimization" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/AEDHistoryExpressionOptimization.docx</location>
+		</artifact>
+		<artifact name="AED-RTA Functions Guide" type="documentation" subtype="docx" release="1.1">
+			<location>artifacts/doc/AEDFunctionsGuide.docx</location>
+		</artifact>
+		<artifact name="AED-RTA Installation Manual" type="documentation" subtype="docx" release="1.4">
+			<location>artifacts/doc/AEDInstallationManual.docx</location>
+		</artifact>
+		<artifact name="Common Facilities User Interface" type="documentation" subtype="docx" release="2">
+			<location>artifacts/doc/CommonFacilitiesUserInterface.docx</location>
+		</artifact>
+		<artifact name="PCA User Interface" type="documentation" subtype="docx" release="3">
+			<location>artifacts/doc/PCAUserInterface.docx</location>
+		</artifact>
+		<artifact name="PID Performance" type="documentation" subtype="docx" release="1">
+			<location>artifacts/doc/PIDPerformance.docx</location>
+		</artifact>
+		<artifact name="PID User Interface" type="documentation" subtype="docx" release="3">
+			<location>artifacts/doc/PIDUserInterface.docx</location>
+		</artifact>
+		<artifact name="Rule Performance" type="documentation" subtype="docx" release="3">
+			<location>artifacts/doc/RulePerformance.docx</location>
+		</artifact>
+		<artifact name="Rule User Interface" type="documentation" subtype="docx" release="6">
+			<location>artifacts/doc/RuleUserInterface.docx</location>
+		</artifact>
+		<artifact name="Tag User Interface" type="documentation" subtype="docx" release="2">
+			<location>artifacts/doc/TagUserInterface.docx</location>
+		</artifact>
+		<artifact name="VFM Performance" type="documentation" subtype="docx" release="1">
+			<location>artifacts/doc/VFMPerformance.docx</location>
+		</artifact>
+		<artifact name="VFM User Interface" type="documentation" subtype="docx" release="7">
+			<location>artifacts/doc/VFMUserInterface.docx</location>
+		</artifact>
+	</panel>
+	<!-- The conclusion panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of the AED-RTA applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<epilog>
+		<title>AED-RTA - Installed</title>
+		<preamble>Now that all of the automated installation and configuration of the EMRE AED-RTA Applications
+		          is complete, there are just a few more manual steps required. </preamble>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
+		            Restart the Gateway, then edit the project setting it to "enabled".</note>
+	</epilog>
+</installer>
+

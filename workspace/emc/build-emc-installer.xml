@@ -87,6 +87,7 @@
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Testing/Diagnostic Toolkit User Interface Test Specification.docx" tofile="${artifact.dir}/doc/DiagnosticToolkitUserInterfaceTestSpec.docx" />
 		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
