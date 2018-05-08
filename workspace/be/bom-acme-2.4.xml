@@ -5,44 +5,33 @@
       be unique. 
  -->
 <installer>
-	<title>SanofiBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Sanofi</description>
+	<title>ACMEBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Acme Corporation</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">9</property>
+	<property name="version">28</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		the express purpose of updating the existing Sanofi Pasteur installation to the latest version of Batch Expert+ 2.1. This installation 
-		expects a tag provider named &quot;default&quot;. The datasource is specified during the install.
+		the express purpose creating a Batch Expert+ 2.4 testbed configured for &quot;ACME Biotechnologies&quot;.
 		</preamble>
-		<artifact name="notes" type="pdf">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
-	</panel>
-	<panel type="license" essential="true" version="1">
-		<title>End User License Agreement (EULA)</title>
-		<preamble>Click on the button below to view the license that specifies
-			permissible use of the software to be installed. Select the checkbox
-			to indicate acceptance of the terms.
-			You must accept the license terms to proceed.
-		</preamble>
-		<artifact name="license" type="html">
-			<location>artifacts/license/license.html</location>
-		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="4">
-		<title>Python Extensions for the Batch Expert+</title>
-		<preamble>This page loads custom Python modules that support Batch Expert+. 
+	<panel type="file" essential="true" version="7">
+		<title>Python Extensions for Batch Expert+</title>
+		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
 		<artifact name="External Python for Batch Expert+" type="directory" subtype="user-lib">
 			<location>artifacts/external/ils</location>
 			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
 		</artifact>
 		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
 			<location>artifacts/external/pysfc</location>
@@ -53,8 +42,8 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
-		<title>Install UDT and Tag Definitions</title>
+	<panel type="tag" subtype="production" essential="true" version="5">
+		<title>Install UDT Definitions</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
@@ -66,15 +55,15 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="2">
+	<panel type="tag" subtype="production" essential="false" version="1">
 		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates memory tags corresponding to the Sanofi production tags.
+		<preamble>This page creates memory tags corresponding to the Acme production tags.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="Sanofi Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/sanofiTags.xml</location>
+		<artifact name="Acme Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/gskmdTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -150,19 +139,10 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="6">
+	<panel type="python" essential="true" version="3">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.0.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4.
 		</preamble>
-		<artifact name="Drop Tables" type="drop">
-			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
-			         if the database is to be completely re-created.</comment>
-			<script>ils.be.database.bedb/clearDatabase()</script>
-		</artifact>
-		<artifact name="Create Tables" type="create">
-			<script>ils.be.database.bedb/createDatabase()</script>
-			<comment>Create tables and indices required for Batch Expert.</comment>
-		</artifact>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
@@ -179,29 +159,39 @@
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
-		<artifact name="Python SFC" type="module">
-			<location>artifacts/modules/pysfc-module-signed.modl</location>
-		</artifact>
+		<property name="SFC" type="feature">FALSE</property>
 		<artifact name="Rangeslider Component" type="module">
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-
-	<panel type="project" subtype="main" essential="true" version="3">
-		<title>Install BatchExpert+ 2.2 - Specially assembled for Sanofi
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom SFC Module</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="6">
+		<title>Install BatchExpert+ 2.4 - Specially assembled for Acme Corporation
 		</title>
-		<preamble>BatchExpert is the main Ignition project. This page provides
-			artifacts for a replacement installation. This project is a restructured version of the Sanofi project as of 07/19/2017. 
+		<preamble>Create Batch Expert+ 2.4 for Acme Corporation. This project includes 
+		          the latest Master screens.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpert.proj</location>
+			<location>artifacts/projects/BatchExpertACME.proj</location>
+			<comment>Create a BatchExpert+ 2.4 project for Acme Corporation. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">
 		<title>Install the Global Project
 		</title>
-		<preamble>This page handles merging the standard BatchExpert global project.
+		<preamble>This page handles installation of the BatchExpert global project.
 			The basic global project contains the default alarm pipeline configuration. 
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
@@ -211,7 +201,7 @@
 					 These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="2">
+	<panel type="project" subtype="sfc" essential="true" version="1">
 		<title>Install SFC Charts in the Global Project
 		</title>
 		<preamble>This page handles installation of charts for sequential control of batch operations.
@@ -219,8 +209,23 @@
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
-		<artifact name="BatchExpert SFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFC.proj</location>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
+		</artifact>
+	</panel>
+	<panel type="defaults" essential="true" version="5">
+		<title>Ensure Existence of All Required Interfaces</title>
+		<preamble>Create default versions of any missing interfaces 
+			required of the product. Scripts already in place
+			are unaffected.
+		</preamble>
+	    <!-- The  artifact subtype will always be "partial" -->
+		<artifact name="Defaults" type="project" subtype="partial">
+			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

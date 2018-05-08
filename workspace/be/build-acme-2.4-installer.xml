@@ -1,16 +1,17 @@
-<!-- Create an application installer for Batch-Expert+ - Sanofi (Oracle)
+<!-- Create an application installer for Batch-Expert+ - ACME
      
-     We require that GIT_REPO and SVN_REPO be provided to this script.
+     Make sure that the master branch is checked out in the BatchExpert repo.
 -->
-<project name="BatchExpertPlusInstaller" basedir="." default="deploy">
+<project name="BatchExpertACMEInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-sanofi.xml" />
-	<property name="module.name" value="sanofi-installer" />
+	<property name="bom" value="${basedir}/bom-acme-2.4.xml" />
+	<property name="module.name" value="acme-2-4-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
+	<property name="testbed" value="${git.repo}/batch-expert/testbed/2.3b13" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -46,7 +47,7 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both in SVN Release area, in
+		<!-- build.date and version.build are both in GIT Release area, in
 			files VERS and DATE.
 		-->
 		<loadfile property="rawdate" srcFile="${git.repo}/batch-expert/release/DATE"/>
@@ -77,18 +78,7 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-		<copy file="${git.repo}/batch-expert/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-
-		<!-- License -->
-		<mkdir dir="${artifact.dir}/license" />
-		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
-
-		<!-- Tags -->
-		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/sanofiMemoryTags.xml" tofile="${artifact.dir}/tags/sanofiTags.xml" />
-		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-				
+			
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
 		<copy todir="${artifact.dir}/external">
@@ -101,6 +91,7 @@
 				<include name="xlsxwriter/**/*.py" />
 			</fileset>
 		</copy>
+		<mkdir dir="${artifact.dir}/external/ils" />
 		<copy todir="${artifact.dir}/external/ils">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
 				<include name="jChart/*.py" />
@@ -111,17 +102,21 @@
 				<include name="pysfc/**/*.py" />
 			</fileset>
 		</copy>
+		<mkdir dir="${artifact.dir}/external/lib" />
+		<copy todir="${artifact.dir}/external/lib">
+			<fileset dir="${git.repo}/external/lib">
+				<include name="ils-common*" />
+			</fileset>
+		</copy>
+			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
 		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
 		</delete>
-		
-		<!-- Special handling for the Sanofi alter script  -->
-		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
-		<copy file="${artifact.dir}/external/ils/be/database/customer/sanofi.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
-		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
+		<!-- Remove obsolete BatchExpert -->
+		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 			
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
@@ -133,19 +128,29 @@
 		</fileset>
 		</copy>
 		
-		<!-- Modules - must be compatible with Java-7 clients -->
+		<!-- Modules - are compatible with Java-7 clients -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 
-		<!-- Project -->
+		<!-- Tags - including test tags -->
+		<mkdir dir="${artifact.dir}/tags" />
+		<copy file="${testbed}/tags/acme_tags.xml" tofile="${artifact.dir}/tags/acmeTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+				
+		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/BatchExpertSanofi-2.2.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
+		<copy file="${testbed}/ACME-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertACME.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/updates/SanofiSandbox/SanofiGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFC.proj" />
-		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
 
+		<!-- Update release and build date in version python file -->
+		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
+		<replace file="${artifact.dir}/external/ils/be/version.py" token="@RELEASE@" value="${version.build}" />
+		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 		
@@ -157,14 +162,10 @@
 		</antcall>
 	</target>
 	
-	<!-- Installs the installer module - this is not part of the default target
-	  1) In the local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. 
-	  2) Onto the Google Drive
-	 -->
+	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
+		<echo message="Copying ACME installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">
