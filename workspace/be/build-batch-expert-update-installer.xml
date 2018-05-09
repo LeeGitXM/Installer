@@ -123,6 +123,7 @@
 		</copy>
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
+		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
 		<delete>
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py" />
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py" />

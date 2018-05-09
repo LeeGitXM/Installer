@@ -43,8 +43,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<!-- Python types are copied into the Ignition user-lib/pylib area.
-	     Jar types are copied into lib -->
+	<!--  -->
 	<panel type="file" essential="true" version="7">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
@@ -99,7 +98,21 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
-		<panel type="feature" essential="true">
+	<panel type="toolkit" essential="true" version="4">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
+			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
+		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options.  -->
+		<property type="alarmjournal">Batch Expert</property>
+		<property type="alarmprofile">Batch Expert</property>
+		<property type="allowuseradmin">True</property>
+		<property type="oncallroster">Batch Expert</property>
+		<property type="smtpprofile">Batch Expert</property>
+	</panel>
+	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features. Note that these
 		          features are record as tag values. These decisions are, therefore, easily reversed. 

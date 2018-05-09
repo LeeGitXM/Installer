@@ -34,6 +34,12 @@ public interface InstallerConstants   {
 	public final static String PROPERTY_TYPE_SECONDARY  = "secondary";
 	public final static String PROPERTY_TYPE_BATCH_EXPERT  = "batchexpert";
 	public final static String PROPERTY_TYPE_PYSFC         = "pysfc";
+	// Property types for setting Gateway defaults
+	public final static String PROPERTY_TYPE_ALARM_JOURNAL    = "alarmjournal";
+	public final static String PROPERTY_TYPE_ALARM_PROFILE    = "alarmprofile";
+	public final static String PROPERTY_TYPE_ALLOW_USER_ADMIN = "allowuseradmin";
+	public final static String PROPERTY_TYPE_ONCALL_ROSTER    = "oncallroster";
+	public final static String PROPERTY_TYPE_SMTP_PROFILE     = "smtpprofile";
 	
 	// Don't allow error messages longer than this ...
 	public final static int MAX_ERROR_LENGTH = 4000;
