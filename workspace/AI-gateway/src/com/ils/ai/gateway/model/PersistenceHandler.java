@@ -162,7 +162,7 @@ public class PersistenceHandler {
 			statement.close();
 
 			if(rowCount==0) {
-				long rowid = getMaxRowId("AlarmNotificationProfiles","Roster_Id",cxn) + 1;
+				long rowid = getMaxRowId("Roster","Roster_Id",cxn) + 1;
 				SQL = "INSERT INTO Roster(Roster_Id,Name) VALUES(?,?)" ;
 				statement = cxn.prepareStatement(SQL);
 				statement.setLong(1,rowid);
