@@ -57,13 +57,13 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="1">
 		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates memory tags corresponding to the Acme production tags.
+		<preamble>This page creates tags simulating the Acme fermenters.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Acme Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/gskmdTags.xml</location>
+			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">

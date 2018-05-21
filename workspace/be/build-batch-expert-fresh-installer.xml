@@ -121,6 +121,7 @@
 				<include name="ils-common*" />
 			</fileset>
 		</copy>
+		<delete file="${artifact.dir}/external/lib/ils-common-j7.jar" />
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
