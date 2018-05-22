@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.Model;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
+import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
@@ -39,12 +40,32 @@ public class ToolkitStep extends BasicInstallerPanel {
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
+            	PersistenceHandler dbHandler = PersistenceHandler.getInstance();
             	
-            	
+            	// Special types get special handling. Otherwise we simply set a toolkit property		
             	for(PropertyItem prop:properties) {
-            		toolkitHandler.setToolkitProperty(prop.getName(), prop.getValue());
+            		String type = prop.getType();
+            		String value = prop.getValue();
+            		if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_JOURNAL)) {
+            			dbHandler.addNamedAlarmJournal(value);
+            		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_PROFILE)) {
+            			dbHandler.addNamedAlarmProfile(value);
+            		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALLOW_USER_ADMIN)) {
+            			dbHandler.setAllowUserAdmin(value);
+            		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ONCALL_ROSTER)) {
+            			dbHandler.addNamedAlarmCallRoster(value);
+            		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SMTP_PROFILE)) {
+            			dbHandler.addNamedSMTPProfile(value);
+            		}
+            		else {
+            			toolkitHandler.setToolkitProperty(prop.getName(),value);
+            		}
             	}
-            	PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            	dbHandler.setStepVersion(product, type, subtype, futureVersion);
             	panelData.setCurrentVersion(futureVersion);
             	ToolkitStep.this.info(String.format("Update of internal database complete."));
             }

@@ -5,6 +5,7 @@ package com.ils.ai.gateway.model;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -61,6 +62,183 @@ public class PersistenceHandler {
 		this.context=ctx;
 	}
 	
+	/**
+	 * Create an alarm journal entry with the given name, but only if it does not already exist.
+	 * Create a private session and run in its own thread.
+	 * @param name
+	 */
+	public void addNamedAlarmJournal(String name) {
+		PersistenceSession session = null;
+		String SQL = "";
+		try {
+			session = context.getLocalPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			SQL = "SELECT COUNT(*) FROM AlarmJournalSettings WHERE Name = ?" ;
+			PreparedStatement statement = cxn.prepareStatement(SQL);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			int rows = rs.getInt(1);   // 1-based
+			rs.close();
+			statement.close();
+
+			if(rows==0) {
+				long id = getDatasourceId(cxn);
+				long rowid = getMaxRowId("AlarmJournalSettings","AlarmJournalSettings_Id",cxn) + 1;
+				SQL = "INSERT INTO AlarmJournalSettings(AlarmJournalSettings_Id,Name,DatasourceId) VALUES(?,?,?)" ;
+				statement = cxn.prepareStatement(SQL);
+				statement.setLong(1,rowid);
+				statement.setString(2,name);
+				statement.setLong(3,id);
+				statement.executeUpdate();
+				statement.close();
+			}
+		}
+		catch(SQLException sqle) {
+			log.warn("\n"+SQL+"\n");
+			log.warn(String.format("%s.addNamedAlarmJournal: Exception (%s)",CLSS,sqle.getMessage()),sqle);
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+
+	}
+	/**
+	 * Create an alarm notification profile entry with the given name, but only if it does not already exist.
+	 * @param name
+	 */
+	public void addNamedAlarmProfile(String name) {
+		PersistenceSession session = null;
+		String SQL = "";
+		try {
+			session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			SQL = "SELECT COUNT(*) FROM AlarmNotificationProfiles WHERE Name = ?" ;
+			PreparedStatement statement = cxn.prepareStatement(SQL);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			int rows = rs.getInt(1);   // 1-based
+			rs.close();
+			statement.close();
+
+			if(rows==0) {
+				long rowid = getMaxRowId("AlarmNotificationProfiles","AlarmNotificationProfiles_Id",cxn) + 1;
+				SQL = "INSERT INTO AlarmNotificationProfiles(AlarmNotificationProfiles_Id,Name,Type) VALUES(?,?,?)" ;
+				statement = cxn.prepareStatement(SQL);
+				statement.setLong(1,rowid);
+				statement.setString(2,name);
+				statement.setString(3,"EmailNotificationProfileType");
+				statement.executeUpdate();
+				statement.close();
+			}
+		}
+		catch(SQLException sqle) {
+			log.warn("\n"+SQL+"\n");
+			log.warnf("%s.addNamedAlarmProfile: Exception (%s)",CLSS,sqle.getMessage());
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+
+	}
+	/**
+	 * Create an alarm call roster entry with the given name, but only if it does not already exist.
+	 * @param name
+	 */
+	public void addNamedAlarmCallRoster(String name) {
+		PersistenceSession session = null;
+		String SQL = "";
+		try {
+			session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			SQL = "SELECT COUNT(*) FROM Roster WHERE Name = ?" ;
+			PreparedStatement statement = cxn.prepareStatement(SQL);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			int rowCount = rs.getInt(1);   // 1-based
+			rs.close();
+			statement.close();
+
+			if(rowCount==0) {
+				long rowid = getMaxRowId("Roster","Roster_Id",cxn) + 1;
+				SQL = "INSERT INTO Roster(Roster_Id,Name) VALUES(?,?)" ;
+				statement = cxn.prepareStatement(SQL);
+				statement.setLong(1,rowid);
+				statement.setString(2,name);
+				statement.executeUpdate();
+				statement.close();
+			}
+		}
+		catch(SQLException sqle) {
+			log.warn("\n"+SQL+"\n");
+			log.warnf("%s.addNamedAlarmCallRoster: Exception (%s)",CLSS,sqle.getMessage());
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+	}
+	/**
+	 * Create a SMTP entry with the given name, but only if it does not already exist. Fill it with 
+	 * reasonable defaults.
+	 * @param name
+	 */
+	public void addNamedSMTPProfile(String name) {
+		PersistenceSession session = null;
+		String SQL = "";
+
+		try {
+			session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			SQL = "SELECT COUNT(*) FROM SMTPSettings WHERE Name = ?" ;
+
+			PreparedStatement statement = cxn.prepareStatement(SQL);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			int rowCount = rs.getInt(1);   // 1-based
+			rs.close();
+			statement.close();
+
+			if(rowCount==0) {
+				long rowid = getMaxRowId("SMTPSettings","SMTPSettings_Id",cxn) + 1;
+				SQL = "INSERT INTO SMTPSettings(SMTPSettings_Id,Name,Hostname,Port) VALUES(?,?,'localhost',25)" ;
+				statement = cxn.prepareStatement(SQL);
+				statement.setLong(1,rowid);
+				statement.setString(2,name);
+				statement.executeUpdate();
+				statement.close();
+			}
+		}
+		catch(SQLException sqle) {
+			log.warn("\n"+SQL+"\n");
+			log.warnf("%s.addNamedSMTPProfile: Exception (%s)",CLSS,sqle.getMessage());
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+
+	}
+	public void setAllowUserAdmin(String value) {
+		PersistenceSession session = null;
+		String SQL = "Update SysProps set AllowUserAdmin = ?";
+
+		try {
+			session = context.getPersistenceInterface().getSession();
+			Connection cxn = session.getJdbcConnection();
+			PreparedStatement statement = cxn.prepareStatement(SQL);
+			statement.setBoolean(1,(value.equalsIgnoreCase("true")));
+			statement.executeUpdate();
+			statement.close();
+		}
+		catch(SQLException sqle) {
+			log.warnf("%s.setAllowUserAdmin: Exception (%s)",CLSS,sqle.getMessage());
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+	}
 	/**
 	 * @return a list of properties containing administrative user names and profiles.
 	 *         We'll use the first one in the list.
@@ -224,6 +402,7 @@ public class PersistenceHandler {
 		return version;
 	}
 	
+
 	/**
 	 * Set the value of a product version. Keys are product name,artifact type and artifact sub-type..
 	 */
@@ -290,6 +469,58 @@ public class PersistenceHandler {
 			log.warnf("%s.validateRoleList: Exception counting roles (%s)",CLSS,sqle.getMessage());
 		}
 		return valid;
+	}
+	
+	/**
+	 * @param connection a SQLite connection
+	 * @return the id associated with the currently configured datasource
+	 */
+	private long getDatasourceId(Connection cxn) {
+		long id = -1;
+		String SQL = "";
+		try {
+			SQL = "SELECT datasources_id FROM datasources DS"
+				+ " INNER JOIN ils_toolkit_properties TOOL ON TOOL.value = DS.name"
+				+ " AND TOOL.name='Database'";
+			Statement statement = cxn.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			rs.next();
+			id = rs.getLong(1);   // 1-based
+			rs.close();
+			statement.close();
+		}
+		catch(SQLException sqle) {
+			log.warn(String.format("\n%s\n",SQL));
+			log.warn(String.format("%s.getDatasourceId: Exception (%s)",CLSS,sqle.getMessage()),sqle);
+		}
+		return id;
+	}
+	/**
+	 * @param tableName
+	 * @param keyColumn
+	 * @param connection a SQLite connection
+	 * @return the table's max row id. This so we can do inserts without violating primary key
+	 *         constraints. The tables we encounter have neither INTEGER keys, nor AUTOINCREMENT.
+	 */
+	private long getMaxRowId(String tableName, String keyColumn, Connection cxn) {
+		long id = 0;
+		String SQL = "";
+		try {
+			SQL = String.format("SELECT max(%s) FROM %s",keyColumn,tableName);
+			Statement statement = cxn.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			if( !rs.isClosed() ) {
+				rs.next();
+				id = rs.getLong(1);   // 1-based
+				rs.close();
+			}
+			statement.close();
+		}
+		catch(SQLException sqle) {
+			log.warn(String.format("\n%s\n",SQL));
+			log.warn(String.format("%s.getMaxRowId: Exception (%s)",CLSS,sqle.getMessage()),sqle);
+		}
+		return id;
 	}
 }
 

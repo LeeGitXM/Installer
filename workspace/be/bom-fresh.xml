@@ -53,7 +53,7 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
-		<artifact name="Site-specific UDT Template" type="tag" subtype="xml">
+		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
@@ -88,6 +88,20 @@
 			<script>ils.be.configuration.config.setDBMS</script>
 		</property>
 		<property name="provider" type="production">default</property>
+	</panel>
+	<panel type="toolkit" essential="true" version="4">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
+			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
+		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options.  -->
+		<property type="alarmjournal">Batch Expert</property>
+		<property type="alarmprofile">Batch Expert</property>
+		<property type="allowuseradmin">True</property>
+		<property type="oncallroster">Batch Expert</property>
+		<property type="smtpprofile">Batch Expert</property>
 	</panel>
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
@@ -238,13 +252,12 @@
 		<title>Install the Global Project
 		</title>
 		<preamble>This page handles installation of the BatchExpert global project.
-			The basic global project contains a default alarm pipeline configuration. 
+			The basic global project contains the BatchExpert alarm pipeline. 
 		</preamble>
 		<artifact name="BatchExpertGlobal" type="project" subtype="global">
 			<location>artifacts/projects/BatchExpertGlobal.proj</location>
-			<comment>Create the baseline global resources for
-					 the BatchExpert+.
-					 These consist of an alarm pipeline. </comment>
+			<comment>Create baseline global resources for
+					 the BatchExpert+. At present this consists of the alarm pipeline. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="sfc" essential="true" version="1">
