@@ -107,6 +107,11 @@
 				<include name="ils-common*" />
 			</fileset>
 		</copy>
+		
+		<!-- Special handling for database test data script -->
+		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
+		<copy file="${artifact.dir}/external/ils/be/database/customer/acme.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<delete dir="${artifact.dir}/external/ils/be/database" />
 			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
@@ -117,21 +122,6 @@
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 			
-		<!-- Icons -->
-		<mkdir dir="${artifact.dir}/icons" />
-		<copy todir="${artifact.dir}/icons">
-		<fileset dir="${git.repo}/batch-expert/images">
-			<include name="**/*.gif" />
-			<include name="**/*.jpg" />
-			<include name="**/*.png" />
-		</fileset>
-		</copy>
-		
-		<!-- Modules - are compatible with Java-7 clients -->
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${testbed}/tags/acme_tags.xml" tofile="${artifact.dir}/tags/acmeTags.xml" />
