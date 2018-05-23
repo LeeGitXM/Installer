@@ -56,6 +56,9 @@
 		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
+		<artifact name="UDT to support simulated tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
+		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
