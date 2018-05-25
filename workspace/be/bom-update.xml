@@ -122,7 +122,11 @@
 			<comment>Configure Batch Expert+ to add campaign as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByCamapign</script>
 		</artifact>
-				<artifact name="CONDITION">
+		<artifact name="CODE">
+			<comment>Configure Batch Expert+ to add batch code as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchByCode</script>
+		</artifact>
+		<artifact name="CONDITION">
 			<comment>Configure Batch Expert+ to add condition as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByCondition</script>
 		</artifact>

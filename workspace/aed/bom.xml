@@ -76,7 +76,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="11">
+	<panel type="database" essential="true" version="12">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
