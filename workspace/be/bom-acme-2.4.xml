@@ -54,6 +54,9 @@
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
+		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/udts_new.xml</location>
+		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="1">
 		<title>Install Tag Definitions for TEST</title>
@@ -62,6 +65,9 @@
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
+		<artifact name="UDT to support simulated tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
+		</artifact>
 		<artifact name="Acme Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
@@ -157,13 +163,33 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="4">
 		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
+		          then create. On the next tab we populate the tables to support the units that are 
+		          already defined by tags.
 		</preamble>
-		<artifact name="Alter Tables" type="alter">
-			<script>ils.be.database.alter.alterDatabase()</script>
-			<comment>Insert rows of configuration and test data.</comment>
+		<artifact name="Drop Tables" type="drop">
+			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
+			         if the database is to be completely re-created.</comment>
+			<script>ils.be.database.bedb.clearDatabase()</script>
+		</artifact>
+		<artifact name="Create Tables" type="create">
+			<script>ils.be.database.bedb.createDatabase()</script>
+			<comment>Create tables and indices required for Batch Expert.</comment>
+		</artifact>
+	</panel>
+	<panel type="database" essential="true" version="4">
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
+		          then create. Finally populate the tables to support the units that are 
+		          already defined by tags.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="ANSI"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="BEDB Database" type="sql" subtype="alter">
+			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="6">

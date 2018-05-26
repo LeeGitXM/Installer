@@ -62,6 +62,9 @@
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
+				<artifact name="UDT to support simulated tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
+		</artifact>
 		<artifact name="Acme Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
