@@ -17,6 +17,7 @@
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
 		the express purpose creating a Batch Expert+ 2.3 testbed configured for &quot;ACME Biotechnologies&quot;.
+		The installer was built on the 2.3 branch of the Batch Expert+ repository.
 		</preamble>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
@@ -42,29 +43,12 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
-		<title>Install UDT Definitions</title>
-		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/configurationTags.xml</location>
-		</artifact>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-	</panel>
 	<panel type="tag" subtype="production" essential="false" version="1">
-		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates tags simulating the Acme fermenters.
-		          Do NOT use in for production. These tags are for test systems only.
+		<title>Install Tags and Definitions for ACME 2.3</title>
+		<preamble>This page creates tags and UDT definitions for the Acme fermenters.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-				<artifact name="UDT to support simulated tank" type="tag" subtype="xml">
-			<location>artifacts/tags/simulation_udts.xml</location>
-		</artifact>
 		<artifact name="Acme Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
@@ -142,13 +126,34 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="3">
+	<panel type="python" essential="true" version="4">
 		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page updates adds tables and fields specific to ACME 2.3.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.3. First drop,
+		          then create. On the next tab we populate the tables to support the units that are 
+		          already defined by tags.
 		</preamble>
-		<artifact name="Alter Tables" type="alter">
-			<script>ils.be.database.alter.alterDatabase()</script>
-			<comment>Insert rows of configuration and test data.</comment>
+		<artifact name="Drop Tables" type="drop">
+			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
+			         if the database is to be completely re-created.</comment>
+			<script>ils.be.database.bedb.clearDatabase()</script>
+		</artifact>
+		<artifact name="Create Tables" type="create">
+			<script>ils.be.database.bedb.createDatabase()</script>
+			<comment>Create tables and indices required for Batch Expert.</comment>
+		</artifact>
+	</panel>
+	<panel type="database" essential="true" version="4">
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.3. We expect
+		          that the tables have been newly created. Populate the empty tables to support the units that are 
+		          already defined by tags.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="ANSI"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="BEDB Database" type="sql" subtype="alter">
+			<comment>Populate tables to match tags and transaction groups specifically for our ACME batches.</comment>
+			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="6">

@@ -10,13 +10,14 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">29</property>
+	<property name="version">5</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
 		the express purpose creating a Batch Expert+ 2.4 testbed configured for &quot;ACME Biotechnologies&quot;.
+		The installer automatically updates to the current development version of the Master project.
 		</preamble>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
@@ -182,14 +183,15 @@
 	</panel>
 	<panel type="database" essential="true" version="4">
 		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
-		          then create. Finally populate the tables to support the units that are 
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. We expect
+		          that the tables have been newly created. Populate the empty tables to support the units that are 
 		          already defined by tags.
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="ANSI"></property>
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="BEDB Database" type="sql" subtype="alter">
+			<comment>Populate tables to match tags and transaction groups specifically for our ACME batches.</comment>
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
@@ -203,6 +205,22 @@
 		<artifact name="BatchExpert" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertACME.proj</location>
 			<comment>Create a BatchExpert+ 2.4 project for Acme Corporation. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="11">
+		<title>Update the BatchExpert+ Project
+		</title>
+		<preamble>This page provides for an update to the project just created. 
+		   The update alters only &quot;Master&quot; resources. It preserves any custom
+			modifications which are stored in &quot;Site&quot; resources.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<!-- For projects, artifact subtypes are: full, partial and global
+		     There can be at most one artifact of each type -->
+		<artifact name="BatchExpertMaster" type="project" subtype="partial">
+			<location>artifacts/projects/BatchExpertMaster.proj</location>
+			<comment>Merge the latest BatchExpert+ common resources 
+					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="true" version="1">

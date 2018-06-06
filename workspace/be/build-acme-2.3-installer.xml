@@ -108,11 +108,6 @@
 			</fileset>
 		</copy>
 		
-		<!-- Special handling for database test data script -->
-		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
-		<copy file="${artifact.dir}/external/ils/be/database/customer/acme.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
-		<delete dir="${artifact.dir}/external/ils/be/database" />
-			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
@@ -128,6 +123,10 @@
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		
+		<!-- Database -->
+		<mkdir dir="${artifact.dir}/databse" />
+		<copy file="${testbed}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
