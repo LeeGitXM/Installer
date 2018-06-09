@@ -180,6 +180,10 @@
 			<script>ils.be.database.bedb.createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
+		<artifact name="Populate Tables" type="alter">
+			<script>ils.be.database.bedb.initializeDatabase()</script>
+			<comment>Populate tables with common choose-list entries.</comment>
+		</artifact>
 	</panel>
 	<panel type="database" essential="true" version="4">
 		<title>Database Scripts for Batch Expert+ Testing</title>

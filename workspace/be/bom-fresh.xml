@@ -206,6 +206,10 @@
 			<script>ils.be.database.bedb.createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
+		<artifact name="Populate Tables" type="alter">
+			<script>ils.be.database.bedb.initializeDatabase()</script>
+			<comment>Populate tables with common choose-list entries.</comment>
+		</artifact>
 	</panel>
 	<panel type="scanclass" essential="true" version="1">
 		<title>Create alternative Scan Classes</title>
