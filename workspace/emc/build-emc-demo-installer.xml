@@ -1,4 +1,4 @@
-<!-- Create an application installer for the Exxon-Mobil Chemicals
+<!-- Create an application installer for the Advanced Process Control Workbench
      "Ignition Applications" package. This file assembles artifacts
      to create a specialized installer.
      
@@ -10,7 +10,7 @@
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom-demo.xml" />
-	<property name="module.name" value="emc-demo-installer" />
+	<property name="module.name" value="advanced-process-control-workbench-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/emc-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -42,13 +42,13 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both in SVN Release area, in
+		<!-- build.date and build.version are both in SVN Migration/Demo area, in
 		    files VERS and DATE.
 		    Update the BOM. "loadfile" does not overwrite existing properties.
 		-->
-		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/Release/DATE"/>
+		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/Migration/Demo/DATE"/>
 		<trim input="${rawdate}" property="build.date" />
-		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/Migration/Demo/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
@@ -82,12 +82,10 @@
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
-		<copy file="${git.repo}/installer/doc/ApplicationInstaller.docx" tofile="${artifact.dir}/doc/ApplicationInstaller.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Demo/Documentation/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Demo/Documentation/Getting Started Guide.pdf" tofile="${artifact.dir}/doc/GettingStartedGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Testing/Diagnostic Toolkit User Interface Test Specification.docx" tofile="${artifact.dir}/doc/DiagnosticToolkitUserInterfaceTestSpec.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
 		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
