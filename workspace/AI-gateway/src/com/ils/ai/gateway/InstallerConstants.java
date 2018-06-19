@@ -38,6 +38,8 @@ public interface InstallerConstants   {
 	public final static String PROPERTY_TYPE_ALARM_JOURNAL    = "alarmjournal";
 	public final static String PROPERTY_TYPE_ALARM_PROFILE    = "alarmprofile";
 	public final static String PROPERTY_TYPE_ALLOW_USER_ADMIN = "allowuseradmin";
+	public final static String PROPERTY_TYPE_PROJECT_DEFAULT_DATASOURCE = "projectdefaultdatasource";
+	public final static String PROPERTY_TYPE_PROVIDER_DEFAULT_DATASOURCE = "providerdefaultdatasource";
 	public final static String PROPERTY_TYPE_ONCALL_ROSTER    = "oncallroster";
 	public final static String PROPERTY_TYPE_SMTP_PROFILE     = "smtpprofile";
 	

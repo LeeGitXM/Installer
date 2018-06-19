@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">29</property>
+	<property name="version">30</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -251,6 +251,14 @@
 		<artifact name="Defaults" type="project" subtype="partial">
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
+	</panel>
+	<panel type="toolkit" essential="true" version="5">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set the default data-source for project and tag provider.
+		</preamble>
+		<!--  Values for these properties are taken from the definition page -->
+		<property type="projectdefaultdatasource"></property>
+		<property type="providerdefaultdatasource"></property>
 	</panel>
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>

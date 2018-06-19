@@ -131,6 +131,15 @@
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/site_simulation_udts.xml" tofile="${artifact.dir}/tags/simulation_udts.xml" />
 		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclass" />
+		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		
+		<!-- Modules -->
+		<mkdir dir="${artifact.dir}/modules" />
+		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
+		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/databse" />
 		<copy file="${testbed}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />

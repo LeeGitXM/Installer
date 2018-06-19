@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">5</property>
+	<property name="version">6</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -73,6 +73,16 @@
 			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
 	</panel>
+	<panel type="scanclass" essential="true" version="2">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by application tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="provider">default</property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclass/scanclasses.csv</location>
+		</artifact>
+	</panel>
 	<panel type="definition" essential="true">
 		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
@@ -85,21 +95,6 @@
 			<script>ils.be.configuration.config.setDBMS</script>
 		</property>
 		<property name="provider" type="production">default</property>
-	</panel>
-	<panel type="toolkit" essential="true" version="5">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
-		      The SMTP Profile must precede the alarm profile.  -->
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
 	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
@@ -199,6 +194,28 @@
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
+		          installations that include the SFC feature.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
+		</preamble>
+		<property name="SFC" type="feature">FALSE</property>
+		<artifact name="Rangeslider Component" type="module">
+			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="main" essential="true" version="7">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for Acme Corporation
 		</title>
@@ -255,6 +272,24 @@
 					 the BatchExpert+ update into the global project.
 					 These consist of SFC properties. </comment>
 		</artifact>
+	</panel>
+	<panel type="toolkit" essential="true" version="5">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
+			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
+		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
+		      The SMTP Profile must precede the alarm profile.  -->
+		<property type="smtpprofile">Batch Expert</property>
+		<property type="alarmjournal">Batch_Expert</property>
+		<property type="alarmprofile">Batch Expert</property>
+		<property type="allowuseradmin">True</property>
+		<property type="oncallroster">Batch Expert</property>
+		<!--  Values for these properties are taken from the definition page -->
+		<property type="projectdefaultdatasource"></property>
+		<property type="providerdefaultdatasource"></property>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">

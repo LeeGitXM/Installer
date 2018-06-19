@@ -61,6 +61,12 @@ public class ToolkitStep extends BasicInstallerPanel {
             		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SMTP_PROFILE)) {
             			dbHandler.addNamedSMTPProfile(value);
             		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PROJECT_DEFAULT_DATASOURCE)) {
+            			dbHandler.setDefaultDatasourceForProject();
+            		}
+            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PROVIDER_DEFAULT_DATASOURCE)) {
+            			dbHandler.setDefaultDatasourceForProvider();
+            		}
             		else {
             			toolkitHandler.setToolkitProperty(prop.getName(),value);
             		}

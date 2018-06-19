@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Properties;
 
 import com.ils.ai.gateway.InstallerConstants;
+import com.ils.common.persistence.InternalDatabaseHandler;
+import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.localdb.persistence.PersistenceSession;
@@ -33,12 +35,14 @@ public class PersistenceHandler {
 	
 	private final LoggerEx log;
 	private GatewayContext context = null;
+	private InternalDatabaseHandler internalDatabaseHandler;
     
 	/**
 	 * Constructor is private per Singleton pattern.
 	 */
 	private PersistenceHandler() {
 		log = LogUtil.getLogger(getClass().getPackage().getName());
+		internalDatabaseHandler = new InternalDatabaseHandler();
 	}
 	
 
@@ -384,6 +388,19 @@ public class PersistenceHandler {
 			log.warnf("%s.setProductProperty: Exception setting %s:%s=%s (%s)",CLSS,productName,propertyName,value,ex.getMessage());
 		}
 	}
+	
+	// This goes a little overboard by setting all projects.
+	public void setDefaultDatasourceForProject() {
+		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
+		String datasource = toolkitHandler.getToolkitProperty(InstallerConstants.PROPERTY_DATABASE);
+		internalDatabaseHandler.setProjectDatasource(datasource);
+	}
+	public void setDefaultDatasourceForProvider() {
+		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
+		String datasource = toolkitHandler.getToolkitProperty(InstallerConstants.PROPERTY_DATABASE);
+		internalDatabaseHandler.setProviderDatasource(datasource);
+	}
+	
 	/**
 	 * @return the current installed version of an installation step for a specified product.
 	 * Keys are product name, artifact type and artifact sub-type.

@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">5</property>
+	<property name="version">6</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -96,22 +96,6 @@
 		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
 			<location>artifacts/tags/simulation_udts.xml</location>
 		</artifact>
-	</panel>
-	<panel type="toolkit" essential="true" version="4">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options.  
-		      The SMTP Profile must precede the alarm profile. -->
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
-		
 	</panel>
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
@@ -211,7 +195,7 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="1">
+	<panel type="scanclass" essential="true" version="2">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
 				Scanclasses determine tag poll rates.
@@ -293,7 +277,25 @@
 			</comment>
 		</artifact>
 	</panel>
-		<panel type="documentation" essential="false">
+	<panel type="toolkit" essential="true" version="5">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
+			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
+		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
+		      The SMTP Profile must precede the alarm profile.  -->
+		<property type="smtpprofile">Batch Expert</property>
+		<property type="alarmjournal">Batch_Expert</property>
+		<property type="alarmprofile">Batch Expert</property>
+		<property type="allowuseradmin">True</property>
+		<property type="oncallroster">Batch Expert</property>
+		<!--  Values for these properties are taken from the definition page -->
+		<property type="projectdefaultdatasource"></property>
+		<property type="providerdefaultdatasource"></property>
+	</panel>
+	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>In addition to the release notes, documentation includes a getting started guide.
 		</preamble>
