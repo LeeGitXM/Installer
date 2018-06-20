@@ -52,9 +52,6 @@
 		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
@@ -86,16 +83,9 @@
 		<property name="DBMS" type="production">
 			<script>ils.be.configuration.config.setDBMS</script>
 		</property>
-		<property name="provider" type="production">default</property>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install UDT Definitions</title>
-		<preamble>The user-defined tag types describe the controllers in your installation.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
-			<location>artifacts/tags/simulation_udts.xml</location>
-		</artifact>
+		<property name="provider" type="production" value="default">
+			<script>ils.be.configuration.config.setProvider</script>
+		</property>
 	</panel>
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
@@ -193,6 +183,19 @@
 		<artifact name="Populate Tables" type="alter">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
 			<comment>Populate tables with common choose-list entries.</comment>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="1">
+		<title>Install UDT Definitions</title>
+		<preamble>The user-defined tag types describe the controllers in your installation.
+		          A special simulated-controller is also included for simulation and testing.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
 		</artifact>
 	</panel>
 	<panel type="scanclass" essential="true" version="2">

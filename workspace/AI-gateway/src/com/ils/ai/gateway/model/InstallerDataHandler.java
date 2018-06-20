@@ -1196,6 +1196,7 @@ public class InstallerDataHandler {
 				Node propertyNode = children.item(index);
 				if( propertyNode.getNodeName().equalsIgnoreCase("property") ) {
 					String name = xmlUtil.attributeValue(propertyNode, "name");
+					String value = xmlUtil.attributeValue(propertyNode, "value");
 					PropertyItem property = new PropertyItem(name,"");
 					// Script is an optional element
 					NodeList scripts = ((Element)propertyNode).getElementsByTagName("script");
@@ -1206,7 +1207,8 @@ public class InstallerDataHandler {
 					}
 					else {
 						// For now we assume that, if there is a script, there is no fixed value
-						String value = propertyNode.getTextContent();
+						// or has been set as an attribute.
+						value = propertyNode.getTextContent();
 						property.setValue(value);
 					}
 

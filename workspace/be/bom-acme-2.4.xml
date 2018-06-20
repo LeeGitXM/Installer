@@ -44,7 +44,7 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="6">
-		<title>Install UDT Definitions</title>
+		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
@@ -52,25 +52,8 @@
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
 		</artifact>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
 		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="false" version="2">
-		<title>Install Tag Definitions for TEST</title>
-		<preamble>This page creates tags corresponding to Acme fermenters and are driven by a simulator.
-		          Do NOT use in for production. These tags are for test systems only.
-		          The definitions are written to the &quot;default&quot; tag provider.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
-			<location>artifacts/tags/simulation_udts.xml</location>
-		</artifact>
-		<artifact name="Acme Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="scanclass" essential="true" version="2">
@@ -192,6 +175,30 @@
 		<artifact name="BEDB Database" type="sql" subtype="alter">
 			<comment>Populate tables to match tags and transaction groups specifically for our ACME batches.</comment>
 			<location>artifacts/database/populate.sql</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="2">
+		<title>Install UDT Definitions</title>
+		<preamble>This page creates the standard user-defined-tags.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="2">
+		<title>Install Tag Definitions for Test</title>
+		<preamble>This page creates tags corresponding to Acme fermenters and are driven by a simulator.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
+		</artifact>
+		<artifact name="Acme Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >

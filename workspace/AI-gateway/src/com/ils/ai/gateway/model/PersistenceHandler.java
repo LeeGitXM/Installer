@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.common.persistence.InternalDatabaseHandler;
+import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
@@ -392,12 +393,12 @@ public class PersistenceHandler {
 	// This goes a little overboard by setting all projects.
 	public void setDefaultDatasourceForProject() {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
-		String datasource = toolkitHandler.getToolkitProperty(InstallerConstants.PROPERTY_DATABASE);
+		String datasource = toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
 		internalDatabaseHandler.setProjectDatasource(datasource);
 	}
 	public void setDefaultDatasourceForProvider() {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
-		String datasource = toolkitHandler.getToolkitProperty(InstallerConstants.PROPERTY_DATABASE);
+		String datasource = toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
 		internalDatabaseHandler.setProviderDatasource(datasource);
 	}
 	
