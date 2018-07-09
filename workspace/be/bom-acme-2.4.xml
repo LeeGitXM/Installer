@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">6</property>
+	<property name="version">7</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -43,7 +43,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
+	<panel type="tag" subtype="production" essential="true" version="7">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -143,7 +143,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="4">
+	<panel type="python" essential="true" version="5">
 		<title>Database Scripts for Batch Expert+ Testing</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
@@ -177,7 +177,7 @@
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -187,7 +187,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="2">
+	<panel type="tag" subtype="production" essential="false" version="3">
 		<title>Install Tag Definitions for Test</title>
 		<preamble>This page creates tags corresponding to Acme fermenters and are driven by a simulator.
 		          Do NOT use in for production. These tags are for test systems only.
@@ -297,6 +297,15 @@
 		<!--  Values for these properties are taken from the definition page -->
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
+	</panel>
+	<panel type="python" essential="true" version="1">
+		<title>Initialize Test Project</title>
+		<preamble>Point the unit UDT batchIDs to the latest batches.
+		</preamble>
+		<artifact name="Update Batch IDs" type="alter">
+			<script>ils.be.configuration.config.updateBatchIDs()</script>
+			<comment>Update the unit batchID values to the current batch.</comment>
+		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">

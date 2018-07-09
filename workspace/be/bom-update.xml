@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">30</property>
+	<property name="version">31</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -75,7 +75,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
+	<panel type="tag" subtype="production" essential="true" version="7">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
@@ -176,9 +176,9 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="7">
+	<panel type="python" essential="true" version="8">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.3.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
@@ -214,7 +214,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="11">
+	<panel type="project" subtype="main" essential="true" version="12">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
