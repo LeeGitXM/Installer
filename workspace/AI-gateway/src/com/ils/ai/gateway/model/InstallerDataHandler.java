@@ -18,15 +18,16 @@ import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
@@ -89,6 +90,8 @@ public class InstallerDataHandler {
 	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
 	public static final int TAG_CHUNK_SIZE = 1000;
+	public static final String PRE_HP_PATTERN = "<Property name=\"PrimaryHistoryProvider\">";
+	public static final String POST_HP_PATTERN = "</Property>";
 	private static final String TAGS_HEADER =  "<Tags>";
 	private static final String TAGS_TRAILER = "</Tags>";
 	private static InstallerDataHandler instance = null;
@@ -546,6 +549,9 @@ public class InstallerDataHandler {
 	/**
 	 * Assume that the artifact is a list of tags in XML format. Split the list into sets of approximately 1000
 	 * tags for chunked processing. We have found that the gateway times out if we attempt large numbers of tag imports.
+	 * 
+	 * Use the "historyprovider" property to define the provider for tags with history.
+	 * <Property name="PrimaryHistoryProvider">BEDB</Property>
 	 */
 	public List<File> getArtifactAsListOfTagFiles(int panelIndex,String artifactName,InstallerData model) {
 		List<File> files = new ArrayList<>();
@@ -580,6 +586,16 @@ public class InstallerDataHandler {
 				total++;
 			}
 		}
+		// If a history provider is specified, modify the tag file accordingly.
+		String historyprovider = historyProviderNameFromProperties(panelIndex, model);
+		String patternString = PRE_HP_PATTERN+"[^<]*"+POST_HP_PATTERN;
+		Pattern pattern = null;
+		try {
+			pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+		}
+		catch(PatternSyntaxException pse) {
+			log.warnf("%s.getArtifactAsListOfTagFiles: Syntax exception creating pattern for history provider (%s)",CLSS,pse.getLocalizedMessage());
+		}
 		// Strip header and trailer. Break on new Tag. We
 		// make the rash assumption that the XML format 
 		// matches what is dumped out by the Ignition export.
@@ -596,6 +612,10 @@ public class InstallerDataHandler {
 				if( !sb.toString().endsWith(TAGS_TRAILER)) sb.append(TAGS_TRAILER);
 				try {
 					file = File.createTempFile("tagartifacts",".xml");
+					// Before writing the file, do a global edit on history provider
+					if( !historyprovider.isEmpty() ) {
+						sb = replaceHistoryProviders(sb,historyprovider,pattern);
+					}
 					Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 					files.add(file);
 					chunkSizes.add(new Integer(count));
@@ -619,18 +639,38 @@ public class InstallerDataHandler {
 			File file = null;
 			try {
 				file = File.createTempFile("tagartifacts",".xml");
+				if( !historyprovider.isEmpty() ) {
+					sb = replaceHistoryProviders(sb,historyprovider,pattern);
+				}
 				Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 				files.add(file);
 				chunkSizes.add(new Integer(count));
 			}
 			catch(IOException ioe) {
-				log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
+				log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating final temporary file for panel %d:%s (%s)",CLSS,
 						                                                          panelIndex,artifactName,ioe.getLocalizedMessage());
-			}
+			}		
 		}
 		model.setChunkTotal(total);
 		model.setChunkCounts(chunkSizes.toArray(new Integer[chunkSizes.size()]));
 		return files;
+	}
+	
+	private StringBuffer replaceHistoryProviders(StringBuffer sb,String hp, Pattern pattern) {
+		StringBuffer buf = new StringBuffer(); 
+		if( pattern!=null) {
+			String[] outsides = pattern.split(sb.toString());
+			buf.append(outsides[0]);
+			int index = 1;
+			while(index<outsides.length) {
+				buf.append(PRE_HP_PATTERN);
+				buf.append(hp);
+				buf.append(POST_HP_PATTERN);
+				buf.append(outsides[index]);
+				index++;
+			} 
+		}
+		return buf;
 	}
 	/**
 	 * @param model
@@ -1972,22 +2012,21 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	
 	/**
-	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
+	 * Inspect the properties for the specified panel looking for a "historyprovider" property. If the property
 	 * has no value, return the name specified as a toolkit property.
 	 * @return
 	 */
-	public String providerNameFromProperties(int index,InstallerData model) {
+	public String historyProviderNameFromProperties(int index,InstallerData model) {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
 		String datasource = "";
         // If the production provider property has a value, use it. Otherwise get the toolkit property
 		List<PropertyItem> properties = getPanelProperties(index, model);
 		for(PropertyItem prop:properties) {
-    		if(prop.getName().equalsIgnoreCase("provider")) {
+    		if(prop.getName().equalsIgnoreCase("historyprovider")) {
     			if(prop.getType().equalsIgnoreCase("production")) {
     				if(prop.getValue()==null || prop.getValue().isEmpty()) {
-    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER);
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
     				}
     				else {
     					datasource = prop.getValue();
@@ -1995,7 +2034,7 @@ public class InstallerDataHandler {
     			}
     			else if(prop.getType().equalsIgnoreCase("isolation")) {
     				if(prop.getValue()==null || prop.getValue().isEmpty()) {
-    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER);
+    					datasource= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_DATABASE);
     				}
     				else {
     					datasource = prop.getValue();
@@ -2007,6 +2046,41 @@ public class InstallerDataHandler {
     		}
     	}
 		return datasource;
+	}
+	/**
+	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
+	 * has no value, return the name specified as a toolkit property.
+	 * @return
+	 */
+	public String providerNameFromProperties(int index,InstallerData model) {
+		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
+		String providerName = "";
+        // If the production provider property has a value, use it. Otherwise get the toolkit property
+		List<PropertyItem> properties = getPanelProperties(index, model);
+		for(PropertyItem prop:properties) {
+    		if(prop.getName().equalsIgnoreCase("provider")) {
+    			if(prop.getType().equalsIgnoreCase("production")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					providerName= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER);
+    				}
+    				else {
+    					providerName = prop.getValue();
+    				}
+    			}
+    			else if(prop.getType().equalsIgnoreCase("isolation")) {
+    				if(prop.getValue()==null || prop.getValue().isEmpty()) {
+    					providerName= toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER);
+    				}
+    				else {
+    					providerName = prop.getValue();
+    				}
+    			}
+    			else {
+    				providerName = prop.getValue();
+    			}
+    		}
+    	}
+		return providerName;
 	}
 	/**
 	 * This step is necessary before the instance is useful. Most other

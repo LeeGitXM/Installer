@@ -26,6 +26,7 @@ public class TagUtility{
         this.pyGlobals = context.getScriptManager().getGlobals();
 	}
 
+	// tagMode==0 implies overwrite existing tags.
 	public void importFromFile(File file,String source) throws Exception {
 		pyLocals.__setitem__("tagFileName", new PyString(file.toPath().toString()));
         pyLocals.__setitem__("tagProviderName", new PyString(source));

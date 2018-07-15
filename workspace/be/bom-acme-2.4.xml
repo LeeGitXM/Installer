@@ -194,6 +194,7 @@
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
 		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
 			<location>artifacts/tags/simulation_udts.xml</location>
 		</artifact>
