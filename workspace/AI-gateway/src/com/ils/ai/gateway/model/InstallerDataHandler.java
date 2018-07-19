@@ -90,8 +90,9 @@ public class InstallerDataHandler {
 	private static final String FILE_SEPARATOR = "/";
 	private static final String PREFERENCES_NAME = "InstallerPreferences";
 	public static final int TAG_CHUNK_SIZE = 1000;
-	public static final String PRE_HP_PATTERN = "<Property name=\"PrimaryHistoryProvider\">";
-	public static final String POST_HP_PATTERN = "</Property>";
+	public static final String PRE_HP_PATTERN = "<Property name=\"SQLBindingDatasource\">";
+	public static final String PRE_SQL_PATTERN = "<Property name=\"PrimaryHistoryProvider\">";
+	public static final String POST_PATTERN = "</Property>";
 	private static final String TAGS_HEADER =  "<Tags>";
 	private static final String TAGS_TRAILER = "</Tags>";
 	private static InstallerDataHandler instance = null;
@@ -588,14 +589,23 @@ public class InstallerDataHandler {
 		}
 		// If a history provider is specified, modify the tag file accordingly.
 		String historyprovider = historyProviderNameFromProperties(panelIndex, model);
-		String patternString = PRE_HP_PATTERN+"[^<]*"+POST_HP_PATTERN;
-		Pattern pattern = null;
+		String patternString = PRE_HP_PATTERN+"[^<]*"+POST_PATTERN;
+		Pattern hppattern = null;
 		try {
-			pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+			hppattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
 		}
 		catch(PatternSyntaxException pse) {
 			log.warnf("%s.getArtifactAsListOfTagFiles: Syntax exception creating pattern for history provider (%s)",CLSS,pse.getLocalizedMessage());
 		}
+		patternString = PRE_SQL_PATTERN+"[^<]*"+POST_PATTERN;
+		Pattern sqlpattern = null;
+		try {
+			sqlpattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+		}
+		catch(PatternSyntaxException pse) {
+			log.warnf("%s.getArtifactAsListOfTagFiles: Syntax exception creating pattern for history provider (%s)",CLSS,pse.getLocalizedMessage());
+		}
+		
 		// Strip header and trailer. Break on new Tag. We
 		// make the rash assumption that the XML format 
 		// matches what is dumped out by the Ignition export.
@@ -614,7 +624,8 @@ public class InstallerDataHandler {
 					file = File.createTempFile("tagartifacts",".xml");
 					// Before writing the file, do a global edit on history provider
 					if( !historyprovider.isEmpty() ) {
-						sb = replaceHistoryProviders(sb,historyprovider,pattern);
+						sb = replaceHistoryProviders(sb,historyprovider,hppattern);
+						sb = replaceSQLProvider(sb,sqlpattern);
 					}
 					Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 					files.add(file);
@@ -640,7 +651,8 @@ public class InstallerDataHandler {
 			try {
 				file = File.createTempFile("tagartifacts",".xml");
 				if( !historyprovider.isEmpty() ) {
-					sb = replaceHistoryProviders(sb,historyprovider,pattern);
+					sb = replaceHistoryProviders(sb,historyprovider,hppattern);
+					sb = replaceSQLProvider(sb,sqlpattern);
 				}
 				Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 				files.add(file);
@@ -665,7 +677,23 @@ public class InstallerDataHandler {
 			while(index<outsides.length) {
 				buf.append(PRE_HP_PATTERN);
 				buf.append(hp);
-				buf.append(POST_HP_PATTERN);
+				buf.append(POST_PATTERN);
+				buf.append(outsides[index]);
+				index++;
+			} 
+		}
+		return buf;
+	}
+	// We use the project default provider
+	private StringBuffer replaceSQLProvider(StringBuffer sb, Pattern pattern) {
+		StringBuffer buf = new StringBuffer(); 
+		if( pattern!=null) {
+			String[] outsides = pattern.split(sb.toString());
+			buf.append(outsides[0]);
+			int index = 1;
+			while(index<outsides.length) {
+				buf.append(PRE_SQL_PATTERN);
+				buf.append(POST_PATTERN);
 				buf.append(outsides[index]);
 				index++;
 			} 
