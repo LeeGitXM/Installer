@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">8</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -22,7 +22,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="8">
+	<panel type="file" essential="true" version="9">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -143,7 +143,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="5">
+	<panel type="python" essential="true" version="6">
 		<title>Database Scripts for Batch Expert+ Testing</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
@@ -163,7 +163,7 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="4">
+	<panel type="database" essential="true" version="5">
 		<title>Database Scripts for Batch Expert+ Testing</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. We expect
 		          that the tables have been newly created. Populate the empty tables to support the units that are 
@@ -177,7 +177,7 @@
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -224,7 +224,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="7">
+	<panel type="project" subtype="main" essential="true" version="8">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for Acme Corporation
 		</title>
 		<preamble>Create Batch Expert+ 2.4 for Acme Corporation. This project includes 
@@ -236,7 +236,7 @@
 			<comment>Create a BatchExpert+ 2.4 project for Acme Corporation. </comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="11">
+	<panel type="project" subtype="main" essential="true" version="12">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>This page provides for an update to the project just created. 

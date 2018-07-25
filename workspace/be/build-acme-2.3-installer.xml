@@ -125,7 +125,7 @@
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 		
 		<!-- Database -->
-		<mkdir dir="${artifact.dir}/databse" />
+		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${testbed}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />
 		
 		<!-- Project  		-->

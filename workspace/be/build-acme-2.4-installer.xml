@@ -142,7 +142,7 @@
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		<!-- Database -->
-		<mkdir dir="${artifact.dir}/databse" />
+		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${testbed}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />
 		
 		<!-- Project  		-->

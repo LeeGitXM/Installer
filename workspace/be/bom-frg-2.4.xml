@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">7</property>
+	<property name="version">9</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -42,7 +42,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="7">
+	<panel type="tag" subtype="production" essential="true" version="8">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -55,7 +55,7 @@
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="2">
+	<panel type="scanclass" essential="true" version="3">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
 				Scanclasses determine tag poll rates.
@@ -142,7 +142,7 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="5">
+	<panel type="python" essential="true" version="6">
 		<title>Database Scripts for Batch Expert+ Testing</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
@@ -162,7 +162,7 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="4">
+	<panel type="database" essential="true" version="5">
 		<title>Database Scripts for Batch Expert+ Testing</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. We expect
 		          that the tables have been newly created. Populate the empty tables to support the units that are 
@@ -176,7 +176,7 @@
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -186,7 +186,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="3">
+	<panel type="tag" subtype="production" essential="false" version="4">
 		<title>Install Tag Definitions for Test</title>
 		<preamble>This page creates tags corresponding to FRG fermenters and are driven by a simulator.
 		          Do NOT use in for production. These tags are for test systems only.
@@ -223,7 +223,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="7">
+	<panel type="project" subtype="main" essential="true" version="8">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont-DOW FRG
 		</title>
 		<preamble>Create Batch Expert+ 2.4 for Dupont-DOW FRG. This project includes 
@@ -235,7 +235,7 @@
 			<comment>Create a BatchExpert+ 2.4 project for Dupont-DOW FRG. </comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="11">
+	<panel type="project" subtype="main" essential="true" version="12">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>This page provides for an update to the project just created. 

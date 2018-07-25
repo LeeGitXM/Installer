@@ -130,7 +130,7 @@
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		<copy file="${sandbox}/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -138,7 +138,7 @@
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		<!-- Database -->
-		<mkdir dir="${artifact.dir}/databse" />
+		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${sandbox}/frg.sql" tofile="${artifact.dir}/database/populate.sql" />
 		
 		<!-- Project  		-->
