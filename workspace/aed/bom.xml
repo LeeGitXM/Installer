@@ -10,7 +10,7 @@
 	<property name="product">AED-RTA</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">13</property>
+	<property name="version">14</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -76,7 +76,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="14">
+	<panel type="database" essential="true" version="15">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
@@ -127,7 +127,7 @@
 			<destination type="home">.</destination>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="15" >
+	<panel type="module" subtype="production" essential="true" version="16" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
 		</preamble>
