@@ -1,17 +1,17 @@
-<!-- Create an application installer for Batch-Expert+ - DOW FRG
+<!-- Create an application installer for Batch-Expert+ - Dupont Tate-Lyle
      
      Make sure that the master branch is checked out in the BatchExpert repo.
 -->
-<project name="BatchExpertFRGInstaller" basedir="." default="deploy">
+<project name="BatchExpertTateLyleInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-frg-2.4.xml" />
-	<property name="module.name" value="frg-2-4-installer" />
+	<property name="bom" value="${basedir}/bom-tatelyle-2.4.xml" />
+	<property name="module.name" value="tatelyle-2-4-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="sandbox" value="${git.repo}/batch-expert/updates/FRGSandbox" />
+	<property name="sandbox" value="${git.repo}/batch-expert/updates/TateLyleSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -122,33 +122,26 @@
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
-		<copy file="${sandbox}/FRGTags2.4.xml" tofile="${artifact.dir}/tags/frg_tags.xml" />
+		<copy file="${sandbox}/unit-tags.xml" tofile="${artifact.dir}/tags/tatelyle_tags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/FRGUDTs2.4.xml" tofile="${artifact.dir}/tags/frg_udts.xml" />
+		<copy file="${sandbox}/udts-2.4.xml" tofile="${artifact.dir}/tags/tatelyle_udts.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${sandbox}/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database/sqlserver" />
-		<copy file="${sandbox}/frg.sqlserver.sql" tofile="${artifact.dir}/database/sqlserver/populate.sql" />
-		<mkdir dir="${artifact.dir}/database/mysql" />
-		<copy file="${sandbox}/frg.mysql.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
-		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/BatchExpertFRG-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertFRG.proj" />
+		<copy file="${sandbox}/TateLyle2.4.proj" tofile="${artifact.dir}/projects/BatchExpertTateLyle.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${sandbox}/FRG_Global.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
 
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
@@ -168,7 +161,7 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying FRG installer module onto Google Drive (${google.repo})." />
+		<echo message="Copying Tate-Lyle installer module onto Google Drive (${google.repo})." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
