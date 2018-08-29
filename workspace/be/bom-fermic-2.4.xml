@@ -5,8 +5,8 @@
       be unique. 
  -->
 <installer>
-	<title>FRGBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Dupont-DOW FRG</description>
+	<title>FermicBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Fermic</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -16,7 +16,7 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		update of the &quot;FRG&quot; BE+ installation.
+		update of the &quot;Fermic&quot; BE+ installation.
 		</preamble>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
@@ -49,22 +49,7 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/configurationTags.xml</location>
-		</artifact>
-		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/udts_new.xml</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="false" version="3">
-		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by application tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="provider">default</property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclass/scanclasses.csv</location>
-		</artifact>
-	</panel>
+			<loc
 	<panel type="definition" essential="true">
 		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
@@ -173,22 +158,9 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="6">
-		<title>Database Scripts for Batch Expert+ Testing - MYSQL</title>
-		<preamble>This page populates MYSQL tables with FRG-specific entries to support the units that are 
-		          already defined by tags. NOTE: This script is not compatible with SQLSERVER.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="MYSQL"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="BEDB Database" type="sql" subtype="alter">
-			<comment>Populate tables to match tags and transaction groups specifically for our FRG batches.</comment>
-			<location>artifacts/database/mysql/populate.sql</location>
-		</artifact>
-	</panel>
 	<panel type="tag" subtype="production" essential="true" version="5">
 		<title>Install UDT Definitions</title>
-		<preamble>This page creates the standard user-defined-tags as well as special definitions for FRG.
+		<preamble>This page creates the standard user-defined-tags as well as special definitions for Fermic.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -197,26 +169,26 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="5">
-		<title>Install Custom UDT Definitions for FRG</title>
-		<preamble>This page creates the custom user-defined-tags for FRG.
+		<title>Install Custom UDT Definitions for Fermic</title>
+		<preamble>This page creates the custom user-defined-tags for Fermic.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
-		<artifact name="FRG UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/frg_udts.xml</location>
+		<artifact name="Fermic UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/fermic_udts.xml</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="4">
 		<title>Install Tag Definitions for Test</title>
-		<preamble>This page creates tags corresponding to FRG fermenters and are driven by a simulator.
+		<preamble>This page creates tags corresponding to Fermic fermenters and are driven by a simulator.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
-		<artifact name="FRG Unit Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/frg_tags.xml</location>
+		<artifact name="Unit Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/fermic_units.xml</location>
 		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="false" version="1" >
@@ -242,15 +214,15 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="8">
-		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont-DOW FRG
+		<title>Install BatchExpert+ 2.4 - Specially assembled for Fermic
 		</title>
-		<preamble>Create Batch Expert+ 2.4 for Dupont-DOW FRG. This project includes 
-		          FRG-specific configuration.
+		<preamble>Create Batch Expert+ 2.4 for Fermic. This project includes 
+		          Fermic-specific configuration.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertFRG24" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpertFRG.proj</location>
-			<comment>Create a BatchExpert+ 2.4 project for Dupont-DOW FRG. </comment>
+		<artifact name="BatchExpertFermic24" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertFermic24.proj</location>
+			<comment>Create a BatchExpert+ 2.4 project for Fermic. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="false" version="1">
