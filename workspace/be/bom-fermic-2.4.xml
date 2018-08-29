@@ -49,7 +49,12 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<loc
+			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
+		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/udts_new.xml</location>
+		</artifact>
+	</panel>
 	<panel type="definition" essential="true">
 		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
