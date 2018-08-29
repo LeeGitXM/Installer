@@ -174,7 +174,7 @@
 
 	<!-- Loads the Installer module and sample project to the GoogleDrive. (this does not do an install into the local gateway) -->
 	<target name="deploy" depends="build">
-		<echo message="Copying ${module.name} to Google Drive ${google.repo} (and examples project)." />
+		<echo message="Copying ${module.name} to Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
 

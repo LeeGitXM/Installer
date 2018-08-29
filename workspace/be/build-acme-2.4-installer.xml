@@ -170,7 +170,7 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying ACME installer module onto Google Drive (${google.repo})." />
+		<echo message="Copying ACME installer module onto Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
