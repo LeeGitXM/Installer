@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">12</property>
+	<property name="version">14</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -188,7 +188,7 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="5">
 		<title>Install UDT Definitions</title>
-		<preamble>This page creates the standard user-defined-tags as well as special definitions for FRG.
+		<preamble>This page creates the standard Batch Expert user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
