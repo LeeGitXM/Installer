@@ -10,7 +10,7 @@
 	<property name="product">AED-RTA</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">14</property>
+	<property name="version">16</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -51,7 +51,7 @@
 	</panel>
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="19">
+	<panel type="file" essential="true" version="20">
 		<title>Python Code for AED-RTA</title>
 		<preamble>This page loads Python code specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
