@@ -209,7 +209,7 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="4">
 		<title>Install Tag Definitions for Test</title>
-		<preamble>This page creates tags corresponding to FRG fermenters and are driven by a simulator.
+		<preamble>This page creates tags corresponding to FRG fermenters.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
 		</preamble>

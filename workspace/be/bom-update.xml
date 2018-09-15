@@ -239,7 +239,7 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="5">
+	<panel type="defaults" essential="true" version="6">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

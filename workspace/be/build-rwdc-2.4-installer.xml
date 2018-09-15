@@ -2,16 +2,16 @@
      
      Make sure that the master branch is checked out in the BatchExpert repo.
 -->
-<project name="BatchExpertGSKMDInstaller" basedir="." default="deploy">
+<project name="BatchExpertRWDCInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-gsk-2.4.xml" />
-	<property name="module.name" value="gsk-2-4-installer" />
+	<property name="bom" value="${basedir}/bom-rwdc-2.4.xml" />
+	<property name="module.name" value="rwdc-2-4-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="sandbox" value="${git.repo}/batch-expert/updates/GSKMDSandbox" />
+	<property name="sandbox" value="${git.repo}/batch-expert/updates/RWDCSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -119,18 +119,14 @@
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 		
-		<!-- Database -->
-		<mkdir dir="${artifact.dir}/database/mysql" />
-		<copy file="${sandbox}/BE2.4_MYSQL_Inserts.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
-		
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/GSKMDUDTs.xml" tofile="${artifact.dir}/tags/gsk_udts.xml" />
-		<copy file="${sandbox}/GSKMDOPCTags.xml" tofile="${artifact.dir}/tags/gsk_tags.xml" />
+		<copy file="${sandbox}/RWDC_UDTs.xml" tofile="${artifact.dir}/tags/rwdc_udts.xml" />
+		<copy file="${sandbox}/RWDC_UnitTags.xml" tofile="${artifact.dir}/tags/rwdc_tags.xml" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -140,9 +136,9 @@
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/BatchExpertGSKMD-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertGSKMD.proj" />
+		<copy file="${sandbox}/RWDC-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertRWDC.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
-		<copy file="${sandbox}/BatchExpertGSKGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Update release and build date in version python file -->
@@ -163,7 +159,7 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying GSKMD installer module onto Google Drive ..." />
+		<echo message="Copying RWDC installer module onto Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
