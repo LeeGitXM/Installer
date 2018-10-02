@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">13</property>
+	<property name="version">16</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -259,6 +259,19 @@
 		<!--  Values for these properties are taken from the definition page -->
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
+	</panel>
+	<panel type="defaults" essential="true" version="7">
+		<title>Ensure Existence of All Required Interfaces</title>
+		<preamble>Create default versions of any missing interfaces 
+			required of the product. Scripts already in place
+			are unaffected. NOTE: If this is the first update beyond BE+ 2.2,
+			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
+			These need to moved to the appropriate module in the project.customer.callback package.
+		</preamble>
+	    <!-- The  artifact subtype will always be "partial" -->
+		<artifact name="Defaults" type="project" subtype="partial">
+			<location>artifacts/projects/defaults.proj</location>
+		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="1">
 		<title>Initialize Test Project</title>

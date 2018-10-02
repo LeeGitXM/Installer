@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">28</property>
+	<property name="version">33</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -127,6 +127,13 @@
 		<artifact name="VESSEL">
 			<comment>Configure Batch Expert+ to add vessel id as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
+		</artifact>
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Icons</title>
+		<preamble>A small number of custom icons are used in Vision screens. This panel installs them. </preamble>
+		<artifact name="Custom Icons" type="ils" subtype="icon">
+			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
 	<panel type="python" essential="false" version="6">

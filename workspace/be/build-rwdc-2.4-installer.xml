@@ -108,7 +108,15 @@
 				<include name="ils-common*" />
 			</fileset>
 		</copy>
-		
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<copy todir="${artifact.dir}/icons">
+		<fileset dir="${git.repo}/batch-expert/images">
+			<include name="**/*.gif" />
+			<include name="**/*.jpg" />
+			<include name="**/*.png" />
+		</fileset>
+		</copy>
 			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />

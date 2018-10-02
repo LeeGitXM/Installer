@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">33</property>
+	<property name="version">35</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -239,7 +239,7 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="6">
+	<panel type="defaults" essential="true" version="7">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
