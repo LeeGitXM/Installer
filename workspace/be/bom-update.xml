@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">35</property>
+	<property name="version">34</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -44,7 +44,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="8">
+	<panel type="file" essential="true" version="9">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -65,7 +65,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="7">
+	<panel type="tag" subtype="production" essential="true" version="8">
 		<title>Install UDT Definitions</title>
 		<preamble>This page defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -75,7 +75,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="8">
+	<panel type="tag" subtype="production" essential="true" version="9">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
@@ -214,7 +214,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="13">
+	<panel type="project" subtype="main" essential="true" version="14">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
@@ -230,7 +230,7 @@
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="1">
+	<panel type="python" essential="true" version="2">
 		<title>Configuration Scripts</title>
 		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.4.
 		</preamble>
