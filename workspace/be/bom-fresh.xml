@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">11</property>
+	<property name="version">12</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -40,7 +40,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
 		         are important in your installation.
@@ -55,7 +55,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="1">
+	<panel type="file" essential="true" version="2">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -163,7 +163,7 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="1">
+	<panel type="python" essential="true" version="2">
 		<title>Database Create Scripts for Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the database instance specified
 		          on the 'definition' panel. This script is appropriate for a new installation only.
@@ -183,7 +183,7 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install UDT Definitions</title>
 		<preamble>The user-defined tag types describe the controllers in your installation.
 		          A special simulated-controller is also included for simulation and testing.
@@ -252,7 +252,7 @@
 			         project which was just installed in the step above.</comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="alarm" essential="true" version="1">
+	<panel type="project" subtype="alarm" essential="true" version="2">
 		<title>Install the Global Project
 		</title>
 		<preamble>This page handles installation of the BatchExpert global project.

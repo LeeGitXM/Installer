@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">33</property>
+	<property name="version">34</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -42,7 +42,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="8">
+	<panel type="tag" subtype="production" essential="false" version="9">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -173,7 +173,7 @@
 			<location>artifacts/database/mysql/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
+	<panel type="tag" subtype="production" essential="true" version="6">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard Batch Expert user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -183,7 +183,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="2">
+	<panel type="tag" subtype="production" essential="true" version="3">
 		<title>Install Custom UDT Definitions for GSKMD</title>
 		<preamble>This page creates the custom user-defined-tags for GSK.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -228,7 +228,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="8">
+	<panel type="project" subtype="main" essential="true" version="9">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for GSK MD
 		</title>
 		<preamble>Create Batch Expert+ 2.4 for GSK MD. This project includes 
@@ -269,7 +269,7 @@
 					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="7">
+	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place

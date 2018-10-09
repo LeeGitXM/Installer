@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">8</property>
+	<property name="version">9</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -22,7 +22,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="9">
+	<panel type="file" essential="true" version="10">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -177,7 +177,7 @@
 			<location>artifacts/database/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="4">
+	<panel type="tag" subtype="production" essential="true" version="5">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -187,7 +187,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="3">
+	<panel type="tag" subtype="production" essential="false" version="4">
 		<title>Install Tag Definitions for Test</title>
 		<preamble>This page creates tags corresponding to Acme fermenters and are driven by a simulator.
 		          Do NOT use in for production. These tags are for test systems only.
@@ -224,7 +224,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="8">
+	<panel type="project" subtype="main" essential="true" version="9">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for Acme Corporation
 		</title>
 		<preamble>Create Batch Expert+ 2.4 for Acme Corporation. This project includes 
@@ -265,7 +265,7 @@
 					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="7">
+	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
