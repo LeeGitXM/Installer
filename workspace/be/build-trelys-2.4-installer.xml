@@ -109,7 +109,9 @@
 			</fileset>
 		</copy>
 		
-			
+		<!-- Database (alter script) -->
+		<copy file="${git.repo}/batch-expert/BE_Python/ils/be/database/customer/trelys.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
