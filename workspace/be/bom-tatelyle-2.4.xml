@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">17</property>
+	<property name="version">18</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -215,7 +215,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="9">
+	<panel type="project" subtype="main" essential="true" version="10">
 		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont Tate-Lyle
 		</title>
 		<preamble>Create Batch Expert+ 2.4 for Dupont Tate-Lyle. This project includes 
