@@ -146,10 +146,9 @@
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="6">
-		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. First drop,
-		          then create. On the next tab we populate the tables to support the units that are 
-		          already defined by tags.
+		<title>Database Scripts for Batch Expert+ 2.4</title>
+		<preamble>his page updates the installed database schema to BatchExpert+ 2.4. 
+				We also populate the tables with common choose list entries.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
@@ -290,7 +289,7 @@
 		<property type="providerdefaultdatasource"></property>
 	</panel>
 	<panel type="python" essential="true" version="1">
-		<title>Initialize Test Project</title>
+		<title>Initialize Unit UDTs</title>
 		<preamble>Point the unit UDT batchIDs to the latest batches.
 		</preamble>
 		<artifact name="Update Batch IDs" type="alter">

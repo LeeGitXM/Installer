@@ -296,7 +296,7 @@
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
-	<panel type="python" essential="true" version="1">
+	<panel type="python" essential="false" version="1">
 		<title>Initialize Test Project</title>
 		<preamble>Point the unit UDT batchIDs to the latest batches.
 		</preamble>
