@@ -14,7 +14,7 @@
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for Batch Expert+ </title>
+		<title>ILS Automation Installer for Batch Expert+ 2.5 </title>
 		<preamble>This is a special version of the ILS Automation installer built for
 		update of the &quot;Trelys&quot; BE+ installation.
 		</preamble>
