@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">18</property>
+	<property name="version">20</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -21,7 +21,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="9">
+	<panel type="file" essential="true" version="10">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -143,8 +143,8 @@
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="6">
-		<title>Database Scripts for Batch Expert+ 2.4</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. 
+		<title>Database Scripts for Batch Expert+ 2.5</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.5. 
 				We also populate the tables with common choose list entries.
 		</preamble>
 		<artifact name="Drop Tables" type="drop">
@@ -161,7 +161,7 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
+	<panel type="tag" subtype="production" essential="true" version="7">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard Batch Expert+ user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -182,7 +182,7 @@
 			<location>artifacts/tags/tatelyle_udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
+	<panel type="tag" subtype="production" essential="true" version="6">
 		<title>Install Fermenter Definitions for Tate-Lyle</title>
 		<preamble>This page creates tags corresponding to Tate-Lyle fermenters.
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
@@ -215,16 +215,16 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="10">
-		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont Tate-Lyle
+	<panel type="project" subtype="main" essential="true" version="11">
+		<title>Install BatchExpert+ 2.5 - Specially assembled for Dupont Tate-Lyle
 		</title>
-		<preamble>Create Batch Expert+ 2.4 for Dupont Tate-Lyle. This project includes 
+		<preamble>Create Batch Expert+ 2.5 for Dupont Tate-Lyle. This project includes 
 		          Tate-Lyle-specific configurations.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpertTateLyle24" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertTateLyle.proj</location>
-			<comment>Create a BatchExpert+ 2.4 project for Dupont Tate-Lyle. </comment>
+			<comment>Create a BatchExpert+ 2.5 project for Dupont Tate-Lyle. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="false" version="1">

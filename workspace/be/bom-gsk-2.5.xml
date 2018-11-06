@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">40</property>
+	<property name="version">41</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -21,7 +21,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="15">
+	<panel type="file" essential="true" version="16">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -172,7 +172,7 @@
 			<location>artifacts/database/mysql/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
+	<panel type="tag" subtype="production" essential="true" version="7">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard Batch Expert user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -227,7 +227,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="15">
+	<panel type="project" subtype="main" essential="true" version="16">
 		<title>Install BatchExpert+ 2.5 - Specially assembled for GSK MD
 		</title>
 		<preamble>Create Batch Expert+ 2.5 for GSK MD. This project includes 

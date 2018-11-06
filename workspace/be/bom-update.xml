@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">40</property>
+	<property name="version">41</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -44,7 +44,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="15">
+	<panel type="file" essential="true" version="166">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -75,7 +75,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="10">
+	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags.
 		           These definitions are written to the default tag provider.
@@ -214,7 +214,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="20">
+	<panel type="project" subtype="main" essential="true" version="21">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
