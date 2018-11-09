@@ -1231,6 +1231,15 @@ public class InstallerDataHandler {
 		return properties;
 	}
 	
+	// Return the path except for the name. We include the trailing /
+	public String getParentPath(String path) {
+		String parent = "";
+		int pos = path.lastIndexOf("/");
+		if( pos>=0 ) {
+			parent = path.substring(0,pos+1);
+		}
+		return parent;
+	}
 	public String getPreference(String key) {
 		return prefs.get(key, "");
 	}
@@ -1855,49 +1864,49 @@ public class InstallerDataHandler {
 	/**
 	 *  Start with an existing project and copy resources into it from a named partial project.
 	 *  Leave it disabled.
-	 * @param originalLite a "lite" version of the project. It does not have all the resources.
+	 * @param mainLite a "lite" version of the project. It does not have all the resources.
 	 * @param location
 	 * @param name
 	 * @param model
 	 * @return
 	 */
 	
-	public String mergeWithProjectFromArtifact(Project originalLite,String location,String name,InstallerData model) {
+	public String mergeWithProjectFromArtifact(Project mainLite,String location,String name,InstallerData model) {
 		String result = null;
-		if( originalLite!=null) {
+		if( mainLite!=null) {
 			ProjectManager pmgr = getContext().getProjectManager();
 			Path internalPath = getPathToModule(model);
 			InputStream projectReader = null;
 			JarFile jar = null;
 			try {
-				Project original = pmgr.getProject(originalLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
-				String description = original.getDescription();
-				original.setDescription(updateProjectDescription(description,model));
-				original.setEnabled(false);
+				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
+				String description = main.getDescription();
+				main.setDescription(updateProjectDescription(description,model));
+				main.setEnabled(false);
 				
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(location);
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
 					Project updateProject = Project.fromXML(projectReader);
-					mergeProject(original,updateProject);
+					mergeProject(main,updateProject);
 					try {
-						pmgr.addProject(original, true);      // Overwrite itself
-						original = pmgr.getProject(original.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
-						original.setEnabled(false);
+						pmgr.addProject(main, true);      // Overwrite itself
+						main = pmgr.getProject(main.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+						main.setEnabled(false);
 					}
 					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
 					catch(Exception ex) {
 						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
 					}
 					
-					GlobalProps props = pmgr.getProps(original.getId(), ProjectVersion.Published);
+					GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Published);
 					
 					String adminProfile = getAdministrativeProfile(model);
 					String adminUser = getAdministrativeUser(model);
 					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
 					try {
-						pmgr.saveProject(original, user, "n/a", 
+						pmgr.saveProject(main, user, "n/a", 
 							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
 					}
 					// We get an error notifying project listeners. It appears not to matter with us.
@@ -1942,68 +1951,77 @@ public class InstallerDataHandler {
 	/**
 	 *  Start with an existing project and copy scripting resources into it from a named partial project.
 	 *  Only insert new resources if the existing project does not already have that resource. Leave it disabled.
-	 * @param originalLite a "lite" version of the project. It does not have all the resources.
+	 *  We only care about project script resources.
+	 * @param mainLite a "lite" version of the project. It does not have all the resources.
 	 * @param location
 	 * @param name
 	 * @param model
 	 * @return
 	 */
 	
-	public String mergeWithDefaultsFromArtifact(Project originalLite,String location,String name,InstallerData model) {
+	public String mergeWithDefaultsFromArtifact(Project mainLite,String location,String name,InstallerData model) {
 		String result = null;
-		if( originalLite!=null) {
+		if( mainLite!=null) {
 			ProjectManager pmgr = getContext().getProjectManager();
 			Path internalPath = getPathToModule(model);
 			InputStream projectReader = null;
 			JarFile jar = null;
 			try {
-				Project original = pmgr.getProject(originalLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
-				String description = original.getDescription();
-				original.setDescription(updateProjectDescription(description,model));
-				original.setEnabled(false);
-				
-				// List existing scripting resources:
-				for( ProjectResource pr:original.getResourcesOfType(InstallerConstants.MODULE_ID,"Script")) {
-					String path = original.getFolderPath(pr.getResourceId());
-					log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: existing %s",path);
+				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
+				String description = main.getDescription();
+				main.setDescription(updateProjectDescription(description,model));
+				main.setEnabled(false);
+				for( ProjectResource pr:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE)) {
+					String path = main.getFolderPath(pr.getResourceId());
+					log.debugf("InstallerDataHandler.mergeWithDefaultsFromArtifact: main published %s (%s) %s",pr.getResourceType(),pr.getName(),path);
 				}
-				
 				
 				jar = new JarFile(internalPath.toFile());
 				JarEntry entry = jar.getJarEntry(location);
 				if( entry!=null ) {
 					projectReader = jar.getInputStream(entry);
-					Project updateProject = Project.fromXML(projectReader);
-					for( ProjectResource pr:updateProject.getResourcesOfType(InstallerConstants.MODULE_ID,"Script")) {
-						String path = updateProject.getFolderPath(pr.getResourceId());
-						log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: update %s",path);
+					Project defaultsProject = Project.fromXML(projectReader);
+					for( ProjectResource pr:defaultsProject.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE)) {
+						String path = defaultsProject.getFolderPath(pr.getResourceId());
+						log.debugf("InstallerDataHandler.mergeWithDefaultsFromArtifact: defaults %s (%s) %s",pr.getResourceType(),pr.getName(),path);
 					}
-					mergeProject(updateProject,original);
-					try {
-						updateProject.setName(original.getName());
-						updateProject.setTitle(original.getTitle());
-						updateProject.setDescription(original.getDescription());
-						pmgr.addProject(updateProject, true);      // Overwrite original
-						original = pmgr.getProject(updateProject.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
-						original.setEnabled(false);
+					// Remove resources from defaults that are already in main
+					int count = scrubDefaultsProject(defaultsProject,main);
+					// Nothing to do if there are no novel resources 
+					if( count >0 ) {
+						// List remaining scripting resources:
+						for( ProjectResource pr:main.getResources()) {
+							String path = defaultsProject.getFolderPath(pr.getResourceId());
+							if( path.startsWith("n/a ") ) continue;  // Unknown where these come from
+							log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: inserting %s (%s) %s",pr.getResourceType(),pr.getName(),path);
+						}
+						try {
+							mergeProject(main,defaultsProject);
+							pmgr.addProject(main, true);      // Overwrite itself
+							main = pmgr.getProject(main.getId(),ApplicationScope.GATEWAY,ProjectVersion.Published);
+							main.setEnabled(false);
+						}
+						// We get an error re-constituting the project in staging scope. It appears not to matter with us.
+						catch(Exception ex) {
+							log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
+						}
+						
+						GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Published);
+						
+						String adminProfile = getAdministrativeProfile(model);
+						String adminUser = getAdministrativeUser(model);
+						AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
+						try {
+							pmgr.saveProject(main, user, "n/a", 
+								String.format("ILS Automation Installer: updated from %s",defaultsProject.getName()), false);
+						}
+						// We get an error notifying project listeners. It appears not to matter with us.
+						catch(Exception ex) {
+							log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
+						}
 					}
-					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
-					catch(Exception ex) {
-						log.errorf("InstallerDataHandler.mergeWithDefaultsFromArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
-					}
-					
-					GlobalProps props = pmgr.getProps(original.getId(), ProjectVersion.Published);
-					
-					String adminProfile = getAdministrativeProfile(model);
-					String adminUser = getAdministrativeUser(model);
-					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-					try {
-						pmgr.saveProject(original, user, "n/a", 
-							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
-					}
-					// We get an error notifying project listeners. It appears not to matter with us.
-					catch(Exception ex) {
-						log.errorf("InstallerDataHandler.mergeWithDefaultsFromArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
+					else {
+						log.info("InstallerDataHandler.mergeWithDefaultsFromArtifact: defaults has no scripts new to this project");
 					}
 				}
 				else {
@@ -2142,8 +2160,8 @@ public class InstallerDataHandler {
 	}
 	
 	// Merge resources from the partial project into the original
-	private void mergeProject(Project original,Project partial) {
-		log.debugf("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
+	private void mergeProject(Project main,Project partial) {
+		log.debugf("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),main.getTitle());
 		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
 		// Create map of partial resources.
 		for( ProjectResource res:partial.getResources() ) {
@@ -2152,31 +2170,93 @@ public class InstallerDataHandler {
 			log.debugf("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
 			partialResources.put(key, res);
 		}
-		// Delete any resources in the original that are in the partial
+		// Delete any resources in the main that are in the partial or junk
 		List<ProjectResource> toBeDeleted = new ArrayList<>();
-		for( ProjectResource res:original.getResources() ) {
-			String path = original.getFolderPath(res.getResourceId());
-			// Don't delete folders from the original as deleting the folder orphans its children
+		Map<ProjectResourceKey,ProjectResource> mainFolders = new HashMap<>();
+		for( ProjectResource res:main.getResources() ) {
+			String path = main.getFolderPath(res.getResourceId());
+			// Don't delete folders from the main as deleting the folder orphans its children
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
-				log.debugf("%s.mergeProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+			if( res.isFolder() ) {
+				mainFolders.put(key, res);
+				//log.infof("%s.mergeProject: Adding to main folder map %s (%s)",CLSS,path,res.getDataAsUUID());
+			}
+			else if( partialResources.get(key)!=null ) {
+				log.debugf("%s.mergeProject: Original deleting %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+				toBeDeleted.add(res);
+			}
+			else if(path.startsWith("n/a ")){
+				log.infof("%s.mergeProject: Original clearing unused %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
 				toBeDeleted.add(res);
 			}
 			else{
-				log.debugf("%s.mergeProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+				log.debugf("%s.mergeProject: Original retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
 			}
 		}
 		for( ProjectResource res:toBeDeleted ) {
-			original.deleteResource(res.getResourceId());
+			main.deleteResource(res.getResourceId());
 		}
 		
-		// Now add all the partial resources back in
+		// Now add all the partial resources back in ... weeding out any junk.
+		// Do not add new folder if the same one exists in the main
 		for( ProjectResource res:partial.getResources() ) {
-			original.putResource(res);
-			log.debugf("%s.mergeProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
+			String path = partial.getFolderPath(res.getResourceId());
+			if( path.startsWith("n/a ")) continue;
+			if( res.isFolder() ) {
+				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+				if(mainFolders.get(key)!=null ) continue;
+				mainFolders.put(key, res);
+				//log.infof("%s.mergeProject: Supplementing main folder map %s (%s)",CLSS,path,res.getDataAsUUID());
+			}
+			// Properly hookup the resource to its new parent
+			String parentPath = getParentPath(path);
+			ProjectResourceKey key = new ProjectResourceKey(ProjectResource.FOLDER_RESOURCE_TYPE,parentPath);
+			ProjectResource parent = mainFolders.get(key);
+			if( parent!=null ) {
+				res.setParentUuid(parent.getDataAsUUID());
+				main.putResource(res);
+				log.infof("%s.mergeProject:Restoring %s into main (%s)",CLSS,main.getFolderPath(res.getResourceId()),res.getResourceType());
+			}
+			else {
+				log.errorf("%s.mergeProject: Unable to find parent folder %s for %s (%s)",CLSS,parentPath,res.getResourceType(),res.getName());
+			}
 		}
 	}
 	
+	// The first argument is a project with a list of defaults resources to be used in the main project
+	// if the resource does not already exist. Here we delete any default resources that would otherwise
+	// overwrite resources in the main project.
+	// Return the number of scripting resources remaining in the defaults project
+	private int scrubDefaultsProject(Project defaultsProject,Project main) {
+			Map<ProjectResourceKey,ProjectResource> mainResources = new HashMap<>();
+			// Create map of resources.
+			for( ProjectResource res:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE) ) {
+				String path = main.getFolderPath(res.getResourceId());
+				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+				log.debugf("%s.scrubDefaultsProject: Main %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+				mainResources.put(key, res);
+			}
+			// Delete any resources in the default project that are already in the main or are not scripting
+			List<ProjectResource> toBeDeleted = new ArrayList<>();
+			int count = 0;
+			for( ProjectResource res:defaultsProject.getResources() ) {
+				String path = defaultsProject.getFolderPath(res.getResourceId());
+				// Don't delete folders from the original as deleting the folder orphans its children
+				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+				if( mainResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+					log.debugf("%s.scrubDefaultsProject: Defaults deleting %s (%s) as %s",CLSS,res.getResourceType(),res.getName(),path);
+					toBeDeleted.add(res);
+				}
+				else if( !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ){
+					log.infof("%s.scrubDefaultsProject: Defaults adding %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+					count++;
+				}
+			}
+			for( ProjectResource res:toBeDeleted ) {
+				defaultsProject.deleteResource(res.getResourceId());
+			}
+			return count;
+		}
 	// Alter a project description to add its derivation
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {

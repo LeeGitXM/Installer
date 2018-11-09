@@ -16,7 +16,8 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		update of the &quot;Tate-Lyle&quot; BE+ installation.
+		update of the &quot;Tate-Lyle&quot; BE+ installation. It includes special handling for 
+		the scale serial interface.
 		</preamble>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
@@ -260,6 +261,7 @@
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
+	<!--  
 	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
@@ -268,11 +270,12 @@
 			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
 			These need to moved to the appropriate module in the project.customer.callback package.
 		</preamble>
-	    <!-- The  artifact subtype will always be "partial" -->
+	    The  artifact subtype will always be "partial"
 		<artifact name="Defaults" type="project" subtype="partial">
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
+	-->
 	<panel type="python" essential="true" version="1">
 		<title>Initialize Unit UDTs</title>
 		<preamble>Point the unit UDT batchIDs to the latest batches.

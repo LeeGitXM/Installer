@@ -83,7 +83,8 @@ public class DefaultsStep extends BasicInstallerPanel {
 				if( result==null ) {
 					if( selectedProject==null) selectedProject = getProject("");
 					if( selectedProject!=null) {
-						System.out.println(String.format("DefaultsStep.onSubmit: Merging project %s with %s",selectedProject.getName(),partialProjectName));
+						System.out.println(String.format("DefaultsStep.onSubmit: Merging project %s with %s =========================================",
+								selectedProject.getName(),partialProjectName));
 						result = handler.mergeWithDefaultsFromArtifact(selectedProject,partialProjectLocation,partialProjectName,data);
 						System.out.println(String.format("DefaultsStep.onSubmit: Merged project name is now %s",selectedProject.getName()));
 					}

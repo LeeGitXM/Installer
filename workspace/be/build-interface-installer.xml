@@ -1,25 +1,23 @@
-<!-- Create an application installer for Batch-Expert+ - Dupont Tate-Lyle
+<!-- Create an application installer for Batch-Expert+
      
-     Make sure that the master branch is checked out in the BatchExpert repo.
+     We require that GIT_REPO and SVN_REPO be provided to this script.
+     A new installation is always version 1 for every component.
 -->
-<project name="BatchExpertTateLyleInstaller" basedir="." default="deploy">
+<project name="BatchExpertPlusInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-tatelyle-2.5.xml" />
-	<property name="module.name" value="tatelyle-2-5-installer" />
+	<property name="bom" value="${basedir}/bom-interface.xml" />
+	<property name="module.name" value="batch-expert-interface-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="sandbox" value="${git.repo}/batch-expert/updates/TateLyleSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
-
-
 	<!-- Generic SignModule: Reference Via Antcalls -->
 	<target name="SignModule">
 		<echo message="Signing ${moduleName}" />
@@ -33,11 +31,6 @@
 			<arg value="-module-out=${moduleout}"/>
 		</java>
 	</target>
-	
-	<tstamp>
-		<format property="build.date" pattern="MM/dd/yyyy HH:mm:ss" />
-	</tstamp>
-
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
 		<delete dir="${staging.dir}" />
@@ -54,7 +47,7 @@
 		<trim input="${rawdate}" property="build.date" />
 		<loadfile property="rawvers" srcFile="${git.repo}/batch-expert/release/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
-		
+
 		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
@@ -72,78 +65,25 @@
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
-		
+
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->
 		<mkdir dir="${artifact.dir}" />
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-			
-		<!-- External -->
-		<mkdir dir="${artifact.dir}/external" />
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="ils/**/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="xlsxwriter/**/*.py" />
-			</fileset>
-		</copy>
-		<mkdir dir="${artifact.dir}/external/ils" />
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
-				<include name="jChart/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/py-sfc/pysfc-python/src/ils">
-				<include name="pysfc/**/*.py" />
-			</fileset>
-		</copy>
-		<mkdir dir="${artifact.dir}/external/lib" />
-		<copy todir="${artifact.dir}/external/lib">
-			<fileset dir="${git.repo}/external/lib">
-				<include name="ils-common*" />
-			</fileset>
-		</copy>
-		
-			
-		<!-- Remove examples -->
-		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
-		<delete>
-		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
-			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
-		</delete>
+		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+
+	
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 
-		<!-- Tags - including test tags -->
-		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
-		<copy file="${sandbox}/unit-tags.xml" tofile="${artifact.dir}/tags/tatelyle_tags.xml" />
-		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
-		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/udts-2.5.xml" tofile="${artifact.dir}/tags/tatelyle_udts.xml" />
-		
-		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
-		
-		<!-- Modules -->
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-		
-		<!-- Project  		-->
-		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/TateLyle2.5.proj" tofile="${artifact.dir}/projects/BatchExpertTateLyle.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
+
+
+		<!-- Project -->
+		<mkdir dir="${artifact.dir}/projects" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
+		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
@@ -151,7 +91,7 @@
 		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
-		
+
 		<!-- Sign the module -->
 		<antcall target="SignModule">
 			<param name="moduleName" value="${module.name}-${version.build}" />
@@ -159,26 +99,31 @@
 			<param name="moduleout"  value="${module.path}/${module.name}-${version.build}-signed.modl" />
 		</antcall>
 	</target>
-	
-	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
+
+	<!-- Loads the Installer module and sample project to the GoogleDrive. (this does not do an install into the local gateway) -->
 	<target name="deploy" depends="build">
-		<echo message="Copying Tate-Lyle installer module onto Google Drive ..." />
+		<echo message="Copying ${module.name} to Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${git.repo}/batch-expert/release/CustomerStatus.txt" tofile="${google.repo}/../../Batch Expert +/Releases/CustomerStatus.txt" />
+		<copy file="${git.repo}/batch-expert/release/README.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/README.txt" />
+		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/client_tags.xml" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />
 	</target>
+
 	<!-- macro to trim newlines from a variable -->
-	 <macrodef name="trim">
-	   <attribute name="input" />
-	   <attribute name="property" />
-	   <sequential>
-	     <tempfile property="temp.file" />
-	     <echo file="${temp.file}" message="@{input}" />
-	     <move file="${temp.file}" tofile="${temp.file}.2">
-	       <filterchain>
-	       	   <filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
-	       </filterchain>
-	     </move>
-	     <loadfile property="@{property}" srcFile="${temp.file}.2" />
-	     <delete file="${temp.file}.2" failonerror="false" />
-	   </sequential>
-	 </macrodef>
+	<macrodef name="trim">
+		<attribute name="input" />
+		<attribute name="property" />
+		<sequential>
+			<tempfile property="temp.file" />
+			<echo file="${temp.file}" message="@{input}" />
+			<move file="${temp.file}" tofile="${temp.file}.2">
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>
+				</filterchain>
+			</move>
+			<loadfile property="@{property}" srcFile="${temp.file}.2" />
+			<delete file="${temp.file}.2" failonerror="false" />
+		</sequential>
+	</macrodef>
 </project>
