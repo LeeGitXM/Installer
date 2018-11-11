@@ -214,6 +214,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
+	<!-- 
 	<panel type="project" subtype="main" essential="true" version="21">
 		<title>Update the BatchExpert+ Project
 		</title>
@@ -222,14 +223,15 @@
 			modifications which are stored in &quot;Site&quot; resources.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
+		-- For projects, artifact subtypes are: full, partial and global
+		     There can be at most one artifact of each type --
 		<artifact name="BatchExpertMaster" type="project" subtype="partial">
 			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Merge the latest BatchExpert+ common resources 
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
+	 
 	<panel type="python" essential="true" version="2">
 		<title>Configuration Scripts</title>
 		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.5.
@@ -239,6 +241,7 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
+	-->
 	<!--  
 	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
