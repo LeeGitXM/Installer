@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.Stack;
+import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -1045,6 +1049,8 @@ public class InstallerDataHandler {
 		}
 		return text;
 	}
+	
+
 	// Scan the property list looking for a type that is primary, or not,
 	// as directed. Return a one word description for use when page is rendered.
 	public String getLabel(List<PropertyItem> properties,boolean isPrimary) {
@@ -1230,9 +1236,21 @@ public class InstallerDataHandler {
 		}
 		return properties;
 	}
-	
-	// Return the path except for the name. We include the trailing /
-	public String getParentPath(String path) {
+	// Return the leaf of the path. 
+	private String getNameFromPath(String path) {
+		// Ignore trailing /
+		if( path.endsWith("/")) path = path.substring(0,path.length()-1);
+		String name = "";
+		int pos = path.lastIndexOf("/");
+		if( pos>=0 ) {
+			name = path.substring(pos+1);
+		}
+		return name;
+	}
+	// Return the path except for the name. We include the trailing / on the result.
+	// Ignore it on input.
+	private String getParentPath(String path) {
+		if(path.endsWith("/")) path = path.substring(0,path.length()-1);
 		String parent = "";
 		int pos = path.lastIndexOf("/");
 		if( pos>=0 ) {
@@ -1240,6 +1258,7 @@ public class InstallerDataHandler {
 		}
 		return parent;
 	}
+	
 	public String getPreference(String key) {
 		return prefs.get(key, "");
 	}
@@ -2159,104 +2178,206 @@ public class InstallerDataHandler {
 		preferences.put(key,value);
 	}
 	
-	// Merge resources from the partial project into the original
-	private void mergeProject(Project main,Project partial) {
-		log.debugf("%s.mergeProject: Merging resources from %s into %s",CLSS,partial.getTitle(),main.getTitle());
-		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
-		// Create map of partial resources.
-		for( ProjectResource res:partial.getResources() ) {
-			String path = partial.getFolderPath(res.getResourceId());
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.debugf("%s.mergeProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
-			partialResources.put(key, res);
+	// Merge resources from the partial project into the original.
+	// In Ignition there are separate folder hierarchies by resource type.
+	// The path names can be duplicated.
+	// main - the original project that needs to get updated
+	// updater - the partial project with new resources
+	private void mergeProject(Project main,Project updater) {
+		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,updater.getTitle(),main.getTitle());
+		Map<ProjectResourceKey,UUID> mainFolders = new HashMap<>();
+		Map<ProjectResourceKey,Long> updateResources = new HashMap<>();       
+		Map<String,Long> updateSingletons = new HashMap<>();  // Unnamed resources are "singletons"
+		
+		// Create map of resources to update
+		for( ProjectResource res:updater.getResources() ) {
+			if( res.getName()==null || res.getName().isEmpty() ) {
+				updateSingletons.put(res.getResourceType(), new Long(res.getResourceId()));
+				//log.infof("%s.mergeProject: Update singleton %s",CLSS,res.getResourceType());
+			}
+			else if( !res.isFolder() ) {
+				String path = updater.getFolderPath(res.getResourceId());
+				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+				//log.infof("%s.mergeProject: Update %s at %s",CLSS,res.getResourceType(),path);
+				updateResources.put(key, new Long(res.getResourceId()));
+			}
 		}
-		// Delete any resources in the main that are in the partial or junk
+		
+		// Create list of resources in the main that are in the update list or junk
+		// Along the way build a map of folders. 
 		List<ProjectResource> toBeDeleted = new ArrayList<>();
-		Map<ProjectResourceKey,ProjectResource> mainFolders = new HashMap<>();
 		for( ProjectResource res:main.getResources() ) {
-			String path = main.getFolderPath(res.getResourceId());
-			// Don't delete folders from the main as deleting the folder orphans its children
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			if( res.isFolder() ) {
-				mainFolders.put(key, res);
-				//log.infof("%s.mergeProject: Adding to main folder map %s (%s)",CLSS,path,res.getDataAsUUID());
+			if( res.getName()==null || res.getName().isEmpty() ) {
+				if( updateSingletons.get(res.getResourceType())!=null ) {
+					//log.infof("%s.mergeProject: Clear singleton %s",CLSS,res.getResourceType());
+					toBeDeleted.add(res);
+				}
 			}
-			else if( partialResources.get(key)!=null ) {
-				log.debugf("%s.mergeProject: Original deleting %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-				toBeDeleted.add(res);
-			}
-			else if(path.startsWith("n/a ")){
-				log.infof("%s.mergeProject: Original clearing unused %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-				toBeDeleted.add(res);
-			}
-			else{
-				log.debugf("%s.mergeProject: Original retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+			else if( !res.isFolder() ) {
+				String path = main.getFolderPath(res.getResourceId());
+				if(path.startsWith("n/a ")){
+					log.infof("%s.mergeProject:  Clear junk %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+					toBeDeleted.add(res);
+				}
+				else {
+					updateFolderMap(main,mainFolders,res);
+					ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+					if( updateResources.get(key)!=null ) {
+						//log.infof("%s.mergeProject: Clear %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+						toBeDeleted.add(res);
+					}
+					else{
+						//log.infof("%s.mergeProject: Retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+					}
+				}
 			}
 		}
+		// Now do the actual deletion
 		for( ProjectResource res:toBeDeleted ) {
 			main.deleteResource(res.getResourceId());
 		}
 		
-		// Now add all the partial resources back in ... weeding out any junk.
-		// Do not add new folder if the same one exists in the main
-		for( ProjectResource res:partial.getResources() ) {
-			String path = partial.getFolderPath(res.getResourceId());
-			if( path.startsWith("n/a ")) continue;
-			if( res.isFolder() ) {
-				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-				if(mainFolders.get(key)!=null ) continue;
-				mainFolders.put(key, res);
-				//log.infof("%s.mergeProject: Supplementing main folder map %s (%s)",CLSS,path,res.getDataAsUUID());
-			}
-			// Properly hookup the resource to its new parent
-			String parentPath = getParentPath(path);
-			ProjectResourceKey key = new ProjectResourceKey(ProjectResource.FOLDER_RESOURCE_TYPE,parentPath);
-			ProjectResource parent = mainFolders.get(key);
-			if( parent!=null ) {
-				res.setParentUuid(parent.getDataAsUUID());
-				main.putResource(res);
-				log.infof("%s.mergeProject:Restoring %s into main (%s)",CLSS,main.getFolderPath(res.getResourceId()),res.getResourceType());
+		// For starters, add in the replaced singletons
+		// No need to worry about paths and parents(%)
+		for( String type : updateSingletons.keySet() ) {
+			long id = (updateSingletons.get(type)).longValue();
+			main.putResource(updater.getResource(id));
+		}
+		
+		// Now add the "normal" resources 
+		for( ProjectResourceKey key:updateResources.keySet() ) {
+			ProjectResource res = updater.getResource(updateResources.get(key).longValue());
+			// For each resource to be added we need to get the id of the enclosing parent
+			String parentPath = getParentPath(key.getResourcePath());
+			ProjectResourceKey folderKey = new ProjectResourceKey(key.getResourceType(),parentPath);
+			UUID uuid = mainFolders.get(folderKey);
+			if( uuid==null ) uuid = returnFolderForResource(main,res.getModuleId(),folderKey,mainFolders);
+			if( uuid!=null ) {
+				res.setParentUuid(uuid);
+				try {
+					main.putResource(res);
+					log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
+				}
+				catch(Exception ex) {
+					log.errorf("%s.mergeProject: EXCEPTION %s for %s (%s)",CLSS,ex.getMessage(),parentPath,res.getResourceType());
+				}
 			}
 			else {
-				log.errorf("%s.mergeProject: Unable to find parent folder %s for %s (%s)",CLSS,parentPath,res.getResourceType(),res.getName());
+				log.errorf("%s.mergeProject: ERROR unable to create parent folder for %s (%s)",CLSS,parentPath,res.getResourceType());
 			}
 		}
 	}
 	
-	// The first argument is a project with a list of defaults resources to be used in the main project
-	// if the resource does not already exist. Here we delete any default resources that would otherwise
+	private UUID returnFolderForResource(Project proj,String moduleId,ProjectResourceKey leaf, Map<ProjectResourceKey,UUID> folderMap) {
+		log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
+		Stack<ProjectResourceKey> stack = searchKeysForAncestor(leaf,folderMap);
+		// The first key should exist, the rest not so much
+		ProjectManager pmgr = getContext().getProjectManager();
+		ProjectResourceKey key = stack.pop();
+		UUID parent = folderMap.get(key);
+		UUID uuid = null;
+		if( parent!=null ) {
+			while(!stack.isEmpty()) {
+				key = stack.pop();
+				log.infof("%s.returnFolderForResource: Popped to create %s at %s",CLSS,key.getResourceType(),key.getResourcePath());
+				try {
+					long resid = pmgr.getNewResourceId().longValue();
+					uuid = UUID.randomUUID();
+					byte[] data = asBytes(uuid);
+					String name = getNameFromPath(key.getResourcePath());
+					ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.ALL,data);
+					folder.setParentUuid(parent);
+					proj.putResource(folder);
+					folderMap.put(key, uuid);  
+				}
+				catch(Exception ex) {
+					log.errorf("%s.mergeProject: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
+					break;
+				}
+			}
+		}
+		return uuid;
+	}
+	
+	// Push a keys for folders that we must create onto stack. By definition the input node is required.
+	private Stack<ProjectResourceKey> searchKeysForAncestor(ProjectResourceKey leaf,Map<ProjectResourceKey,UUID> folderMap) {
+		Stack<ProjectResourceKey> stack = new Stack<>();	
+		ProjectResourceKey ancestor = leaf;
+		String type = ancestor.getResourceType();
+		String path = ancestor.getResourcePath();
+		while(folderMap.get(ancestor)==null) {
+			stack.push(ancestor);
+			log.infof("%s.searchKeysForAncestor: pushed %s at %s",CLSS,ancestor.getResourceType(),ancestor.getResourcePath());
+			path = getParentPath(path);
+			if( path.length() ==0 ) {
+				log.errorf("%s.searchKeysForAncestor: ERROR failed to find existing root for %s at %s",type,leaf.getResourcePath()); 
+				break;
+			}
+			ancestor = new ProjectResourceKey(type,path);
+		}
+		stack.push(ancestor);   // This one can be found
+		return stack;
+	}
+	
+	public byte[] asBytes(UUID uuid) {
+	    ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+	    bb.putLong(uuid.getMostSignificantBits());
+	    bb.putLong(uuid.getLeastSignificantBits());
+	    return bb.array();
+	}
+	// The first argument is a project with a list of standard script resources that must appear in every 
+	// project. Here we delete any of the standard resources that would otherwise
 	// overwrite resources in the main project.
 	// Return the number of scripting resources remaining in the defaults project
 	private int scrubDefaultsProject(Project defaultsProject,Project main) {
-			Map<ProjectResourceKey,ProjectResource> mainResources = new HashMap<>();
-			// Create map of resources.
-			for( ProjectResource res:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE) ) {
-				String path = main.getFolderPath(res.getResourceId());
-				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-				log.debugf("%s.scrubDefaultsProject: Main %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-				mainResources.put(key, res);
-			}
-			// Delete any resources in the default project that are already in the main or are not scripting
-			List<ProjectResource> toBeDeleted = new ArrayList<>();
-			int count = 0;
-			for( ProjectResource res:defaultsProject.getResources() ) {
-				String path = defaultsProject.getFolderPath(res.getResourceId());
-				// Don't delete folders from the original as deleting the folder orphans its children
-				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-				if( mainResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
-					log.debugf("%s.scrubDefaultsProject: Defaults deleting %s (%s) as %s",CLSS,res.getResourceType(),res.getName(),path);
-					toBeDeleted.add(res);
-				}
-				else if( !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ){
-					log.infof("%s.scrubDefaultsProject: Defaults adding %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-					count++;
-				}
-			}
-			for( ProjectResource res:toBeDeleted ) {
-				defaultsProject.deleteResource(res.getResourceId());
-			}
-			return count;
+		Map<ProjectResourceKey,ProjectResource> mainResources = new HashMap<>();
+		// Create map of resources.
+		for( ProjectResource res:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE) ) {
+			String path = main.getFolderPath(res.getResourceId());
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			log.debugf("%s.scrubDefaultsProject: Main %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+			mainResources.put(key, res);
 		}
+		// Delete any resources in the default project that are already in the main or are not scripting
+		List<ProjectResource> toBeDeleted = new ArrayList<>();
+		int count = 0;
+		for( ProjectResource res:defaultsProject.getResources() ) {
+			String path = defaultsProject.getFolderPath(res.getResourceId());
+			// Don't delete folders from the original as deleting the folder orphans its children
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			if( mainResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+				log.debugf("%s.scrubDefaultsProject: Defaults deleting %s (%s) as %s",CLSS,res.getResourceType(),res.getName(),path);
+				toBeDeleted.add(res);
+			}
+			else if( !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ){
+				log.infof("%s.scrubDefaultsProject: Defaults adding %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+				count++;
+			}
+		}
+		for( ProjectResource res:toBeDeleted ) {
+			defaultsProject.deleteResource(res.getResourceId());
+		}
+		return count;
+	}
+	// Update the table of folder UUIDs by resource type and path.
+	// Update towards root as necessary. Path includes trailing, but not leading /.
+	private void updateFolderMap(Project proj, Map<ProjectResourceKey,UUID> folderMap, ProjectResource child) {
+		String path = getParentPath(proj.getFolderPath(child.getResourceId()));
+		String type = child.getResourceType();
+		ProjectResourceKey key = new ProjectResourceKey(type,path);
+		while( folderMap.get(key) == null ) {
+			UUID uuid = child.getParentUuid();
+			if( uuid ==null ) break;
+			ProjectResource folder = proj.findFolder(uuid);
+			if( folder==null ) break;
+			folderMap.put(key, uuid);
+			//log.infof("%s.updateFolderMap: Added folder for type %s at %s",CLSS,type,path);
+			child = folder;
+			path = getParentPath(path);
+			key = new ProjectResourceKey(type,path);
+		}	
+	}
+	
 	// Alter a project description to add its derivation
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {
