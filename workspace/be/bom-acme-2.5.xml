@@ -5,23 +5,24 @@
       be unique. 
  -->
 <installer>
-	<title>TateLyleBatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+ for Dupont Tate-Lyle</description>
+	<title>ACMEBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Acme Corporation</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">18</property>
+	<property name="version">10</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+ </title>
 		<preamble>This is a special version of the ILS Automation installer built for
-		update of the &quot;Tate-Lyle&quot; BE+ installation.
+		the express purpose creating a Batch Expert+ 2.5 testbed configured for &quot;ACME Biotechnologies&quot;.
+		The installer automatically updates to the current development version of the Master project.
 		</preamble>
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="9">
+	<panel type="file" essential="true" version="11">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -42,7 +43,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="9">
+	<panel type="tag" subtype="production" essential="true" version="7">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -55,7 +56,7 @@
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="false" version="3">
+	<panel type="scanclass" essential="true" version="2">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
 				Scanclasses determine tag poll rates.
@@ -143,9 +144,10 @@
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="6">
-		<title>Database Scripts for Batch Expert+ 2.4</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. 
-				We also populate the tables with common choose list entries.
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.5. First drop,
+		          then create. On the next tab we populate the tables to support the units that are 
+		          already defined by tags.
 		</preamble>
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
@@ -156,14 +158,28 @@
 			<script>ils.be.database.bedb.createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
-		<artifact name="Populate Tables" type="insert">
+		<artifact name="Populate Tables" type="alter">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
+	<panel type="database" essential="true" version="5">
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.5. We expect
+		          that the tables have been newly created. Populate the empty tables to support the units that are 
+		          already defined by tags.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="ANSI"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="BEDB Database" type="sql" subtype="alter">
+			<comment>Populate tables to match tags and transaction groups specifically for our ACME batches.</comment>
+			<location>artifacts/database/populate.sql</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="5">
 		<title>Install UDT Definitions</title>
-		<preamble>This page creates the standard Batch Expert+ user-defined-tags.
+		<preamble>This page creates the standard user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -171,29 +187,22 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="6">
-		<title>Install Custom UDT Definitions for Tate-Lyle</title>
-		<preamble>This page creates the custom user-defined-tags for Tate-Lyle.
-		          The definitions are written to the &quot;default&quot; tag provider.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<property name="historyprovider" type="production"></property>
-		<artifact name="Tate-Lyle UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/tatelyle_udts.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
-		<title>Install Fermenter Definitions for Tate-Lyle</title>
-		<preamble>This page creates tags corresponding to Tate-Lyle fermenters.
+	<panel type="tag" subtype="production" essential="false" version="4">
+		<title>Install Tag Definitions for Test</title>
+		<preamble>This page creates tags corresponding to Acme fermenters and are driven by a simulator.
+		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
-		<artifact name="Tate-Lyle Unit Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/tatelyle_tags.xml</location>
+		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
+			<location>artifacts/tags/simulation_udts.xml</location>
+		</artifact>
+		<artifact name="Acme Test Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/acmeTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="false" version="1" >
+	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
 		          installations that include the SFC feature.
@@ -206,7 +215,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="false" version="1" >
+	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
@@ -216,18 +225,18 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="10">
-		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont Tate-Lyle
+		<title>Install BatchExpert+ 2.5 - Specially assembled for Acme Corporation
 		</title>
-		<preamble>Create Batch Expert+ 2.4 for Dupont Tate-Lyle. This project includes 
-		          Tate-Lyle-specific configurations.
+		<preamble>Create Batch Expert+ 2.5 for Acme Corporation. This project includes 
+		          ACME-specific configuration.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertTateLyle24" type="project" subtype="full">
-			<location>artifacts/projects/BatchExpertTateLyle.proj</location>
-			<comment>Create a BatchExpert+ 2.4 project for Dupont Tate-Lyle. </comment>
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertACME.proj</location>
+			<comment>Create a BatchExpert+ 2.5 project for Acme Corporation. </comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="alarm" essential="false" version="1">
+	<panel type="project" subtype="alarm" essential="true" version="1">
 		<title>Install the Global Project
 		</title>
 		<preamble>This page handles installation of the BatchExpert global project.
@@ -240,25 +249,21 @@
 					 These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
-	<panel type="toolkit" essential="false" version="5">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-			Additionally the project and provider default datasources are set. This is critical for
-			proper operation of tags bound to databases.
+	<panel type="project" subtype="sfc" essential="true" version="1">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of charts for sequential control of batch operations.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. Multiple chart hierarchies can be updated
+			from this one page. 
 		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
-		      The SMTP Profile must precede the alarm profile.  -->
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
-		<!--  Values for these properties are taken from the definition page -->
-		<property type="projectdefaultdatasource"></property>
-		<property type="providerdefaultdatasource"></property>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
+		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
@@ -273,8 +278,26 @@
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="1">
-		<title>Initialize Unit UDTs</title>
+	<panel type="toolkit" essential="true" version="5">
+		<title>Set Gateway Defaults</title>
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
+			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
+		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
+		      The SMTP Profile must precede the alarm profile.  -->
+		<property type="smtpprofile">Batch Expert</property>
+		<property type="alarmjournal">Batch_Expert</property>
+		<property type="alarmprofile">Batch Expert</property>
+		<property type="allowuseradmin">True</property>
+		<property type="oncallroster">Batch Expert</property>
+		<!--  Values for these properties are taken from the definition page -->
+		<property type="projectdefaultdatasource"></property>
+		<property type="providerdefaultdatasource"></property>
+	</panel>
+	<panel type="python" essential="false" version="1">
+		<title>Initialize Test Project</title>
 		<preamble>Point the unit UDT batchIDs to the latest batches.
 		</preamble>
 		<artifact name="Update Batch IDs" type="alter">

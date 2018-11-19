@@ -1,23 +1,24 @@
 <!-- Create an application installer for Batch-Expert+ - ACME
      
-     Make sure that the 2.3 branch is checked out in the BatchExpert repo.
+     Make sure that the master branch is checked out in the BatchExpert repo.
 -->
 <project name="BatchExpertACMEInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-acme-2.3.xml" />
-	<property name="module.name" value="acme-2-3-installer" />
+	<property name="bom" value="${basedir}/bom-acme-2.5.xml" />
+	<property name="module.name" value="acme-2-5-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="testbed" value="${git.repo}/batch-expert/testbed/2.3b13" />
+	<property name="sandbox" value="${git.repo}/batch-expert/updates/AcmeSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
 		<classpath location="${build.dir}/AntLib/ant-post-module.jar" />
 	</taskdef>
+
 
 	<!-- Generic SignModule: Reference Via Antcalls -->
 	<target name="SignModule">
@@ -46,7 +47,7 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and version.build are both in SVN Release area, in
+		<!-- build.date and version.build are both in GIT Release area, in
 			files VERS and DATE.
 		-->
 		<loadfile property="rawdate" srcFile="${git.repo}/batch-expert/release/DATE"/>
@@ -108,6 +109,11 @@
 			</fileset>
 		</copy>
 		
+		<!-- Special handling for the test/data alter script  -->
+		<delete file="${artifact.dir}/external/ils/be/database/alter.py" />
+		<copy file="${artifact.dir}/external/ils/be/database/customer/acme.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
+			
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
@@ -116,22 +122,36 @@
 		</delete>
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
-			
+
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${testbed}/tags/acme_tags.xml" tofile="${artifact.dir}/tags/acmeTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
+		<copy file="${sandbox}/tags/acme_tags.xml" tofile="${artifact.dir}/tags/acmeTags.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/site_simulation_udts.xml" tofile="${artifact.dir}/tags/simulation_udts.xml" />
+		
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/scanclass" />
+		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		
+		<!-- Modules -->
+		<mkdir dir="${artifact.dir}/modules" />
+		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
+		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${testbed}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />
+		<copy file="${sandbox}/sql/acme.sql" tofile="${artifact.dir}/database/populate.sql" />
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${testbed}/ACME-2.3.proj" tofile="${artifact.dir}/projects/BatchExpertACME.proj" />
+		<copy file="${sandbox}/BatchExpertAcme-2.5.proj" tofile="${artifact.dir}/projects/BatchExpertACME.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
+		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
