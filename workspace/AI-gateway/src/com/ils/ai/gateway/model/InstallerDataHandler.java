@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.jar.JarEntry;
@@ -57,6 +56,7 @@ import com.ils.common.db.DBMS;
 import com.ils.common.db.DBUtility;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
+import com.inductiveautomation.ignition.common.TypeUtilities;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.GlobalProps;
 import com.inductiveautomation.ignition.common.project.Project;
@@ -1898,7 +1898,7 @@ public class InstallerDataHandler {
 			InputStream projectReader = null;
 			JarFile jar = null;
 			try {
-				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
+				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Staging);
 				String description = main.getDescription();
 				main.setDescription(updateProjectDescription(description,model));
 				main.setEnabled(false);
@@ -1911,7 +1911,7 @@ public class InstallerDataHandler {
 					mergeProject(main,updateProject);
 					try {
 						pmgr.addProject(main, true);      // Overwrite itself
-						main = pmgr.getProject(main.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
+						main = pmgr.getProject(main.getId(),ApplicationScope.ALL,ProjectVersion.Staging);
 						main.setEnabled(false);
 					}
 					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
@@ -1919,7 +1919,7 @@ public class InstallerDataHandler {
 						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
 					}
 					
-					GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Published);
+					GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Staging);
 					
 					String adminProfile = getAdministrativeProfile(model);
 					String adminUser = getAdministrativeUser(model);
@@ -2256,7 +2256,7 @@ public class InstallerDataHandler {
 				res.setParentUuid(uuid);
 				try {
 					main.putResource(res);
-					log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
+					//log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
 				}
 				catch(Exception ex) {
 					log.errorf("%s.mergeProject: EXCEPTION %s for %s (%s)",CLSS,ex.getMessage(),parentPath,res.getResourceType());
@@ -2269,7 +2269,7 @@ public class InstallerDataHandler {
 	}
 	
 	private UUID returnFolderForResource(Project proj,String moduleId,ProjectResourceKey leaf, Map<ProjectResourceKey,UUID> folderMap) {
-		log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
+		//log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
 		Stack<ProjectResourceKey> stack = searchKeysForAncestor(leaf,folderMap);
 		// The first key should exist, the rest not so much
 		ProjectManager pmgr = getContext().getProjectManager();
@@ -2283,15 +2283,15 @@ public class InstallerDataHandler {
 				try {
 					long resid = pmgr.getNewResourceId().longValue();
 					uuid = UUID.randomUUID();
-					byte[] data = asBytes(uuid);
+					byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
 					String name = getNameFromPath(key.getResourcePath());
-					ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.ALL,data);
+					ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
 					folder.setParentUuid(parent);
 					proj.putResource(folder);
 					folderMap.put(key, uuid);  
 				}
 				catch(Exception ex) {
-					log.errorf("%s.mergeProject: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
+					log.errorf("%s.returnFolderForResource: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
 					break;
 				}
 			}
@@ -2319,12 +2319,6 @@ public class InstallerDataHandler {
 		return stack;
 	}
 	
-	public byte[] asBytes(UUID uuid) {
-	    ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
-	    bb.putLong(uuid.getMostSignificantBits());
-	    bb.putLong(uuid.getLeastSignificantBits());
-	    return bb.array();
-	}
 	// The first argument is a project with a list of standard script resources that must appear in every 
 	// project. Here we delete any of the standard resources that would otherwise
 	// overwrite resources in the main project.

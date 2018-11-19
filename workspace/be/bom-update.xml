@@ -138,6 +138,10 @@
 			<comment>Configure Batch Expert+ to add auto EFT clearance as a feature.</comment>
 			<script>ils.be.configuration.config.setAutoClearEFT</script>
 		</artifact>
+		<artifact name="EXPORT">
+			<comment>Configure Batch Expert+ to show a customer export button on the batch browser.</comment>
+			<script>ils.be.configuration.config.setShowBatchBrowserCustomerExport</script>
+		</artifact>
 		<artifact name="FERMENTATION">
 			<comment>Configure Batch Expert+ to add fermentation (organism) as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByFermentation</script>
