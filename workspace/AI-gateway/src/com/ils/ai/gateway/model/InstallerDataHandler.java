@@ -1657,14 +1657,12 @@ public class InstallerDataHandler {
 				globalProps.setAuthProfileName(profile);
 				globalProps.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
 				globalProps.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
-
 				XMLSerializer serializer = new XMLSerializer();
 				serializer.getClassNameMap().addDefaults();
 				serializer.addObject(globalProps);
 				byte[] bytes = serializer.serializeBinary(true);
 				ProjectResource resource = new ProjectResource(propsResoureceId, GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.GATEWAY, bytes);
 				project.putResource(resource, true);
-
 				pmgr.addProject(project, true);
 				
 				// Re-constitute the project from the project manager. Without this step, we end
@@ -1836,18 +1834,18 @@ public class InstallerDataHandler {
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
 				Project updateProject = Project.fromXML(projectReader);
-				mergeProject(globalProject,updateProject);
+				mergeGlobalProject(globalProject,updateProject);
 				pmgr.addProject(globalProject, true);    // Overwrite the global project
 				// Re-constitute the project from the project manager. Without this step, we end
 				// up with a project containing some duplicated resources. We don't know why this works ...
 				globalProject = pmgr.getGlobalProject(ApplicationScope.GATEWAY);
 				globalProject.setEnabled(true);
-				
+
 				GlobalProps globalProps = pmgr.getProps(globalProject.getId(), ProjectVersion.Staging);
 				String adminProfile = getAdministrativeProfile(model);
 				String adminUser = getAdministrativeUser(model);
 				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),adminProfile,adminUser,globalProps.getRequiredRoles());
-				
+
 				pmgr.saveProject(globalProject, user, "n/a", 
 						String.format("ILS Automation Installer: global updated from %s",updateProject.getName()), true);  // Publish
 			}
@@ -2184,7 +2182,7 @@ public class InstallerDataHandler {
 	// main - the original project that needs to get updated
 	// updater - the partial project with new resources
 	private void mergeProject(Project main,Project updater) {
-		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,updater.getTitle(),main.getTitle());
+		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,updater.getName(),main.getName());
 		Map<ProjectResourceKey,UUID> mainFolders = new HashMap<>();
 		Map<ProjectResourceKey,Long> updateResources = new HashMap<>();       
 		Map<String,Long> updateSingletons = new HashMap<>();  // Unnamed resources are "singletons"
@@ -2263,8 +2261,44 @@ public class InstallerDataHandler {
 				}
 			}
 			else {
-				log.errorf("%s.mergeProject: ERROR unable to create parent folder for %s (%s)",CLSS,parentPath,res.getResourceType());
+				log.warnf("%s.mergeProject: WARNING unable to create parent folder for %s (%s)",CLSS,parentPath,res.getResourceType());
 			}
+		}
+	}
+	// Merge resources from the partial global project into the original.
+	// We assume folder UUIDs have not changed,
+	private void mergeGlobalProject(Project original,Project partial) {
+		log.debugf("%s.mergeGlobalProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
+		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
+		// Create map of partial resources.
+		for( ProjectResource res:partial.getResources() ) {
+			String path = partial.getFolderPath(res.getResourceId());
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			log.debugf("%s.mergeGlobalProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
+			partialResources.put(key, res);
+		}
+		// Delete any resources in the original that are in the partial
+		List<ProjectResource> toBeDeleted = new ArrayList<>();
+		for( ProjectResource res:original.getResources() ) {
+			String path = original.getFolderPath(res.getResourceId());
+			// Don't delete folders from the original as deleting the folder orphans its children
+			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
+			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+				log.debugf("%s.mergeGlobalProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+				toBeDeleted.add(res);
+			}
+			else{
+				log.debugf("%s.mergeGlobalProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+			}
+		}
+		for( ProjectResource res:toBeDeleted ) {
+			original.deleteResource(res.getResourceId());
+		}
+		
+		// Now add all the partial resources back in
+		for( ProjectResource res:partial.getResources() ) {
+			original.putResource(res);
+			log.debugf("%s.mergeGlobalProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
 		}
 	}
 	
@@ -2310,7 +2344,8 @@ public class InstallerDataHandler {
 			log.infof("%s.searchKeysForAncestor: pushed %s at %s",CLSS,ancestor.getResourceType(),ancestor.getResourcePath());
 			path = getParentPath(path);
 			if( path.length() ==0 ) {
-				log.errorf("%s.searchKeysForAncestor: ERROR failed to find existing root for %s at %s",type,leaf.getResourcePath()); 
+				// This is a root
+				log.warnf("%s.searchKeysForAncestor: WARNING %s at %s is a root node",CLSS,type,leaf.getResourcePath()); 
 				break;
 			}
 			ancestor = new ProjectResourceKey(type,path);
