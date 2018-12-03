@@ -98,20 +98,6 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
-	<panel type="toolkit" essential="true" version="3">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options.  -->
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
-		<property type="smtpprofile">Batch Expert</property>
-	</panel>
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features. Note that these
@@ -218,7 +204,6 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<!-- 
 	<panel type="project" subtype="main" essential="true" version="21">
 		<title>Update the BatchExpert+ Project
 		</title>
@@ -227,15 +212,14 @@
 			modifications which are stored in &quot;Site&quot; resources.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type --
+		<!-- For projects, artifact subtypes are: full, partial and global
+		     There can be at most one artifact of each type -->
 		<artifact name="BatchExpertMaster" type="project" subtype="partial">
 			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Merge the latest BatchExpert+ common resources 
 					 into the selected existing project. </comment>
 		</artifact>
 	</panel>
-	 
 	<panel type="python" essential="true" version="2">
 		<title>Configuration Scripts</title>
 		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.5.
@@ -245,8 +229,6 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
-	-->
-	<!--  
 	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
@@ -260,7 +242,6 @@
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
-	-->
 	<panel type="toolkit" essential="true" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set the default data-source for project and tag provider.

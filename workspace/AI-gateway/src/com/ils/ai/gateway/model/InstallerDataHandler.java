@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1240,7 +1239,7 @@ public class InstallerDataHandler {
 	private String getNameFromPath(String path) {
 		// Ignore trailing /
 		if( path.endsWith("/")) path = path.substring(0,path.length()-1);
-		String name = "";
+		String name = path;
 		int pos = path.lastIndexOf("/");
 		if( pos>=0 ) {
 			name = path.substring(pos+1);
@@ -1498,7 +1497,7 @@ public class InstallerDataHandler {
 		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
 		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
-		System.out.println(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
+		log.info(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
 
 		// Now process the files -- we really don't care if the artifact is a directory or single file
 		List<JarEntry> entries = jarUtil.filesInJarSubpath(getPathToModule(model),fromRoot );
@@ -1671,7 +1670,7 @@ public class InstallerDataHandler {
 				project.setEnabled(false);
 				/*
 				for(ProjectResource res:project.getResources() ) {
-					System.out.println(String.format("InstallerDataHandler: res %d.%d %s (%s) = %s",project.getId(),res.getResourceId(),res.getName(),
+					log.info(String.format("InstallerDataHandler: res %d.%d %s (%s) = %s",project.getId(),res.getResourceId(),res.getName(),
 							res.getResourceType(),(project.isResourceDirty(res))?"DIRTY":"CLEAN"));
 				}
 				*/
@@ -2191,12 +2190,12 @@ public class InstallerDataHandler {
 		for( ProjectResource res:updater.getResources() ) {
 			if( res.getName()==null || res.getName().isEmpty() ) {
 				updateSingletons.put(res.getResourceType(), new Long(res.getResourceId()));
-				//log.infof("%s.mergeProject: Update singleton %s",CLSS,res.getResourceType());
+				log.infof("%s.mergeProject: Update singleton %s",CLSS,res.getResourceType());
 			}
 			else if( !res.isFolder() ) {
 				String path = updater.getFolderPath(res.getResourceId());
 				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-				//log.infof("%s.mergeProject: Update %s at %s",CLSS,res.getResourceType(),path);
+				log.infof("%s.mergeProject: Update %s at %s",CLSS,res.getResourceType(),path);
 				updateResources.put(key, new Long(res.getResourceId()));
 			}
 		}
@@ -2207,8 +2206,8 @@ public class InstallerDataHandler {
 		for( ProjectResource res:main.getResources() ) {
 			if( res.getName()==null || res.getName().isEmpty() ) {
 				if( updateSingletons.get(res.getResourceType())!=null ) {
-					//log.infof("%s.mergeProject: Clear singleton %s",CLSS,res.getResourceType());
-					toBeDeleted.add(res);
+					log.infof("%s.mergeProject: Retain singleton %s",CLSS,res.getResourceType());
+					//toBeDeleted.add(res);
 				}
 			}
 			else if( !res.isFolder() ) {
@@ -2221,11 +2220,11 @@ public class InstallerDataHandler {
 					updateFolderMap(main,mainFolders,res);
 					ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
 					if( updateResources.get(key)!=null ) {
-						//log.infof("%s.mergeProject: Clear %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+						log.infof("%s.mergeProject: Clear %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
 						toBeDeleted.add(res);
 					}
 					else{
-						//log.infof("%s.mergeProject: Retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
+						log.infof("%s.mergeProject: Retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
 					}
 				}
 			}
@@ -2249,32 +2248,30 @@ public class InstallerDataHandler {
 			String parentPath = getParentPath(key.getResourcePath());
 			ProjectResourceKey folderKey = new ProjectResourceKey(key.getResourceType(),parentPath);
 			UUID uuid = mainFolders.get(folderKey);
-			if( uuid==null ) uuid = returnFolderForResource(main,res.getModuleId(),folderKey,mainFolders);
-			if( uuid!=null ) {
-				res.setParentUuid(uuid);
-				try {
-					main.putResource(res);
-					//log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
-				}
-				catch(Exception ex) {
-					log.errorf("%s.mergeProject: EXCEPTION %s for %s (%s)",CLSS,ex.getMessage(),parentPath,res.getResourceType());
-				}
+			if( uuid==null ) {
+				log.infof("%s.mergeProject: Did not find UUID for folder %s",CLSS,folderKey.getResourcePath());
+				uuid = returnFolderForResource(main,res.getModuleId(),folderKey,mainFolders);
 			}
-			else {
-				log.warnf("%s.mergeProject: WARNING unable to create parent folder for %s (%s)",CLSS,parentPath,res.getResourceType());
+			if( uuid!=null ) res.setParentUuid(uuid);
+			try {
+				main.putResource(res);
+				log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
+			}
+			catch(Exception ex) {
+				log.errorf("%s.mergeProject: EXCEPTION %s for %s (%s)",CLSS,ex.getMessage(),parentPath,res.getResourceType());
 			}
 		}
 	}
 	// Merge resources from the partial global project into the original.
 	// We assume folder UUIDs have not changed,
 	private void mergeGlobalProject(Project original,Project partial) {
-		log.debugf("%s.mergeGlobalProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
+		log.infof("%s.mergeGlobalProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
 		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
 		// Create map of partial resources.
 		for( ProjectResource res:partial.getResources() ) {
 			String path = partial.getFolderPath(res.getResourceId());
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.debugf("%s.mergeGlobalProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
+			log.infof("%s.mergeGlobalProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
 			partialResources.put(key, res);
 		}
 		// Delete any resources in the original that are in the partial
@@ -2284,11 +2281,11 @@ public class InstallerDataHandler {
 			// Don't delete folders from the original as deleting the folder orphans its children
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
 			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
-				log.debugf("%s.mergeGlobalProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
+				log.infof("%s.mergeGlobalProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
 				toBeDeleted.add(res);
 			}
 			else{
-				log.debugf("%s.mergeGlobalProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
+				log.infof("%s.mergeGlobalProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
 			}
 		}
 		for( ProjectResource res:toBeDeleted ) {
@@ -2298,22 +2295,37 @@ public class InstallerDataHandler {
 		// Now add all the partial resources back in
 		for( ProjectResource res:partial.getResources() ) {
 			original.putResource(res);
-			log.debugf("%s.mergeGlobalProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
+			log.infof("%s.mergeGlobalProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
 		}
 	}
 	
 	private UUID returnFolderForResource(Project proj,String moduleId,ProjectResourceKey leaf, Map<ProjectResourceKey,UUID> folderMap) {
-		//log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
+		log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
 		Stack<ProjectResourceKey> stack = searchKeysForAncestor(leaf,folderMap);
-		// The first key should exist, the rest not so much
+		// The first key should exist (may not if it is a root), the rest not so much
 		ProjectManager pmgr = getContext().getProjectManager();
 		ProjectResourceKey key = stack.pop();
+		log.infof("%s.returnFolderForResource: Popped root %s at %s",CLSS,key.getResourceType(),key.getResourcePath());
 		UUID parent = folderMap.get(key);
+		if( parent==null ) {
+			try {
+				long resid = pmgr.getNewResourceId().longValue();
+				parent = UUID.randomUUID();
+				byte[] data = (byte[])TypeUtilities.coerce(parent, byte[].class);
+				String name = getNameFromPath(key.getResourcePath());
+				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
+				proj.putResource(folder);
+				folderMap.put(key, parent);
+			}
+			catch(Exception ex) {
+				log.errorf("%s.returnFolderForResource: ERROR unable to create root resource id for %s",CLSS,key.getResourcePath());
+			}
+		}
 		UUID uuid = null;
 		if( parent!=null ) {
 			while(!stack.isEmpty()) {
 				key = stack.pop();
-				log.infof("%s.returnFolderForResource: Popped to create %s at %s",CLSS,key.getResourceType(),key.getResourcePath());
+				log.infof("%s.returnFolderForResource: Popped %s to create at %s",CLSS,key.getResourceType(),key.getResourcePath());
 				try {
 					long resid = pmgr.getNewResourceId().longValue();
 					uuid = UUID.randomUUID();
@@ -2345,11 +2357,12 @@ public class InstallerDataHandler {
 			path = getParentPath(path);
 			if( path.length() ==0 ) {
 				// This is a root
-				log.warnf("%s.searchKeysForAncestor: WARNING %s at %s is a root node",CLSS,type,leaf.getResourcePath()); 
-				break;
+				log.warnf("%s.searchKeysForAncestor: WARNING %s at %s is a root node",CLSS,type,ancestor.getResourcePath()); 
+				return stack;
 			}
 			ancestor = new ProjectResourceKey(type,path);
 		}
+		log.infof("%s.searchKeysForAncestor: finally pushed %s at %s",CLSS,ancestor.getResourceType(),ancestor.getResourcePath());
 		stack.push(ancestor);   // This one can be found
 		return stack;
 	}
@@ -2410,6 +2423,7 @@ public class InstallerDataHandler {
 	// Alter a project description to add its derivation
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {
+		if( desc==null ) desc = "";
 		int pos = desc.indexOf("--");
 		if( pos>0 ) desc = desc.substring(0,pos);
 		String product = "";
@@ -2423,7 +2437,7 @@ public class InstallerDataHandler {
 		return String.format("%s -- %s, %s, %s --", desc,product,release,date);
 	}
 	private void dumpXML(String label,ProjectResource res) {
-		System.out.println(label);
+		log.info(label);
 		InputStream is = new ByteArrayInputStream(res.getData());
 		XMLDeserializer deserializer = new XMLDeserializer();
 		deserializer.getClassNameMap().addDefaults();
@@ -2431,10 +2445,10 @@ public class InstallerDataHandler {
 		serializer.getClassNameMap().addDefaults();
 		try {
 			String xml = deserializer.transcodeToXML(is, serializer);
-			System.out.println(xml);
+			log.info(xml);
 		}
 		catch(SerializationException sex) {
-			System.out.println(String.format("%s.dumpXML: Exception deserializing (%s)",CLSS, sex.getMessage()));
+			log.info(String.format("%s.dumpXML: Exception deserializing (%s)",CLSS, sex.getMessage()));
 		}
 		
 	}
@@ -2456,7 +2470,7 @@ public class InstallerDataHandler {
 			serializer.addObject(props);
 			
 			String newXML = serializer.serializeXML();
-			System.out.println(newXML);
+			log.debug(newXML);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			GZIPOutputStream zipOut = new GZIPOutputStream(baos);
 			IOUtils.copy(new ByteArrayInputStream(newXML.getBytes("UTF-8")), zipOut);
@@ -2475,11 +2489,11 @@ public class InstallerDataHandler {
 										ApplicationScope.ALL,bytes);
 			zipOut.close();
 			dumpXML("updateGlobalProps: new (from res)",resource);
-			System.out.println(String.format("Resource is %d bytes",bytes.length));
+			log.debug(String.format("Resource is %d bytes",bytes.length));
 			proj.putResource(resource);
 		}
 		catch(Exception ex) {
-			System.out.println(String.format("%s.updateGlobalProps: Exception getting resource ID (%s)",CLSS, ex.getMessage()));
+			log.info(String.format("%s.updateGlobalProps: Exception getting resource ID (%s)",CLSS, ex.getMessage()));
 		}
 	}
 

@@ -78,7 +78,7 @@ public class InstallWizard extends GatewayWizard {
 				Thread.sleep(10000);    // 10 secs
 			}
 			catch(InterruptedException ignore) {}
-			System.out.println("InstallWizard: uninstalling installer module");
+			//System.out.println("InstallWizard: uninstalling installer module");
 
 			try {
 				GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();

@@ -66,14 +66,14 @@ public class FileStep extends BasicInstallerPanel {
             		dataHandler.applyPreferences(index,data);
             		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             		panelData.setCurrentVersion(futureVersion);
-            		System.out.println(String.format("FileStep:  Successfully loaded:"));
+            		//System.out.println(String.format("FileStep:  Successfully loaded:"));
             		info(success.insert(0,"Successfully loaded: ").toString());	
             	}
             	else {
-            		System.out.println(String.format("FileStep:  failed to load"));
+            		//System.out.println(String.format("FileStep:  failed to load"));
             		error(failure.insert(0,"Failed to load: ").toString());
             	}
-            	System.out.println(String.format("FileStep:  on-submit complete"));
+            	//System.out.println(String.format("FileStep:  on-submit complete"));
             }
         });
 	}

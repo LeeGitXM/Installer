@@ -64,7 +64,7 @@ public class FeatureStep extends BasicInstallerPanel {
 			// Set whether or not this installation applies a given feature
 			InstallerDataHandler handler = InstallerDataHandler.getInstance();
 	        String hasFeature = handler.getPreference("feature"+feature);
-	        System.out.println(String.format("FeatureStep:  has feature "+feature+"="+hasFeature));
+	        //System.out.println(String.format("FeatureStep:  has feature "+feature+"="+hasFeature));
 	        if( hasFeature.isEmpty() ) hasFeature = "false";   // Default to false
 	        data.setFeature(feature,hasFeature.equalsIgnoreCase("true"));
 			Model<Boolean> model = (hasFeature.equalsIgnoreCase("true")?Model.of(Boolean.TRUE):Model.of(Boolean.FALSE));
@@ -83,12 +83,12 @@ public class FeatureStep extends BasicInstallerPanel {
 
 			boolean hasFeature = (getValue()!=null);		
 			String feature = artifact.getName().toUpperCase();
-			System.out.println(String.format("FeatureStep:  now has feature "+feature+"="+(hasFeature?"true":"false")));
+			//System.out.println(String.format("FeatureStep:  now has feature "+feature+"="+(hasFeature?"true":"false")));
 			handler.setPreference("feature"+feature, (hasFeature?"true":"false"));
 			// Use the destination string, if any, to inform the application of feature.
 			String result = handler.executePythonFromArtifact(artifact,hasFeature); 
 			if( !result.isEmpty()) {
-				System.out.println(String.format("FeatureStep: Script error:\n "+result));
+				//System.out.println(String.format("FeatureStep: Script error:\n "+result));
 				//error(result);  // Apparently this doesn't work without a form.
 			}
 			data.setFeature(feature,hasFeature);

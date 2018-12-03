@@ -54,7 +54,7 @@ public class PythonUtility{
 		buf.append("()");  // No arguments
 
 		String script = buf.toString();
-		System.out.println(String.format("PythonUtility.execute %s",script));
+		//System.out.println(String.format("PythonUtility.execute %s",script));
 		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
 		ScriptManager scriptManager = context.getScriptManager();
 		PyStringMap pyLocals = scriptManager.createLocalsMap();
@@ -86,7 +86,7 @@ public class PythonUtility{
 		buf.append("(flag)");  // Single arguments
 
 		String script = buf.toString();
-		System.out.println(String.format("PythonUtility.processFlag %s",script));
+		//System.out.println(String.format("PythonUtility.processFlag %s",script));
 		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
 		ScriptManager scriptManager = context.getScriptManager();
 		PyStringMap pyLocals = scriptManager.createLocalsMap();
@@ -120,7 +120,7 @@ public class PythonUtility{
 		buf.append("(value)");  // Single argument
 
 		String script = buf.toString();
-		System.out.println(String.format("PythonUtility.updateValue %s(%s)",script,value));
+		//System.out.println(String.format("PythonUtility.updateValue %s(%s)",script,value));
 		PyCode compiledCode = Py.compile_flags(script, "ils", CompileMode.exec, CompilerFlags.getCompilerFlags());
 		ScriptManager scriptManager = context.getScriptManager();
 		PyStringMap pyLocals = scriptManager.createLocalsMap();
