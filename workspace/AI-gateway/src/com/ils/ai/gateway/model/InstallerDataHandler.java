@@ -2322,9 +2322,14 @@ public class InstallerDataHandler {
 				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
 				// For window, the parent is null. Others have fixed UUIDs
 				if( key.getResourceType().equalsIgnoreCase("component-template") ) {
-					parent = UUID.fromString("f4b6692c-9312-4278-8ec4-cf20b161beb3"); // template root
+					parent = UUID.fromString("f4b6692c-a312-4278-8ec4-cf20b161beb3"); // template root
 					folder.setParentUuid(parent);
-					folderMap.put(key, parent);
+					folderMap.put(key, uuid);
+				}
+				else if( key.getResourceType().equalsIgnoreCase("sr.script.project") ) {
+					parent = UUID.fromString("2cda0027-8033-4beb-ad02-0ef378c659be"); // project script root
+					folder.setParentUuid(parent);
+					folderMap.put(key, uuid);
 				}
 				// Works only for window type, for now ...
 				else {
