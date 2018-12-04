@@ -2188,6 +2188,7 @@ public class InstallerDataHandler {
 		
 		// Create map of resources to update
 		for( ProjectResource res:updater.getResources() ) {
+			if( updater.isResourceDeleted(res.getResourceId() )) continue;
 			if( res.getName()==null || res.getName().isEmpty() ) {
 				updateSingletons.put(res.getResourceType(), new Long(res.getResourceId()));
 				log.infof("%s.mergeProject: Update singleton %s",CLSS,res.getResourceType());
@@ -2204,6 +2205,7 @@ public class InstallerDataHandler {
 		// Along the way build a map of folders. 
 		List<ProjectResource> toBeDeleted = new ArrayList<>();
 		for( ProjectResource res:main.getResources() ) {
+			if( main.isResourceDeleted(res.getResourceId() )) continue;
 			if( res.getName()==null || res.getName().isEmpty() ) {
 				if( updateSingletons.get(res.getResourceType())!=null ) {
 					log.infof("%s.mergeProject: Retain singleton %s",CLSS,res.getResourceType());
@@ -2269,6 +2271,7 @@ public class InstallerDataHandler {
 		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
 		// Create map of partial resources.
 		for( ProjectResource res:partial.getResources() ) {
+			if( partial.isResourceDeleted(res.getResourceId() )) continue;
 			String path = partial.getFolderPath(res.getResourceId());
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
 			log.infof("%s.mergeGlobalProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
@@ -2277,6 +2280,7 @@ public class InstallerDataHandler {
 		// Delete any resources in the original that are in the partial
 		List<ProjectResource> toBeDeleted = new ArrayList<>();
 		for( ProjectResource res:original.getResources() ) {
+			if( original.isResourceDeleted(res.getResourceId() )) continue;
 			String path = original.getFolderPath(res.getResourceId());
 			// Don't delete folders from the original as deleting the folder orphans its children
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
@@ -2294,6 +2298,7 @@ public class InstallerDataHandler {
 		
 		// Now add all the partial resources back in
 		for( ProjectResource res:partial.getResources() ) {
+			if( partial.isResourceDeleted(res.getResourceId() )) continue;
 			original.putResource(res);
 			log.infof("%s.mergeGlobalProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
 		}
@@ -2307,41 +2312,52 @@ public class InstallerDataHandler {
 		ProjectResourceKey key = stack.pop();
 		log.infof("%s.returnFolderForResource: Popped root %s at %s",CLSS,key.getResourceType(),key.getResourcePath());
 		UUID parent = folderMap.get(key);
+		UUID uuid = null;
 		if( parent==null ) {
 			try {
 				long resid = pmgr.getNewResourceId().longValue();
-				parent = UUID.randomUUID();
-				byte[] data = (byte[])TypeUtilities.coerce(parent, byte[].class);
+				uuid = UUID.randomUUID();
+				byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
 				String name = getNameFromPath(key.getResourcePath());
 				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
+				// For window, the parent is null. Others have fixed UUIDs
+				if( key.getResourceType().equalsIgnoreCase("component-template") ) {
+					parent = UUID.fromString("f4b6692c-9312-4278-8ec4-cf20b161beb3"); // template root
+					folder.setParentUuid(parent);
+					folderMap.put(key, parent);
+				}
+				// Works only for window type, for now ...
+				else {
+					folder.setParentUuid(null);
+					folderMap.put(key, uuid);    // Just to have something
+				}
 				proj.putResource(folder);
-				folderMap.put(key, parent);
 			}
 			catch(Exception ex) {
 				log.errorf("%s.returnFolderForResource: ERROR unable to create root resource id for %s",CLSS,key.getResourcePath());
 			}
+			parent = uuid;
 		}
-		UUID uuid = null;
-		if( parent!=null ) {
-			while(!stack.isEmpty()) {
-				key = stack.pop();
-				log.infof("%s.returnFolderForResource: Popped %s to create at %s",CLSS,key.getResourceType(),key.getResourcePath());
-				try {
-					long resid = pmgr.getNewResourceId().longValue();
-					uuid = UUID.randomUUID();
-					byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
-					String name = getNameFromPath(key.getResourcePath());
-					ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
-					folder.setParentUuid(parent);
-					proj.putResource(folder);
-					folderMap.put(key, uuid);  
-				}
-				catch(Exception ex) {
-					log.errorf("%s.returnFolderForResource: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
-					break;
-				}
+		// The parentUUID is null for a resource directly under "Windows"
+		while(!stack.isEmpty()) {
+			key = stack.pop();
+			log.infof("%s.returnFolderForResource: Popped %s to create at %s",CLSS,key.getResourceType(),key.getResourcePath());
+			try {
+				long resid = pmgr.getNewResourceId().longValue();
+				uuid = UUID.randomUUID();
+				byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
+				String name = getNameFromPath(key.getResourcePath());
+				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
+				folder.setParentUuid(parent);
+				proj.putResource(folder);
+				folderMap.put(key, uuid);  
+			}
+			catch(Exception ex) {
+				log.errorf("%s.returnFolderForResource: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
+				break;
 			}
 		}
+
 		return uuid;
 	}
 	
