@@ -151,8 +151,6 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.proj" tofile="${artifact.dir}/projects/BatchExpert.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertSFCGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
 		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
 		
 		<!-- Update release and build date in version python file -->
@@ -175,7 +173,7 @@
 	<target name="deploy" depends="build">
 		<echo message="Copying ${module.name} to Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
-		<copy file="${git.repo}/batch-expert/release/CAUTION.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/CAUTION.txt" />
+		<copy file="${git.repo}/batch-expert/release/CustomerStatus.txt" tofile="${google.repo}/../../Batch Expert +/Releases/CustomerStatus.txt" />
 		<copy file="${git.repo}/batch-expert/release/README.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/README.txt" />
 		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/client_tags.xml" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.proj" />

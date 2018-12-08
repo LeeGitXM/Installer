@@ -243,9 +243,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDatabase.getName());
 		        		}
 		    			String result = dataHandler.executePythonFromProperty(property);
-		    			System.out.println(String.format("DefinitionStep: Executing script: "+script));
+		    			//System.out.println(String.format("DefinitionStep: Executing script: "+script));
 		    			if( !result.isEmpty()) {
-		    				System.out.println(String.format("DefinitionStep: Script error: \n"+result));
+		    				//System.out.println(String.format("DefinitionStep: Script error: \n"+result));
 		    				msg.append(result);
 		    				break;
 		    			}

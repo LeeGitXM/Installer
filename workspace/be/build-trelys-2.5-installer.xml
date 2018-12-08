@@ -7,8 +7,8 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-trelys-2.4.xml" />
-	<property name="module.name" value="trelys-2-4-installer" />
+	<property name="bom" value="${basedir}/bom-trelys-2.5.xml" />
+	<property name="module.name" value="trelys-2-5-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="sandbox" value="${git.repo}/batch-expert/updates/TrelysSandbox" />
@@ -109,7 +109,9 @@
 			</fileset>
 		</copy>
 		
-			
+		<!-- Database (alter script) -->
+		<copy file="${git.repo}/batch-expert/BE_Python/ils/be/database/customer/trelys.py" tofile="${artifact.dir}/external/ils/be/database/alter.py" />
+		
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete>
@@ -141,8 +143,8 @@
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
-		<copy file="${sandbox}/Trelys-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertTrelys24.proj" />
-		<copy file="${sandbox}/Trelys-Global-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertTrelysGlobal24.proj" />
+		<copy file="${sandbox}/Trelys-2.5.proj" tofile="${artifact.dir}/projects/BatchExpertTrelys25.proj" />
+		<copy file="${sandbox}/Trelys-Global-2.4.proj" tofile="${artifact.dir}/projects/BatchExpertTrelysGlobal25.proj" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
 
 		<!-- Update release and build date in version python file -->

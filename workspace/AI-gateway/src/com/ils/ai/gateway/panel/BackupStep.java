@@ -48,16 +48,16 @@ public class BackupStep extends BasicInstallerPanel {
                         result = dataHandler.backup(output,data);;
                         if(result==null) info("Backup completed successfully");
                         else error(result);
-                        System.out.println("BACKUPSTEP result:"+result);
+                        //System.out.println("BACKUPSTEP result:"+result);
                     }
                 };
                 
-                System.out.println("BACKUPSTEP Starting ...");
+                //System.out.println("BACKUPSTEP Starting ...");
                 ResourceStreamRequestHandler handle = new ResourceStreamRequestHandler(rstream, fileName);
                 getRequestCycle().scheduleRequestHandlerAfterCurrent(handle);
                 
                 BackupStep.this.error("DONE"); // Works without getRequestCycle.scheduleAfter
-                System.out.println("BACKUPSTEP DONE");
+                //System.out.println("BACKUPSTEP DONE");
             }
         };
         form.add(button);

@@ -26,7 +26,7 @@ public class IconStep extends BasicInstallerPanel {
         super(index,previous, title, dataModel); 
         
         final IconStep thisPage = this;
-        System.out.println(String.format("IconStep: %s",title));
+        //ystem.out.println(String.format("IconStep: %s",title));
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 		add(new Label("currentVersion",currentVersionString));
 		add(new Label("futureVersion",futureVersionString));

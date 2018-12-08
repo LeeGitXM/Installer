@@ -74,7 +74,7 @@ public class TagStep extends BasicInstallerPanel {
             				count = getTagCount(file.toPath());
             				statusString = String.format("~ %d tags",count);
             				
-            				System.out.println("TagStep: processing status = "+statusString);
+            				//System.out.println("TagStep: processing status = "+statusString);
             				
             				setResponsePage(getPage());    // Supposedly this causes a page refresh()
             				Thread.yield();
@@ -121,7 +121,7 @@ public class TagStep extends BasicInstallerPanel {
 			lines.close();
 		}
 		catch(IOException ioe) {
-			System.out.println("TagStep.getTagCount: Exception "+ioe.getMessage());
+			//System.out.println("TagStep.getTagCount: Exception "+ioe.getMessage());
 		}
 		return count;
 	}

@@ -141,11 +141,11 @@ public class ProjectStep extends BasicInstallerPanel {
 					result = "Please select an authentication profile";
 				}
 				else {
-					System.out.println(String.format("ProjectStep.onSubmit: Creating full project with profile %s",profileName));
+					//System.out.println(String.format("ProjectStep.onSubmit: Creating full project with profile %s",profileName));
 					if(backupProject) result = createBackup(fullProjectName);
 					if( result==null) {
 						result = handler.loadArtifactAsProject(fullProjectLocation,fullProjectName,profileName,data);
-						System.out.println(String.format("ProjectStep.onSubmit: Created full project %s",fullProjectName));
+						//System.out.println(String.format("ProjectStep.onSubmit: Created full project %s",fullProjectName));
 						ProjectStep parent = ProjectStep.this;
 						parent.projects = new ProjectList("projects", new PropertyModel<Project>(parent, "selectedProject"), parent.getProjects());
 						parent.mergeProjectForm.addOrReplace(parent.projects);
@@ -191,9 +191,9 @@ public class ProjectStep extends BasicInstallerPanel {
 				if( result==null ) {
 					if( selectedProject==null) selectedProject = getProject(fullProjectName);
 					if( selectedProject!=null) {
-						System.out.println(String.format("ProjectStep.onSubmit: Merging project %s with %s",selectedProject.getName(),partialProjectName));
+						//System.out.println(String.format("ProjectStep.onSubmit: Merging project %s with %s",selectedProject.getName(),partialProjectName));
 						result = handler.mergeWithProjectFromArtifact(selectedProject,partialProjectLocation,partialProjectName,data);
-						System.out.println(String.format("ProjectStep.onSubmit: Merged project name is now %s",selectedProject.getName()));
+						//System.out.println(String.format("ProjectStep.onSubmit: Merged project name is now %s",selectedProject.getName()));
 					}
 					else {
 						result = "No project selected as the target of the merge";
