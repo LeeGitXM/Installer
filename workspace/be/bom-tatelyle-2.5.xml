@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">20</property>
+	<property name="version">22</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -160,6 +160,10 @@
 		<artifact name="Create Tables" type="create">
 			<script>ils.be.database.bedb.createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
+		</artifact>
+		<artifact name="Alter Tables" type="alter">
+			<script>ils.be.database.alter.alterDatabase()</script>
+			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 		<artifact name="Populate Tables" type="insert">
 			<script>ils.be.database.bedb.initializeDatabase()</script>

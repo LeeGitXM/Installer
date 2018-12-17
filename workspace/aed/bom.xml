@@ -10,7 +10,7 @@
 	<property name="product">AED-RTA</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">16</property>
+	<property name="version">18</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">

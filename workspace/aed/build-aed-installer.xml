@@ -159,9 +159,10 @@
 
 		<!-- Properties -->
 		<mkdir dir="${artifact.dir}/properties" />
+		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_en.XML" tofile="${artifact.dir}/properties/aed_en.XML" />
+		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_fr.XML" tofile="${artifact.dir}/properties/aed_fr.XML" />
+		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_it.XML" tofile="${artifact.dir}/properties/aed_it.XML" />
 		<copy file="${svn.repo}/EMRE/Ignition/properties/aed.properties" tofile="${artifact.dir}/properties/aed.properties" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_fr.properties" tofile="${artifact.dir}/properties/aed_fr.properties" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_it.properties" tofile="${artifact.dir}/properties/aed_it.properties" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
 		
