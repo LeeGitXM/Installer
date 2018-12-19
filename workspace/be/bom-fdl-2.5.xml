@@ -3,48 +3,25 @@
       type and sub-type must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
       be unique. 
-      
-      CAUTION: The version numbers here must coincide with versions in any site-specific
-               installers.
  -->
 <installer>
-	<title>BatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+</description>
+	<title>DupontFDLBatchExpert</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Dupont FDL</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">44</property>
+	<property name="version">41</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for Batch Expert+</title>
-		<preamble>This is the ILS Automation installer for Batch Expert+.
-			This version of the installer is configured to update existing 2.0 installations
-			to the latest version of Batch Expert+. 
-			It is not designed to perform a fresh install.
-			The table below compares the existing versions of
-			Batch Expert+, if any, with the versions contained in this new
-			installation. Before continuing, please make sure that you have 
-			defined a data source and that it is configured to a schema version of at least
-			Batch Expert+ 2.0.
+		<title>ILS Automation Installer for Batch Expert+ 2.5</title>
+		<preamble>This is a special version of the ILS Automation installer built for
+		update of the &quot;Dupont FDL&quot; BE+ installation.
 		</preamble>
-		<artifact name="notes" type="pdf">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
 	</panel>
-	<panel type="license" essential="true" version="1">
-		<title>End User License Agreement (EULA)</title>
-		<preamble>Click on the button below to view the license that specifies
-			permissible use of the software to be installed. Select the checkbox
-			to indicate acceptance of the terms.
-			You must accept the license terms to proceed.
-		</preamble>
-		<artifact name="license" type="html">
-			<location>artifacts/license/license.html</location>
-		</artifact>
-	</panel>
-	<!--  -->
-	<panel type="file" essential="true" version="17">
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="16">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -65,19 +42,9 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="10">
-		<title>Install UDT Definitions</title>
-		<preamble>This page defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="11">
+	<panel type="tag" subtype="production" essential="false" version="9">
 		<title>Install Configuration Tags</title>
-		<preamble>This page creates BatchExpert configuration tags.
+		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -86,7 +53,7 @@
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
-		<title>Define the Database Connections</title>
+		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
 		          are used for BatchExpert+.
 		</preamble>
@@ -166,25 +133,72 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="11">
-		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.5.
+	<panel type="python" essential="false" version="7">
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page recreates the database schema to BatchExpert+ 2.5. First drop,
+		          then create. On the next tab we populate the tables to support the units that are 
+		          already defined by tags.
+		</preamble>
+		<artifact name="Drop Tables" type="drop">
+			<comment>Clear the existing database of all tables, procedures and indices. This step is only appropriate
+			         if the database is to be completely re-created.</comment>
+			<script>ils.be.database.bedb.clearDatabase()</script>
+		</artifact>
+		<artifact name="Create Tables" type="create">
+			<script>ils.be.database.bedb.createDatabase()</script>
+			<comment>Create tables and indices required for Batch Expert.</comment>
+		</artifact>
+	</panel>
+	<panel type="python" essential="true" version="8">
+		<title>Database Scripts for Batch Expert+ 2.5</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.5. 
+				We also populate the tables with common choose list entries.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
-			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
+			<comment>Update table structure for BE+ 2.5.</comment>
+		</artifact>
+		<artifact name="Populate Tables" type="insert">
+			<script>ils.be.database.bedb.initializeDatabase()</script>
+			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true" version="3">
-		<title>Icons</title>
-		<preamble>A small number of custom icons are used in Vision screens. </preamble>
-		<artifact name="Custom Icons" type="ils" subtype="icon">
-			<location>artifacts/icons</location>
+	<panel type="tag" subtype="production" essential="true" version="7">
+		<title>Install UDT Definitions</title>
+		<preamble>This page creates the standard Batch Expert user-defined-tags.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
-		<title>Update Custom Modules</title>
-		<preamble>This step updates the ILS custom modules necessary for BatchExpert+
+	<panel type="tag" subtype="production" essential="true" version="3">
+		<title>Install Custom UDT Definitions for FDL</title>
+		<preamble>This page creates the custom user-defined-tags for Dupont FDL.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<artifact name="FDL UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/gsk_udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="4">
+		<title>Install Tag Definitions for Test</title>
+		<preamble>This page creates tags corresponding to Dupont FDL fermenters.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<artifact name="Dupont FDL Unit Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/gsk_tags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="false" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
 		          installations that include the SFC feature.
 		</preamble>
 		<property name="SFC" type="feature">TRUE</property>
@@ -195,38 +209,54 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Update Custom Modules</title>
-		<preamble>This step updates the ILS custom modules necessary for BatchExpert+.
+	<panel type="module" subtype="production" essential="false" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
 		</preamble>
 		<property name="SFC" type="feature">FALSE</property>
 		<artifact name="Rangeslider Component" type="module">
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="21">
-		<title>Update the BatchExpert+ Project
+	<panel type="project" subtype="main" essential="true" version="16">
+		<title>Install BatchExpert+ 2.5 - Specially assembled for Dupont FDL
 		</title>
-		<preamble>BatchExpert+ is the main Ignition project. This page provides
-			for an update to an existing project. The update alters only &quot;Master&quot; resources. It preserves any custom
-			modifications which are stored in &quot;Site&quot; resources.
+		<preamble>Create Batch Expert+ 2.5 for Dupont FDL. This project includes 
+		          FDL-specific configuration.
 		</preamble>
-		<property name="provider" type="production">default</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
-		<artifact name="BatchExpertMaster" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertMaster.proj</location>
-			<comment>Merge the latest BatchExpert+ common resources 
-					 into the selected existing project. </comment>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpert25" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpert25.proj</location>
+			<comment>Create a BatchExpert+ 2.5 project for Dupont FDL. </comment>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="2">
-		<title>Configuration Scripts</title>
-		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.5.
+	<panel type="project" subtype="alarm" essential="false" version="1">
+		<title>Install the Global Project
+		</title>
+		<preamble>This page handles installation of the BatchExpert global project.
+			The basic global project contains the default alarm pipeline configuration. 
 		</preamble>
-		<artifact name="Configure Pen Palette" type="alter">
-			<script>ils.be.configuration.config.configurePenColorTag()</script>
-			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
+		<artifact name="BatchExpertGlobal" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertGlobal.proj</location>
+			<comment>Create the baseline global resources for
+					 the BatchExpert+.
+					 These consist of an alarm pipeline. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="sfc" essential="false" version="1">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of charts for sequential control of batch operations.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. Multiple chart hierarchies can be updated
+			from this one page. 
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="BatchExpertSFC" type="project" subtype="global">
+			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
+			<comment>Merge new or modified global resources from
+					 the BatchExpert+ update into the global project.
+					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
 	<panel type="defaults" essential="true" version="8">
@@ -234,38 +264,41 @@
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
 			are unaffected. NOTE: If this is the first update beyond BE+ 2.2,
-			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
+			check for existing entries in the now obsolete script package, project.customer.callbacks.
 			These need to moved to the appropriate module in the project.customer.callback package.
 		</preamble>
-	    The  artifact subtype will always be "partial" 
+	    <!-- The  artifact subtype will always be "partial" -->
 		<artifact name="Defaults" type="project" subtype="partial">
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
-	<panel type="toolkit" essential="true" version="5">
+	<panel type="toolkit" essential="false" version="5">
 		<title>Set Gateway Defaults</title>
-		<preamble>Set the default data-source for project and tag provider.
+		<preamble>Set properties in the internal database of the Gateway.
+			In particular, the project and provider default datasources are set. This is critical for
+			proper operation of tags bound to databases.
 		</preamble>
+		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
+		      The SMTP Profile must precede the alarm profile.  -->
 		<!--  Values for these properties are taken from the definition page -->
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
-	<panel type="documentation" essential="false">
-		<title>Product Documentation</title>
-		<preamble>In addition to the release notes, documentation includes a getting started guide.
+	<panel type="python" essential="true" version="1">
+		<title>Initialize Unit UDTs</title>
+		<preamble>Point the unit UDT batchIDs to the latest batches.
 		</preamble>
-		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
-		<artifact name="Getting Started Guide" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/BEGettingStarted.docx</location>
+		<artifact name="Update Batch IDs" type="alter">
+			<script>ils.be.configuration.config.updateBatchIDs()</script>
+			<comment>Update the unit batchID values to the current batch.</comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of Batch Expert+ in
+		 Selecting "Finish" will record the current version of BatchExpert+ in
 			the Gateway internal database.
 		</preamble>
 	</panel>
