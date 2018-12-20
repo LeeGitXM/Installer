@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">41</property>
+	<property name="version">42</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -21,7 +21,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="16">
+	<panel type="file" essential="true" version="17">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -42,7 +42,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="false" version="9">
+	<panel type="tag" subtype="production" essential="false" version="10">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags and defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -134,7 +134,7 @@
 		</artifact>
 	</panel>
 	<panel type="python" essential="false" version="7">
-		<title>Database Scripts for Batch Expert+ Testing</title>
+		<title>Database Scripts for Batch Expert+ TESTING ONLY</title>
 		<preamble>This page recreates the database schema to BatchExpert+ 2.5. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
 		          already defined by tags.
@@ -149,7 +149,7 @@
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="8">
+	<panel type="python" essential="true" version="9">
 		<title>Database Scripts for Batch Expert+ 2.5</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.5. 
 				We also populate the tables with common choose list entries.
@@ -160,10 +160,10 @@
 		</artifact>
 		<artifact name="Populate Tables" type="insert">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
-			<comment>Populate tables with common choose-list entries.</comment>
+			<comment>Populate tables with common choose-list entries. This will not overwrite existing values.</comment>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="7">
+	<panel type="tag" subtype="production" essential="true" version="8">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard Batch Expert user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -173,7 +173,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="3">
+	<panel type="tag" subtype="production" essential="true" version="4">
 		<title>Install Custom UDT Definitions for FDL</title>
 		<preamble>This page creates the custom user-defined-tags for Dupont FDL.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -181,11 +181,11 @@
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
 		<artifact name="FDL UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/gsk_udts.xml</location>
+			<location>artifacts/tags/fdl_udts.xml</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="4">
-		<title>Install Tag Definitions for Test</title>
+		<title>Install Tag Definitions for TESTING ONLY</title>
 		<preamble>This page creates tags corresponding to Dupont FDL fermenters.
 		          Do NOT use in for production. These tags are for test systems only.
 		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
@@ -193,10 +193,10 @@
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
 		<artifact name="Dupont FDL Unit Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/gsk_tags.xml</location>
+			<location>artifacts/tags/fdl_tags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="false" version="1" >
+	<panel type="module" subtype="production" essential="false" version="2" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
 		          installations that include the SFC feature.
@@ -218,11 +218,12 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="16">
-		<title>Install BatchExpert+ 2.5 - Specially assembled for Dupont FDL
+	<panel type="project" subtype="main" essential="true" version="17">
+		<title>Install BatchExpert+ 2.5 - Specially assembled for Dupont FDL.
 		</title>
 		<preamble>Create Batch Expert+ 2.5 for Dupont FDL. This project includes 
-		          FDL-specific configuration.
+		          FDL-specific configurations. It creates a project of a different name 
+		          than the existing, so it does not overwrite.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpert25" type="project" subtype="full">
@@ -259,7 +260,7 @@
 					 These consist of SFC properties. </comment>
 		</artifact>
 	</panel>
-	<panel type="defaults" essential="true" version="8">
+	<panel type="defaults" essential="false" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
 			required of the product. Scripts already in place
@@ -285,7 +286,7 @@
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
-	<panel type="python" essential="true" version="1">
+	<panel type="python" essential="false" version="1">
 		<title>Initialize Unit UDTs</title>
 		<preamble>Point the unit UDT batchIDs to the latest batches.
 		</preamble>
