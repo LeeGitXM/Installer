@@ -116,8 +116,24 @@
 		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
 		</delete>
+		
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
+		
+		<!-- Icons -->
+		<mkdir dir="${artifact.dir}/icons" />
+		<copy todir="${artifact.dir}/icons">
+			<fileset dir="${git.repo}/batch-expert/images">
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+				<include name="**/*.png" />
+			</fileset>
+			<fileset dir="${sandbox}/images">
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
 		
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
