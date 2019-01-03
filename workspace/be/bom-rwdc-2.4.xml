@@ -246,6 +246,7 @@
 					 These consist of an alarm pipeline. </comment>
 		</artifact>
 	</panel>
+	<!--  
 	<panel type="defaults" essential="true" version="8">
 		<title>Ensure Existence of All Required Interfaces</title>
 		<preamble>Create default versions of any missing interfaces 
@@ -254,11 +255,11 @@
 			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
 			These need to moved to the appropriate module in the project.customer.callback package.
 		</preamble>
-	    <!-- The  artifact subtype will always be "partial" -->
 		<artifact name="Defaults" type="project" subtype="partial">
 			<location>artifacts/projects/defaults.proj</location>
 		</artifact>
 	</panel>
+	-->
 	<panel type="toolkit" essential="false" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set properties in the internal database of the Gateway.
