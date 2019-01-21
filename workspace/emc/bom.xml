@@ -812,6 +812,12 @@
 		<artifact name="G-Line Migration Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/GLineMigrationSpecification.docx</location>
 		</artifact>
+		<artifact name="G-Line Migration Score Card" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/GLineScoreCard.xlsx</location>
+		</artifact>
+		<artifact name="G-Line Migration Poly SFC Score Card" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/GLinePolySfcScoreCard.xlsx</location>
+		</artifact>
 		
 	</panel>
 	<panel type="toolkit" essential="true" version="3">

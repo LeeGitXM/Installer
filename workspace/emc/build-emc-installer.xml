@@ -109,6 +109,9 @@
 		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/Documentation/Escorez Migration Specification.docx" tofile="${artifact.dir}/doc/EscorezMigrationSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Design Specification.docx" tofile="${artifact.dir}/doc/GLineDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Migration Specification.docx" tofile="${artifact.dir}/doc/GLineMigrationSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/BRPP G-Line Migration Score Card.xlsx" tofile="${artifact.dir}/doc/GLineScoreCard.xlsx" />
+		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/G-Line Poly Unit Procedure Score Card.xlsx" tofile="${artifact.dir}/doc/GLinePolySfcScoreCard.xlsx" />
+		
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
 
