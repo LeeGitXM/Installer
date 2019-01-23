@@ -2284,7 +2284,8 @@ public class InstallerDataHandler {
 			String path = original.getFolderPath(res.getResourceId());
 			// Don't delete folders from the original as deleting the folder orphans its children
 			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+//			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
+			if( partialResources.get(key)!=null ) {
 				log.infof("%s.mergeGlobalProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
 				toBeDeleted.add(res);
 			}
