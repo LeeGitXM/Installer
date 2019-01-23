@@ -755,9 +755,6 @@
 		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
 			<location>artifacts/doc/blt/javadoc.zip</location>
 		</artifact>
-		<artifact name="Diagnostic Toolkit User Interface Test Spec" type="documentation" subtype="docx" release="1.00">
-			<location>artifacts/doc/DiagnosticToolkitUserInterfaceTestSpec.docx</location>
-		</artifact>
 		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
@@ -814,6 +811,12 @@
 		</artifact>
 		<artifact name="G-Line Migration Specification" type="documentation" subtype="docx" release="1.9">
 			<location>artifacts/doc/GLineMigrationSpecification.docx</location>
+		</artifact>
+		<artifact name="G-Line Migration Score Card" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/GLineScoreCard.xlsx</location>
+		</artifact>
+		<artifact name="G-Line Migration Poly SFC Score Card" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/GLinePolySfcScoreCard.xlsx</location>
 		</artifact>
 		
 	</panel>
