@@ -121,7 +121,7 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database/mysql" />
-		<copy file="${sandbox}/BE2.4_MYSQL_Inserts.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
+		<copy file="${sandbox}/BE2.5_MYSQL_Inserts.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
 		
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
