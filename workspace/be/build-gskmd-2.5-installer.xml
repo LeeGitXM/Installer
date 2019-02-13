@@ -130,7 +130,7 @@
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
 		<copy file="${sandbox}/GSKMDUDTs.xml" tofile="${artifact.dir}/tags/gsk_udts.xml" />
-		<copy file="${sandbox}/GSKMDOPCTags.xml" tofile="${artifact.dir}/tags/gsk_tags.xml" />
+		<copy file="${sandbox}/GSKMDMemoryTags.xml" tofile="${artifact.dir}/tags/gsk_tags.xml" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
