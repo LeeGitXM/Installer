@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">49</property>
+	<property name="version">52</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -44,7 +44,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="22">
+	<panel type="file" essential="true" version="25">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -65,7 +65,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="10">
+	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install UDT Definitions</title>
 		<preamble>This page defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -167,16 +167,16 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="11">
+	<panel type="python" essential="true" version="12">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.5.
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.6.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
-	<panel type="icon" essential="true" version="3">
+	<panel type="icon" essential="true" version="4">
 		<title>Icons</title>
 		<preamble>A small number of custom icons are used in Vision screens. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
@@ -205,7 +205,7 @@
 			<location>artifacts/modules/rangeslider-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="25">
+	<panel type="project" subtype="main" essential="true" version="27">
 		<title>Update the BatchExpert+ Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
@@ -223,7 +223,7 @@
 	</panel>
 	<panel type="python" essential="true" version="2">
 		<title>Configuration Scripts</title>
-		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.5.
+		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 2.6.
 		</preamble>
 		<artifact name="Configure Pen Palette" type="alter">
 			<script>ils.be.configuration.config.configurePenColorTag()</script>
