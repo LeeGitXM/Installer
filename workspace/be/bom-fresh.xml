@@ -19,7 +19,8 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+</title>
 		<preamble>Welcome to the ILS Automation installer for Batch Expert+. 
-			This version of the installer is designed for new installations.
+			This version of the installer is designed for new installations
+			on Ignition 8.
 			It installs a &quot;bare-bones&quot; project along with a collection 
 			of example screens to accelerate configuration.
 			Before continuing, please make sure that you have 

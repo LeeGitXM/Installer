@@ -52,14 +52,12 @@ public class DefinitionStep extends BasicInstallerPanel {
 
 	public DefinitionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
-
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 
 		// Display the pull downs based on panel properties.
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
 		List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
-    
 		// If the property already has a value, don't show the field.
     	for(PropertyItem prop:properties) {
     		String type = prop.getType();
@@ -112,7 +110,6 @@ public class DefinitionStep extends BasicInstallerPanel {
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
 	    		}
 			}
-    		
     	}
 		
     	// Create all the wicket widgets, just don't make them all visible
@@ -141,7 +138,7 @@ public class DefinitionStep extends BasicInstallerPanel {
     	add(secondaryDBMSLabel);
     	DBMSList secondaryDBMSs = new DBMSList("secondaryDBMSs", new PropertyModel<String>(this, "secondaryDBMS"), getDBMSList());
 		add(secondaryDBMSs);
-		
+		/*
 		// Adjust visibility
 		productionDatabaseLabel.setVisible(showProductionDatabase);
 		secondaryDatabaseLabel.setVisible(showSecondaryDatabase);
@@ -156,8 +153,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 		secondaryDBMSs.setVisible(showSecondaryDBMS);
 		productionProviders.setVisible(showProductionProvider);
 		secondaryProviders.setVisible(showSecondaryProvider);
-		
+*/
 		// Select Defaults
+		/*
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
 		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
 		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
@@ -175,15 +173,16 @@ public class DefinitionStep extends BasicInstallerPanel {
 			(showSecondaryProvider  && secondaryProvider==null)    )  {
 			valid = false;
 		}
-		
+*/
 		// Save selections
+
 		add(new Button("save") {
 			private static final long serialVersionUID = 3996079889888596264L;
 
 			public void onSubmit() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
-				
+				/*
 				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),productionDatabase.getName());
 				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),secondaryDatabase.getName());
 				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),productionDBMS);
@@ -200,22 +199,24 @@ public class DefinitionStep extends BasicInstallerPanel {
 				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
 				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("secondary tag provider is not defined. ");
 				if( msg.length()==0 ) {
-					/*
-					 * We want to allow this in the EMC installation.
-					if(showPoductionDatabase&&showSecondaryDatabase&&
-					  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
-						msg.append("Production and secondary databases may not be the same. ");
-					}
-					*/
+					//
+					// We want to allow this in the EMC installation.
+					//if(showPoductionDatabase&&showSecondaryDatabase&&
+					//  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
+					//	msg.append("Production and secondary databases may not be the same. ");
+					//}
+					//
 					if(showProductionProvider&&showSecondaryProvider&&
 							  productionProvider.getName().equalsIgnoreCase(secondaryProvider.getName())) {
 								msg.append("Production and secondary tag providers may not be the same. ");
 					}
+					*/
 				}
 				
 				// If there are scripts attached to the properties, execute them. The scripts rely on the property value 
 				// being set. We don't bother setting unless there is a script involved.
 				// If the property has a value already, use it.
+			/*
 				for(PropertyItem property:properties) {
 					String type = property.getType();
 					if(type==null || type.isEmpty()) continue;
@@ -243,14 +244,15 @@ public class DefinitionStep extends BasicInstallerPanel {
 		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDatabase.getName());
 		        		}
 		    			String result = dataHandler.executePythonFromProperty(property);
-		    			//System.out.println(String.format("DefinitionStep: Executing script: "+script));
+		    			System.out.println(String.format("DefinitionStep: Executing script: "+script));
 		    			if( !result.isEmpty()) {
-		    				//System.out.println(String.format("DefinitionStep: Script error: \n"+result));
+		    				System.out.println(String.format("DefinitionStep: Script error: \n"+result));
 		    				msg.append(result);
 		    				break;
 		    			}
 		    		}
 				}
+				
 				
 				if( msg.length()==0) {
 					valid = true;
@@ -264,7 +266,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 
 				saved = true;
             }
+*/
         });
+     
 	}
 
 

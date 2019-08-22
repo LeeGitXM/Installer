@@ -19,12 +19,10 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+</title>
 		<preamble>This is the ILS Automation installer for Batch Expert+.
-			This version of the installer is configured to update existing 3.0 installations
-			to the latest version of Batch Expert+. 
-			It is not designed to perform a fresh install.
-			The table below compares the existing versions of
-			Batch Expert+, if any, with the versions contained in this new
-			installation. Before continuing, please make sure that you have 
+			It has been configured to update existing installations 
+			to the latest version of Batch Expert+ on Ignition 8. 
+			The table below compares the existing installed version of
+			Batch Expert+ with the versions contained in this package. Before continuing, please make sure that you have 
 			defined a data source and that it is configured to a schema version of at least
 			Batch Expert+ 2.6.
 		</preamble>
@@ -192,21 +190,15 @@
 		<artifact name="Python SFC" type="module">
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
 	</panel>
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Update Custom Modules</title>
 		<preamble>This step updates the ILS custom modules necessary for BatchExpert+.
 		</preamble>
 		<property name="SFC" type="feature">FALSE</property>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="29">
-		<title>Update the BatchExpert+ Project
+		<title>Install the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
 			for an update to an existing project. The update alters only &quot;Master&quot; resources. It preserves any custom
@@ -215,10 +207,10 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="BatchExpertMaster" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertMaster.proj</location>
-			<comment>Merge the latest BatchExpert+ common resources 
-					 into the selected existing project. </comment>
+		<artifact name="BatchExpertMaster" type="project" subtype="main">
+			<location>artifacts/projects/BatchExpertMaster.zip</location>
+			<comment>Install the latest BatchExpert+ parent project (Master) 
+					 into the existing gateway. </comment>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="2">
@@ -230,21 +222,6 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
-	<!--  
-	<panel type="defaults" essential="true" version="8">
-		<title>Ensure Existence of All Required Interfaces</title>
-		<preamble>Create default versions of any missing interfaces 
-			required of the product. Scripts already in place
-			are unaffected. NOTE: If this is the first update beyond BE+ 2.2,
-			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
-			These need to moved to the appropriate module in the project.customer.callback package.
-		</preamble>
-	    The  artifact subtype will always be "partial" 
-		<artifact name="Defaults" type="project" subtype="partial">
-			<location>artifacts/projects/defaults.proj</location>
-		</artifact>
-	</panel>
-	-->
 	<panel type="toolkit" essential="true" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set the default data-source for project and tag provider.
