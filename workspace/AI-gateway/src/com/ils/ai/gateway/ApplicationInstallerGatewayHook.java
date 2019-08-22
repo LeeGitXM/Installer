@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016. ILS Automation. All rights reserved.
+ */
 package com.ils.ai.gateway;
 
 import java.sql.SQLException;
@@ -20,6 +23,7 @@ import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.web.models.ConfigCategory;
 import com.inductiveautomation.ignition.gateway.web.models.IConfigTab;
+
 
 public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
 	private final static String CLSS = "ApplicationInstallerGatewayHook";
@@ -87,7 +91,7 @@ public class ApplicationInstallerGatewayHook extends AbstractGatewayModuleHook {
     	panels.add(ConfigurationPanel.MENU_ENTRY);
     	return panels;
     }
-    
+ 
     @Override
     public void startup(LicenseState licenseState) {
 

@@ -3,7 +3,10 @@
  */
 package com.ils.ai.gateway.panel;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,8 +28,9 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.ProjectNameFinder;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.Project;
-import com.inductiveautomation.ignition.common.project.ProjectVersion;
+import com.inductiveautomation.ignition.common.project.RuntimeProject;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
+import com.inductiveautomation.ignition.gateway.project.ProjectManager;
 
 /**
  */
@@ -164,84 +168,6 @@ public class ProjectStep extends BasicInstallerPanel {
 		});
 		full.add(newProjectForm);
 		add(full);
-
-		// Merge project form
-		WebMarkupContainer partial = new WebMarkupContainer("partial");
-		partial.setVisible(!partialProjectLocation.isEmpty());
-
-		mergeProjectForm = new Form<InstallerData>("mergeForm", new CompoundPropertyModel<InstallerData>(data));
-
-		Label partialProject = new Label("partialProject",partialProjectName);
-		mergeProjectForm.add(partialProject);
-		Label partialProjectCommentLabel = new Label("partialProjectComment",partialProjectComment);
-		mergeProjectForm.add(partialProjectCommentLabel);
-
-		projects = new ProjectList("projects", new PropertyModel<Project>(this, "selectedProject"), getProjects());
-		mergeProjectForm.add(projects);
-
-		mergeProjectForm.add(new Button("merge") {
-			private static final long serialVersionUID = 4110668774811578782L;
-
-			public void onSubmit() {
-				String result = null;
-
-				if(backupProject) result = createBackup(fullProjectName);
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-
-				if( result==null ) {
-					if( selectedProject==null) selectedProject = getProject(fullProjectName);
-					if( selectedProject!=null) {
-						//System.out.println(String.format("ProjectStep.onSubmit: Merging project %s with %s",selectedProject.getName(),partialProjectName));
-						result = handler.mergeWithProjectFromArtifact(selectedProject,partialProjectLocation,partialProjectName,data);
-						//System.out.println(String.format("ProjectStep.onSubmit: Merged project name is now %s",selectedProject.getName()));
-					}
-					else {
-						result = "No project selected as the target of the merge";
-					}
-				}
-				if( result==null ) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					panelData.setCurrentVersion(futureVersion);
-					info(String.format("Project %s merged successfully", partialProjectName));
-				}
-				else {
-					error(result);
-				}
-			}
-		});
-		partial.add(mergeProjectForm);
-		add(partial);
-
-		// Global project form
-		WebMarkupContainer global = new WebMarkupContainer("global");
-		global.setVisible(!globalProjectLocation.isEmpty());
-		Form<InstallerData> globalProjectForm = new Form<InstallerData>("globalForm", new CompoundPropertyModel<InstallerData>(data));
-		Label globalProject = new Label("globalProject",globalProjectName);
-		globalProjectForm.add(globalProject);
-		Label globalProjectCommentLabel = new Label("globalProjectComment",globalProjectComment);
-		globalProjectForm.add(globalProjectCommentLabel);
-
-		TextField<String> globalname = new TextField<String>("globalName", Model.of(""));
-		globalProjectForm.add(globalname);
-
-		globalProjectForm.add(new Button("mergeGlobal") {
-			private static final long serialVersionUID = 4110888774811578782L;
-
-			public void onSubmit() {
-				InstallerDataHandler handler = InstallerDataHandler.getInstance();
-				String result = handler.mergeWithGlobalProjectFromArtifact(globalProjectLocation,data);
-				if( result==null ) {
-					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-					panelData.setCurrentVersion(futureVersion);
-					info(String.format("Global project updated successfully"));
-				}
-				else {
-					error(result);
-				}
-			}
-		});
-		global.add(globalProjectForm);
-		add(global);
 	}
 
 
@@ -273,18 +199,26 @@ public class ProjectStep extends BasicInstallerPanel {
 
 		@Override
 		public String getIdValue(Project project, int i) {
-			return new Long(project.getId()).toString();
+			return project.getName();
 		}
 	}
 
 	//===============================================================================
 	private List<Project> getProjects() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		return context.getProjectManager().getProjectsLite(ProjectVersion.Published);
+		ProjectManager projManager = context.getProjectManager();
+		List<String> names = projManager.getProjectNames();
+		List<Project> result = new ArrayList<>();
+		for(String name:names ) {
+			Optional<RuntimeProject> optional = projManager.getProject(name);
+			result.add(optional.get());
+		}
+		return result;
 	}
 	private Project getProject(String name) {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		return context.getProjectManager().getProject(name, ApplicationScope.ALL, ProjectVersion.Published);
+		Optional<RuntimeProject> optional = context.getProjectManager().getProject(name, ApplicationScope.ALL);
+		return optional.get();
 	}
 	// Find an unused name and copy the original to it.
 	private String createBackup(String oldName) {

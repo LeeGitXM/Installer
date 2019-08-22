@@ -12,10 +12,7 @@
 		</classpath>
 	</taskdef>
 
-	
-
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
-	<property name="p200props" value="${build.dir}/pack200.properties" />
 
 	<tstamp>
 		<format property="build.date" pattern="MM/dd/yyyy hh:mm aa" />
@@ -23,15 +20,15 @@
 
 	<!-- SDK jar classpath. This classpath includes all the jars needed to build a module against the SDK. -->
 	<path id="ignition.classpath">
-		<fileset dir="${git.repo}/ignition-79/lib" includes="*.jar" />
+		<fileset dir="${git.repo}/ignition-80/lib" includes="*.jar" />
 	</path>
 	<!-- External jar classpath. This classpath includes the remaining jars needed to build the module. -->
 	<path id="external.classpath">
 		<fileset dir="${git.repo}/external/lib" includes="commons-lang*.jar" />
-			<fileset dir="${git.repo}/external/lib" includes="jython*.jar" />
-		 <fileset dir="${git.repo}/external/lib" includes="ils-common.jar" />
-		 <fileset dir="${git.repo}/external/lib" includes="log4j-*.jar" />
-		 <fileset dir="${git.repo}/external/lib" includes="slf4j-*.jar" />
+		<fileset dir="${git.repo}/external/lib" includes="jython*.jar" />
+		<fileset dir="${git.repo}/external/lib" includes="ils-common.jar" />
+		<fileset dir="${git.repo}/external/lib" includes="log4j-*.jar" />
+		<fileset dir="${git.repo}/external/lib" includes="slf4j-*.jar" />
 	</path>
 	
 	<!-- Generic Buildfile: Reference Via Antcalls -->

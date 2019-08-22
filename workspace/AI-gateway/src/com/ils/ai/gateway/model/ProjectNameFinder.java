@@ -6,8 +6,6 @@ package com.ils.ai.gateway.model;
 import java.util.List;
 
 import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
-import com.inductiveautomation.ignition.common.project.Project;
-import com.inductiveautomation.ignition.common.project.ProjectVersion;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 
@@ -23,14 +21,13 @@ public class ProjectNameFinder  {
 	 */
 	public String findUnused(String currentName) {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		// getProjectsLite does not include resources with the project
-		List<Project> projects = context.getProjectManager().getProjectsLite(ProjectVersion.Staging);
+		List<String> names = context.getProjectManager().getProjectNames();
 		int index = 0;
 		String proposed = currentName;
 		for(;;) {
 			boolean found = false;
-			for(Project project:projects) {
-				if( project.getName().equalsIgnoreCase(proposed) ) {
+			for(String name:names) {
+				if( name.equalsIgnoreCase(proposed) ) {
 					found = true;
 					proposed = proposed+nextSuffix(index);
 					break;

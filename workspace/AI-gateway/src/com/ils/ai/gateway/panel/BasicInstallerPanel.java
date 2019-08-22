@@ -3,10 +3,11 @@
  */
 package com.ils.ai.gateway.panel;
 
+import java.io.File;
+
 import org.apache.wicket.Application;
 import org.apache.wicket.extensions.wizard.dynamic.IDynamicWizardStep;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.file.File;
 import org.apache.wicket.util.time.Duration;
 
 import com.ils.ai.gateway.InstallerConstants;

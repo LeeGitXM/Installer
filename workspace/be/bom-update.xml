@@ -13,20 +13,20 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">55</property>
+	<property name="version">56</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+</title>
 		<preamble>This is the ILS Automation installer for Batch Expert+.
-			This version of the installer is configured to update existing 2.0 installations
+			This version of the installer is configured to update existing 3.0 installations
 			to the latest version of Batch Expert+. 
 			It is not designed to perform a fresh install.
 			The table below compares the existing versions of
 			Batch Expert+, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined a data source and that it is configured to a schema version of at least
-			Batch Expert+ 2.0.
+			Batch Expert+ 2.6.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>

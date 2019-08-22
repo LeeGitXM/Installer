@@ -1,5 +1,5 @@
 /**
- * Copyright 2016. ILS Automation. All rights reserved.
+ * Copyright 2019. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway;
 
@@ -15,8 +15,9 @@ import com.inductiveautomation.ignition.gateway.web.components.ConfigPanel;
 import com.inductiveautomation.ignition.gateway.web.models.ConfigCategory;
 import com.inductiveautomation.ignition.gateway.web.models.DefaultConfigTab;
 
+
 /**
- * A configuration tab where the title string is directly settable. The
+ * An IConfigTab where the title string is directly settable. The
  * title does not rely on a resource bundle. We maintain both the menu location
  * and title privately.
  * 
@@ -24,7 +25,7 @@ import com.inductiveautomation.ignition.gateway.web.models.DefaultConfigTab;
  * CategoryName is menuLoction.getLeft()
  * Pair.of(category.getName().toLowerCase(), name.toLowerCase())
  */
-public class DirectTextConfigTab extends DefaultConfigTab  {
+public class DirectTextConfigTab extends DefaultConfigTab {
 	private Pair<String,String> dtMenuLocation = null;
 	private IModel<String> dtTitle = null;
 

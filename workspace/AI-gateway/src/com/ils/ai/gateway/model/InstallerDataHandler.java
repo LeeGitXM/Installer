@@ -1,12 +1,11 @@
 /**
- *   (c) 2016-2018  ILS Automation. All rights reserved. 
+ *   (c) 2016-2019  ILS Automation. All rights reserved. 
  */
 package com.ils.ai.gateway.model;
 
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.Stack;
@@ -29,12 +29,11 @@ import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.zip.GZIPOutputStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang3.SerializationException;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -59,25 +58,30 @@ import com.inductiveautomation.ignition.common.TypeUtilities;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
 import com.inductiveautomation.ignition.common.project.GlobalProps;
 import com.inductiveautomation.ignition.common.project.Project;
-import com.inductiveautomation.ignition.common.project.ProjectPublishMode;
-import com.inductiveautomation.ignition.common.project.ProjectResource;
-import com.inductiveautomation.ignition.common.project.ProjectVersion;
+import com.inductiveautomation.ignition.common.project.ProjectFileUtil;
+import com.inductiveautomation.ignition.common.project.ProjectImport;
+import com.inductiveautomation.ignition.common.project.ProjectManifest;
+import com.inductiveautomation.ignition.common.project.RuntimeProject;
+import com.inductiveautomation.ignition.common.project.resource.ProjectResource;
 import com.inductiveautomation.ignition.common.script.JythonExecException;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.user.AuthenticatedUser;
 import com.inductiveautomation.ignition.common.user.BasicAuthenticatedUser;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
-import com.inductiveautomation.ignition.common.xmlserialization.SerializationException;
 import com.inductiveautomation.ignition.common.xmlserialization.deserialization.XMLDeserializer;
 import com.inductiveautomation.ignition.common.xmlserialization.serialization.XMLSerializer;
-import com.inductiveautomation.ignition.gateway.SRContext;
+import com.inductiveautomation.ignition.gateway.IgnitionGateway;
+import com.inductiveautomation.ignition.gateway.gan.GatewayNetworkManager;
 import com.inductiveautomation.ignition.gateway.images.ImageFormat;
 import com.inductiveautomation.ignition.gateway.images.ImageManager;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.project.ProjectManager;
 import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
+import com.inductiveautomation.ignition.gateway.sqltags.distributed.TagProviderService;
 import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
+import com.inductiveautomation.metro.api.ServerId;
+
 
 /**
  *  This can be used to fetch information from the install bundle
@@ -167,10 +171,10 @@ public class InstallerDataHandler {
 							setPreference(name,key,root+FILE_SEPARATOR+value);
 						}
 						else if( type.equalsIgnoreCase("lib")) {
-							setPreference(name,key,context.getLibDir().getAbsolutePath()+FILE_SEPARATOR+value);
+							setPreference(name,key,context.getSystemManager().getLibDir().getAbsolutePath()+FILE_SEPARATOR+value);
 						}
 						else if( type.equalsIgnoreCase("user-lib")) {
-							setPreference(name,key,context.getUserlibDir().getAbsolutePath()+FILE_SEPARATOR+value);
+							setPreference(name,key,context.getSystemManager().getUserLibDir().getAbsolutePath()+FILE_SEPARATOR+value);
 						}
 						else {
 							log.infof("%s.applyPreferences: Preference %s on panel %d, unrecognized type (%s)", CLSS,key,panelIndex,type);
@@ -199,7 +203,7 @@ public class InstallerDataHandler {
 		if( context!=null ) {
 			try {
 				log.infof("%s.backup: starting backup ...",CLSS);
-				BackupServlet.generateBackup(SRContext.get(), outstream, BackupType.DATA_ONLY);
+				BackupServlet.generateBackup(IgnitionGateway.get(), outstream, BackupType.DATA_ONLY);
 				log.infof("%s.backup: completed backup.",CLSS);
 			}
 			catch(Exception ex) {
@@ -213,6 +217,7 @@ public class InstallerDataHandler {
 	 * Create a new project with resources copied from am existing one.
 	 * We are guaranteed that the new project does not yet exist.
 	 * Save the newly copied project.
+	 * ISSUE:  Can no longer set disabled.
 	 * @param oldName
 	 * @param backupName
 	 * @return
@@ -222,15 +227,11 @@ public class InstallerDataHandler {
 		
 		ProjectManager pmgr = getContext().getProjectManager();
 		try {
-			pmgr.copyProject(oldName, backupName, true); // Will overwrite, name, true); 
-			Project backup = pmgr.getProject(backupName, ApplicationScope.ALL, ProjectVersion.Published);
-			backup.setEnabled(false);
-			GlobalProps props = pmgr.getProps(backup.getId(), ProjectVersion.Published);
-			String adminProfile = getAdministrativeProfile(model);
-			String adminUser = getAdministrativeUser(model);
-			AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-			pmgr.saveProject(backup, user, "n/a", 
-					String.format("ILS Automation Installer: updated from %s",oldName), false);
+			pmgr.copyProject(oldName, backupName); // Will not overwrite, generates new name instead
+			Optional<RuntimeProject> optional = pmgr.getProject(backupName, ApplicationScope.ALL);
+			RuntimeProject backup = optional.get();
+			//backup.setEnabled(false);
+			pmgr.createOrReplaceProject(backup.getName(),backup.getManifest(), backup.getResources());
 		}
 		catch(Exception ex) {
 			result = String.format("Exception copying project %s (%s)",oldName,ex.getLocalizedMessage());
@@ -290,8 +291,8 @@ public class InstallerDataHandler {
 		if( System.getProperty("os.name").startsWith("Windows")) {
 			prefix = "C:";
 		}
-		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
-		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
+		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getSystemManager().getLibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getSystemManager().getUserLibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
 		Path path = Paths.get(prefix, destination);
 		if( type.equalsIgnoreCase("file") ) {
@@ -1493,8 +1494,8 @@ public class InstallerDataHandler {
 			toRoot = "C:";
 		}
 		
-		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
-		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
+		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getSystemManager().getLibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getSystemManager().getUserLibDir().getAbsolutePath();
 		String destination = artifact.getDestination();
 		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
 		log.info(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
@@ -1632,53 +1633,16 @@ public class InstallerDataHandler {
 			JarEntry entry = jar.getJarEntry(location);
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
+				ProjectImport importer = ProjectFileUtil.fromInputStream(projectReader, name);
 				ProjectManager pmgr = getContext().getProjectManager();
-				Project project = Project.fromXML(projectReader);
-				project.setName(name);
-				String description = project.getDescription();
-				project.setDescription(updateProjectDescription(description,model));
-				project.setEnabled(false);
-				
-				ProjectResource propsResource = project.getResourceOfType(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE);
-				long propsResoureceId = -1;
-				if( propsResource!=null ) {
-					propsResoureceId = propsResource.getResourceId();
+				List<ProjectResource> prlist = new ArrayList<>();
+				for(ProjectResource res:importer.getResources()) {
+					prlist.add(res);
 				}
-				else {
-					// Look for an unused resourceId
-					propsResoureceId = 1L;
-					while(project.getResource(propsResoureceId)!=null ) {
-						propsResoureceId = propsResoureceId + 1;
-					}
-				}
-				GlobalProps globalProps = project.decodeOrCreate(GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, context.createDeserializer(), GlobalProps.class);
-				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(getContext());
-				globalProps.setAuthProfileName(profile);
-				globalProps.setDefaultDatasourceName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
-				globalProps.setDefaultSQLTagsProviderName(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
-				XMLSerializer serializer = new XMLSerializer();
-				serializer.getClassNameMap().addDefaults();
-				serializer.addObject(globalProps);
-				byte[] bytes = serializer.serializeBinary(true);
-				ProjectResource resource = new ProjectResource(propsResoureceId, GlobalProps.MODULE_ID, GlobalProps.RESOURCE_TYPE, null, ApplicationScope.GATEWAY, bytes);
-				project.putResource(resource, true);
-				pmgr.addProject(project, true);
-				
-				// Re-constitute the project from the project manager. Without this step, we end
-				// up with a project containing some duplicated resources. We don't know why this works ...
-				project = pmgr.getProject(project.getId(),ApplicationScope.GATEWAY,ProjectVersion.Staging);
-				project.setEnabled(false);
-				/*
-				for(ProjectResource res:project.getResources() ) {
-					log.info(String.format("InstallerDataHandler: res %d.%d %s (%s) = %s",project.getId(),res.getResourceId(),res.getName(),
-							res.getResourceType(),(project.isResourceDirty(res))?"DIRTY":"CLEAN"));
-				}
-				*/
-				String adminProfile = getAdministrativeProfile(model);
-				String adminUser = getAdministrativeUser(model);
-				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),
-											adminProfile,adminUser,globalProps.getRequiredRoles());
-				pmgr.saveProject(project, user, "n/a", "ILS Automation Installer: New project", true);
+				ProjectManifest.Builder builder = importer.getManifest().toBuilder();
+				builder.setEnabled(false);
+				builder.setDescription(updateProjectDescription(importer.getManifest().getDescription(),model));
+				pmgr.createOrReplaceProject(name, builder.build(),prlist);
 			}
 			else {
 				result = String.format("Project location %s does not match a path in the release bundle", location);
@@ -1709,7 +1673,7 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-	
+	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
 	public String loadArtifactAsScanClass(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
@@ -1717,7 +1681,10 @@ public class InstallerDataHandler {
 			List<ScanClass> scanClasses = scanUtil.listFromBytes(providerName,bytes);
 			try {
 				log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
-				context.getTagManager().getTagProvider(providerName).addScanClasses(scanClasses);	
+				GatewayNetworkManager netmgr = context.getGatewayAreaNetworkManager();
+				List<ServerId> servers = netmgr.getKnownServers();
+				TagProviderService tps = (TagProviderService)netmgr.getServiceManager().getService(servers.get(0), TagProviderService.class);
+				tps.addScanClasses(providerName,scanClasses);	
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
@@ -1817,262 +1784,8 @@ public class InstallerDataHandler {
 		}
 		return result;
 	}
-
-	// Start with the existing global project and merge in resources from a project in the bundle.
-	public String mergeWithGlobalProjectFromArtifact(String location,InstallerData model) {
-		String result = null;
-
-		ProjectManager pmgr = getContext().getProjectManager();
-		Path internalPath = getPathToModule(model);
-		InputStream projectReader = null;
-		JarFile jar = null;
-		try {
-			Project globalProject = pmgr.getGlobalProject(ApplicationScope.ALL);
-			jar = new JarFile(internalPath.toFile());
-			JarEntry entry = jar.getJarEntry(location);
-			if( entry!=null ) {
-				projectReader = jar.getInputStream(entry);
-				Project updateProject = Project.fromXML(projectReader);
-				mergeGlobalProject(globalProject,updateProject);
-				pmgr.addProject(globalProject, true);    // Overwrite the global project
-				// Re-constitute the project from the project manager. Without this step, we end
-				// up with a project containing some duplicated resources. We don't know why this works ...
-				globalProject = pmgr.getGlobalProject(ApplicationScope.GATEWAY);
-				globalProject.setEnabled(true);
-
-				GlobalProps globalProps = pmgr.getProps(globalProject.getId(), ProjectVersion.Staging);
-				String adminProfile = getAdministrativeProfile(model);
-				String adminUser = getAdministrativeUser(model);
-				AuthenticatedUser user = new BasicAuthenticatedUser(globalProps.getAuthProfileName(),adminProfile,adminUser,globalProps.getRequiredRoles());
-
-				pmgr.saveProject(globalProject, user, "n/a", 
-						String.format("ILS Automation Installer: global updated from %s",updateProject.getName()), true);  // Publish
-			}
-			else {
-				result = String.format("Project location %s does not match a path in the release bundle", location);
-			}
-		}
-		catch(SAXException saxe) {
-			result = String.format("SAX error loading project %s (%s)", location,saxe.getLocalizedMessage());
-		}
-		catch(IOException ioe) {
-			result = String.format("IO error reading project %s (%s)", location,ioe.getLocalizedMessage());
-		}
-		catch(Exception ex) {
-			result = String.format("Exception loading project %s (%s)",location,ex.getLocalizedMessage());
-		}
-		finally{
-			if(projectReader!=null) {
-				try {
-					projectReader.close();
-				}
-				catch(IOException ignore) {}
-			}
-			if( jar!=null ) {
-				try {
-					jar.close();
-				}
-				catch(IOException ignore) {}
-			}
-		}
-		return result;
-	}
-	/**
-	 *  Start with an existing project and copy resources into it from a named partial project.
-	 *  Leave it disabled.
-	 * @param mainLite a "lite" version of the project. It does not have all the resources.
-	 * @param location
-	 * @param name
-	 * @param model
-	 * @return
-	 */
 	
-	public String mergeWithProjectFromArtifact(Project mainLite,String location,String name,InstallerData model) {
-		String result = null;
-		if( mainLite!=null) {
-			ProjectManager pmgr = getContext().getProjectManager();
-			Path internalPath = getPathToModule(model);
-			InputStream projectReader = null;
-			JarFile jar = null;
-			try {
-				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Staging);
-				String description = main.getDescription();
-				main.setDescription(updateProjectDescription(description,model));
-				main.setEnabled(false);
-				
-				jar = new JarFile(internalPath.toFile());
-				JarEntry entry = jar.getJarEntry(location);
-				if( entry!=null ) {
-					projectReader = jar.getInputStream(entry);
-					Project updateProject = Project.fromXML(projectReader);
-					mergeProject(main,updateProject);
-					try {
-						pmgr.addProject(main, true);      // Overwrite itself
-						main = pmgr.getProject(main.getId(),ApplicationScope.ALL,ProjectVersion.Staging);
-						main.setEnabled(false);
-					}
-					// We get an error re-constituting the project in staging scope. It appears not to matter with us.
-					catch(Exception ex) {
-						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
-					}
-					
-					GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Staging);
-					
-					String adminProfile = getAdministrativeProfile(model);
-					String adminUser = getAdministrativeUser(model);
-					AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-					try {
-						pmgr.saveProject(main, user, "n/a", 
-							String.format("ILS Automation Installer: updated from %s",updateProject.getName()), false);
-					}
-					// We get an error notifying project listeners. It appears not to matter with us.
-					catch(Exception ex) {
-						log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
-					}
-				}
-				else {
-					result = String.format("Project location %s does not match a path in the release bundle", location);
-				}
-			}
-			catch(SAXException saxe) {
-				result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
-			}
-			catch(IOException ioe) {
-				result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
-			}
-			catch(Exception ex) {
-				result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
-			}
-			finally{
-				if(projectReader!=null) {
-					try {
-						projectReader.close();
-					}
-					catch(IOException ignore) {}
-				}
-				if( jar!=null ) {
-					try {
-						jar.close();
-					}
-					catch(IOException ignore) {}
-				}
-			}
-		}
-		else {
-			result = String.format("You must select an existing project to be the target of the merge");
-		}
-		return result;
-	}
 	
-	/**
-	 *  Start with an existing project and copy scripting resources into it from a named partial project.
-	 *  Only insert new resources if the existing project does not already have that resource. Leave it disabled.
-	 *  We only care about project script resources.
-	 * @param mainLite a "lite" version of the project. It does not have all the resources.
-	 * @param location
-	 * @param name
-	 * @param model
-	 * @return
-	 */
-	
-	public String mergeWithDefaultsFromArtifact(Project mainLite,String location,String name,InstallerData model) {
-		String result = null;
-		if( mainLite!=null) {
-			ProjectManager pmgr = getContext().getProjectManager();
-			Path internalPath = getPathToModule(model);
-			InputStream projectReader = null;
-			JarFile jar = null;
-			try {
-				Project main = pmgr.getProject(mainLite.getName(), ApplicationScope.ALL, ProjectVersion.Published);
-				String description = main.getDescription();
-				main.setDescription(updateProjectDescription(description,model));
-				main.setEnabled(false);
-				for( ProjectResource pr:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE)) {
-					String path = main.getFolderPath(pr.getResourceId());
-					log.debugf("InstallerDataHandler.mergeWithDefaultsFromArtifact: main published %s (%s) %s",pr.getResourceType(),pr.getName(),path);
-				}
-				
-				jar = new JarFile(internalPath.toFile());
-				JarEntry entry = jar.getJarEntry(location);
-				if( entry!=null ) {
-					projectReader = jar.getInputStream(entry);
-					Project defaultsProject = Project.fromXML(projectReader);
-					for( ProjectResource pr:defaultsProject.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE)) {
-						String path = defaultsProject.getFolderPath(pr.getResourceId());
-						log.debugf("InstallerDataHandler.mergeWithDefaultsFromArtifact: defaults %s (%s) %s",pr.getResourceType(),pr.getName(),path);
-					}
-					// Remove resources from defaults that are already in main
-					int count = scrubDefaultsProject(defaultsProject,main);
-					// Nothing to do if there are no novel resources 
-					if( count >0 ) {
-						// List remaining scripting resources:
-						for( ProjectResource pr:main.getResources()) {
-							String path = defaultsProject.getFolderPath(pr.getResourceId());
-							if( path.startsWith("n/a ") ) continue;  // Unknown where these come from
-							log.infof("InstallerDataHandler.mergeWithDefaultsFromArtifact: inserting %s (%s) %s",pr.getResourceType(),pr.getName(),path);
-						}
-						try {
-							mergeProject(main,defaultsProject);
-							pmgr.addProject(main, true);      // Overwrite itself
-							main = pmgr.getProject(main.getId(),ApplicationScope.GATEWAY,ProjectVersion.Published);
-							main.setEnabled(false);
-						}
-						// We get an error re-constituting the project in staging scope. It appears not to matter with us.
-						catch(Exception ex) {
-							log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when re-constituting project (%s)",ex.getLocalizedMessage());
-						}
-						
-						GlobalProps props = pmgr.getProps(main.getId(), ProjectVersion.Published);
-						
-						String adminProfile = getAdministrativeProfile(model);
-						String adminUser = getAdministrativeUser(model);
-						AuthenticatedUser user = new BasicAuthenticatedUser(props.getAuthProfileName(),adminProfile,adminUser,props.getRequiredRoles());
-						try {
-							pmgr.saveProject(main, user, "n/a", 
-								String.format("ILS Automation Installer: updated from %s",defaultsProject.getName()), false);
-						}
-						// We get an error notifying project listeners. It appears not to matter with us.
-						catch(Exception ex) {
-							log.errorf("InstallerDataHandler.mergeProjectWithArtifact: Exception when saving merged project (%s)",ex.getLocalizedMessage());
-						}
-					}
-					else {
-						log.info("InstallerDataHandler.mergeWithDefaultsFromArtifact: defaults has no scripts new to this project");
-					}
-				}
-				else {
-					result = String.format("Project location %s does not match a path in the release bundle", location);
-				}
-			}
-			catch(SAXException saxe) {
-				result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
-			}
-			catch(IOException ioe) {
-				result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
-			}
-			catch(Exception ex) {
-				result = String.format("Exception loading project %s (%s)",name,ex.getLocalizedMessage());
-			}
-			finally{
-				if(projectReader!=null) {
-					try {
-						projectReader.close();
-					}
-					catch(IOException ignore) {}
-				}
-				if( jar!=null ) {
-					try {
-						jar.close();
-					}
-					catch(IOException ignore) {}
-				}
-			}
-		}
-		else {
-			result = String.format("You must select an existing project to be the target of the merge");
-		}
-		return result;
-	}
 	/**
 	 * Inspect the properties for the specified panel looking for a "historyprovider" property. If the property
 	 * has no value, return the name specified as a toolkit property.
@@ -2174,274 +1887,7 @@ public class InstallerDataHandler {
 		Preferences preferences = Preferences.userRoot().node(name);
 		preferences.put(key,value);
 	}
-	
-	// Merge resources from the partial project into the original.
-	// In Ignition there are separate folder hierarchies by resource type.
-	// The path names can be duplicated.
-	// main - the original project that needs to get updated
-	// updater - the partial project with new resources
-	private void mergeProject(Project main,Project updater) {
-		log.infof("%s.mergeProject: Merging resources from %s into %s",CLSS,updater.getName(),main.getName());
-		Map<ProjectResourceKey,UUID> mainFolders = new HashMap<>();
-		Map<ProjectResourceKey,Long> updateResources = new HashMap<>();       
-		Map<String,Long> updateSingletons = new HashMap<>();  // Unnamed resources are "singletons"
-		
-		// Create map of resources to update
-		for( ProjectResource res:updater.getResources() ) {
-			if( updater.isResourceDeleted(res.getResourceId() )) continue;
-			if( res.getName()==null || res.getName().isEmpty() ) {
-				updateSingletons.put(res.getResourceType(), new Long(res.getResourceId()));
-				log.infof("%s.mergeProject: Update singleton %s",CLSS,res.getResourceType());
-			}
-			else if( !res.isFolder() ) {
-				String path = updater.getFolderPath(res.getResourceId());
-				ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-				log.infof("%s.mergeProject: Update %s at %s",CLSS,res.getResourceType(),path);
-				updateResources.put(key, new Long(res.getResourceId()));
-			}
-		}
-		
-		// Create list of resources in the main that are in the update list or junk
-		// Along the way build a map of folders. 
-		List<ProjectResource> toBeDeleted = new ArrayList<>();
-		for( ProjectResource res:main.getResources() ) {
-			if( main.isResourceDeleted(res.getResourceId() )) continue;
-			if( res.getName()==null || res.getName().isEmpty() ) {
-				if( updateSingletons.get(res.getResourceType())!=null ) {
-					log.infof("%s.mergeProject: Retain singleton %s",CLSS,res.getResourceType());
-					//toBeDeleted.add(res);
-				}
-			}
-			else if( !res.isFolder() ) {
-				String path = main.getFolderPath(res.getResourceId());
-				if(path.startsWith("n/a ")){
-					log.infof("%s.mergeProject:  Clear junk %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-					toBeDeleted.add(res);
-				}
-				else {
-					updateFolderMap(main,mainFolders,res);
-					ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-					if( updateResources.get(key)!=null ) {
-						log.infof("%s.mergeProject: Clear %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-						toBeDeleted.add(res);
-					}
-					else{
-						log.infof("%s.mergeProject: Retaining %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-					}
-				}
-			}
-		}
-		// Now do the actual deletion
-		for( ProjectResource res:toBeDeleted ) {
-			main.deleteResource(res.getResourceId());
-		}
-		
-		// For starters, add in the replaced singletons
-		// No need to worry about paths and parents(%)
-		for( String type : updateSingletons.keySet() ) {
-			long id = (updateSingletons.get(type)).longValue();
-			main.putResource(updater.getResource(id));
-		}
-		
-		// Now add the "normal" resources 
-		for( ProjectResourceKey key:updateResources.keySet() ) {
-			ProjectResource res = updater.getResource(updateResources.get(key).longValue());
-			// For each resource to be added we need to get the id of the enclosing parent
-			String parentPath = getParentPath(key.getResourcePath());
-			ProjectResourceKey folderKey = new ProjectResourceKey(key.getResourceType(),parentPath);
-			UUID uuid = mainFolders.get(folderKey);
-			if( uuid==null ) {
-				log.infof("%s.mergeProject: Did not find UUID for folder %s",CLSS,folderKey.getResourcePath());
-				uuid = returnFolderForResource(main,res.getModuleId(),folderKey,mainFolders);
-			}
-			if( uuid!=null ) res.setParentUuid(uuid);
-			try {
-				main.putResource(res);
-				log.infof("%s.mergeProject: Update %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),key.getResourcePath());
-			}
-			catch(Exception ex) {
-				log.errorf("%s.mergeProject: EXCEPTION %s for %s (%s)",CLSS,ex.getMessage(),parentPath,res.getResourceType());
-			}
-		}
-	}
-	// Merge resources from the partial global project into the original.
-	// We assume folder UUIDs have not changed,
-	private void mergeGlobalProject(Project original,Project partial) {
-		log.infof("%s.mergeGlobalProject: Merging resources from %s into %s",CLSS,partial.getTitle(),original.getTitle());
-		Map<ProjectResourceKey,ProjectResource> partialResources = new HashMap<>();
-		// Create map of partial resources.
-		for( ProjectResource res:partial.getResources() ) {
-			if( partial.isResourceDeleted(res.getResourceId() )) continue;
-			String path = partial.getFolderPath(res.getResourceId());
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.infof("%s.mergeGlobalProject: Partial resource %s is %s",CLSS,path,res.getResourceType());
-			partialResources.put(key, res);
-		}
-		// Delete any resources in the original that are in the partial
-		List<ProjectResource> toBeDeleted = new ArrayList<>();
-		for( ProjectResource res:original.getResources() ) {
-			if( original.isResourceDeleted(res.getResourceId() )) continue;
-			String path = original.getFolderPath(res.getResourceId());
-			// Don't delete folders from the original as deleting the folder orphans its children
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-//			if( partialResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
-			if( partialResources.get(key)!=null ) {
-				log.infof("%s.mergeGlobalProject: Original deleting %s is %s",CLSS,path,res.getResourceType());
-				toBeDeleted.add(res);
-			}
-			else{
-				log.infof("%s.mergeGlobalProject: Original retaining %s is %s",CLSS,path,res.getResourceType());
-			}
-		}
-		for( ProjectResource res:toBeDeleted ) {
-			original.deleteResource(res.getResourceId());
-		}
-		
-		// Now add all the partial resources back in
-		for( ProjectResource res:partial.getResources() ) {
-			if( partial.isResourceDeleted(res.getResourceId() )) continue;
-			original.putResource(res);
-			log.infof("%s.mergeGlobalProject: Original restoring %s is %s",CLSS,original.getFolderPath(res.getResourceId()),res.getResourceType());
-		}
-	}
-	
-	private UUID returnFolderForResource(Project proj,String moduleId,ProjectResourceKey leaf, Map<ProjectResourceKey,UUID> folderMap) {
-		log.infof("%s.returnFolderForResource: leaf (%s) at %s",CLSS, leaf.getResourceType(),leaf.getResourcePath());
-		Stack<ProjectResourceKey> stack = searchKeysForAncestor(leaf,folderMap);
-		// The first key should exist (may not if it is a root), the rest not so much
-		ProjectManager pmgr = getContext().getProjectManager();
-		ProjectResourceKey key = stack.pop();
-		log.infof("%s.returnFolderForResource: Popped root %s at %s",CLSS,key.getResourceType(),key.getResourcePath());
-		UUID parent = folderMap.get(key);
-		UUID uuid = null;
-		if( parent==null ) {
-			try {
-				long resid = pmgr.getNewResourceId().longValue();
-				uuid = UUID.randomUUID();
-				byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
-				String name = getNameFromPath(key.getResourcePath());
-				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
-				// For window, the parent is null. Others have fixed UUIDs
-				if( key.getResourceType().equalsIgnoreCase("component-template") ) {
-					parent = UUID.fromString("f4b6692c-a312-4278-8ec4-cf20b161beb3"); // template root
-					folder.setParentUuid(parent);
-					folderMap.put(key, uuid);
-				}
-				else if( key.getResourceType().equalsIgnoreCase("sr.script.project") ) {
-					parent = UUID.fromString("2cda0027-8033-4beb-ad02-0ef378c659be"); // project script root
-					folder.setParentUuid(parent);
-					folderMap.put(key, uuid);
-				}
-				// Works only for window type, for now ...
-				else {
-					folder.setParentUuid(null);
-					folderMap.put(key, uuid);    // Just to have something
-				}
-				proj.putResource(folder);
-			}
-			catch(Exception ex) {
-				log.errorf("%s.returnFolderForResource: ERROR unable to create root resource id for %s",CLSS,key.getResourcePath());
-			}
-			parent = uuid;
-		}
-		// The parentUUID is null for a resource directly under "Windows"
-		while(!stack.isEmpty()) {
-			key = stack.pop();
-			log.infof("%s.returnFolderForResource: Popped %s to create at %s",CLSS,key.getResourceType(),key.getResourcePath());
-			try {
-				long resid = pmgr.getNewResourceId().longValue();
-				uuid = UUID.randomUUID();
-				byte[] data = (byte[])TypeUtilities.coerce(uuid, byte[].class);
-				String name = getNameFromPath(key.getResourcePath());
-				ProjectResource folder = new ProjectResource(resid,moduleId,ProjectResource.FOLDER_RESOURCE_TYPE,name,ApplicationScope.GATEWAY,data);
-				folder.setParentUuid(parent);
-				proj.putResource(folder);
-				folderMap.put(key, uuid);  
-			}
-			catch(Exception ex) {
-				log.errorf("%s.returnFolderForResource: ERROR unable to create resource id for %s",CLSS,key.getResourcePath());
-				break;
-			}
-		}
 
-		return uuid;
-	}
-	
-	// Push a keys for folders that we must create onto stack. By definition the input node is required.
-	private Stack<ProjectResourceKey> searchKeysForAncestor(ProjectResourceKey leaf,Map<ProjectResourceKey,UUID> folderMap) {
-		Stack<ProjectResourceKey> stack = new Stack<>();	
-		ProjectResourceKey ancestor = leaf;
-		String type = ancestor.getResourceType();
-		String path = ancestor.getResourcePath();
-		while(folderMap.get(ancestor)==null) {
-			stack.push(ancestor);
-			log.infof("%s.searchKeysForAncestor: pushed %s at %s",CLSS,ancestor.getResourceType(),ancestor.getResourcePath());
-			path = getParentPath(path);
-			if( path.length() ==0 ) {
-				// This is a root
-				log.warnf("%s.searchKeysForAncestor: WARNING %s at %s is a root node",CLSS,type,ancestor.getResourcePath()); 
-				return stack;
-			}
-			ancestor = new ProjectResourceKey(type,path);
-		}
-		log.infof("%s.searchKeysForAncestor: finally pushed %s at %s",CLSS,ancestor.getResourceType(),ancestor.getResourcePath());
-		stack.push(ancestor);   // This one can be found
-		return stack;
-	}
-	
-	// The first argument is a project with a list of standard script resources that must appear in every 
-	// project. Here we delete any of the standard resources that would otherwise
-	// overwrite resources in the main project.
-	// Return the number of scripting resources remaining in the defaults project
-	private int scrubDefaultsProject(Project defaultsProject,Project main) {
-		Map<ProjectResourceKey,ProjectResource> mainResources = new HashMap<>();
-		// Create map of resources.
-		for( ProjectResource res:main.getResourcesOfType("",InstallerConstants.SCRIPT_RESOURCE) ) {
-			String path = main.getFolderPath(res.getResourceId());
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			log.debugf("%s.scrubDefaultsProject: Main %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-			mainResources.put(key, res);
-		}
-		// Delete any resources in the default project that are already in the main or are not scripting
-		List<ProjectResource> toBeDeleted = new ArrayList<>();
-		int count = 0;
-		for( ProjectResource res:defaultsProject.getResources() ) {
-			String path = defaultsProject.getFolderPath(res.getResourceId());
-			// Don't delete folders from the original as deleting the folder orphans its children
-			ProjectResourceKey key = new ProjectResourceKey(res.getResourceType(),path);
-			if( mainResources.get(key)!=null && !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ) {
-				log.debugf("%s.scrubDefaultsProject: Defaults deleting %s (%s) as %s",CLSS,res.getResourceType(),res.getName(),path);
-				toBeDeleted.add(res);
-			}
-			else if( !res.getResourceType().equals(ProjectResource.FOLDER_RESOURCE_TYPE) ){
-				log.infof("%s.scrubDefaultsProject: Defaults adding %s (%s) at %s",CLSS,res.getResourceType(),res.getName(),path);
-				count++;
-			}
-		}
-		for( ProjectResource res:toBeDeleted ) {
-			defaultsProject.deleteResource(res.getResourceId());
-		}
-		return count;
-	}
-	// Update the table of folder UUIDs by resource type and path.
-	// Update towards root as necessary. Path includes trailing, but not leading /.
-	private void updateFolderMap(Project proj, Map<ProjectResourceKey,UUID> folderMap, ProjectResource child) {
-		String path = getParentPath(proj.getFolderPath(child.getResourceId()));
-		String type = child.getResourceType();
-		ProjectResourceKey key = new ProjectResourceKey(type,path);
-		while( folderMap.get(key) == null ) {
-			UUID uuid = child.getParentUuid();
-			if( uuid ==null ) break;
-			ProjectResource folder = proj.findFolder(uuid);
-			if( folder==null ) break;
-			folderMap.put(key, uuid);
-			//log.infof("%s.updateFolderMap: Added folder for type %s at %s",CLSS,type,path);
-			child = folder;
-			path = getParentPath(path);
-			key = new ProjectResourceKey(type,path);
-		}	
-	}
-	
 	// Alter a project description to add its derivation
 	// Replace anything after a double dash
 	private String updateProjectDescription(String desc,InstallerData data) {
@@ -2457,66 +1903,6 @@ public class InstallerDataHandler {
 			else if(pi.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_RELEASE)) release = pi.getValue();
 		}
 		return String.format("%s -- %s, %s, %s --", desc,product,release,date);
-	}
-	private void dumpXML(String label,ProjectResource res) {
-		log.info(label);
-		InputStream is = new ByteArrayInputStream(res.getData());
-		XMLDeserializer deserializer = new XMLDeserializer();
-		deserializer.getClassNameMap().addDefaults();
-		XMLSerializer serializer = new XMLSerializer();
-		serializer.getClassNameMap().addDefaults();
-		try {
-			String xml = deserializer.transcodeToXML(is, serializer);
-			log.info(xml);
-		}
-		catch(SerializationException sex) {
-			log.info(String.format("%s.dumpXML: Exception deserializing (%s)",CLSS, sex.getMessage()));
-		}
-		
-	}
-	
-	/**
-	 * Replace the global properties resource in the project.
-	 * @param proj
-	 * @param props
-	 */
-	private void updateGlobalProps(ProjectManager pmgr, Project proj, GlobalProps props) {
-		ProjectResource globalPropsRes = proj.getResourceOfType("", "sr.global.props");
-		dumpXML("updateGlobalProps: original",globalPropsRes);
-		proj.deleteResource(globalPropsRes.getResourceId());
-		try {
-			props.setPublishMode(ProjectPublishMode.Auto);
-			long resid = pmgr.getNewResourceId();
-			XMLSerializer serializer = new XMLSerializer();
-			serializer.getClassNameMap().addDefaults();
-			serializer.addObject(props);
-			
-			String newXML = serializer.serializeXML();
-			log.debug(newXML);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			GZIPOutputStream zipOut = new GZIPOutputStream(baos);
-			IOUtils.copy(new ByteArrayInputStream(newXML.getBytes("UTF-8")), zipOut);
-			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-			xml = xml+"<objects>\n";
-			xml = xml+"<o cls=\"com.inductiveautomation.ignition.common.project.GlobalProps\">\n";
-			xml = xml+"<o-c m=\"setAuthProfileName\" s=\"1;str\"><str id=\"0\">default</str></o-c>\n";
-			xml = xml+"<o-c m=\"setDefaultDatasourceName\" s=\"1;str\"><ref>0</ref></o-c>\n";
-			xml = xml+"<o-c m=\"setDefaultSQLTagsProviderName\" s=\"1;str\"><ref>0</ref></o-c>\n";
-			xml = xml+"</o>\n";
-			xml = xml+"</objects>\n";
-
-			//byte[] bytes = baos.toByteArray();
-			byte[] bytes = xml.getBytes();
-			ProjectResource resource = new ProjectResource(resid,"","sr.global.props","GlobalProps",
-										ApplicationScope.ALL,bytes);
-			zipOut.close();
-			dumpXML("updateGlobalProps: new (from res)",resource);
-			log.debug(String.format("Resource is %d bytes",bytes.length));
-			proj.putResource(resource);
-		}
-		catch(Exception ex) {
-			log.info(String.format("%s.updateGlobalProps: Exception getting resource ID (%s)",CLSS, ex.getMessage()));
-		}
 	}
 
 }

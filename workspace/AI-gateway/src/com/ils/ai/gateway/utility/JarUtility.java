@@ -52,7 +52,7 @@ public class JarUtility {
 	 */
 	public Path internalModuleContaining(String marker) {
 		Path result = null;
-		Path jarDirPath = Paths.get(context.getUserlibDir().getAbsolutePath(),"modules");
+		Path jarDirPath = Paths.get(context.getSystemManager().getUserLibDir().getAbsolutePath(),"modules");
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(jarDirPath, "*.{jar,modl}")) {
 			for (Path entry: stream) {
 				log.infof("%s.internalModuleContaining: Inspecting %s for %s ...",CLSS,entry.toString(),marker);

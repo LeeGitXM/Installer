@@ -21,7 +21,7 @@ import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.datasource.SerializableDatasourceMeta;
-import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
+import com.inductiveautomation.ignition.common.tags.model.TagProvider;
 import com.inductiveautomation.ignition.gateway.datasource.Datasource;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
@@ -45,8 +45,8 @@ public class DefinitionStep extends BasicInstallerPanel {
 	private SerializableDatasourceMeta secondaryDatabase=null;
 	private String productionDBMS=null;
 	private String secondaryDBMS=null;
-	private TagProviderMeta productionProvider=null;
-	private TagProviderMeta secondaryProvider=null;
+	private TagProvider productionProvider=null;
+	private TagProvider secondaryProvider=null;
 	private boolean saved = false;
 	private boolean valid = false;
 
@@ -119,11 +119,11 @@ public class DefinitionStep extends BasicInstallerPanel {
     	
     	Label productionProviderLabel = new Label("productionProviderLabel",dataHandler.getLabel(properties,true)+" Tag Provider: ");
     	add(productionProviderLabel);
-    	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProviderMeta>(this, "productionProvider"), getProviderList());
+    	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProvider>(this, "productionProvider"), getProviderList());
 		add(productionProviders);
 		Label secondaryProviderLabel = new Label("secondaryProviderLabel",dataHandler.getLabel(properties,false)+" Tag Provider: ");
     	add(secondaryProviderLabel);
-    	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProviderMeta>(this, "secondaryProvider"), getProviderList());
+    	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProvider>(this, "secondaryProvider"), getProviderList());
 		add(secondaryProviders);
     	Label productionDatabaseLabel = new Label("productionDatabaseLabel",dataHandler.getLabel(properties,true)+" Database: ");
     	add(productionDatabaseLabel);
@@ -363,10 +363,10 @@ public class DefinitionStep extends BasicInstallerPanel {
 		}
 
 	// ================================= Classes for Listing Tag Provider  ==============================
-	public class ProviderList extends DropDownChoice<TagProviderMeta> {
+	public class ProviderList extends DropDownChoice<TagProvider> {
 		private static final long serialVersionUID = -1021505223044346435L;
 
-		public ProviderList(String key,PropertyModel<TagProviderMeta>model,List<TagProviderMeta> list) {
+		public ProviderList(String key,PropertyModel<TagProvider>model,List<TagProvider> list) {
 			super(key,model,list,new ProviderRenderer());
 		}
 
@@ -374,34 +374,34 @@ public class DefinitionStep extends BasicInstallerPanel {
 		public boolean wantOnSelectionChangedNotifications() { return true; }
 
 		@Override
-		protected void onSelectionChanged(final TagProviderMeta newSelection) {
+		protected void onSelectionChanged(final TagProvider newSelection) {
 			super.onSelectionChanged(newSelection);
 		} 
 	}
-	public class ProviderRenderer implements IChoiceRenderer<TagProviderMeta> {
+	public class ProviderRenderer implements IChoiceRenderer<TagProvider> {
 		private static final long serialVersionUID = -700778014486584571L;
 
 		@Override
-		public Object getDisplayValue(TagProviderMeta provider) {
+		public Object getDisplayValue(TagProvider provider) {
 			return provider.getName();
 		}
 
 		@Override
-		public String getIdValue(TagProviderMeta provider, int i) {
+		public String getIdValue(TagProvider provider, int i) {
 			return provider.getName();
 		}
 	}
 
-	private List<TagProviderMeta> getProviderList() {
+	private List<TagProvider> getProviderList() {
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		return context.getTagManager().getProviderInformation();
+		return context.getTagManager().getTagProviders();
 	}
 	
-	private TagProviderMeta getDefaultProvider(String name ) {
-		TagProviderMeta result = null;
-		for(TagProviderMeta meta:getProviderList() ) {
-			if(meta.getName().equalsIgnoreCase(name)) {
-				result = meta;
+	private TagProvider getDefaultProvider(String name ) {
+		TagProvider result = null;
+		for(TagProvider provider:getProviderList() ) {
+			if(provider.getName().equalsIgnoreCase(name)) {
+				result = provider;
 				break;
 			}
 		}

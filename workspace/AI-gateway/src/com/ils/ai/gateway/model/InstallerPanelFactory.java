@@ -10,7 +10,6 @@ import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.panel.ClearStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
-import com.ils.ai.gateway.panel.DefaultsStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
 import com.ils.ai.gateway.panel.FeatureStep;
@@ -52,8 +51,6 @@ public class InstallerPanelFactory  {
 			case DOCUMENTATION: step = new DocumentationStep(panelIndex,prior,title,model);
 				break;
 			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
-				break;
-			case DEFAULTS: step = new DefaultsStep(panelIndex,prior,title,model);
 				break;
 			case DEFINITION: step = new DefinitionStep(panelIndex,prior,title,model);
 				break;

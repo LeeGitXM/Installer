@@ -1,5 +1,5 @@
 /**
- * Copyright 2016. ILS Automation. All rights reserved.
+ * Copyright 2019. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway.panel;
 
