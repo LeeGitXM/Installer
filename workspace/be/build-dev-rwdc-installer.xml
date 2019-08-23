@@ -1,17 +1,17 @@
-<!-- Create an application installer for Batch-Expert+ - Dupont FDL
-     
-     Make sure that the master branch is checked out in the BatchExpert repo.
+<!-- Create an application installer for Batch-Expert+ - RWDC
+     The intent is to create a development environment with RWDC base project,
+     tags and database.
 -->
-<project name="BatchExpertFDLInstaller" basedir="." default="deploy">
+<project name="BatchExpertRWDCInstaller" basedir="." default="deploy">
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-fdl-2.5.xml" />
-	<property name="module.name" value="fdl-2-5-installer" />
+	<property name="bom" value="${basedir}/bom-rwdc.xml" />
+	<property name="module.name" value="rwdc-dev-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="sandbox" value="${git.repo}/batch-expert/updates/FDLSandbox" />
+	<property name="sandbox" value="${git.repo}/batch-expert/updates/RWDCSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -78,62 +78,6 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-			
-		<!-- External -->
-		<mkdir dir="${artifact.dir}/external" />
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="ils/**/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external">
-			<fileset dir="${git.repo}/batch-expert/BE_Python">
-				<include name="xlsxwriter/**/*.py" />
-			</fileset>
-		</copy>
-		<mkdir dir="${artifact.dir}/external/ils" />
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
-				<include name="jChart/*.py" />
-			</fileset>
-		</copy>
-		<copy todir="${artifact.dir}/external/ils">
-			<fileset dir="${git.repo}/py-sfc/pysfc-python/src/ils">
-				<include name="pysfc/**/*.py" />
-			</fileset>
-		</copy>
-		<mkdir dir="${artifact.dir}/external/lib" />
-		<copy todir="${artifact.dir}/external/lib">
-			<fileset dir="${git.repo}/external/lib">
-				<include name="ils-common*" />
-			</fileset>
-		</copy>
-		
-			
-		<!-- Remove examples -->
-		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
-		<delete>
-		    <fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py"/>
-			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py"/>
-		</delete>
-		
-		<!-- Remove obsolete BatchExpert -->
-		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
-		
-		<!-- Icons -->
-		<mkdir dir="${artifact.dir}/icons" />
-		<copy todir="${artifact.dir}/icons">
-			<fileset dir="${git.repo}/batch-expert/images">
-				<include name="**/*.gif" />
-				<include name="**/*.jpg" />
-				<include name="**/*.png" />
-			</fileset>
-			<fileset dir="${sandbox}/images">
-				<include name="**/*.gif" />
-				<include name="**/*.jpg" />
-				<include name="**/*.png" />
-			</fileset>
-		</copy>
 		
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
@@ -141,21 +85,18 @@
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/fdl_udt_tags.xml" tofile="${artifact.dir}/tags/fdl_udts.xml" />
-		<copy file="${sandbox}/fdl_unit_tags.xml" tofile="${artifact.dir}/tags/fdl_tags.xml" />
+		<copy file="${sandbox}/RWDC_UDTs.xml" tofile="${artifact.dir}/tags/rwdc_udts.xml" />
+		<copy file="${sandbox}/RWDC_UnitTags.xml" tofile="${artifact.dir}/tags/rwdc_site_tags.xml" />
+		<copy file="${sandbox}/RWDCMemoryTags.xml" tofile="${artifact.dir}/tags/rwdc_memory_tags.xml" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/batch-expert/rangeslider/workspace/RangeSlider_Build/modules/rangeslider-module-signed.modl" tofile="${artifact.dir}/modules/rangeslider-module-signed.modl" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/DOWFDL2.5.proj" tofile="${artifact.dir}/projects/BatchExpert25.proj" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.proj" tofile="${artifact.dir}/projects/BatchExpertMaster.proj" />
-		<copy file="${sandbox}/DOWFDLGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${git.repo}/batch-expert/projects/interfaces.proj" tofile="${artifact.dir}/projects/defaults.proj" />
+		<copy file="${sandbox}/BatchExpertRWDC.zip" tofile="${artifact.dir}/projects/BatchExpertRWDC.zip" />
 
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
@@ -175,7 +116,7 @@
 	
 	<!-- Copies the installer (and related projects) onto the Google Drive. This does not install into the running gateway. -->
 	<target name="deploy" depends="build">
-		<echo message="Copying FDL installer module onto Google Drive ..." />
+		<echo message="Copying RWDC installer module onto Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	<!-- macro to trim newlines from a variable -->

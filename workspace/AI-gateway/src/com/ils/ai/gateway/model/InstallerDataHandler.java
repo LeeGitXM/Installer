@@ -16,14 +16,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.Stack;
-import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.prefs.Preferences;
@@ -32,7 +28,6 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.lang3.SerializationException;
 import org.apache.wicket.model.Model;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,10 +49,7 @@ import com.ils.common.db.DBMS;
 import com.ils.common.db.DBUtility;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
-import com.inductiveautomation.ignition.common.TypeUtilities;
 import com.inductiveautomation.ignition.common.model.ApplicationScope;
-import com.inductiveautomation.ignition.common.project.GlobalProps;
-import com.inductiveautomation.ignition.common.project.Project;
 import com.inductiveautomation.ignition.common.project.ProjectFileUtil;
 import com.inductiveautomation.ignition.common.project.ProjectImport;
 import com.inductiveautomation.ignition.common.project.ProjectManifest;
@@ -65,12 +57,8 @@ import com.inductiveautomation.ignition.common.project.RuntimeProject;
 import com.inductiveautomation.ignition.common.project.resource.ProjectResource;
 import com.inductiveautomation.ignition.common.script.JythonExecException;
 import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
-import com.inductiveautomation.ignition.common.user.AuthenticatedUser;
-import com.inductiveautomation.ignition.common.user.BasicAuthenticatedUser;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
-import com.inductiveautomation.ignition.common.xmlserialization.deserialization.XMLDeserializer;
-import com.inductiveautomation.ignition.common.xmlserialization.serialization.XMLSerializer;
 import com.inductiveautomation.ignition.gateway.IgnitionGateway;
 import com.inductiveautomation.ignition.gateway.gan.GatewayNetworkManager;
 import com.inductiveautomation.ignition.gateway.images.ImageFormat;
@@ -632,7 +620,7 @@ public class InstallerDataHandler {
 					}
 					Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 					files.add(file);
-					chunkSizes.add(new Integer(count));
+					chunkSizes.add(count);
 				}
 				catch(IOException ioe) {
 					log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating temporary file for panel %d:%s (%s)",CLSS,
@@ -659,7 +647,7 @@ public class InstallerDataHandler {
 				}
 				Files.write(file.toPath(),sb.toString().getBytes(),StandardOpenOption.TRUNCATE_EXISTING);
 				files.add(file);
-				chunkSizes.add(new Integer(count));
+				chunkSizes.add(count);
 			}
 			catch(IOException ioe) {
 				log.warnf("%s.getArtifactAsListOfTagFiles: IOException creating final temporary file for panel %d:%s (%s)",CLSS,
@@ -1127,7 +1115,7 @@ public class InstallerDataHandler {
 	// Return attributes of a particular panel. When it is created, fill in attributes,
 	// else simply return the value from the map.
 	public PanelData getPanelData(int panelIndex,InstallerData model) {
-		Integer key = new Integer(panelIndex);
+		Integer key = panelIndex;
 		PanelData data = model.getPanelMap().get(key);
 		if( data==null ) {
 			data = new PanelData();
@@ -1235,28 +1223,6 @@ public class InstallerDataHandler {
 			}
 		}
 		return properties;
-	}
-	// Return the leaf of the path. 
-	private String getNameFromPath(String path) {
-		// Ignore trailing /
-		if( path.endsWith("/")) path = path.substring(0,path.length()-1);
-		String name = path;
-		int pos = path.lastIndexOf("/");
-		if( pos>=0 ) {
-			name = path.substring(pos+1);
-		}
-		return name;
-	}
-	// Return the path except for the name. We include the trailing / on the result.
-	// Ignore it on input.
-	private String getParentPath(String path) {
-		if(path.endsWith("/")) path = path.substring(0,path.length()-1);
-		String parent = "";
-		int pos = path.lastIndexOf("/");
-		if( pos>=0 ) {
-			parent = path.substring(0,pos+1);
-		}
-		return parent;
 	}
 	
 	public String getPreference(String key) {
@@ -1619,11 +1585,11 @@ public class InstallerDataHandler {
 	 * NOTE: This fails if the project has no resources.
 	 * @param location
 	 * @param name
-	 * @param profile
 	 * @param model
 	 * @return
 	 */
-	public String loadArtifactAsProject(String location,String name,String profile,InstallerData model) {
+	public String loadArtifactAsProject(String location,String name,InstallerData model) {
+		log.infof("%s.loadArtifactAsProject: %s at %s",CLSS,name,location);
 		String result = null;
 		Path internalPath = getPathToModule(model);
 		InputStream projectReader = null;
@@ -1633,12 +1599,16 @@ public class InstallerDataHandler {
 			JarEntry entry = jar.getJarEntry(location);
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
-				ProjectImport importer = ProjectFileUtil.fromInputStream(projectReader, name);
+				log.infof("%s.loadArtifactAsProject: About to import %s",CLSS,name);
+				ProjectImport importer = ProjectFileUtil.importFromZip(projectReader, name);
+				log.infof("%s.loadArtifactAsProject: IMPORTED!",CLSS);
 				ProjectManager pmgr = getContext().getProjectManager();
 				List<ProjectResource> prlist = new ArrayList<>();
 				for(ProjectResource res:importer.getResources()) {
+					log.infof("%s.loadArtifactAsProject: got resource %s",CLSS,res.getResourceName());
 					prlist.add(res);
 				}
+				log.infof("%s.loadArtifactAsProject: building manifest ...",CLSS);
 				ProjectManifest.Builder builder = importer.getManifest().toBuilder();
 				builder.setEnabled(false);
 				builder.setDescription(updateProjectDescription(importer.getManifest().getDescription(),model));
@@ -1647,9 +1617,6 @@ public class InstallerDataHandler {
 			else {
 				result = String.format("Project location %s does not match a path in the release bundle", location);
 			}
-		}
-		catch(SAXException saxe) {
-			result = String.format("SAX error loading project %s (%s)", name,saxe.getLocalizedMessage());
 		}
 		catch(IOException ioe) {
 			result = String.format("IO error reading project %s (%s)", name,ioe.getLocalizedMessage());
@@ -1877,6 +1844,14 @@ public class InstallerDataHandler {
 	public void removePreference(String name, String key) {
 		Preferences preferences = Preferences.userRoot().node(name);
 		preferences.remove(key);
+	}
+	
+	// Remove characters that are illegal in a name
+	public String scrubName(String name) {
+		name = name.replace(" ", "");
+		name = name.replace(".", "");
+		name = name.replace("-", "");
+		return name;
 	}
 	
 	public void setPreference(String key,String value) {

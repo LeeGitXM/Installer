@@ -21,7 +21,10 @@ import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;
 import com.inductiveautomation.ignition.common.datasource.SerializableDatasourceMeta;
+import com.inductiveautomation.ignition.common.sqltags.TagProviderMetaImpl;
+import com.inductiveautomation.ignition.common.sqltags.model.TagProviderMeta;
 import com.inductiveautomation.ignition.common.tags.model.TagProvider;
+import com.inductiveautomation.ignition.common.tags.model.TagProviderProps;
 import com.inductiveautomation.ignition.gateway.datasource.Datasource;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
@@ -45,19 +48,21 @@ public class DefinitionStep extends BasicInstallerPanel {
 	private SerializableDatasourceMeta secondaryDatabase=null;
 	private String productionDBMS=null;
 	private String secondaryDBMS=null;
-	private TagProvider productionProvider=null;
-	private TagProvider secondaryProvider=null;
+	private TagProviderMeta productionProvider=null;
+	private TagProviderMeta secondaryProvider=null;
 	private boolean saved = false;
 	private boolean valid = false;
 
 	public DefinitionStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
 		super(index,previous, title, dataModel); 
+
 		add(new Label("preamble",preamble).setEscapeModelStrings(false));
 
 		// Display the pull downs based on panel properties.
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
 		List<PropertyItem> properties = dataHandler.getPanelProperties(index, data);
+    
 		// If the property already has a value, don't show the field.
     	for(PropertyItem prop:properties) {
     		String type = prop.getType();
@@ -110,17 +115,18 @@ public class DefinitionStep extends BasicInstallerPanel {
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
 	    		}
 			}
+    		
     	}
 		
     	// Create all the wicket widgets, just don't make them all visible
     	
     	Label productionProviderLabel = new Label("productionProviderLabel",dataHandler.getLabel(properties,true)+" Tag Provider: ");
     	add(productionProviderLabel);
-    	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProvider>(this, "productionProvider"), getProviderList());
+    	ProviderList productionProviders = new ProviderList("productionProviders", new PropertyModel<TagProviderMeta>(this, "productionProvider"), getProviderList());
 		add(productionProviders);
 		Label secondaryProviderLabel = new Label("secondaryProviderLabel",dataHandler.getLabel(properties,false)+" Tag Provider: ");
     	add(secondaryProviderLabel);
-    	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProvider>(this, "secondaryProvider"), getProviderList());
+    	ProviderList secondaryProviders = new ProviderList("secondaryProviders", new PropertyModel<TagProviderMeta>(this, "secondaryProvider"), getProviderList());
 		add(secondaryProviders);
     	Label productionDatabaseLabel = new Label("productionDatabaseLabel",dataHandler.getLabel(properties,true)+" Database: ");
     	add(productionDatabaseLabel);
@@ -138,7 +144,7 @@ public class DefinitionStep extends BasicInstallerPanel {
     	add(secondaryDBMSLabel);
     	DBMSList secondaryDBMSs = new DBMSList("secondaryDBMSs", new PropertyModel<String>(this, "secondaryDBMS"), getDBMSList());
 		add(secondaryDBMSs);
-		/*
+		
 		// Adjust visibility
 		productionDatabaseLabel.setVisible(showProductionDatabase);
 		secondaryDatabaseLabel.setVisible(showSecondaryDatabase);
@@ -153,9 +159,8 @@ public class DefinitionStep extends BasicInstallerPanel {
 		secondaryDBMSs.setVisible(showSecondaryDBMS);
 		productionProviders.setVisible(showProductionProvider);
 		secondaryProviders.setVisible(showSecondaryProvider);
-*/
+		
 		// Select Defaults
-		/*
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
 		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
 		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
@@ -173,16 +178,15 @@ public class DefinitionStep extends BasicInstallerPanel {
 			(showSecondaryProvider  && secondaryProvider==null)    )  {
 			valid = false;
 		}
-*/
+		
 		// Save selections
-
 		add(new Button("save") {
 			private static final long serialVersionUID = 3996079889888596264L;
 
 			public void onSubmit() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
 				ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(dataHandler.getContext());
-				/*
+				
 				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),productionDatabase.getName());
 				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),secondaryDatabase.getName());
 				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),productionDBMS);
@@ -199,24 +203,22 @@ public class DefinitionStep extends BasicInstallerPanel {
 				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
 				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("secondary tag provider is not defined. ");
 				if( msg.length()==0 ) {
-					//
-					// We want to allow this in the EMC installation.
-					//if(showPoductionDatabase&&showSecondaryDatabase&&
-					//  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
-					//	msg.append("Production and secondary databases may not be the same. ");
-					//}
-					//
+					/*
+					 * We want to allow this in the EMC installation.
+					if(showPoductionDatabase&&showSecondaryDatabase&&
+					  productionDatabase.getName().equalsIgnoreCase(secondaryDatabase.getName())) {
+						msg.append("Production and secondary databases may not be the same. ");
+					}
+					*/
 					if(showProductionProvider&&showSecondaryProvider&&
 							  productionProvider.getName().equalsIgnoreCase(secondaryProvider.getName())) {
 								msg.append("Production and secondary tag providers may not be the same. ");
 					}
-					*/
 				}
 				
 				// If there are scripts attached to the properties, execute them. The scripts rely on the property value 
 				// being set. We don't bother setting unless there is a script involved.
 				// If the property has a value already, use it.
-			/*
 				for(PropertyItem property:properties) {
 					String type = property.getType();
 					if(type==null || type.isEmpty()) continue;
@@ -244,15 +246,14 @@ public class DefinitionStep extends BasicInstallerPanel {
 		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDatabase.getName());
 		        		}
 		    			String result = dataHandler.executePythonFromProperty(property);
-		    			System.out.println(String.format("DefinitionStep: Executing script: "+script));
+		    			//System.out.println(String.format("DefinitionStep: Executing script: "+script));
 		    			if( !result.isEmpty()) {
-		    				System.out.println(String.format("DefinitionStep: Script error: \n"+result));
+		    				//System.out.println(String.format("DefinitionStep: Script error: \n"+result));
 		    				msg.append(result);
 		    				break;
 		    			}
 		    		}
 				}
-				
 				
 				if( msg.length()==0) {
 					valid = true;
@@ -266,9 +267,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 
 				saved = true;
             }
-*/
         });
-     
 	}
 
 
@@ -367,10 +366,10 @@ public class DefinitionStep extends BasicInstallerPanel {
 		}
 
 	// ================================= Classes for Listing Tag Provider  ==============================
-	public class ProviderList extends DropDownChoice<TagProvider> {
+	public class ProviderList extends DropDownChoice<TagProviderMeta> {
 		private static final long serialVersionUID = -1021505223044346435L;
 
-		public ProviderList(String key,PropertyModel<TagProvider>model,List<TagProvider> list) {
+		public ProviderList(String key,PropertyModel<TagProviderMeta>model,List<TagProviderMeta> list) {
 			super(key,model,list,new ProviderRenderer());
 		}
 
@@ -378,34 +377,46 @@ public class DefinitionStep extends BasicInstallerPanel {
 		public boolean wantOnSelectionChangedNotifications() { return true; }
 
 		@Override
-		protected void onSelectionChanged(final TagProvider newSelection) {
+		protected void onSelectionChanged(final TagProviderMeta newSelection) {
 			super.onSelectionChanged(newSelection);
 		} 
 	}
-	public class ProviderRenderer implements IChoiceRenderer<TagProvider> {
+	public class ProviderRenderer implements IChoiceRenderer<TagProviderMeta> {
 		private static final long serialVersionUID = -700778014486584571L;
 
 		@Override
-		public Object getDisplayValue(TagProvider provider) {
+		public Object getDisplayValue(TagProviderMeta provider) {
 			return provider.getName();
 		}
 
 		@Override
-		public String getIdValue(TagProvider provider, int i) {
+		public String getIdValue(TagProviderMeta provider, int i) {
 			return provider.getName();
 		}
 	}
 
-	private List<TagProvider> getProviderList() {
+	private List<TagProviderMeta> getProviderList() {
+		List<TagProviderMeta> result = new ArrayList<>();
 		GatewayContext context = ApplicationInstallerGatewayHook.getInstance().getContext();
-		return context.getTagManager().getTagProviders();
+	    List<TagProvider> tagProviders = context.getTagManager().getTagProviders();
+	    for (TagProvider tagProvider : tagProviders) {
+	    	try {
+	    		TagProviderProps props = tagProvider.getPropertiesAsync().get();
+	    		TagProviderMeta meta = new TagProviderMetaImpl(props.getName(),props.getDescription());
+	    		result.add(meta);
+	    	}
+	    	catch(Exception ex) {
+	    		System.out.println("DefinitionStop: Exception "+ex.getLocalizedMessage());
+	    	}
+	    }
+	    return result;
 	}
 	
-	private TagProvider getDefaultProvider(String name ) {
-		TagProvider result = null;
-		for(TagProvider provider:getProviderList() ) {
-			if(provider.getName().equalsIgnoreCase(name)) {
-				result = provider;
+	private TagProviderMeta getDefaultProvider(String name ) {
+		TagProviderMeta result = null;
+		for(TagProviderMeta meta:getProviderList() ) {
+			if(meta.getName().equalsIgnoreCase(name)) {
+				result = meta;
 				break;
 			}
 		}
