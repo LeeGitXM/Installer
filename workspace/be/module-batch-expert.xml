@@ -7,8 +7,8 @@
 	<license></license>
 	<version>2.0.0.0</version>
 	<freemodule>true</freemodule>
-	<requiredignitionversion>8.0.0</requiredignitionversion>
-	<requiredframeworkversion>9</requiredframeworkversion>
+	<requiredignitionversion>7.9.9</requiredignitionversion>
+	<requiredframeworkversion>8</requiredframeworkversion>
 
 	<!-- Load in our jars for each scope -->
 	<export scope="G">ils-common.jar</export>

@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">18</property>
+	<property name="version">55</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -144,7 +144,7 @@
 	</panel>
 	<panel type="python" essential="false" version="6">
 		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page recreates the database schema to BatchExpert+ 2.4. First drop,
+		<preamble>This page recreates the database schema to BatchExpert+ 2.6. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
 		          already defined by tags.
 		</preamble>
@@ -185,7 +185,7 @@
 			<location>artifacts/database/mysql/populate.sql</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
+	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install UDT Definitions</title>
 		<preamble>This page creates the standard Batch Expert user-defined-tags.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -195,7 +195,7 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="5">
+	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install Custom UDT Definitions for FRG</title>
 		<preamble>This page creates the custom user-defined-tags for FRG.
 		          The definitions are written to the &quot;default&quot; tag provider.
@@ -241,15 +241,15 @@
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="10">
-		<title>Install BatchExpert+ 2.4 - Specially assembled for Dupont-DOW FRG
+		<title>Install BatchExpert+ 2.6 - Specially assembled for Dupont-DOW FRG
 		</title>
-		<preamble>Create Batch Expert+ 2.4 for Dupont-DOW FRG. This project includes 
+		<preamble>Create Batch Expert+ 2.6 for Dupont-DOW FRG. This project includes 
 		          FRG-specific configuration.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertFRG24" type="project" subtype="full">
+		<artifact name="BatchExpertFRG26" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertFRG.proj</location>
-			<comment>Create a BatchExpert+ 2.4 project for Dupont-DOW FRG. </comment>
+			<comment>Create a BatchExpert+ 2.6 project for Dupont-DOW FRG. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="alarm" essential="false" version="2">
@@ -264,55 +264,6 @@
 					 the BatchExpert+.
 					 These consist of an alarm pipeline. </comment>
 		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="false" version="1">
-		<title>Install SFC Charts in the Global Project
-		</title>
-		<preamble>This page handles installation of charts for sequential control of batch operations.
-			The charts are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name. Multiple chart hierarchies can be updated
-			from this one page. 
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="BatchExpertSFC" type="project" subtype="global">
-			<location>artifacts/projects/BatchExpertSFCGlobal.proj</location>
-			<comment>Merge new or modified global resources from
-					 the BatchExpert+ update into the global project.
-					 These consist of SFC properties. </comment>
-		</artifact>
-	</panel>
-	<panel type="defaults" essential="true" version="7">
-		<title>Ensure Existence of All Required Interfaces</title>
-		<preamble>Create default versions of any missing interfaces 
-			required of the product. Scripts already in place
-			are unaffected. NOTE: If this is the first update beyond BE+ 2.2,
-			check for existing entries in the now obsolete stcript package, project.customer.callbacks.
-			These need to moved to the appropriate module in the project.customer.callback package.
-		</preamble>
-	    <!-- The  artifact subtype will always be "partial" -->
-		<artifact name="Defaults" type="project" subtype="partial">
-			<location>artifacts/projects/defaults.proj</location>
-		</artifact>
-	</panel>
-	<panel type="toolkit" essential="false" version="5">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-			Additionally the project and provider default datasources are set. This is critical for
-			proper operation of tags bound to databases.
-		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
-		      The SMTP Profile must precede the alarm profile.  -->
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
-		<!--  Values for these properties are taken from the definition page -->
-		<property type="projectdefaultdatasource"></property>
-		<property type="providerdefaultdatasource"></property>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
