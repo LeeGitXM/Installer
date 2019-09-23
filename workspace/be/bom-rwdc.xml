@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">40</property>
+	<property name="version">56</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -62,20 +62,20 @@
 		<preamble>Create the Batch Expert+ Master project.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertRWDC26PnID" type="project" subtype="full">
+		<artifact name="BatchExpertRWDC30PnID" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertRWDC.proj</location>
-			<comment>Create a BatchExpert+ 2.6 project for RWDC. </comment>
+			<comment>Create a BatchExpert+ 3.0 project for RWDC. </comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="10">
 		<title>Install the RWDC Site-specific project
 		</title>
-		<preamble>Create Batch Expert+ 2.6 for RWDC, specially enhanced to demonstrate P&amp;ID screeens.
+		<preamble>Create Batch Expert+ 3.0 for RWDC, specially enhanced to demonstrate P&amp;ID screeens.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="BatchExpertRWDC26PnID" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertRWDC.proj</location>
-			<comment>Create a BatchExpert+ 2.6 project for RWDC. </comment>
+			<comment>Create a BatchExpert+ 3.0 project for RWDC. </comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
