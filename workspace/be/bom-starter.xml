@@ -139,6 +139,10 @@
 			<comment>Configure Batch Expert+ to add resource as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByResource</script>
 		</artifact>
+		<artifact name="SEED">
+			<comment>Configure Batch Expert+ to add seed as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchBySeed</script>
+		</artifact>
 		<artifact name="SETUP">
 			<comment>Configure Batch Expert+ to add setup as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchBySetup</script>

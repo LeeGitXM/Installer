@@ -57,6 +57,15 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
+	<panel type="python" essential="true" version="13">
+		<title>Alter Scripts for Batch Expert+</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 3.0.
+		</preamble>
+		<artifact name="Alter Tables" type="alter">
+			<script>ils.be.database.alter.alterDatabase()</script>
+			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="main" essential="true" version="10">
 		<title>Install the BatchExpert Master project</title>
 		<preamble>Create the Batch Expert+ Master project.

@@ -128,6 +128,10 @@
 			<comment>Configure Batch Expert+ to add resource as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByResource</script>
 		</artifact>
+		<artifact name="SEED">
+			<comment>Configure Batch Expert+ to add seed as a parameter for batch tracking.</comment>
+			<script>ils.be.configuration.config.setTrackBatchBySeed</script>
+		</artifact>
 		<artifact name="SETUP">
 			<comment>Configure Batch Expert+ to add setup as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchBySetup</script>
@@ -146,9 +150,9 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="12">
+	<panel type="python" essential="true" version="13">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 2.6.
+		<preamble>This page updates the installed database schema to BatchExpert+ 3.0.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
@@ -174,7 +178,7 @@
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="Master@RELEASE@" type="project">
+		<artifact name="BatchExpertMaster@RELEASE@" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Install the latest BatchExpert+ parent project (Master) 
 					 into the existing gateway. </comment>
@@ -204,7 +208,7 @@
 		<title>Installation Complete</title>
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
-		<note name="Site Project">The site-specific project currently inherits from a prior version of the Master. You probably want to update it to refer to the newly installed Master.</note>
+		<note name="Site Project">The site-specific project currently inherits from a prior version of the Master. Update it to refer to the newly installed Master.</note>
 		<note name="Gateway Restart">The tags have active components. A Gateway restart is required to accommodate the changes.</note>
 	</epilog>
 </installer>
