@@ -135,8 +135,8 @@
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 
 		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		<mkdir dir="${artifact.dir}/taggroups" />
+		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />

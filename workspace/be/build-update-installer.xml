@@ -132,8 +132,8 @@
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 
 		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclass" />
-		<copy file="${git.repo}/batch-expert/tags/scanclasses.csv" tofile="${artifact.dir}/scanclass/scanclasses.csv" />
+		<mkdir dir="${artifact.dir}/taggroups" />
+		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -167,8 +167,9 @@
 		<echo message="Copying ${module.name} to Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/release/README.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/README.txt" />
-		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/client_tags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/taggroups.json" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.zip" />
+		<copy file="${git.repo}/batch-expert/tags/VisionClientTags.zip" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/VisionClientTags.zip" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

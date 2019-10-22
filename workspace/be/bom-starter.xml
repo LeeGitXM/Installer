@@ -202,16 +202,18 @@
 			<location>artifacts/tags/simulation_udts.xml</location>
 		</artifact>
 	</panel>
+	<!--
 	<panel type="scanclass" essential="true" version="2">
-		<title>Create alternative Scan Classes</title>
-		<preamble>Create scanclasses referenced by application tags. 
-				Scanclasses determine tag poll rates.
+		<title>Create alternative Tag Groups</title>
+		<preamble>Create tag groups referenced by application tags. 
+				Tag groups determine tag poll rates.
 		</preamble>
 		<property name="provider">default</property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclass/scanclasses.csv</location>
+		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
+			<location>artifacts/taggroups/taggroups.json</location>
 		</artifact>
 	</panel>
+	-->
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
