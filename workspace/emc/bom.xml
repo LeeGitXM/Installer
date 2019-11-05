@@ -10,7 +10,7 @@
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">35</property>
+	<property name="version">0</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
 	<panel type="welcome" essential="true">

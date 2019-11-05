@@ -13,10 +13,11 @@
 	<property name="version">27</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
+	
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for EMC Ignition Applications</title>
-		<preamble>Welcome to the ILS Automation installer for EMC Ignition
-			Applications. The table below compares the existing installation of
+		<title>ILS Automation Installer for APCW Ignition Applications</title>
+		<preamble>Welcome to the ILS Automation installer for Advanced Process Control
+			Workbench (APCW). The table below compares the existing installation of
 			this product on this system, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
@@ -26,6 +27,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
+	
 	<panel type="license" essential="true" version="1">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
@@ -37,6 +39,17 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
+	
+	<panel type="site" essential="true">
+		<title>Project Selection</title>
+		<preamble>This install package contains two installation choices.
+		          Demo - Installs sample diagnostic diagrams, sample SFCs, and a populated database.
+		          New - Installs an empty project along with an empty database, UDTs, etc.
+		</preamble>
+		<site name="Demo" />
+		<site name="New" />
+	</panel>
+	
 	<panel type="definition" essential="true">
 		<title>Common interface Definitions</title>
 		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
@@ -49,7 +62,8 @@
 		<property name="database" type="isolation"></property>
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
-	</panel>	
+	</panel>
+	
 	<panel type="icon" essential="true" version="9">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
@@ -61,6 +75,7 @@
 			<location>artifacts/icons/custom</location>
 		</artifact>
 	</panel>
+	
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
 	<panel type="file" essential="true" version="28">
 		<title>Python Code for Ignition Applications</title>
@@ -73,6 +88,7 @@
 			<location>artifacts/external/ils-python</location>
 			<destination>pylib</destination>
 		</artifact>
+		<!-- TODO We can't install XOM Python for the Demo -->
 		<artifact name="External Python - XOM" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
 			<destination>pylib</destination>
@@ -82,6 +98,7 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
+	
 	<panel type="database" essential="true" version="24">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
@@ -90,14 +107,16 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Demo</property>
 		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
+		<artifact name="APCW Database" type="sql" subtype="create">
 			<location>artifacts/database/createDemo.sql</location>
 		</artifact>
 		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
+	
 	<panel type="database" essential="false" version="16">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
@@ -106,13 +125,50 @@
 		</preamble>
 		<property name="database" type="isolation"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
+		<property name="site">Demo</property>
+		<artifact name="APCW Database (Isolation)" type="sql" subtype="create">
 			<location>artifacts/database/createDemo.sql</location>
 		</artifact>
 		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
+	
+	<panel type="database" essential="true" version="24">
+		<title>Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">New</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="APCW Database" type="sql" subtype="create">
+			<location>artifacts/database/createNew.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="false" version="16">
+		<title>Database Create and Alter Scripts for Test</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="isolation"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">New</property>
+		<artifact name="APCW Database (Isolation)" type="sql" subtype="create">
+			<location>artifacts/database/createNew.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
 	<panel type="module" subtype="production" essential="true" version="23" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs modules necessary for the EMC applications.
