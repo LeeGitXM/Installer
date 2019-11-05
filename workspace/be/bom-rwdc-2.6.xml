@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>RWDCBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for RWDC, MD</description>
+	<property name="product">BatchExpert+</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">39</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Batch Expert+ </title>
+		<preamble>This is a special version of the ILS Automation installer built for
+		demonstration of P&amp;ID updates of the &quot;RWDC&quot; BE+ installation.
+		This installer simply adds a demonstration project and optionally replaces OPC with
+	    memory tags for test/demonstration. It is designed to be run on a system
+	    with an existing RWDC installation.
+		</preamble>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="4">
+		<title>Install Memory Tags for RWDC</title>
+		<preamble>This page creates memory-tag versions of user-defined-tags for RWDC.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		          These tags are for test/demonstration only.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<artifact name="RWDC Tag Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/rwdc_memory_tags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="4">
+		<title>Install Instance Tags for RWDC</title>
+		<preamble>This page adds unit tags for RWDC.
+		          The definitions are written to the &quot;default&quot; tag provider.
+		          These tags are production versions.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<artifact name="RWDC Site Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/rwdc_site_tags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="10">
+		<title>Install BatchExpert+ 2.6 - Specially assembled for RWDC
+		</title>
+		<preamble>Create Batch Expert+ 2.6 for RWDC, specially enhanced to demonstrate P&amp;ID screeens.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpertRWDC26PnID" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertRWDC.proj</location>
+			<comment>Create a BatchExpert+ 2.6 project for RWDC. </comment>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of BatchExpert+ in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of Batch Expert+
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+

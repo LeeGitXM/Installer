@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>KalmanFilterDemo+</title>
+	<description>Installer for ILS Automation's Kalman Filter Demonstration</description>
+	<property name="product">KalmanDemo</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">1</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for a Demonstration of Kalman Filters </title>
+		<preamble>This is a special version of the ILS Automation installer built for
+		the express purpose of installing a demonstration of Kalman Filtering using the Apache Commons Math library.
+		</preamble>
+	</panel>
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="1">
+		<title>Libraries and External Python</title>
+		<preamble>This page loads the custom Python modules that support the demonstration.
+		          It also loads the Apache Commons Math (3.3.6) jar files. 
+		</preamble>
+		<artifact name="External Python" type="directory" subtype="user-lib">
+			<location>artifacts/external/ils</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="Apache Commons Math library" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="1">
+		<title>Install the Demonstration Project
+		</title>
+		<preamble>Create the KalmanFilterDemo project.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpert" type="project" subtype="full">
+			<location>artifacts/projects/KalmanDemo.proj</location>
+			<comment>Create the KalmanDemo project. </comment>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of the demonstration project in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of Batch Expert+
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
