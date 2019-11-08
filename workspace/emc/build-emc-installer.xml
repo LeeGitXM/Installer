@@ -213,14 +213,19 @@
 		
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses/brpo" />
+		<mkdir dir="${artifact.dir}/scanclasses/demo" />
 		<mkdir dir="${artifact.dir}/scanclasses/escorez" />
 		<mkdir dir="${artifact.dir}/scanclasses/gline" />
 		<mkdir dir="${artifact.dir}/scanclasses/halobutyl" />
+		<mkdir dir="${artifact.dir}/scanclasses/new" />
 		<mkdir dir="${artifact.dir}/scanclasses/vistalon" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/brpo/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/demo/scanclasses.csv" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/escorez/scanclasses.csv" />
 		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/gline/scanclasses.csv" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/halobutyl/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/New/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/new/scanclasses.csv" />
+
 		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/vistalon/scanclasses.csv" />
 
 		<!-- Zip it all up -->

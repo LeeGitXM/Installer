@@ -54,7 +54,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
-
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
 		<mkdir dir="${staging.dir}" />
@@ -65,7 +64,6 @@
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 		
-
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
@@ -78,7 +76,8 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/createXOM_Demo.sql" tofile="${artifact.dir}/database/createDemo.sql" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Demo/create_Demo.sql" tofile="${artifact.dir}/database/createDemo.sql" />
+		<copy file="${svn.repo}/EMChemicals/Migration/APCW/create_APCW.sql" tofile="${artifact.dir}/database/createApcw.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
 		<!-- Documentation -->
@@ -88,8 +87,8 @@
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx" tofile="${artifact.dir}/doc/DatabaseDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf" tofile="${artifact.dir}/doc/DatabaseER.pdf" />
 		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
@@ -140,6 +139,7 @@
 				<include name="**/*.JPG" />
 			</fileset>
 		</copy>
+		
 		<!-- Copy license file into the artifacts -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" todir="${artifact.dir}/license/" />
@@ -152,7 +152,8 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/Demo.proj" tofile="${artifact.dir}/projects/Demo.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/Demo.proj" tofile="${artifact.dir}/projects/APCW_Demo.proj" />
+		<copy file="${svn.repo}/EMChemicals/Migration/APCW/ImportsForIgnition/APCW.proj" tofile="${artifact.dir}/projects/APCW.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
@@ -169,6 +170,7 @@
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses/demo" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/demo/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/APCW/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/new/scanclasses.csv" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
