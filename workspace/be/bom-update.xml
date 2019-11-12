@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">58</property>
+	<property name="version">60</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -169,7 +169,7 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="29">
+	<panel type="project" subtype="main" essential="true" version="30">
 		<title>Install the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
