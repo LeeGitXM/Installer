@@ -8,12 +8,16 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-test.xml" />
-	<property name="module.name" value="blt-test-installer-unsigned" />
-	<property name="module.path" value="${basedir}/modules/blt-test-installer-unsigned.modl" />
-	<property name="module.path.signed" value="${basedir}/modules/blt-test-installer-signed.modl" />
-	<property name="module.xml" value="${basedir}/blt-test-installer-module.xml" />
+	<property name="bom" value="${basedir}/bom.xml" />
+	<property name="module.name" value="blt-installer-unsigned" />
+	<property name="module.name.signed" value="blt-installer-signed" />
+	<property name="module.path" value="${basedir}/modules/blt-installer-unsigned.modl" />
+	<property name="module.path.signed" value="${basedir}/modules/blt-installer-signed.modl" />
+	<property name="module.xml" value="${basedir}/blt-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+	<propertyfile file="build.properties">
+		<entry key="buildNumber" type="int" default="0" operation="+" pattern="00" />
+	</propertyfile>
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
@@ -51,8 +55,14 @@
 		    "loadfile" does not overwrite existing properties.
 		-->
 		
-		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
-		<trim input="${raw}" property="version.build"/>
+<!--		<loadfile property="raw" srcFile="${svn.repo}/EMChemicals/Release/VERS"/>
+		<trim input="${raw}" property="version.build"/> -->
+
+		<property file="build.properties"/> 
+		<trim input="${buildNumber}" property="version.buildNumber"/> 
+		<trim input="${majorVersion}" property="version.majorVersion"/> 
+		<trim input="${minorVersion}" property="version.minorVersion"/> 
+		<property name="version.build" value="${version.majorVersion}r${version.minorVersion}b${version.buildNumber}" />
 		
 		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
@@ -79,6 +89,12 @@
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
 
+		<!-- Database -->
+		<mkdir dir="${artifact.dir}/database" />
+		<copy file="${git.repo}/Installer/workspace/blt/Scripts/createBlt.sql" tofile="${artifact.dir}/database/createBlt.sql" />
+		<copy file="${git.repo}/Installer/workspace/blt/Scripts/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
+		
+		
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
 		<mkdir dir="${artifact.dir}/icons/blt" />
@@ -95,14 +111,6 @@
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
-		<mkdir dir="${artifact.dir}/external/xom-python" />
-		<copy todir="${artifact.dir}/external/xom-python">
-			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
-				<include name="xom/**/*.py" />
-			</fileset>
-		</copy>
-		<delete dir="${artifact.dir}/external/xom-python/xom/emre" />
-		
 		<mkdir dir="${artifact.dir}/external/jars/core/common" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/core/common/blt-common.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
@@ -136,7 +144,7 @@
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-unsigned.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
+		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
 
 		<!-- Project -->
@@ -151,7 +159,7 @@
 		<zip zipfile="${module.path}" basedir="${staging.dir}" />
 		<!-- Sign the module -->
 		<antcall target="SignModule">
-			<param name="moduleName" value="${module.name}-${TFModule.version}" />
+			<param name="moduleName" value="${module.name}-${version.build}" />
 			<param name="modulein"   value="${module.path}" />
 			<param name="moduleout"  value="${module.path.signed}"/>
 		</antcall>
@@ -159,9 +167,9 @@
 
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
-		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}" tofile="${google.repo}/0.1r17/${module.name}.modl" />
-		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}" />
+		<echo message="Installing ${module.name.signed} on Ignition Gateway." />
+		<copy file="${module.path.signed}" tofile="${google.repo}/0.1r17/${module.name.signed}.modl" />
+		<postmodule posturl="${local.gateway.url}" modulefile="${module.path.signed}" />
 	</target>
 	
 	<!-- macro to trim newlines from a variable -->
