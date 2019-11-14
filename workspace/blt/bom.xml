@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>Block Language Toolkit installer</title>
+	<description>Installer for the Block Language Toolkit</description>
+	<property name="product">Block Language Toolkit</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">1</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for the Block Language Toolkit</title>
+		<preamble>Welcome to the ILS Automation installer for the Block Language Toolkit. 
+			This installer is meant to operate against a
+		    base that contains a bare Ignition instance. No database connection is required.
+			The table below compares the existing installation of
+			this environment, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined tag provider: TAG.
+			(This name is hard-coded into the sample scripts.)
+		</preamble>
+	</panel>
+	<panel type="toolkit" essential="true" version="1">
+		<title>Update Toolkit Properties</title>
+		<preamble>Set properties in the internal database of the Gateway.
+		          This includes the tag provider name. 
+				  We also remove all extension functions that involve database operations.
+		</preamble>
+		<property name="Provider">TAG</property>
+		<property name="com.ils.application(property-get-script)">ils.extensions.appProperties.getAux</property>
+		<property name="com.ils.application(property-set-script)">ils.extensions.appProperties.setAux</property>
+		<property name="com.ils.application(node-rename-script)">ils.extensions.appProperties.rename</property>
+		<property name="com.ils.application(node-delete-script)">ils.extensions.appProperties.delete</property>
+		<property name="com.ils.application(node-save-script)">ils.extensions.appProperties.save</property>
+		<property name="com.ils.family(property-get-script)">ils.extensions.famProperties.getAux</property>
+		<property name="com.ils.family(property-set-script)">ils.extensions.famProperties.setAux</property>
+		<property name="com.ils.family(node-rename-script)">ils.extensions.famProperties.rename</property>
+		<property name="com.ils.family(node-delete-script)">ils.extensions.famProperties.delete</property>
+		<property name="com.ils.family(node-save-script)">ils.extensions.famProperties.save</property>
+		<property name="com.ils.diagram(node-delete-script)">ils.extensions.diaSave.delete</property>
+		<property name="com.ils.diagram(node-save-script)">ils.extensions.diaSave.save</property>
+		<property name="ils.block.sqcdiagnosis.SQCDiagnosis(property-get-script)">ils.extensions.sqcdProperties.getAux</property>
+		<property name="ils.block.sqcdiagnosis.SQCDiagnosis(property-set-script)">ils.extensions.sqcdProperties.setAux</property>
+		<property name="ils.block.sqcdiagnosis.SQCDiagnosis(node-rename-script)">ils.extensions.sqcdProperties.rename</property>
+		<property name="ils.block.sqcdiagnosis.SQCDiagnosis(node-delete-script)">ils.extensions.sqcdProperties.delete</property>
+		<property name="ils.block.sqcdiagnosis.SQCDiagnosis(node-save-script)">ils.extensions.sqcdProperties.save</property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(property-get-script)">ils.extensions.fdProperties.getAux</property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(property-set-script)">ils.extensions.fdProperties.setAux</property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(node-rename-script)">ils.extensions.fdProperties.rename</property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(node-delete-script)">ils.extensions.fdProperties.delete</property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(node-save-script)">ils.extensions.fdProperties.save</property>
+
+	</panel>
+	<panel type="icon" essential="true" version="1">
+		<title>Icons for BLT Blocks</title>
+		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit. </preamble>
+		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
+			<location>artifacts/icons/blt</location>
+		</artifact>
+	</panel>
+	<!-- 'user-lib" subtypes are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="1">
+		<title>Python Code for Ignition Applications</title>
+		<preamble>This page loads Python code that supports the Block Language Toolkit. 
+		Additionally, Java jar files that are referenced by the Python are installed.
+		</preamble>
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
+			<location>artifacts/external/jars</location>
+			<destination>core</destination>
+		</artifact>
+	</panel>
+	<panel type="definition" essential="true">
+		<title>Define Tag and Database Providers</title>
+		<preamble>Specify the tag provider and database connection to be used by BLT. 
+		These values are used by subsequent screens.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="provider" type="production"></property>
+	</panel>	
+	
+	<panel type="database" essential="true" version="1">
+		<title>BLT Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections.
+		</preamble>
+		<property name="debug" type="true"></property>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">ILS_BLT</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="Create Database" type="sql" subtype="create">
+			<location>artifacts/database/createBlt.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="tag" essential="true" version="1">
+		<title>Install Tags for samples</title>
+		<preamble>This page defines tags that are needed by the sample diagrams
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="Tags for the Sample Diagrams" type="tag" subtype="xml">
+			<location>artifacts/tags/sqlTags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="module" essential="true" version="1" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs modules necessary for the Block Language Toolkit samples.
+		</preamble>
+		<artifact name="Block Language Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="1">
+		<title>Install the BasicDiagrams Project</title>
+		<preamble>The BasicDiagrams project contains sample scenarios involving
+		          each class of diagrams.
+		</preamble>
+		<artifact name="BasicDiagrams" type="project" subtype="full">
+			<location>artifacts/projects/BasicDiagrams.proj</location>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of BLT into
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of the BLT environment
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">The newly created BasicDiagrams project has been installed disabled. It must be enabled before use.</note>
+		<note name="Gateway Restart">Modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
