@@ -71,7 +71,7 @@ public class DatabaseStep extends BasicInstallerPanel {
         datasource = datasources.get(panelData.getItertion());
         datasourceLabel = new Label("datasource",datasource);
 		add(datasourceLabel);
-        
+
 		// Clear database form
         WebMarkupContainer clear = new WebMarkupContainer("clear");
         clear.setVisible(hasClear);
@@ -137,6 +137,7 @@ public class DatabaseStep extends BasicInstallerPanel {
 					PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
 					panelData.setCurrentVersion(futureVersion);
 					info(String.format("Datasource %s schema updated successfully", datasource));
+					error("aw crap");
 				}
 				else {
 					if(result.length()>InstallerConstants.MAX_ERROR_LENGTH ) {

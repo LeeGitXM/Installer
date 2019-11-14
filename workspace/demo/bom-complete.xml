@@ -311,6 +311,12 @@
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
 		<property
 			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<property
+			name="xom.block.sqcdiagnosis.SqcDiagnosis(property-get-script)">xom.extensions.sqcdProperties.getAux</property>
+		<property
+			name="xom.block.sqcdiagnosis.SqcDiagnosis(property-rename-script)">xom.extensions.sqcdProperties.rename</property>
+		<property
+			name="xom.block.sqcdiagnosis.SqcDiagnosis(property-set-script)">xom.extensions.sqcdProperties.setAux</property>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">

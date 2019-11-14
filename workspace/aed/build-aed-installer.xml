@@ -106,7 +106,7 @@
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
 		<copy todir="${artifact.dir}/external/ils-python">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
+			<fileset dir="${git.repo}/ils_python/ILS_Python/src">
 				<include name="ils/common/**/*.py" />
 				<include name="ils/dataset/**/*.py" />
 			</fileset>

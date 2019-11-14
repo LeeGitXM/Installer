@@ -385,12 +385,24 @@ public class InstallerDataHandler {
 		if( bytes!=null && bytes.length>0 ) {
 			// Do our best to group multi-line statements into legal SQL
 			// Combine multiple lines into single SQL statements
-			Scanner scanner = new Scanner(new String(bytes));
+//			Scanner scanner = new Scanner(new String(bytes));
+			Scanner scanner = null;
+			try {
+				scanner = new Scanner(new String(bytes));
+				if (scanner.nextLine().startsWith("?")) {  // looks like it may be UTF-16 encoded
+					log.warn("SQL file seems to be UTF-16 encoded, trying that.");
+					scanner = new Scanner(new String(bytes, "UTF-16"));
+				}
+			} catch( Exception ex) {
+				log.warn("ERROR CONVERTING!");
+			}
+			
 			List<String> statements = new ArrayList<>();
 			StringBuffer sb = new StringBuffer();
 			while(scanner.hasNextLine()) {
 				// Accumulate until we get to a statement terminator
 				String line = scanner.nextLine();
+				log.warn("Line: " + line);
 				if( line.endsWith("\r")) line = line.substring(0, line.length()-1);
 				
 				// No matter what, a line of "go" is a terminator meaning "execute"

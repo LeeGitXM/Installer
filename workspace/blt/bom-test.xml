@@ -52,9 +52,12 @@
 		<property name="com.ils.family(property-rename-script)"></property>
 		<property name="com.ils.family(property-set-script)"></property>
 		<property name="com.ils.diagram(node-save-script)"></property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)"></property>
+	 	<property name="ils.block.finaldiagnosis.FinalDiagnosis(property-get-script)"></property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(property-rename-script)"></property>
+		<property name="ils.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>  -->
+<!-- 	<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)"></property>
 		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)"></property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)"></property>  -->
 	</panel>
 	<panel type="icon" essential="true" version="2">
 		<title>Icons for BLT Blocks</title>
