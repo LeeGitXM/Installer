@@ -1,5 +1,5 @@
-<!-- Create an application installer for Batch-Expert+ - RWDC
-     The intent is to create a development environment with RWDC base project,
+<!-- Create an application installer for Batch-Expert+ - RWDC 2KT Project
+     The intent is to create a development environment with a RWDC PnID project,
      tags and database.
 -->
 <project name="BatchExpertRWDCInstaller" basedir="." default="deploy">
@@ -8,7 +8,7 @@
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom-rwdc.xml" />
-	<property name="module.name" value="rwdc-dev-installer" />
+	<property name="module.name" value="rwdc-pnid-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="sandbox" value="${git.repo}/batch-expert/updates/RWDCSandbox" />
@@ -81,22 +81,16 @@
 		
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/RWDC_UDTs.xml" tofile="${artifact.dir}/tags/rwdc_udts.xml" />
-		<copy file="${sandbox}/RWDC_UnitTags.xml" tofile="${artifact.dir}/tags/rwdc_site_tags.xml" />
-		<copy file="${sandbox}/RWDCMemoryTags.xml" tofile="${artifact.dir}/tags/rwdc_memory_tags.xml" />
-		
-		<!-- Modules -->
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		<copy file="${sandbox}/RWDC_2KT_UDTs.xml" tofile="${artifact.dir}/tags/rwdc_udts.xml" />
+		<copy file="${sandbox}/RWDC_2KT_UnitTags.xml" tofile="${artifact.dir}/tags/rwdc_site_tags.xml" />
 		
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/BatchExpertRWDC.zip" tofile="${artifact.dir}/projects/BatchExpertRWDC.zip" />
+		<copy file="${sandbox}/RWDC_2KT_PnID.zip" tofile="${artifact.dir}/projects/BatchExpertRWDC.zip" />
 
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
