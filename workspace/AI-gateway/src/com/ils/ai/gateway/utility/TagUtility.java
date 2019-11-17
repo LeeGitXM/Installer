@@ -6,6 +6,8 @@ import org.python.core.PyInteger;
 import org.python.core.PyString;
 import org.python.core.PyStringMap;
 
+import com.inductiveautomation.ignition.common.util.LogUtil;
+import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 
 /** 
@@ -16,6 +18,8 @@ import com.inductiveautomation.ignition.gateway.model.GatewayContext;
  * @See 
  */
 public class TagUtility{
+	private final String CLSS = "TagUtility";
+	private final LoggerEx log;
 	GatewayContext context = null;
 	final PyStringMap pyLocals;
     final PyStringMap pyGlobals;
@@ -24,14 +28,26 @@ public class TagUtility{
 		this.context = ctx;
 		this.pyLocals = context.getScriptManager().createLocalsMap();
         this.pyGlobals = context.getScriptManager().getGlobals();
+        this.log = LogUtil.getLogger(getClass().getPackage().getName());
 	}
 
-	// tagMode==0 implies overwrite existing tags.
-	public void importFromFile(File file,String source) throws Exception {
-		pyLocals.__setitem__("tagFileName", new PyString(file.toPath().toString()));
-        pyLocals.__setitem__("tagProviderName", new PyString(source));
-        pyLocals.__setitem__("tagMode", new PyInteger(0));
-        String code = "system.tag.loadFromFile(tagFileName, tagProviderName, tagMode)";
+	// Import tag definitions from a json or xml file.
+	// The base is usually "root" (depending on how the tag file was exported).
+	public void importTagsFromFile(File file,String base) throws Exception {
+		pyLocals.__setitem__("path", new PyString(file.toPath().toString()));
+        pyLocals.__setitem__("base", new PyString(base));
+        pyLocals.__setitem__("mode", new PyString("o"));   // Overwrite
+        String code = "system.tag.importTags(path, base, mode)";
+        log.info(String.format("%s.importTagsFromFile:%s %s to %s" , CLSS,code,file.toPath().toString(),base));
         context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
+	} 
+	
+	// Import tag groups (scan classes). These are project-specific.
+	public void importGroupsFromFile(File file,String project) throws Exception {
+		pyLocals.__setitem__("path", new PyString(file.toPath().toString()));
+		pyLocals.__setitem__("projectName", new PyString(project));
+		pyLocals.__setitem__("mode", new PyInteger(0));   // Overwrite
+		String code = "system.groups.loadFromFile(path, projectName, mode)";
+		context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
 	}    
 }

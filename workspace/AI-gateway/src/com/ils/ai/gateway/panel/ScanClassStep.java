@@ -19,7 +19,7 @@ import com.ils.ai.gateway.model.PersistenceHandler;
  */
 public class ScanClassStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 2204950686203860253L;
-	private String provider = "";
+	private String project = "";
 
 	public ScanClassStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
@@ -29,8 +29,8 @@ public class ScanClassStep extends BasicInstallerPanel {
 		add(new Label("futureVersion",futureVersionString));
         
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-        provider = dataHandler.providerNameFromProperties(index, data);
-		add(new Label("provider",provider));
+        project = dataHandler.projectNameFromProperties(index, data);
+		add(new Label("project",project));
 		
         List<String> scanClasses = dataHandler.getArtifactNames(index, data);
         add(new ListView<String>("scanclasses", scanClasses) {
@@ -43,7 +43,7 @@ public class ScanClassStep extends BasicInstallerPanel {
         });
         
         add(new Button("install") {
-			private static final long serialVersionUID = 4110778774811578782L;
+			private static final long serialVersionUID = 4110668774811578782L;
 			
 			@Override
             public void onSubmit() {
@@ -51,7 +51,7 @@ public class ScanClassStep extends BasicInstallerPanel {
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
             	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsScanClass(index,provider,name,data);
+            		String result = dataHandler.loadArtifactAsScanClass(index,project,name,data);
             		if( result==null ) {
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             			panelData.setCurrentVersion(futureVersion);

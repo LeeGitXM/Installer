@@ -41,7 +41,6 @@ import com.ils.ai.gateway.utility.CSVUtility;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.PythonUtility;
-import com.ils.ai.gateway.utility.ScanClassUtility;
 import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.TransactionGroupUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
@@ -56,19 +55,15 @@ import com.inductiveautomation.ignition.common.project.ProjectManifest;
 import com.inductiveautomation.ignition.common.project.RuntimeProject;
 import com.inductiveautomation.ignition.common.project.resource.ProjectResource;
 import com.inductiveautomation.ignition.common.script.JythonExecException;
-import com.inductiveautomation.ignition.common.sqltags.model.ScanClass;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.IgnitionGateway;
-import com.inductiveautomation.ignition.gateway.gan.GatewayNetworkManager;
 import com.inductiveautomation.ignition.gateway.images.ImageFormat;
 import com.inductiveautomation.ignition.gateway.images.ImageManager;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
 import com.inductiveautomation.ignition.gateway.project.ProjectManager;
 import com.inductiveautomation.ignition.gateway.servlets.BackupServlet;
-import com.inductiveautomation.ignition.gateway.sqltags.distributed.TagProviderService;
 import com.inductiveautomation.ignition.gateway.util.BackupRestoreDelegate.BackupType;
-import com.inductiveautomation.metro.api.ServerId;
 
 
 /**
@@ -99,7 +94,6 @@ public class InstallerDataHandler {
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private PythonUtility pyUtil = null;
-	private ScanClassUtility scanUtil = null;
 	public TagUtility tagUtil = null;
 	private TransactionGroupUtility transactionUtil = null;
 	private XMLUtility xmlUtil = null;
@@ -1641,27 +1635,25 @@ public class InstallerDataHandler {
 		return result;
 	}
 	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
-	public String loadArtifactAsScanClass(int panelIndex,String providerName,String artifactName,InstallerData model) {
+	public String loadArtifactAsScanClass(int panelIndex,String projectName,String artifactName,InstallerData model) {
 		String result = null;
-		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
-		if( bytes!=null && bytes.length>0 ) {
-			List<ScanClass> scanClasses = scanUtil.listFromBytes(providerName,bytes);
+		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
+		int count = 1;
+		for( File file: files ) {
 			try {
-				log.infof("%s.loadArtifactAsScanClass: Installing %d bytes as %s",CLSS,bytes.length,artifactName);
-				GatewayNetworkManager netmgr = context.getGatewayAreaNetworkManager();
-				List<ServerId> servers = netmgr.getKnownServers();
-				TagProviderService tps = (TagProviderService)netmgr.getServiceManager().getService(servers.get(0), TagProviderService.class);
-				tps.addScanClasses(providerName,scanClasses);	
+				log.infof("%s.loadArtifactAsTags: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
+				count = count + TAG_CHUNK_SIZE;
+				tagUtil.importGroupsFromFile(file,projectName);
+			}
+			catch( SAXException saxe) {
+				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
 			}
 			catch( Exception ex) {
-				result = String.format( "Failed to install %s (%s)", artifactName,ex.getMessage());
-				log.warn(result);
+				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
+				log.warn("InstallerDataHandler.loadArtifactAsTags: "+file.getAbsolutePath()+" EXCEPTION",ex);
 			}
 		}
-		else {
-			result = String.format( "Failed to find %s resource in bundle",artifactName);
-			log.warn(result);
-		}
+
 
 		return result;
 	}
@@ -1713,7 +1705,7 @@ public class InstallerDataHandler {
 			try {
 				log.infof("%s.loadArtifactAsTags: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
 				count = count + TAG_CHUNK_SIZE;
-				tagUtil.importFromFile(file,providerName);
+				tagUtil.importTagsFromFile(file,providerName);
 			}
 			catch( SAXException saxe) {
 				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
@@ -1789,6 +1781,21 @@ public class InstallerDataHandler {
 		return datasource;
 	}
 	/**
+	 * Inspect the properties for the specified panel looking for a "base" property. This is the parent path 
+	 * for the import file. It includes the provider name.
+	 */
+	public String baseNameFromProperties(int index,InstallerData model) {
+		String base = "";
+        // If the production provider property has a value, use it. Otherwise get the toolkit property
+		List<PropertyItem> properties = getPanelProperties(index, model);
+		for(PropertyItem prop:properties) {
+    		if(prop.getName().equalsIgnoreCase("base")) {
+    			base = prop.getValue();
+    		}
+    	}
+		return base;
+	}
+	/**
 	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
 	 * has no value, return the name specified as a toolkit property.
 	 * @return
@@ -1824,6 +1831,22 @@ public class InstallerDataHandler {
 		return providerName;
 	}
 	/**
+	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
+	 * has no value, return the name specified as a toolkit property.
+	 * @return
+	 */
+	public String projectNameFromProperties(int index,InstallerData model) {
+		String projectName = "";
+        // If the production provider property has a value, use it. Otherwise get the toolkit property
+		List<PropertyItem> properties = getPanelProperties(index, model);
+		for(PropertyItem prop:properties) {
+    		if(prop.getName().equalsIgnoreCase("property")) {
+    			projectName = prop.getValue();
+    		}
+    	}
+		return projectName;
+	}
+	/**
 	 * This step is necessary before the instance is useful. Most other
 	 * properties are initialized lazily.
 	 */
@@ -1834,7 +1857,6 @@ public class InstallerDataHandler {
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
 		this.pyUtil   = new PythonUtility(context);
-		this.scanUtil = new ScanClassUtility();
 		this.tagUtil  = new TagUtility(context);
 		this.transactionUtil = new TransactionGroupUtility(context);
 		this.xmlUtil  = new XMLUtility();

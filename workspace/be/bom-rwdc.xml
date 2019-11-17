@@ -28,6 +28,7 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]_types_/Site</property>
 		<artifact name="RWDC UDTs" type="tag" subtype="xml">
 			<location>artifacts/tags/rwdc_udts.xml</location>
 		</artifact>
@@ -36,9 +37,11 @@
 		<title>Install Instance Tags for RWDC</title>
 		<preamble>This page adds unit tags for RWDC.
 		          The definitions are written to the &quot;default&quot; tag provider.
+		          NOTE: The base path specifies the path of the tag exports. It includes the provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]Site</property>
 		<artifact name="RWDC Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/rwdc_site_tags.xml</location>
 		</artifact>

@@ -112,6 +112,7 @@
 	<target name="deploy" depends="build">
 		<echo message="Copying RWDC installer module onto Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${sandbox}/RWDC_2KT_UDTs.xml" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/RWDC_2KT_UDTs.xml" />
 	</target>
 	<!-- macro to trim newlines from a variable -->
 	 <macrodef name="trim">

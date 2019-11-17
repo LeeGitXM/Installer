@@ -26,7 +26,7 @@ import com.ils.ai.gateway.model.PersistenceHandler;
 public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
 	private Label providerLabel = null;
-	private String provider = "";
+	private String base = "";
 	private String statusString = "";
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
@@ -37,8 +37,8 @@ public class TagStep extends BasicInstallerPanel {
 		add(new Label("futureVersion",futureVersionString));
         
         InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-        provider = dataHandler.providerNameFromProperties(index, data);
-        providerLabel = new Label("provider",provider);
+        base = dataHandler.baseNameFromProperties(index, data);
+        providerLabel = new Label("base",base);
 		add(providerLabel);
 		
 		List<String> resources = dataHandler.getArtifactNames(index,data);
@@ -70,7 +70,7 @@ public class TagStep extends BasicInstallerPanel {
             		
             		for( File file:files ) {
             			try {
-            				dataHandler.tagUtil.importFromFile(file,provider);
+            				dataHandler.tagUtil.importTagsFromFile(file,base);
             				count = getTagCount(file.toPath());
             				statusString = String.format("~ %d tags",count);
             				
