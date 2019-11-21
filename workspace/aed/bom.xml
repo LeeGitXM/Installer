@@ -248,9 +248,12 @@
 		<title>AED-RTA - Installed</title>
 		<preamble>Now that all of the automated installation and configuration of the EMRE AED-RTA Applications
 		          is complete, there are just a few more manual steps required. </preamble>
+		          
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
 		            Restart the Gateway, then edit the project setting it to "enabled".</note>
+		<note name="Language Resources">The English, French and Italian external language resources (XML files) need to be loaded 
+					into the gateway using the Designer.</note>
 	</epilog>
 </installer>
 
