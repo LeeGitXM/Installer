@@ -5,18 +5,19 @@
       be unique. 
  -->
 <installer>
-	<title>EMC Ignition Applications</title>
-	<description>Installer for EMC Ignition Applications.</description>
+	<title>APCW Installer</title>
+	<description>Installer for Advanced Process Control Workbench Applications</description>
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">27</property>
+	<property name="version">1</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
+	
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for EMC Ignition Applications</title>
-		<preamble>Welcome to the ILS Automation installer for EMC Ignition
-			Applications. The table below compares the existing installation of
+		<title>ILS Automation Installer for APCW Ignition Applications</title>
+		<preamble>Welcome to the ILS Automation installer for Advanced Process Control
+			Workbench (APCW). The table below compares the existing installation of
 			this product on this system, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
@@ -26,6 +27,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
+	
 	<panel type="license" essential="true" version="1">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
@@ -37,6 +39,17 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
+	
+	<panel type="site" essential="true">
+		<title>Project Selection</title>
+		<preamble>This install package contains two installation choice:  
+		          Demo - Installs sample diagnostic diagrams, sample SFCs, and a populated database;  
+		          New - Installs an empty project along with an empty database, UDTs, etc.
+		</preamble>
+		<site name="Demo" />
+		<site name="New" />
+	</panel>
+	
 	<panel type="definition" essential="true">
 		<title>Common interface Definitions</title>
 		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
@@ -49,8 +62,9 @@
 		<property name="database" type="isolation"></property>
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
-	</panel>	
-	<panel type="icon" essential="true" version="9">
+	</panel>
+	
+	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -61,8 +75,9 @@
 			<location>artifacts/icons/custom</location>
 		</artifact>
 	</panel>
+	
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
-	<panel type="file" essential="true" version="28">
+	<panel type="file" essential="true" version="1">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
@@ -73,6 +88,7 @@
 			<location>artifacts/external/ils-python</location>
 			<destination>pylib</destination>
 		</artifact>
+		<!-- TODO We can't install XOM Python for the Demo -->
 		<artifact name="External Python - XOM" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
 			<destination>pylib</destination>
@@ -82,7 +98,8 @@
 			<destination>core</destination>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="24">
+	
+	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -90,15 +107,17 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">Demo</property>
 		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createDemo.sql</location>
+		<artifact name="APCW Database" type="sql" subtype="create">
+			<location>artifacts/database/create_APCW_Demo.sql</location>
 		</artifact>
 		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="false" version="16">
+	
+	<panel type="database" essential="false" version="1">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -106,59 +125,135 @@
 		</preamble>
 		<property name="database" type="isolation"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
-			<location>artifacts/database/createDemo.sql</location>
+		<property name="site">Demo</property>
+		<artifact name="APCW Database (Isolation)" type="sql" subtype="create">
+			<location>artifacts/database/create_APCW_Demo.sql</location>
 		</artifact>
 		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="23" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs modules necessary for the EMC applications.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
-		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
+	
+	<panel type="database" essential="true" version="1">
+		<title>Database Create and Alter Scripts for Ignition Applications</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
-		<artifact name="ILS-SFC Enhancements" type="module">
-			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">New</property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="APCW Database" type="sql" subtype="create">
+			<location>artifacts/database/create_APCW.sql</location>
 		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="false" version="1">
+		<title>Database Create and Alter Scripts for Test</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. The actions here are 
+		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+		</preamble>
+		<property name="database" type="isolation"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<property name="site">New</property>
+		<artifact name="APCW Database (Isolation)" type="sql" subtype="create">
+			<location>artifacts/database/create_APCW.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearDatabase.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install Diagnostic Toolkit Module</title>
+		<preamble>This step installs the Diagnostic Toolkit module.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this module on your system, 
+		it will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module.
+		</preamble>
 		<artifact name="Block Language Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="4">
-		<title>Create XOM-specific Scan Classes</title>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install SFC Extension Module</title>
+		<preamble>This step installs the SFC Extension module.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this module, 
+		it will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module.
+		</preamble>
+		<artifact name="SFC Extensions" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
 				Scanclasses determine tag poll rates.
 		</preamble>
+		<property name="site">Demo</property>
 		<property name="provider" type="production"></property>
 		<artifact name="Production ScanClasses" subtype="csv">
 			<location>artifacts/scanclasses/demo/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="4">
-		<title>Create XOM-specific Scan Classes</title>
+	
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Scan Classes</title>
 		<preamble>Create scanclasses referenced by 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
 				Scanclasses determine tag poll rates.
 		</preamble>
+		<property name="site">Demo</property>
 		<property name="provider" type="isolation"></property>
 		<artifact name="Isolation ScanClasses" subtype="csv">
 			<location>artifacts/scanclasses/demo/scanclasses.csv</location>
 		</artifact>
 	</panel>
 	
-	<panel type="tag" subtype="production" essential="True" version="9">
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">New</property>
+		<property name="provider" type="production"></property>
+		<artifact name="Production ScanClasses" subtype="csv">
+			<location>artifacts/scanclasses/new/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	
+	<panel type="scanclass" essential="true" version="1">
+		<title>Create Scan Classes</title>
+		<preamble>Create scanclasses referenced by 
+				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
+				Scanclasses determine tag poll rates.
+		</preamble>
+		<property name="site">New</property>
+		<property name="provider" type="isolation"></property>
+		<artifact name="Isolation ScanClasses" subtype="csv">
+			<location>artifacts/scanclasses/new/scanclasses.csv</location>
+		</artifact>
+	</panel>
+	
+	<panel type="tag" subtype="production" essential="True" version="1">
 		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
+		<preamble>This page defines UDTs and tags that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
 			differ from tag resources in the installer.
 		</preamble>
 		<property name="provider" type="production"></property>
+		<property name="site">Demo</property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
@@ -166,27 +261,60 @@
 			<location>artifacts/tags/demo/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="7">
+	<panel type="tag" subtype="test" essential="false" version="1">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
 		</preamble>
 		<property name="provider" type="isolation"></property>
+		<property name="site">Demo</property>
 		<artifact name="Test Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/demo/testTags.xml</location>
 		</artifact>
 	</panel>
 	
-	<panel type="project" subtype="main" essential="true" version="25">
+	<!--
+	For the new site, there are no tags for production or isolation, there are just UDTs for production. 
+	 --> 
+	<panel type="tag" subtype="production" essential="True" version="1">
+		<title>Install UDT Definitions</title>
+		<preamble>This page defines UDTs and tags that are needed by new applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<property name="site">New</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	
+	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Main Project</title>
 		<preamble>XOM is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications from a previous version. <br/>
 		</preamble>
+		<property name="site">Demo</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/Demo.proj</location>
+		<artifact name="APCW_DEMO" type="project" subtype="full">
+			<location>artifacts/projects/APCW_Demo.proj</location>
+		</artifact>
+	</panel>
+	
+	<panel type="project" subtype="main" essential="true" version="1">
+		<title>Main Project</title>
+		<preamble>XOM is the main Ignition project. This page provides
+			artifacts for a clean, new installation or,
+			alternatively, a merge with an existing version. A merge preserves any user
+			modifications from a previous version. <br/>
+		</preamble>
+		<property name="site">New</property>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="APCW" type="project" subtype="full">
+			<location>artifacts/projects/APCW.proj</location>
 		</artifact>
 	</panel>
 	
@@ -196,12 +324,13 @@
 			These are packaged as an Ignition global project and completely replace
 			any existing pipelines or charts of the same name.
 		</preamble>
+		<property name="site">Demo</property>
 		<artifact name="Global Project" type="project" subtype="global">
-			<location>artifacts/globals/Demo.proj</location>
+			<location>artifacts/globals/APCW_Demo_Global.proj</location>
 		</artifact>
 	</panel>
 
-	<panel type="project" subtype="dbmgr" essential="true" version="9">
+	<panel type="project" subtype="dbmgr" essential="true" version="1">
 		<title>Install the DbManager Project</title>
 		<preamble>DbManager is a utility for maintenance of
 			application databases. It is not generally user-customizable.
@@ -212,6 +341,19 @@
 			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Test Framework Module</title>
+		<preamble>This step installs the test framework module.
+			The test framework is optional and should not be used on a production system.
+			When used on a hybrid Production / Development system then great caution
+			must be used to insure that test data does not leak to the production FCS.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
@@ -231,11 +373,11 @@
 		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="1.1">
 			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
 		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.19">
-			<location>artifacts/doc/EMCDatabaseDesign</location>
+		<artifact name="Database Design" type="documentation" subtype="docx" release="1.19">
+			<location>artifacts/doc/DatabaseDesign.docx</location>
 		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.19">
-			<location>artifacts/doc/EMCDatabaseER.pdf</location>
+		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
+			<location>artifacts/doc/DatabaseER.pdf</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
@@ -253,53 +395,56 @@
 			<location>artifacts/doc/ToolchainInstallationManual.docx</location>
 		</artifact>
 	</panel>
-	<panel type="toolkit" essential="true" version="2">
+	
+	<panel type="toolkit" essential="true" version="1">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.
 			These particular parameters define extension functions that update
 			the database in response to operator operations on diagrams.
 		</preamble>
 		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
-		<property name="com.ils.application(property-rename-script)">xom.extensions.appProperties.rename</property>
 		<property name="com.ils.application(property-set-script)">xom.extensions.appProperties.setAux</property>
+		<property name="com.ils.application(node-delete-script)">xom.extensions.appProperties.delete</property>
+		<property name="com.ils.application(node-rename-script)">xom.extensions.appProperties.rename</property>
+		<property name="com.ils.application(node-save-script)">xom.extensions.appProperties.save</property>
+		
 		<property name="com.ils.family(property-get-script)">xom.extensions.famProperties.getAux</property>
-		<property name="com.ils.family(property-rename-script)">xom.extensions.famProperties.rename</property>
 		<property name="com.ils.family(property-set-script)">xom.extensions.famProperties.setAux</property>
+		<property name="com.ils.family(node-delete-script)">xom.extensions.famProperties.delete</property>
+		<property name="com.ils.family(node-rename-script)">xom.extensions.famProperties.rename</property>
+		<property name="com.ils.family(node-save-script)">xom.extensions.famProperties.save</property>
+		
 		<property name="com.ils.diagram(node-save-script)">xom.extensions.diaSave.save</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-rename-script)">xom.extensions.fdProperties.rename</property>
-		<property
-			name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<property name="com.ils.diagram(node-delete-script)">xom.extensions.diaSave.delete</property>
+		
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-delete-script)">xom.extensions.fdProperties.delete</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-rename-script)">xom.extensions.fdProperties.rename</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-save-script)">xom.extensions.fdProperties.save</property>
+
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-get-script)">xom.extensions.sqcdProperties.getAux</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-set-script)">xom.extensions.sqcdProperties.setAux</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-delete-script)">xom.extensions.sqcdProperties.delete</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-rename-script)">xom.extensions.sqcdProperties.rename</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-save-script)">xom.extensions.sqcdProperties.save</property>	
+		
 		<property name="SecondaryTimeFactor">1.0</property>
 		
-	</panel>
-	
-	<panel type="module" subtype="production" essential="true" version="2" >
-		<title>Test Framework Module</title>
-		<preamble>This step installs the test framework module.
-			The test framework is optional and should not be used on a production system.
-			When used on a hybrid Production / Development system then great caution
-			must be used to insure that test data does not leak to the production FCS.
-		</preamble>
-		<artifact name="Testing Framework" type="module">
-			<location>artifacts/modules/TF-module-signed.modl</location>
-		</artifact>
 	</panel>
 	
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of EMC Ignition Applications in
+		 Selecting "Finish" will record the current version of APCW Application in
 			the Gateway internal database.
 		</preamble>
 	</panel>
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
 		<title>Ignition Applications - Installed</title>
-		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
+		<preamble>Now that all of the automated installation and configuration of the APCW Application
 		          is complete, there are just a few more manual steps required. </preamble>
 		
 		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 

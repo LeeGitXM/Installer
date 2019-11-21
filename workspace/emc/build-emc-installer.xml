@@ -93,9 +93,9 @@
 		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManager Migration.docx" tofile="${artifact.dir}/doc/DatabaseManagerMigrationGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
 		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
@@ -194,6 +194,7 @@
 		<mkdir dir="${artifact.dir}/tags/vistalon" />
 		
 		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
+		
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/sqlTags.xml" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/brpo/testTags.xml" />
 		
@@ -213,9 +214,11 @@
 		
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses/brpo" />
+		<mkdir dir="${artifact.dir}/scanclasses/demo" />
 		<mkdir dir="${artifact.dir}/scanclasses/escorez" />
 		<mkdir dir="${artifact.dir}/scanclasses/gline" />
 		<mkdir dir="${artifact.dir}/scanclasses/halobutyl" />
+		<mkdir dir="${artifact.dir}/scanclasses/new" />
 		<mkdir dir="${artifact.dir}/scanclasses/vistalon" />
 		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/brpo/scanclasses.csv" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/escorez/scanclasses.csv" />

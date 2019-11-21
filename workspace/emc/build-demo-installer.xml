@@ -10,10 +10,11 @@
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom-demo.xml" />
-	<property name="module.name" value="advanced-process-control-workbench-installer" />
+	<property name="module.name" value="apcw-installer" />
 	<property name="module.path" value="${basedir}/modules" />
-	<property name="module.xml" value="${basedir}/emc-installer-module.xml" />
+	<property name="module.xml" value="${basedir}/apcw-installer-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
+	<property name="target.dir" value="c:/temp" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
 	<taskdef name="postmodule" classname="com.inductiveautomation.ant.PostModule">
@@ -42,17 +43,16 @@
 	<!-- Builds the toolkit module jars and the final .modl file -->
 	<target name="build" depends="clean" description="Assemble the installer">
 
-		<!-- build.date and build.version are both in SVN Migration/Demo area, in
+		<!-- build.date and build.version are both in SVN APCW area, in
 		    files VERS and DATE.
 		    Update the BOM. "loadfile" does not overwrite existing properties.
 		-->
-		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/Migration/Demo/DATE"/>
+		<loadfile property="rawdate" srcFile="${svn.repo}/EMChemicals/APCW/DATE"/>
 		<trim input="${rawdate}" property="build.date" />
-		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/Migration/Demo/VERS"/>
+		<loadfile property="rawvers" srcFile="${svn.repo}/EMChemicals/APCW/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
-
 
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
@@ -64,7 +64,6 @@
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 		
-
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
@@ -77,22 +76,24 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/createXOM_Demo.sql" tofile="${artifact.dir}/database/createDemo.sql" />
+		<copy file="${svn.repo}/EMChemicals/APCW/create_APCW_Demo.sql" tofile="${artifact.dir}/database/create_APCW_Demo.sql" />
+		<copy file="${svn.repo}/EMChemicals/APCW/create_APCW.sql" tofile="${artifact.dir}/database/create_APCW.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/Documentation/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/Documentation/Getting Started Guide.pdf" tofile="${artifact.dir}/doc/GettingStartedGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/APCW/Documentation/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/APCW/Documentation/Getting Started Guide.pdf" tofile="${artifact.dir}/doc/GettingStartedGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx" tofile="${artifact.dir}/doc/DatabaseDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf" tofile="${artifact.dir}/doc/DatabaseER.pdf" />
 		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/SequentialControlUserManual.docx" />
+		
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
 
@@ -139,6 +140,7 @@
 				<include name="**/*.JPG" />
 			</fileset>
 		</copy>
+		
 		<!-- Copy license file into the artifacts -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" todir="${artifact.dir}/license/" />
@@ -151,12 +153,13 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/Demo.proj" tofile="${artifact.dir}/projects/Demo.proj" />
+		<copy file="${svn.repo}/EMChemicals/APCW/ImportsForIgnition/APCW_Demo.proj" tofile="${artifact.dir}/projects/APCW_Demo.proj" />
+		<copy file="${svn.repo}/EMChemicals/APCW/ImportsForIgnition/APCW.proj" tofile="${artifact.dir}/projects/APCW.proj" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
 		<mkdir dir="${artifact.dir}/globals" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/DemoGlobal.proj" tofile="${artifact.dir}/globals/Demo.proj" />
+		<copy file="${svn.repo}/EMChemicals/APCW/ImportsForIgnition/APCW_Demo_Global.proj" tofile="${artifact.dir}/globals/APCW_Demo_Global.proj" />
 		
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags/demo" />
@@ -168,6 +171,7 @@
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses/demo" />
 		<copy file="${svn.repo}/EMChemicals/Migration/Demo/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/demo/scanclasses.csv" />
+		<copy file="${svn.repo}/EMChemicals/Migration/APCW/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/new/scanclasses.csv" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
@@ -186,7 +190,10 @@
 	 -->
 	<target name="deploy" depends="build">
 		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
+		<!--
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/${version.build}/${module.name}-${version.build}-signed.modl" />
+		-->
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${target.dir}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
