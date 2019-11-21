@@ -106,7 +106,7 @@
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
 		<copy todir="${artifact.dir}/external/ils-python">
-			<fileset dir="${git.repo}/ils_python/ILS_Python/src">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
 				<include name="ils/common/**/*.py" />
 				<include name="ils/dataset/**/*.py" />
 			</fileset>
@@ -159,9 +159,9 @@
 
 		<!-- Properties -->
 		<mkdir dir="${artifact.dir}/properties" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_en.XML" tofile="${artifact.dir}/properties/aed_en.XML" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_fr.XML" tofile="${artifact.dir}/properties/aed_fr.XML" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_it.XML" tofile="${artifact.dir}/properties/aed_it.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/AED_en.XML" tofile="${artifact.dir}/properties/aed_en.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/AED_fr.XML" tofile="${artifact.dir}/properties/aed_fr.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/AED_it.XML" tofile="${artifact.dir}/properties/aed_it.XML" />
 		<copy file="${svn.repo}/EMRE/Ignition/properties/aed.properties" tofile="${artifact.dir}/properties/aed.properties" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
