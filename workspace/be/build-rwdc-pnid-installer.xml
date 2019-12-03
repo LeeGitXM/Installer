@@ -87,11 +87,36 @@
 		<copy file="${sandbox}/RWDC_2KT_UDTs.xml" tofile="${artifact.dir}/tags/rwdc_udts.xml" />
 		<copy file="${sandbox}/RWDC_2KT_UnitTags.xml" tofile="${artifact.dir}/tags/rwdc_site_tags.xml" />
 		
+		<!-- External -->
+		<mkdir dir="${artifact.dir}/external" />
+		<copy todir="${artifact.dir}/external">
+			<fileset dir="${git.repo}/batch-expert/BE_Python">
+				<include name="ils/**/*.py" />
+			</fileset>
+		</copy>
+		<copy todir="${artifact.dir}/external">
+			<fileset dir="${git.repo}/batch-expert/BE_Python">
+				<include name="xlsxwriter/**/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/external/ils" />
+		<copy todir="${artifact.dir}/external/ils">
+			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
+				<include name="jChart/*.py" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/external/lib" />
+		<copy todir="${artifact.dir}/external/lib">
+			<fileset dir="${git.repo}/external/lib">
+				<include name="ils-common*" />
+			</fileset>
+		</copy>
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${sandbox}/RWDC_2KT_PnID.zip" tofile="${artifact.dir}/projects/BatchExpertRWDC.zip" />
-
+		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
+		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
