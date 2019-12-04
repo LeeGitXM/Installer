@@ -81,8 +81,7 @@
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		The Python is divided into two categories: code developed by ILS Automation that is 
-		generic and used in multiple products, and code specific to the current XOM applications.
-		A third category consists of Java jar files that are referenced by the Python.
+		generic and used in multiple products and Java jar files that are referenced by the Python.
 		</preamble>
 		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
@@ -117,7 +116,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="database" essential="false" version="1">
+	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -152,7 +151,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="database" essential="false" version="1">
+	<panel type="database" essential="true" version="1">
 		<title>Database Create and Alter Scripts for Test</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. The actions here are 
@@ -172,9 +171,9 @@
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Diagnostic Toolkit Module</title>
 		<preamble>This step installs the Diagnostic Toolkit module.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this module on your system, 
-		it will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
+		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
 		</preamble>
 		<artifact name="Block Language Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-signed.modl</location>
@@ -183,12 +182,12 @@
 	
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install SFC Extension Module</title>
-		<preamble>This step installs the SFC Extension module.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this module, 
-		it will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the module.
+		<preamble>This step installs The SFC Extension module.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
+		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
+		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
 		</preamble>
-		<artifact name="SFC Extensions" type="module">
+		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
 	</panel>
@@ -261,7 +260,7 @@
 			<location>artifacts/tags/demo/sqlTags.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="test" essential="false" version="1">
+	<panel type="tag" subtype="test" essential="true" version="1">
 		<title>Install Tags Definitions for Test</title>
 		<preamble>This page defines memory tags that are used by the Ignition Applications
 		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -274,10 +273,10 @@
 	</panel>
 	
 	<!--
-	For the new site, there are no tags for production or isolation, there are just UDTs for production. 
+	For the new site, there are no tags for production or isolation, there are just UDTs. 
 	 --> 
 	<panel type="tag" subtype="production" essential="True" version="1">
-		<title>Install UDT Definitions</title>
+		<title>Install UDT Definitions for Production</title>
 		<preamble>This page defines UDTs and tags that are needed by new applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
@@ -292,10 +291,9 @@
 	
 	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
+		<preamble>APCW_Demo is the main Ignition project. This page provides
+			artifacts for the latest product software that includes preconfigured sample
+			diagnostic and SFC assets. <br/>
 		</preamble>
 		<property name="site">Demo</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
@@ -306,7 +304,7 @@
 	
 	<panel type="project" subtype="main" essential="true" version="1">
 		<title>Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
+		<preamble>APCW is the main Ignition project. This page provides
 			artifacts for a clean, new installation or,
 			alternatively, a merge with an existing version. A merge preserves any user
 			modifications from a previous version. <br/>
@@ -315,6 +313,17 @@
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="APCW" type="project" subtype="full">
 			<location>artifacts/projects/APCW.proj</location>
+		</artifact>
+	</panel>
+	
+	<panel type="project" subtype="dbmgr" essential="true" version="9">
+		<title>Install the DbManager Project</title>
+		<preamble>DbManager is a utility for maintenance of
+			recipe databases. This completely replaces any existing copy.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="DbManager" type="project" subtype="full">
+			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
 	
@@ -327,18 +336,6 @@
 		<property name="site">Demo</property>
 		<artifact name="Global Project" type="project" subtype="global">
 			<location>artifacts/globals/APCW_Demo_Global.proj</location>
-		</artifact>
-	</panel>
-
-	<panel type="project" subtype="dbmgr" essential="true" version="1">
-		<title>Install the DbManager Project</title>
-		<preamble>DbManager is a utility for maintenance of
-			application databases. It is not generally user-customizable.
-			The action on this page completely replaces any existing copy.
-		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="DbManager" type="project" subtype="full">
-			<location>artifacts/projects/DbManager.proj</location>
 		</artifact>
 	</panel>
 	
@@ -402,32 +399,32 @@
 			These particular parameters define extension functions that update
 			the database in response to operator operations on diagrams.
 		</preamble>
-		<property name="com.ils.application(property-get-script)">xom.extensions.appProperties.getAux</property>
-		<property name="com.ils.application(property-set-script)">xom.extensions.appProperties.setAux</property>
-		<property name="com.ils.application(node-delete-script)">xom.extensions.appProperties.delete</property>
-		<property name="com.ils.application(node-rename-script)">xom.extensions.appProperties.rename</property>
-		<property name="com.ils.application(node-save-script)">xom.extensions.appProperties.save</property>
+		<property name="com.ils.application(property-get-script)">ils.extensions.appProperties.getAux</property>
+		<property name="com.ils.application(property-set-script)">ils.extensions.appProperties.setAux</property>
+		<property name="com.ils.application(node-delete-script)">ils.extensions.appProperties.delete</property>
+		<property name="com.ils.application(node-rename-script)">ils.extensions.appProperties.rename</property>
+		<property name="com.ils.application(node-save-script)">ils.extensions.appProperties.save</property>
 		
-		<property name="com.ils.family(property-get-script)">xom.extensions.famProperties.getAux</property>
-		<property name="com.ils.family(property-set-script)">xom.extensions.famProperties.setAux</property>
-		<property name="com.ils.family(node-delete-script)">xom.extensions.famProperties.delete</property>
-		<property name="com.ils.family(node-rename-script)">xom.extensions.famProperties.rename</property>
-		<property name="com.ils.family(node-save-script)">xom.extensions.famProperties.save</property>
+		<property name="com.ils.family(property-get-script)">ils.extensions.famProperties.getAux</property>
+		<property name="com.ils.family(property-set-script)">ils.extensions.famProperties.setAux</property>
+		<property name="com.ils.family(node-delete-script)">ils.extensions.famProperties.delete</property>
+		<property name="com.ils.family(node-rename-script)">ils.extensions.famProperties.rename</property>
+		<property name="com.ils.family(node-save-script)">ils.extensions.famProperties.save</property>
 		
-		<property name="com.ils.diagram(node-save-script)">xom.extensions.diaSave.save</property>
-		<property name="com.ils.diagram(node-delete-script)">xom.extensions.diaSave.delete</property>
+		<property name="com.ils.diagram(node-save-script)">ils.extensions.diaSave.save</property>
+		<property name="com.ils.diagram(node-delete-script)">ils.extensions.diaSave.delete</property>
 		
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">xom.extensions.fdProperties.getAux</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">xom.extensions.fdProperties.setAux</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-delete-script)">xom.extensions.fdProperties.delete</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-rename-script)">xom.extensions.fdProperties.rename</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-save-script)">xom.extensions.fdProperties.save</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">ils.extensions.fdProperties.getAux</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">ils.extensions.fdProperties.setAux</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-delete-script)">ils.extensions.fdProperties.delete</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-rename-script)">ils.extensions.fdProperties.rename</property>
+		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-save-script)">ils.extensions.fdProperties.save</property>
 
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-get-script)">xom.extensions.sqcdProperties.getAux</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-set-script)">xom.extensions.sqcdProperties.setAux</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-delete-script)">xom.extensions.sqcdProperties.delete</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-rename-script)">xom.extensions.sqcdProperties.rename</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-save-script)">xom.extensions.sqcdProperties.save</property>	
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-get-script)">ils.extensions.sqcdProperties.getAux</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-set-script)">ils.extensions.sqcdProperties.setAux</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-delete-script)">ils.extensions.sqcdProperties.delete</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-rename-script)">ils.extensions.sqcdProperties.rename</property>
+		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-save-script)">ils.extensions.sqcdProperties.save</property>	
 		
 		<property name="SecondaryTimeFactor">1.0</property>
 		
