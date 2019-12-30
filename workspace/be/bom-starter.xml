@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">59</property>
+	<property name="version">61</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -42,11 +42,24 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="11">
+		<title>Install UDT Definitions</title>
+		<preamble>This page defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="base" >[default]_types_</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
 		         are important in your installation.
 		</preamble>
 		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]</property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
 		</artifact>
@@ -56,7 +69,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="27">
+	<panel type="file" essential="true" version="28">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
