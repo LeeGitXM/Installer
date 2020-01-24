@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">56</property>
+	<property name="version">63</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -21,7 +21,7 @@
 	</panel>
 	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
-	<panel type="file" essential="true" version="10">
+	<panel type="file" essential="true" version="30">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -32,11 +32,7 @@
 		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
 			<location>artifacts/external/lib</location>
 			<destination>core/common</destination>
-		</artifact>
-		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
-			<location>artifacts/external/pysfc</location>
-			<destination>pylib/ils/pysfc</destination>
-		</artifact>
+		</artifact>>
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
@@ -48,6 +44,8 @@
 		           These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
+		<property name="base" >[default]</property>
+		<property name="historyprovider" type="production"></property>
 		<artifact name="Configuration Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/configurationTags.xml</location>
 		</artifact>
@@ -55,6 +53,7 @@
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
+	<!-- 
 	<panel type="scanclass" essential="false" version="3">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
@@ -65,6 +64,7 @@
 			<location>artifacts/scanclass/scanclasses.csv</location>
 		</artifact>
 	</panel>
+	 -->
 	<panel type="definition" essential="true">
 		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
@@ -200,14 +200,29 @@
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="11">
-		<title>Install Custom UDT Definitions for FRG</title>
-		<preamble>This page creates the custom user-defined-tags for FRG.
-		          The definitions are written to the &quot;default&quot; tag provider.
+		<title>Install UDT Definitions</title>
+		<preamble>This page defines UDTs for common  controllers.
+		           These definitions are written to the default tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="base" >[default]_types_</property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/udts.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="11">
+		<title>Install Configuration Tags</title>
+		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
+		         are important in your installation.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
-		<artifact name="FRG UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/frg_udts.xml</location>
+		<property name="base" >[default]</property>
+		<artifact name="Configuration Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/configurationTags.xml</location>
+		</artifact>
+		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="false" version="4">
@@ -218,36 +233,15 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]_types_/Site</property>
 		<artifact name="FRG Unit Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/frg_tags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="false" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
-		          installations that include the SFC feature.
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="Python SFC" type="module">
-			<location>artifacts/modules/pysfc-module-signed.modl</location>
-		</artifact>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="false" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs the ILS custom modules necessary for BatchExpert+.
-		</preamble>
-		<property name="SFC" type="feature">FALSE</property>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
+			<location>artifacts/tags/frg_tags.json</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="10">
-		<title>Install BatchExpert+ 2.6 - Specially assembled for Dupont-DOW FRG
+		<title>Install BatchExpert+ 3.0 - Specially assembled for Dupont-DOW FRG
 		</title>
-		<preamble>Create Batch Expert+ 2.6 for Dupont-DOW FRG. This project includes 
+		<preamble>Create Batch Expert+ 3.0 for Dupont-DOW FRG. This project includes 
 		          FRG-specific configuration.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
@@ -282,8 +276,8 @@
 		<title>Installation Complete</title>
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
-		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
-		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Site Project">The site-specific project currently inherits from a prior version of the Master. Update it to refer to the newly installed Master.</note>
+		<note name="Gateway Restart">The tags have active components. A Gateway restart is required to accommodate the changes.</note>
 	</epilog>
 </installer>
 

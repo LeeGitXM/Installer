@@ -121,12 +121,11 @@
 
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/clientTags.xml" tofile="${artifact.dir}/tags/client.xml" />
-		<copy file="${sandbox}/FRGTags2.4.xml" tofile="${artifact.dir}/tags/frg_tags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/VisionClientTags.zip" tofile="${artifact.dir}/tags/client.zip" />
+		<copy file="${sandbox}/DefaultTags.json" tofile="${artifact.dir}/tags/frg_tags.json" />
 		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
-		<copy file="${sandbox}/FRGUDTs2.4.xml" tofile="${artifact.dir}/tags/frg_udts.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclass" />
@@ -145,7 +144,7 @@
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${sandbox}/BatchExpertFRG-3.0.zip" tofile="${artifact.dir}/projects/BatchExpertFRG.zip" />
+		<copy file="${sandbox}/BatchExpertFRG30.zip" tofile="${artifact.dir}/projects/BatchExpertFRG.zip" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
 		<copy file="${sandbox}/FRG_Global.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />

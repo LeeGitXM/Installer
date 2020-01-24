@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">61</property>
+	<property name="version">63</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -30,7 +30,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
-	<panel type="license" essential="true" version="2">
+	<panel type="license" essential="true" version="3">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
@@ -199,20 +199,6 @@
 		<artifact name="Populate Tables" type="alter">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
 			<comment>Populate tables with common choose-list entries.</comment>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="production" essential="true" version="4">
-		<title>Install UDT Definitions</title>
-		<preamble>The user-defined tag types describe the controllers in your installation.
-		          A special simulated-controller is also included for simulation and testing.
-		</preamble>
-		<property name="provider" type="production">default</property>
-		<property name="historyprovider" type="production"></property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
-		</artifact>
-		<artifact name="UDT for Simulated Tank" type="tag" subtype="xml">
-			<location>artifacts/tags/simulation_udts.xml</location>
 		</artifact>
 	</panel>
 	<!--
