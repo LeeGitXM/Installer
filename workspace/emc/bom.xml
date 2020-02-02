@@ -728,9 +728,10 @@
 			The action on this page completely replaces any existing copy.
 		</preamble>
 		<property name="site">BRPO</property>
-		<property name="site">GLine</property>
-		<property name="site">Vistalon</property>
 		<property name="site">Escorez</property>
+		<property name="site">GLine</property>
+		<property name="site">Halobutyl</property>
+		<property name="site">Vistalon</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.proj</location>
@@ -829,8 +830,10 @@
 			These particular parameters define extension functions that update
 			the database in response to operator operations on diagrams.
 		</preamble>
+		<property name="site">BRPO</property>
 		<property name="site">Escorez</property>
 		<property name="site">GLine</property>
+		<property name="site">Halobutyl</property>
 		<property name="site">Vistalon</property>
 
 		<property name="com.ils.application(property-get-script)">ils.extensions.appProperties.getAux</property>
