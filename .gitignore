@@ -3,4 +3,7 @@
 .recommenders/
 *.log
 *.modl
+bin/
+.classpath
+.project
 
