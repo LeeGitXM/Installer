@@ -130,6 +130,13 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar" tofile="${artifact.dir}/external/jars/gateway/commons-math3-3.6.1.jar" />
 
 		<!-- Files -->
+		<!-- THIS NEXT SECTION SHOUDL BE REMOVED.  IT IS XOM SPECIFIC AND ONLY HERE UNTIL ILS_PYTON IS UPDTAED TO REMOVE XOM REFERENCES -->
+		<mkdir dir="${artifact.dir}/test" />
+		<copy todir="${artifact.dir}/test/pylib">
+			<fileset dir="${git.repo}/ils_python/ILS_Python/src">
+				<include name="pylib/**/*.py" />
+			</fileset>
+		</copy>
 		<mkdir dir="${artifact.dir}/test" />
 		<copy todir="${artifact.dir}/test/pylib">
 			<fileset dir="${git.repo}/ils_python/ILS_Python/src">
