@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and subtype must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>DATA-REPLAY</title>
+	<description>Installer for the Data-Replay Application</description>
+	<property name="product">DATA-REPLAY</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">19</property>
+	
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Data-Replay</title>
+		<preamble>Welcome to the ILS Automation installer for the Data-Replay application. 
+		    The table below compares the existing installation of
+			this product, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined tag providers and database connections.
+		</preamble>
+	</panel>
+	
+	<panel type="license" essential="true" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms
+			to proceed.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	
+	<panel type="definition" essential="true">
+		<title>Define Tag and Database Providers</title>
+		<preamble>Specify the tag provider and database connection to be used by AED-RTA. 
+		These values are used by subsequent screens.
+		</preamble>
+		<property name="database" type="production"></property>
+	</panel>	
+
+		<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="20">
+		<title>Python Code for Data-Replay</title>
+		<preamble>This page loads Python code specific to the Data-Replay application. The Python
+		is stored outside of the project in the Ignition user-lib directory.
+		A second category consists of Java jar files that are referenced by this Python.<br/>
+		</preamble>
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="External Python - AED" type="text" subtype="user-lib">
+			<location>artifacts/external/xom-python</location>
+			<destination>pylib/xom</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
+			<location>artifacts/external/jars/core</location>
+			<destination>core</destination>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="true" version="15">
+		<title>Database Create and Alter Scripts for Data-Replay</title>
+		<preamble>This page provides the opportunity for either creating a new database instance or
+		altering an existing instance to accommodate schema corrections. 
+		&lt;b&gt;WARNING:&lt;/b&gt; The Data-Replay project uses a separate database than the AED-RTA application.
+		The create script will succeed only on a new empty database instance. The &lt;i&gt;alter&lt;/i&gt; script
+		should be used to modify/update existing database instances.
+		</preamble>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Create Data-Replay Database" type="sql" subtype="create">
+			<location>artifacts/database/dataReplay.sql</location>
+		</artifact>
+		<artifact name="Clear Database" type="sql" subtype="clear">
+			<location>artifacts/database/clear.sql</location>
+		</artifact>
+	</panel>
+ 
+	<panel type="module" subtype="production" essential="true" version="16" >
+		<title>Install Custom Modules</title>
+		<preamble>This step installs the Java module necessary for the Data-Replay application.
+		</preamble>
+		<artifact name="Data Replay" type="module">
+			<location>artifacts/modules/AED_Replay-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<panel type="project" subtype="main" essential="true" version="16">
+		<title>Install Data-Replay Project </title>
+		<preamble>Data-Replay is the main Ignition project. This page provides
+			artifacts for a clean, new installation.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="Data_Replay" type="project" subtype="full">
+			<location>artifacts/projects/Data_Replay.proj</location>
+		</artifact>
+	</panel>
+	
+	<panel type="documentation" essential="false">
+		<title>Product Documentation</title>
+		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
+		</preamble>
+		<artifact name="Data Replay User Guide" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Data Replay User Guide.docx</location>
+		</artifact>
+		<artifact name="Data Replay Database Design" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Data Replay Database Design.pdf</location>
+		</artifact>
+	</panel>
+	
+	<!-- The conclusion panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of the Data-Replay applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	
+	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<epilog>
+		<title>Data-Replay - Installed</title>
+		<preamble>Now that all of the automated installation and configuration of the Data-Replay Application
+		          is complete, there are just a few more manual steps required. </preamble>
+		          
+		<note name="Gateway Restart">A new modules with active components has been installed. A Gateway restart is required.</note>
+		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
+		            Restart the Gateway, then edit the project, setting it to "enabled".</note>
+	</epilog>
+</installer>
+
