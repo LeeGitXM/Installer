@@ -2,8 +2,8 @@
 
 <module>
 	<id>com.ils.installer</id>
-	<name>IgnitionApplicationsInstaller</name>
-	<description>ILS Installer for EMC Ignition Applications</description>
+	<name>IgnitionApplicationsUpdater</name>
+	<description>ILS Installer for Updating EMC Ignition Applications</description>
 	<license />
 	<version>1.0.0.0</version>
 	<freemodule>true</freemodule>

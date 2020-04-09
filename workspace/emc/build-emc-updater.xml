@@ -1,4 +1,4 @@
-<!-- Create an application installer for the Exxon-Mobil Chemicals
+<!-- Create an application **update** installer for the Exxon-Mobil Chemicals
      "Ignition Applications" package. This file assembles artifacts
      to create a specialized installer.
      
@@ -9,10 +9,10 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom.xml" />
-	<property name="module.name" value="emc-installer" />
+	<property name="bom" value="${basedir}/bom-update.xml" />
+	<property name="module.name" value="emc-updater" />
 	<property name="module.path" value="${basedir}/modules" />
-	<property name="module.xml" value="${basedir}/emc-installer-module.xml" />
+	<property name="module.xml" value="${basedir}/emc-updater-module.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -33,6 +33,7 @@
 			<arg value="-module-out=${moduleout}"/>
 		</java>
 	</target>
+	
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
 		<delete dir="${staging.dir}" />
@@ -53,7 +54,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
-
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
 		<mkdir dir="${staging.dir}" />
@@ -64,7 +64,6 @@
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 		
-
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
@@ -77,43 +76,14 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/createXOM_BRPO.sql" tofile="${artifact.dir}/database/createBRPO.sql" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/createXOM_Escorez.sql" tofile="${artifact.dir}/database/createEscorez.sql" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/createXOM_Gline.sql" tofile="${artifact.dir}/database/createGline.sql" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/createXOM_Halobutyl.sql" tofile="${artifact.dir}/database/createHalobutyl.sql" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/createXOMvistalon.sql" tofile="${artifact.dir}/database/createVistalon.sql" />
-		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
+		<copy file="${svn.repo}/Database/update XOM 1.1.sql" tofile="${artifact.dir}/database/update.sql" />
 
-		<!-- Documentation -->
+		<!-- 
+		Documentation - always include the release notes and other documentation that was updated 
+		-->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManager Migration.docx" tofile="${artifact.dir}/doc/DatabaseManagerMigrationGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Database/Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
-		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/SequentialControlUserManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Project Management/SFCStepScorecard.xlsx" tofile="${artifact.dir}/doc/SFCDevelopmentScorecard.xslx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/BRPO Design Specification.docx" tofile="${artifact.dir}/doc/BRPODesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Halobutyl Design Specification.docx" tofile="${artifact.dir}/doc/HalobutylDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/Documentation/Escorez Design Specification.docx" tofile="${artifact.dir}/doc/EscorezDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/Documentation/Escorez Migration Specification.docx" tofile="${artifact.dir}/doc/EscorezMigrationSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Design Specification.docx" tofile="${artifact.dir}/doc/GLineDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Migration Specification.docx" tofile="${artifact.dir}/doc/GLineMigrationSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/BRPP G-Line Migration Score Card.xlsx" tofile="${artifact.dir}/doc/GLineScoreCard.xlsx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/G-Line Poly Unit Procedure Score Card.xlsx" tofile="${artifact.dir}/doc/GLinePolySfcScoreCard.xlsx" />
-		
-		<!-- Documentation - javadoc  -->
-		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
@@ -122,13 +92,7 @@
 				<include name="ils/**/*.py" />
 			</fileset>
 		</copy>
-		<mkdir dir="${artifact.dir}/external/xom-python" />
-		<copy todir="${artifact.dir}/external/xom-python">
-			<fileset dir="${git.repo}/xom-python/XOM_Python/src">
-				<include name="xom/**/*.py" />
-			</fileset>
-		</copy>
-		<delete dir="${artifact.dir}/external/xom-python/xom/emre" />
+
 
 		<mkdir dir="${artifact.dir}/external/jars" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
@@ -167,64 +131,13 @@
 		<!-- <copy file="${git.repo}/sfc/SFC-module.modl" tofile="${artifact.dir}/modules/SFC-module.modl" />  -->
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
-		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/BRPO.proj" tofile="${artifact.dir}/projects/BRPO.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/Escorez.proj" tofile="${artifact.dir}/projects/Escorez.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/GLine.proj" tofile="${artifact.dir}/projects/GLine.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/Halobutyl.proj" tofile="${artifact.dir}/projects/Halobutyl.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/Vistalon.proj" tofile="${artifact.dir}/projects/Vistalon.proj" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM-Core.proj" tofile="${artifact.dir}/projects/XOM-Core.proj" />
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
 		<mkdir dir="${artifact.dir}/globals" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/BRPOGlobal.proj" tofile="${artifact.dir}/globals/BRPO.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/EscorezGlobal.proj" tofile="${artifact.dir}/globals/Escorez.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/GlineGlobal.proj" tofile="${artifact.dir}/globals/Gline.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/HalobutylGlobal.proj" tofile="${artifact.dir}/globals/Halobutyl.proj" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/VistalonGlobal.proj" tofile="${artifact.dir}/globals/Vistalon.proj" />
-		
-		<!-- Tags -->
-		<mkdir dir="${artifact.dir}/tags/brpo" />
-		<mkdir dir="${artifact.dir}/tags/escorez" />
-		<mkdir dir="${artifact.dir}/tags/gline" />
-		<mkdir dir="${artifact.dir}/tags/halobutyl" />
-		<mkdir dir="${artifact.dir}/tags/vistalon" />
-		
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM UDTs.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/brpo/sqlTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/brpo/testTags.xml" />
-		
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/escorez/sqlTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/escorez/testTags.xml" />
-		
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/halobutyl/sqlTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/halobutyl/testTags.xml" />
-		
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/gline/sqlTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/gline/testTags.xml" />
-		
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/sqlTags.xml" tofile="${artifact.dir}/tags/vistalon/sqlTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/labDataSqlTags.xml" tofile="${artifact.dir}/tags/vistalon/labdataTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/sqlTagsIsolation.xml" tofile="${artifact.dir}/tags/vistalon/testTags.xml" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/labDataSqlTagsIsolation.xml" tofile="${artifact.dir}/tags/vistalon/labdataTestTags.xml" />
-		
-		<!-- Scanclass (if not otherwise specified, use vistalon) -->
-		<mkdir dir="${artifact.dir}/scanclasses/brpo" />
-		<mkdir dir="${artifact.dir}/scanclasses/demo" />
-		<mkdir dir="${artifact.dir}/scanclasses/escorez" />
-		<mkdir dir="${artifact.dir}/scanclasses/gline" />
-		<mkdir dir="${artifact.dir}/scanclasses/halobutyl" />
-		<mkdir dir="${artifact.dir}/scanclasses/new" />
-		<mkdir dir="${artifact.dir}/scanclasses/vistalon" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/brpo/scanclasses.csv" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/escorez/scanclasses.csv" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/gline/scanclasses.csv" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/halobutyl/scanclasses.csv" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/ImportsForIgnition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/vistalon/scanclasses.csv" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
