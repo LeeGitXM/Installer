@@ -2,10 +2,11 @@
 
 <module>
 	<id>com.ils.installer</id>
-	<name>PySfcInstaller</name>
-	<description>Installer for PY-SFC Demonstration</description>
-	<license></license>
+	<name>IgnitionApplicationsInstaller</name>
+	<description>ILS Installer for EMC Ignition Applications</description>
+	<license />
 	<version>1.0.0.0</version>
+	<freemodule>true</freemodule>
 	<requiredignitionversion>7.8.3</requiredignitionversion>
 	<requiredframeworkversion>7</requiredframeworkversion>
 
@@ -13,6 +14,7 @@
 	<export scope="G">ils-common.jar</export>
 	<jar scope="G">ai-gateway.jar</jar>
 	<!-- Tell the Gateway and/or Designer where to find the hooks -->
-	<hook scope="G">com.ils.ai.gateway.ApplicationInstallerGatewayHook</hook>
+	<hook scope="G">com.ils.ai.gateway.ApplicationInstallerGatewayHook
+	</hook>
 </module>
 
