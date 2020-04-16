@@ -82,18 +82,10 @@
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Data Replay Database Design.pdf" tofile="${artifact.dir}/doc/Data Replay Database Design.pdf" />
-		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Data Replay User Guide.docx" tofile="${artifact.dir}/doc/Data Replay User Guide.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/User Manual.pdf" tofile="${artifact.dir}/doc/User Manual.pdf" />
 
 		<!-- External -->
-		<mkdir dir="${artifact.dir}/external/ils-python" />
-		<copy todir="${artifact.dir}/external/ils-python">
-			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
-				<include name="common/**/*.py" />
-				<include name="dataset/**/*.py" />
-				<include name="__init__.py" />
-			</fileset>
-		</copy>
-		
+		<mkdir dir="${artifact.dir}/external/ils-python" />		
 		<mkdir dir="${artifact.dir}/external/xom-python" />
 		<copy todir="${artifact.dir}/external/xom-python">
 			<fileset dir="${git.repo}/xom-python/XOM_Python/src/xom">
@@ -114,7 +106,6 @@
 		<copy file="${git.repo}/external/lib/poi-ooxml-schemas-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-ooxml-schemas-3.13.jar" />
 		<copy file="${git.repo}/external/lib/stax-api-1.0.1.jar" tofile="${artifact.dir}/external/jars/core/common/stax-api-1.0.1.jar" />
 		<copy file="${git.repo}/external/lib/xmlbeans-2.6.0.jar" tofile="${artifact.dir}/external/jars/core/common/xmlbeans-2.6.0.jar" />
-		
 
 		<!-- Copy license file into the artifacts -->
 		<mkdir dir="${artifact.dir}/license" />

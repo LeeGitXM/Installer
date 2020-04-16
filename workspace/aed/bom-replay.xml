@@ -39,9 +39,9 @@
 	</panel>
 	
 	<panel type="definition" essential="true">
-		<title>Define Tag and Database Providers</title>
-		<preamble>Specify the tag provider and database connection to be used by AED-RTA. 
-		These values are used by subsequent screens.
+		<title>Select Database Connection</title>
+		<preamble>Select the database connection to be used. 
+		This will be used by subsequent screens.
 		</preamble>
 		<property name="database" type="production"></property>
 	</panel>	
@@ -54,11 +54,7 @@
 		is stored outside of the project in the Ignition user-lib directory.
 		A second category consists of Java jar files that are referenced by this Python.<br/>
 		</preamble>
-		<artifact name="External Python - ILS" type="text" subtype="user-lib">
-			<location>artifacts/external/ils-python</location>
-			<destination>pylib/ils</destination>
-		</artifact>
-		<artifact name="External Python - AED" type="text" subtype="user-lib">
+		<artifact name="External Python - XOM" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
 			<destination>pylib/xom</destination>
 		</artifact>
@@ -139,4 +135,3 @@
 		            Restart the Gateway, then edit the project, setting it to "enabled".</note>
 	</epilog>
 </installer>
-
