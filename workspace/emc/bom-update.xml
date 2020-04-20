@@ -12,7 +12,7 @@
 	<property name="date">@DATE@</property>
 	<property name="version">0</property>
 	<!-- These entries define the install panels and their order -->
-	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
+	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for UPDATING EMC Ignition Applications</title>
 		<preamble>Welcome to the ILS Automation installer for UPDATING EMC Ignition
@@ -20,9 +20,8 @@
 			this product on this system, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation-mode (test) environments as appropriate.  <br>In addition, make 
-			sure to make a gateway backup before proceeding!
-		</preamble>
+			isolation-mode (test) environments as appropriate.  Before proceeding please make a gateway backup and a database backup!
+		</preamble>          
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
