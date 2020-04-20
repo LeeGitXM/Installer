@@ -5,8 +5,8 @@
       be unique. 
  -->
 <installer>
-	<title>EMC Ignition Applications</title>
-	<description>Installer for EMC Ignition Applications.</description>
+	<title>EMC Ignition Updater</title>
+	<description>Installer for Updating EMC Ignition Applications.</description>
 	<property name="product">Ignition Applications</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -14,13 +14,14 @@
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel mFHalobutylust always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for EMC Ignition Applications</title>
-		<preamble>Welcome to the ILS Automation installer for EMC Ignition
+		<title>ILS Automation Installer for UPDATING EMC Ignition Applications</title>
+		<preamble>Welcome to the ILS Automation installer for UPDATING EMC Ignition
 			Applications. The table below compares the existing installation of
 			this product on this system, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
 			defined tag providers and database connections for both production and 
-			isolation-mode (test) environments as appropriate.
+			isolation-mode (test) environments as appropriate.  <br>In addition, make 
+			sure to make a gateway backup before proceeding!
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -39,18 +40,6 @@
 		</artifact>
 	</panel>
 	
-	<panel type="site" essential="true">
-		<title>Site Selection</title>
-		<preamble>This install package contains site-specific information.
-		          Select the site appropriate to the current gateway.
-		</preamble>
-		<site name="BRPO" />
-		<site name="Escorez" />
-		<site name="GLine" />
-		<site name="Halobutyl" />
-		<site name="Vistalon" />
-	</panel>
-	
 	<panel type="definition" essential="true">
 		<title>Common interface Definitions</title>
 		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
@@ -65,25 +54,10 @@
 		<property name="provider" type="isolation"></property>
 	</panel>
 	
-	<panel type="authentication" essential="false">
-		<title>Verify User Roles</title>
-		<preamble>Check authentication profiles to verify that at least one of them
-		includes a user assigned to each role utilized by the product.
-		</preamble>
-		<property name="site">BRPO</property>
-		<property name="site">Escorez</property>
-		<property name="site">GLine</property>
-		<property name="site">Halobutyl</property>
-		<property name="site">Vistalon</property>
-		<role name="Operator">Console operator</role>
-		<role name="AE">Application engineer</role>
-		<role name="OE">Operations engineer</role>
-	</panel>
-	
 	<panel type="icon" essential="true" version="13">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
-		          They may also be found in many of the user screens. </preamble>
+		          They are also used on many of the user windows. </preamble>
 		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
 			<location>artifacts/icons/blt</location>
 		</artifact>
@@ -96,16 +70,12 @@
 	<panel type="file" essential="true" version="41">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
-		The Python is divided into two categories: code developed by ILS Automation that is 
-		generic and used in multiple products, and code specific to the current XOM applications.
-		A third category consists of Java jar files that are referenced by the Python.
+		The Python is code developed by ILS Automation that is generic and used throughout
+		the toolkits.  The Java jar files that are referenced by the Python.  The installer 
+		DOES NOT overwrite site specific Python in the XOM Python tree.
 		</preamble>
 		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
-			<destination>pylib</destination>
-		</artifact>
-		<artifact name="External Python - XOM" type="text" subtype="user-lib">
-			<location>artifacts/external/xom-python</location>
 			<destination>pylib</destination>
 		</artifact>
 		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
@@ -115,182 +85,36 @@
 	</panel>
 	
 	<panel type="database" essential="true" version="35">
-		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
+		<title>Database Update Script for Updating Ignition Applications</title>
+		<preamble>This page provides the opportunity to update an existing instance 
+		to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">BRPO</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createBRPO.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="true" version="35">
-		<title>BRPO Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">BRPO</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createBRPO.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	
-	<panel type="database" essential="true" version="36">
-		<title>Escorez Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Escorez</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createEscorez.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="36">
-		<title>Escorez Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Escorez</property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
-			<location>artifacts/database/createEscorez.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	
-	<panel type="database" essential="true" version="36">
-		<title>G-Line Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">GLine</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createGline.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="36">
-		<title>G-Line Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">GLine</property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
-			<location>artifacts/database/createGline.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
+		<!-- Recognized subtypes are: alter -->
+		<artifact name="XOM Database" type="sql" subtype="alter">
+			<location>artifacts/database/update.sql</location>
 		</artifact>
 	</panel>
 	
 	<panel type="database" essential="true" version="35">
-		<title>Halobutyl Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Halobutyl</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createHalobutyl.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="35">
-		<title>Halobutyl Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
+		<title>Database Update Script for Updating Ignition Applications</title>
+		<preamble>This page provides the opportunity to update an existing instance 
+		to accommodate schema corrections. The actions here are 
 		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
 		</preamble>
 		<property name="database" type="isolation"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Halobutyl</property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
-			<location>artifacts/database/createHalobutyl.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	
-	<panel type="database" essential="true" version="35">
-		<title>Vistalon Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Vistalon</property>
-		<!-- Recognized subtypes are: clear, create, alter -->
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createVistalon.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	<panel type="database" essential="false" version="35">
-		<title>Database Create and Alter Scripts for Test</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<property name="site">Vistalon</property>
-		<artifact name="XOM Database (Isolation)" type="sql" subtype="create">
-			<location>artifacts/database/createVistalon.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
+		<!-- Recognized subtypes are: alter -->
+		<artifact name="XOM Database" type="sql" subtype="alter">
+			<location>artifacts/database/update.sql</location>
 		</artifact>
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="34" >
 		<title>Install Custom BLT Module</title>
-		<preamble>This step installs the BLT for the EMC applications.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
-		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
+		<preamble>This step installs the latest BLT module.
 		</preamble>
 		<artifact name="Block Language Toolkit" type="module">
 			<location>artifacts/modules/BLT-module-signed.modl</location>
@@ -299,444 +123,26 @@
 	
 	<panel type="module" subtype="production" essential="true" version="34" >
 		<title>Install Custom SFC Module</title>
-		<preamble>This step installs The ILS-SFC module necessary for the EMC applications.
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
-		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
+		<preamble>This step installs the latest ILS-SFC module.
 		</preamble>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create BRPO-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">BRPO</property>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" subtype="csv">
-			<location>artifacts/scanclasses/brpo/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create BRPO-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">BRPO</property>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Isolation ScanClasses" subtype="csv">
-			<location>artifacts/scanclasses/brpo/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Escorez-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Escorez</property>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/escorez/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Escorez-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Escorez</property>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Isolation ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/escorez/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Halobutyl-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Halobutyl</property>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/halobutyl/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Halobutyl-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Halobutyl</property>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Isolation ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/halobutyl/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create G-line-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">GLine</property>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/gline/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create G-line-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">GLine</property>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Isolation ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/gline/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Vistalon-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<property name="provider" type="production"></property>
-		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	<panel type="scanclass" essential="true" version="10">
-		<title>Create Vistalon-specific Scan Classes</title>
-		<preamble>Create scanclasses referenced by 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-				Scanclasses determine tag poll rates.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<property name="provider" type="isolation"></property>
-		<artifact name="Isolation ScanClasses" type="scanclass" subtype="csv">
-			<location>artifacts/scanclasses/vistalon/scanclasses.csv</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="production" essential="True" version="13">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the BRPO applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<property name="site">BRPO</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/brpo/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="false" version="10">
-		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines memory tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at BRPO.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="site">BRPO</property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/brpo/testTags.xml</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="production" essential="True" version="18">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the Escorez applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<property name="site">Escorez</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/escorez/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="false" version="18">
-		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines memory tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Escorez.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="site">Escorez</property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/escorez/testTags.xml</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="production" essential="True" version="1">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the G-Line applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<property name="site">GLine</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/gline/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="false" version="1">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the G-Line applications
-			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="site">GLine</property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/gline/testTags.xml</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="production" essential="True" version="17">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the Halobutyl applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<property name="site">Halobutyl</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/halobutyl/sqlTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="false" version="17">
-		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines memory tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Halobutyl.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="site">Halobutyl</property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/halobutyl/testTags.xml</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="production" essential="True" version="32">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the Vistalon applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing tags that 
-			differ from tag resources in the installer.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<property name="site">Vistalon</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/UDTs.xml</location>
-		</artifact>
-		<artifact name="Production Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/vistalon/sqlTags.xml</location>
-		</artifact>
-		<artifact name="LabData Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/vistalon/labdataTags.xml</location>
-		</artifact>
-	</panel>
-	<panel type="tag" subtype="test" essential="false" version="32">
-		<title>Install Tags Definitions for Test</title>
-		<preamble>This page defines tags that are used by the Ignition Applications
-		when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode at Vistalon.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="site">Vistalon</property>
-		<artifact name="Test Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/vistalon/testTags.xml</location>
-		</artifact>
-		<artifact name="LabDataTest Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/vistalon/labdataTestTags.xml</location>
-		</artifact>
-	</panel>
-
-	
 	<panel type="project" subtype="main" essential="true" version="31">
-		<title>BRPO Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
+		<title>Project Update</title>
+		<preamble>This page merges all of the core project resources into the target project.  
+			This includes windows, templates, project scripts, menues, gateway timer scripts, etc.  
+			It will NOT affect  any site specific windows, diagnostic diagrams, tags, etc.
+			This will preserve any user modifications to sire specific resources since a previous install. <br/>
 		</preamble>
-		<property name="site">BRPO</property>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/BRPO.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="4">
-		<title>BRPO Alarm Pipeline and Shared Python</title>
-		<preamble>This page handles installation of Alarm Pipelines and shared Python for BRPO.
-			These are packaged as an Ignition global projects and completely replaces
-			any existing pipelines of the same name.
-		</preamble>
-		<property name="site">BRPO</property>
-		<artifact name="BRPO Global Project" type="project" subtype="global">
-			<location>artifacts/globals/BRPO.proj</location>
+		<artifact name="XOM" type="project" subtype="partial">
+			<location>artifacts/projects/XOM-Core.proj</location>
 		</artifact>
 	</panel>
 	
-	<panel type="project" subtype="main" essential="true" version="31">
-		<title>Escorez Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
-		</preamble>
-		<property name="site">Escorez</property>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/Escorez.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="31">
-		<title>Escorez SFCs, Alarm Pipeline, and shared Python</title>
-		<preamble>This page handles installation of SFCs, Alarm Pipelines, and shared Python for Escorez.
-			These are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name.
-		</preamble>
-		<property name="site">Escorez</property>
-		<artifact name="Escorez Global Project" type="project" subtype="global">
-			<location>artifacts/globals/Escorez.proj</location>
-		</artifact>
-	</panel>
-	
-	<panel type="project" subtype="main" essential="true" version="26">
-		<title>GLine Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
-		</preamble>
-		<property name="site">GLine</property>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/GLine.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="31">
-		<title>G-Line SFCs, Alarm Pipeline, and shared Python</title>
-		<preamble>This page handles installation of SFCs, Alarm Pipelines, and shared Python for G-Line.
-			These are packaged as Ignition global projects. They completely replace
-			any existing charts of the same name.
-		</preamble>
-		<property name="site">GLine</property>
-		<artifact name="Gline Global Project" type="project" subtype="global">
-			<location>artifacts/globals/Gline.proj</location>
-		</artifact>
-	</panel>
-	
-	<panel type="project" subtype="main" essential="true" version="33">
-		<title>Halobutyl Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
-		</preamble>
-		<property name="site">Halobutyl</property>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/Halobutyl.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="11">
-		<title>Halobutyl SFCs, Alarm Pipelines and shared Python</title>
-		<preamble>This page handles installation of SFCs, Alarm pipelines, and shared Python for Halobutyl.
-			These are packaged as an Ignition global project. They completely replace
-			any existing charts of the same name.
-		</preamble>
-		<property name="site">Halobutyl</property>
-		<artifact name="Halobutyl Global Project" type="project" subtype="global">
-			<location>artifacts/globals/Halobutyl.proj</location>
-		</artifact>
-	</panel>
-	
-	<panel type="project" subtype="main" essential="true" version="38">
-		<title>Vistalon Main Project</title>
-		<preamble>XOM is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version. <br/>
-			NOTE: For the current EMChemicals project, the merge capability is still in 
-			development and should NOT be used.
-		</preamble>
-		<property name="site">Vistalon</property>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="XOM" type="project" subtype="full">
-			<location>artifacts/projects/Vistalon.proj</location>
-		</artifact>
-		<artifact name="XOM Partial Project" type="project" subtype="partial">
-			<location>artifacts/projects/Vistalon.proj</location>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="sfc" essential="true" version="30">
-		<title>Vistalon SFCs, Alarm Pipelines and Shared Python</title>
-		<preamble>This page handles installation of SFCs, Alarm Pipelines and shared Python for Vistalon.
-			These are packaged as an Ignition global project. They completely replace
-			any existing charts of the same name. 
-		</preamble>
-		<property name="site">Vistalon</property>
-		<artifact name="SFC Global Project" type="project" subtype="global">
-			<location>artifacts/globals/Vistalon.proj</location>
-		</artifact>
-	</panel>
-
-	<panel type="project" subtype="dbmgr" essential="true" version="9">
-		<title>Install the DbManager Project</title>
-		<preamble>DbManager is a utility for maintenance of
-			application databases. It is not generally user-customizable.
-			The action on this page completely replaces any existing copy.
-		</preamble>
-		<property name="site">BRPO</property>
-		<property name="site">Escorez</property>
-		<property name="site">GLine</property>
-		<property name="site">Halobutyl</property>
-		<property name="site">Vistalon</property>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="DbManager" type="project" subtype="full">
-			<location>artifacts/projects/DbManager.proj</location>
-		</artifact>
-	</panel>
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
@@ -744,126 +150,9 @@
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
-		<artifact name="Application Installer" type="documentation" subtype="docx" release="1.1">
-			<location>artifacts/doc/ApplicationInstaller.docx</location>
-		</artifact>
-		<artifact name="Application Testing Framework" type="documentation" subtype="docx" release="1.2">
-			<location>artifacts/doc/ApplicationTestFramework.docx</location>
-		</artifact>
-		<artifact name="Block Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
-			<location>artifacts/doc/BlockDevelopmentScorecard.xslx</location>
-		</artifact>
-		<artifact name="Block Language Toolkit Design" type="documentation" subtype="docx" release="1.18">
-			<location>artifacts/doc/BlockLanguageToolkitDesign.docx</location>
-		</artifact>
-		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
-			<location>artifacts/doc/blt/javadoc.zip</location>
-		</artifact>
-		<artifact name="Database Manager Guide" type="documentation" subtype="docx" release="1.1">
-			<location>artifacts/doc/DatabaseManagerGuide.docx</location>
-		</artifact>
-		<artifact name="Database Manager Migration Guide" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/DatabaseManagerMigrationGuide.docx</location>
-		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.19">
-			<location>artifacts/doc/EMCDatabaseDesign</location>
-		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.19">
-			<location>artifacts/doc/EMCDatabaseER.pdf</location>
-		</artifact>
-		<artifact name="EMC Database E/R Diagrams" type="documentation" subtype="vsd" release="1.19">
-			<location>artifacts/doc/EMCDatabaseERDiagrams.vsd</location>
-		</artifact>
-		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
-			<location>artifacts/doc/IODesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Lab Data Design Spec" type="documentation" subtype="docx" release="1.12">
-			<location>artifacts/doc/LabDataDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.11">
-			<location>artifacts/doc/MigrationManual.docx</location>
-		</artifact>
-		<artifact name="Recipe Toolkit Design Spec" type="documentation" subtype="docx" release="1.3">
-			<location>artifacts/doc/RecipeDesignSpecification.docx</location>
-		</artifact>
 		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.63">
 			<location>artifacts/doc/SequentialControlUserManual.docx</location>
 		</artifact>
-		<artifact name="SFC Development Scorecard" type="documentation" subtype="xslx" release="@RELEASE@">
-			<location>artifacts/doc/SFCDevelopmentScorecard.xslx</location>
-		</artifact>
-		<artifact name="Toolchain Installation Manual" type="documentation" subtype="docx" release="1.1">
-			<location>artifacts/doc/ToolchainInstallationManual.docx</location>
-		</artifact>
-		<artifact name="BRPO Design Specification" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/BRPODesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Halobutyl Design Specification" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/HalobutylDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Vistalon Design Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/VistalonDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Escorez Design Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/EscorezDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="Escorez Migration Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/EscorezMigrationSpecification.docx</location>
-		</artifact>
-		<artifact name="G-Line Design Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/GLineDesignSpecification.docx</location>
-		</artifact>
-		<artifact name="G-Line Migration Specification" type="documentation" subtype="docx" release="1.9">
-			<location>artifacts/doc/GLineMigrationSpecification.docx</location>
-		</artifact>
-		<artifact name="G-Line Migration Score Card" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/GLineScoreCard.xlsx</location>
-		</artifact>
-		<artifact name="G-Line Migration Poly SFC Score Card" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/GLinePolySfcScoreCard.xlsx</location>
-		</artifact>
-		
-	</panel>
-	<panel type="toolkit" essential="true" version="3">
-		<title>Update Toolkit Properties</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			These particular parameters define extension functions that update
-			the database in response to operator operations on diagrams.
-		</preamble>
-		<property name="site">BRPO</property>
-		<property name="site">Escorez</property>
-		<property name="site">GLine</property>
-		<property name="site">Halobutyl</property>
-		<property name="site">Vistalon</property>
-
-		<property name="com.ils.application(property-get-script)">ils.extensions.appProperties.getAux</property>
-		<property name="com.ils.application(property-set-script)">ils.extensions.appProperties.setAux</property>		
-		<property name="com.ils.application(node-delete-script)">ils.extensions.appProperties.delete</property>
-		<property name="com.ils.application(node-rename-script)">ils.extensions.appProperties.rename</property>
-		<property name="com.ils.application(node-save-script)">ils.extensions.appProperties.save</property>
-		
-		<property name="com.ils.family(property-get-script)">ils.extensions.famProperties.getAux</property>
-		<property name="com.ils.family(property-set-script)">ils.extensions.famProperties.setAux</property>		
-		<property name="com.ils.family(node-delete-script)">ils.extensions.famProperties.delete</property>
-		<property name="com.ils.family(node-rename-script)">ils.extensions.famProperties.rename</property>
-		<property name="com.ils.family(node-save-script)">ils.extensions.famProperties.save</property>
-		
-		<property name="com.ils.diagram(node-save-script)">ils.extensions.diaSave.save</property>		
-		<property name="com.ils.diagram(node-delete-script)">ils.extensions.diaSave.delete</property>
-
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-get-script)">ils.extensions.fdProperties.getAux</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(property-set-script)">ils.extensions.fdProperties.setAux</property>		
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-delete-script)">ils.extensions.fdProperties.delete</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-rename-script)">ils.extensions.fdProperties.rename</property>
-		<property name="xom.block.finaldiagnosis.FinalDiagnosis(node-save-script)">ils.extensions.fdProperties.save</property>
-				
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-get-script)">ils.extensions.sqcdProperties.getAux</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(property-set-script)">ils.extensions.sqcdProperties.setAux</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-delete-script)">ils.extensions.sqcdProperties.delete</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-rename-script)">ils.extensions.sqcdProperties.rename</property>
-		<property name="xom.block.sqcdiagnosis.SQCDiagnosis(node-save-script)">ils.extensions.sqcdProperties.save</property>	
-		
-		<property name="SecondaryTimeFactor">1.0</property>
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="7" >
@@ -886,10 +175,11 @@
 			the Gateway internal database.
 		</preamble>
 	</panel>
+	
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
 		<title>Ignition Applications - Installed</title>
-		<preamble>Now that all of the automated installation and configuration of the Exxon-Mobil Ignition Applications
+		<preamble>Now that all of the automated installation and configuration of the ExxonMobil Ignition Applications
 		          is complete, there are just a few more manual steps required. </preamble>
 		
 		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
@@ -900,4 +190,3 @@
 		            Restart the Gateway, then edit each project setting it to "enabled".</note>
 	</epilog>
 </installer>
-

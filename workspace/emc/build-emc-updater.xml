@@ -76,7 +76,7 @@
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/Database/update XOM 1.1.sql" tofile="${artifact.dir}/database/update.sql" />
+		<copy file="${svn.repo}/EMChemicals/Database/update XOM 1.1r0.sql" tofile="${artifact.dir}/database/update.sql" />
 
 		<!-- 
 		Documentation - always include the release notes and other documentation that was updated 
@@ -134,7 +134,7 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM-Core.proj" tofile="${artifact.dir}/projects/XOM-Core.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM_Core_1.1r0.proj" tofile="${artifact.dir}/projects/XOM-Core.proj" />
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
 		<mkdir dir="${artifact.dir}/globals" />
