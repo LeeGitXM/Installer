@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">64</property>
+	<property name="version">68</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -32,7 +32,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="31">
+	<panel type="file" essential="true" version="32">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -170,7 +170,7 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="32">
+	<panel type="project" subtype="main" essential="true" version="34">
 		<title>Install the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides

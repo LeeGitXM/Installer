@@ -3,13 +3,10 @@
       type and sub-type must be unique. If missing, the subtype is taken to be the
       same as the type. Within a panel, an artifact name/version combination must 
       be unique. 
-      
-      NOTE: For a fresh installer, keep the versions ==1. In that way an update
-            installer can easily guarantee that it installs newer versions
  -->
 <installer>
-	<title>BatchExpert+</title>
-	<description>Installer for ILS Automation's Batch Expert+</description>
+	<title>SynataBatchExpert+</title>
+	<description>Installer for ILS Automation's Batch Expert+ for Synata</description>
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
@@ -17,14 +14,12 @@
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
-		<title>ILS Automation Installer for Batch Expert+</title>
-		<preamble>Welcome to the ILS Automation installer for Batch Expert+. 
-			This version of the installer is designed for new installations
-			on Ignition 8.
-			It installs a &quot;bare-bones&quot; project along with a collection 
-			of example screens to accelerate configuration.
+		<title>ILS Automation Installer for Batch Expert+ </title>
+		<preamble>This is a special version of the ILS Automation installer built for
+			a new installation at &quot;Synata&quot;.
 			Before continuing, please make sure that you have 
 			defined a database connection, e.g. BEDB, to hold your configuration and results.
+			This installer is designed to run on a clean installation of Ignition.
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -52,11 +47,11 @@
 			<location>artifacts/tags/udts.xml</location>
 		</artifact>
 	</panel>
-	<!-- Python files are copied into the Ignition user-lib/pylib area.
+		<!-- Python source files are copied into the Ignition user-lib/pylib area.
 	     Jar files are copied into lib -->
 	<panel type="file" essential="true" version="32">
-		<title>Python Extensions for the Batch Expert+</title>
-		<preamble>This page loads custom Python modules that support Batch Expert+. 
+		<title>Python Extensions for Batch Expert+</title>
+		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
 		<artifact name="External Python for Batch Expert+" type="directory" subtype="user-lib">
 			<location>artifacts/external/ils</location>
@@ -65,7 +60,7 @@
 		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
 			<location>artifacts/external/lib</location>
 			<destination>core/common</destination>
-		</artifact>
+		</artifact>>
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
@@ -73,7 +68,7 @@
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install Configuration Tags</title>
-		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
+		<preamble>Create configuration tags that hold information on which batch-tracking parameters 
 		         are important in your installation.
 		</preamble>
 		<property name="provider" type="production">default</property>
@@ -87,7 +82,7 @@
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
-		<title>Define Database Connections</title>
+		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
 		          are used for BatchExpert+.
 		</preamble>
@@ -99,13 +94,18 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
-	<panel type="authentication" essential="false">
-		<title>Verify User Roles</title>
-		<preamble>This is an optional step that provides a check of authentication profiles to verify that at least one of them
-		includes a user assigned to the &quot;Operator&quot; role as required by BatchExpert.
+	<!-- 
+	<panel type="scanclass" essential="false" version="3">
+		<title>Create alternative Scan Classes</title>
+		<preamble>Create scanclasses referenced by application tags. 
+				Scanclasses determine tag poll rates.
 		</preamble>
-		<role name="Operator">Operator</role>
+		<property name="provider">default</property>
+		<artifact name="Production ScanClasses" type="scanclass" subtype="csv">
+			<location>artifacts/scanclass/scanclasses.csv</location>
+		</artifact>
 	</panel>
+	 -->
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features. Note that these
@@ -116,7 +116,7 @@
 			<comment>Configure Batch Expert+ to add campaign as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByCamapign</script>
 		</artifact>
-				<artifact name="CODE">
+		<artifact name="CODE">
 			<comment>Configure Batch Expert+ to add batch code as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByCode</script>
 		</artifact>
@@ -181,11 +181,11 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="python" essential="true" version="12">
-		<title>Database Create Scripts for Batch Expert+</title>
-		<preamble>This page provides the opportunity for populating the database instance specified
-		          on the 'definition' panel. This script is appropriate for a new installation only.
-		          As a safety measure, the database creation step will fail unless any previous instance is explicitly cleared.
+	<panel type="python" essential="false" version="6">
+		<title>Database Scripts for Batch Expert+ Testing</title>
+		<preamble>This page recreates the database schema to BatchExpert+ 3.0. First drop,
+		          then create. On the next tab we populate the tables to support the units that are 
+		          already defined by tags.
 		</preamble>
 		<artifact name="Drop Tables" type="drop">
 			<comment>Clear the existing database of all tables, procedures and indices. This step is only needed
@@ -196,31 +196,59 @@
 			<script>ils.be.database.bedb.createDatabase()</script>
 			<comment>Create tables and indices required for Batch Expert.</comment>
 		</artifact>
-		<artifact name="Populate Tables" type="alter">
+	</panel>
+	<panel type="python" essential="true" version="13">
+		<title>Database Scripts for Batch Expert+ 3.0</title>
+		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. 
+				We also populate the tables with common choose list entries.
+		</preamble>
+		<artifact name="Alter Tables" type="alter">
+			<script>ils.be.database.alter.alterDatabase()</script>
+			<comment>Update table structure for BE+ 3.0.</comment>
+		</artifact>
+		<artifact name="Populate Tables" type="insert">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<!--
-	<panel type="scanclass" essential="true" version="2">
-		<title>Create alternative Tag Groups</title>
-		<preamble>Create tag groups referenced by application tags. 
-				Tag groups determine tag poll rates.
+	<panel type="database" essential="false" version="6">
+		<title>Database Scripts for Batch Expert+ Testing - MYSQL</title>
+		<preamble>This page populates MYSQL tables with Synata-specific entries to support the units that are 
+		          already defined by tags. NOTE: This script is not compatible with SQLSERVER.
 		</preamble>
-		<property name="provider">default</property>
-		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
-			<location>artifacts/taggroups/taggroups.json</location>
+		<property name="database" type="production"></property>
+		<property name="dbms" type="MYSQL"></property>
+		<!-- Recognized subtypes are: clear, create, alter -->
+		<artifact name="BEDB Database" type="sql" subtype="alter">
+			<comment>Populate tables to match tags and transaction groups specifically for our Synata batches.</comment>
+			<location>artifacts/database/mysql/populate.sql</location>
 		</artifact>
 	</panel>
-	-->
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
-		          installations that include the SFC feature.
+	<panel type="tag" subtype="production" essential="false" version="5">
+		<title>Update Tag Definitions for Synata Units and Instruments</title>
+		<preamble>Update UDTs used by Synata fermenters.
 		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="Python SFC" type="module">
-			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]_types_</property>
+		<artifact name="Synata Instrument Tag Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/synata_instrument_udt_tags.xml</location>
+		</artifact>
+		<artifact name="Synata Unit Tag Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/synata_unit_udt_tags.xml</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="false" version="4">
+		<title>Install Tag Definitions for TEST ONLY</title>
+		<preamble>This page creates tags corresponding to Synata fermenters.
+		          Do NOT use in for production. These tags are for test systems only.
+		          The definitions, like all BE tags, are written to the &quot;default&quot; tag provider.
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]</property>
+		<artifact name="Synata Unit Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/synata_unit_tags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="32">
@@ -237,64 +265,23 @@
 			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="34">
-		<title>Install the BatchExpert+ Site-specific Project</title>
-		<preamble>The starter project contains examples of windows designed to be
-			customized for a specific site. On a product update, these windows will 
-			be left untouched.
+	<panel type="project" subtype="main" essential="true" version="33">
+		<title>Install BatchExpert+ 3.0 - Specially assembled for Synata
+		</title>
+		<preamble>Create Batch Expert+ 3.0 for Synata. This project includes 
+		          Synata-specific configuration.
 		</preamble>
-		<property name="provider" type="production">default</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
-		<artifact name="Site" type="project">
-			<location>artifacts/projects/BatchExpertStarter.zip</location>
-			<comment>Install site-specific project template it into the
-			         project which was just installed in the step above.</comment>
-		</artifact>
-	</panel>
-	<panel type="python" essential="true" version="2">
-		<title>Configuration Scripts</title>
-		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 3.0.
-		</preamble>
-		<artifact name="Configure Pen Palette" type="alter">
-			<script>ils.be.configuration.config.configurePenColorTag()</script>
-			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
-		</artifact>
-	</panel>
-	<panel type="toolkit" essential="true" version="5">
-		<title>Set Gateway Defaults</title>
-		<preamble>Set properties in the internal database of the Gateway.
-			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
-			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
-		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
-		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
-		      The SMTP Profile must precede the alarm profile.  -->
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
-		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
-		<!--  Values for these properties are taken from the definition page -->
-		<property type="projectdefaultdatasource"></property>
-		<property type="providerdefaultdatasource"></property>
-	</panel>
-	<panel type="documentation" essential="false">
-		<title>Product Documentation</title>
-		<preamble>In addition to the release notes, documentation includes a getting started guide.
-		</preamble>
-		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
-		</artifact>
-		<artifact name="Getting Started Guide" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/BEGettingStarted.docx</location>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="BatchExpertSynata30" type="project" subtype="full">
+			<location>artifacts/projects/BatchExpertSynata.zip</location>
+			<comment>Create a BatchExpert+ 3.0 project for Synata. </comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
 		<preamble>The list below shows which of the installation steps have been completed.
-		 Selecting "Finish" will record the current version of Batch Expert+ in
+		 Selecting "Finish" will record the current version of BatchExpert+ in
 			the Gateway internal database.
 		</preamble>
 	</panel>
@@ -303,9 +290,8 @@
 		<title>Installation Complete</title>
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
-		<note name="Master Project">Make sure that the new Master project is "heritable"</note>
-		<note name="Starter Project">Give the starter project with a customer-appropriate name. Make the "Master" project its parent.</note>
-		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Site Project">The site-specific project currently inherits from a prior version of the Master. Update it to refer to the newly installed Master.</note>
+		<note name="Gateway Restart">The tags have active components. A Gateway restart is required to accommodate the changes.</note>
 	</epilog>
 </installer>
 
