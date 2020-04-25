@@ -99,7 +99,7 @@
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database/mysql" />
@@ -151,10 +151,6 @@
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/taggroups" />
 		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
-
-		<!-- Modules -->
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 			
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -163,7 +159,7 @@
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
-		<copy file="${sandbox}/BatchExpertSynata-3.0.zip" tofile="${artifact.dir}/projects/BatchExpertSynata.zip" />
+		<copy file="${sandbox}/BatchExpertSynata31.zip" tofile="${artifact.dir}/projects/BatchExpertSynata.zip" />
 		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />

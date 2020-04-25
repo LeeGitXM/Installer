@@ -137,6 +137,8 @@
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
+		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${git.repo}/batch-expert/doc/BEGettingStarted.docx" tofile="${artifact.dir}/doc/BEGettingStarted.docx" />
