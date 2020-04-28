@@ -183,7 +183,7 @@
 	</panel>
 	<panel type="python" essential="false" version="6">
 		<title>Database Scripts for Batch Expert+ Testing</title>
-		<preamble>This page recreates the database schema to BatchExpert+ 3.0. First drop,
+		<preamble>This page recreates the database schema to BatchExpert+ 3.1. First drop,
 		          then create. On the next tab we populate the tables to support the units that are 
 		          already defined by tags.
 		</preamble>
@@ -198,13 +198,13 @@
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="13">
-		<title>Database Scripts for Batch Expert+ 3.0</title>
+		<title>Database Scripts for Batch Expert+ 3.1</title>
 		<preamble>This page updates the installed database schema to BatchExpert+ 2.4. 
 				We also populate the tables with common choose list entries.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
-			<comment>Update table structure for BE+ 3.0.</comment>
+			<comment>Update table structure for BE+ 3.1.</comment>
 		</artifact>
 		<artifact name="Populate Tables" type="insert">
 			<script>ils.be.database.bedb.initializeDatabase()</script>
@@ -260,21 +260,21 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="Master" type="project">
+		<artifact name="BatchExpertMaster31" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="33">
-		<title>Install BatchExpert+ 3.0 - Specially assembled for Synata
+		<title>Install BatchExpert+ 3.1 - Specially assembled for Synata
 		</title>
-		<preamble>Create Batch Expert+ 3.0 for Synata. This project includes 
+		<preamble>Create Batch Expert+ 3.1 for Synata. This project includes 
 		          Synata-specific configuration.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
-		<artifact name="BatchExpertSynata30" type="project" subtype="full">
+		<artifact name="BatchExpertSynata31" type="project" subtype="full">
 			<location>artifacts/projects/BatchExpertSynata.zip</location>
-			<comment>Create a BatchExpert+ 3.0 project for Synata. </comment>
+			<comment>Create a BatchExpert+ 3.1 project for Synata. </comment>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

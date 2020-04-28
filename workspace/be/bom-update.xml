@@ -153,7 +153,7 @@
 	</panel>
 	<panel type="python" essential="true" version="13">
 		<title>Alter Scripts for Batch Expert+</title>
-		<preamble>This page updates the installed database schema to BatchExpert+ 3.0.
+		<preamble>This page updates the installed database schema to BatchExpert+ 3.1.
 		</preamble>
 		<artifact name="Alter Tables" type="alter">
 			<script>ils.be.database.alter.alterDatabase()</script>
