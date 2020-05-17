@@ -110,6 +110,30 @@
 		<artifact name="Data Replay User Guide" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/Data Replay User Guide.docx</location>
 		</artifact>
+		<artifact name="Data Replay User Guide" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Data Replay User Guide.pdf</location>
+		</artifact>
+		<artifact name="Export Model" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Export Model.docx</location>
+		</artifact>
+		<artifact name="Import Model" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Import Model.docx</location>
+		</artifact>
+		<artifact name="Import Simulation Data" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Import Simulation Data.docx</location>
+		</artifact>
+		<artifact name="Model Tuning" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Model Tuning.docx</location>
+		</artifact>
+		<artifact name="Review Results" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Review Results.docx</location>
+		</artifact>
+		<artifact name="Review Simulation Data" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Review Simulation Data.docx</location>
+		</artifact>
+		<artifact name="Simulation Control" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Simulation Control.docx</location>
+		</artifact>
 		<artifact name="Data Replay Database Design" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/Data Replay Database Design.pdf</location>
 		</artifact>

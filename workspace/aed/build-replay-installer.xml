@@ -83,6 +83,14 @@
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Data Replay Database Design.pdf" tofile="${artifact.dir}/doc/Data Replay Database Design.pdf" />
 		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/User Manual.pdf" tofile="${artifact.dir}/doc/User Manual.pdf" />
+		
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Export Model.docx" tofile="${artifact.dir}/doc/Export Model.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Import Model.docx" tofile="${artifact.dir}/doc/Import Model.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Import Simulation Data.docx" tofile="${artifact.dir}/doc/Import Simulation Data.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Model Tuning.docx" tofile="${artifact.dir}/doc/Model Tuning.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Review Results.docx" tofile="${artifact.dir}/doc/Review Results.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Review Simulation Data.docx" tofile="${artifact.dir}/doc/Review Simulation Data.docx" />
+		<copy file="${svn.repo}/EMRE/Data Replay Project/Documentation/Help/Simulation Control.docx" tofile="${artifact.dir}/doc/Simulation Control.docx" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />		
