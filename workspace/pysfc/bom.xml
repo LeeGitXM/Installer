@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>PY-SFC Demonstration</title>
+	<description>Installer of a demonstration environment for the ILS PY-SFC package</description>
+	<property name="product">PySFC - demonstration</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">3</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for Demonstrating PY-SFC</title>
+		<preamble>Welcome to the ILS Automation installer for demonstrating PY-SFC.
+		    This is a Python extension of the Inductive Automation SFC module.
+			The installer installs the PY-SFC module and accompanying project and example
+			classes. The table below compares the existing installation of
+			this product, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined at least one tag provider and database connection. Additionally,
+		    the Ignition SFC module must be installed.
+		</preamble>
+	</panel>
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
+	     Jar types are copied into lib -->
+	<panel type="file" essential="true" version="2">
+		<title>Python Code for Py-SFC</title>
+		<preamble>This page loads Python code that defines the custom SFC steps. The Python
+		is stored outside of any project in the Ignition installation directory.
+		</preamble>
+		<artifact name="External Python - Examples" type="text" subtype="user-lib">
+			<location>artifacts/external/pysfc-python</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+		<artifact name="External Python - Batch Expert" type="text" subtype="user-lib">
+			<location>artifacts/external/batch-expert-python</location>
+			<destination>pylib/ils</destination>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Py-SFC Module</title>
+		<preamble>This step installs modules necessary for PY-SFC.
+		</preamble>
+		<artifact name="PySFC" type="module">
+			<location>artifacts/modules/PYSFC-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="main" essential="true" version="2">
+		<title>Install the PySfc Demonstration Project
+		</title>
+		<preamble>PySfc Sample is a main Ignition project. It holds a collection of
+		use case descriptions and accompanying windows.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="PySFCProject" type="project" subtype="full">
+			<location>artifacts/projects/PySFCSample.proj</location>
+		</artifact>
+	</panel>
+		<panel type="project" subtype="sfc" essential="true" version="3">
+		<title>Install SFC Charts in the Global Project
+		</title>
+		<preamble>This page handles installation of charts for various use cases.
+			The charts are packaged as Ignition global projects. They completely replace
+			any existing charts of the same name. Multiple chart hierarchies can be updated
+			from this one page. 
+		</preamble>
+		<artifact name="PySFCampleGlobal" type="project" subtype="global">
+			<location>artifacts/projects/PySFCSampleGlobal.proj</location>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of ACE Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation of the PY-SFC Demonstration project
+		          is complete. There are just a few more manual steps required. </preamble>
+		<note name="Disabled Projects">Newly created projects are installed disabled. They must be enabled before use.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
