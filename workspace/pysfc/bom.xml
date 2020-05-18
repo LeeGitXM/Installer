@@ -10,7 +10,7 @@
 	<property name="product">PySFC - demonstration</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">3</property>
+	<property name="version">4</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -52,24 +52,24 @@
 	<panel type="project" subtype="main" essential="true" version="2">
 		<title>Install the PySfc Demonstration Project
 		</title>
-		<preamble>PySfc Sample is a main Ignition project. It holds a collection of
+		<preamble>PySfc Test is a main Ignition project. It holds a collection of
 		use case descriptions and accompanying windows.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="PySFCProject" type="project" subtype="full">
-			<location>artifacts/projects/PySFCSample.proj</location>
+			<location>artifacts/projects/PySFCTest.zip</location>
 		</artifact>
 	</panel>
 		<panel type="project" subtype="sfc" essential="true" version="3">
-		<title>Install SFC Charts in the Global Project
+		<title>Install SFC Charts
 		</title>
 		<preamble>This page handles installation of charts for various use cases.
-			The charts are packaged as Ignition global projects. They completely replace
+			The charts are packaged as a separate Ignition project. They completely replace
 			any existing charts of the same name. Multiple chart hierarchies can be updated
 			from this one page. 
 		</preamble>
-		<artifact name="PySFCampleGlobal" type="project" subtype="global">
-			<location>artifacts/projects/PySFCSampleGlobal.proj</location>
+		<artifact name="PySFC" type="project" subtype="global">
+			<location>artifacts/projects/PySFC.zip</location>
 		</artifact>
 	</panel>
 	<!-- The summary panel must always be displayed, thus no version -->

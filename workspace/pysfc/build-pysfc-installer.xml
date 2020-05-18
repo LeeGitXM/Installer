@@ -4,7 +4,7 @@
      We require that GIT_REPO and SVN_REPO be provided to this script.
 -->
 <project name="PySfcDemoInstaller" basedir="." default="deploy">
-	<property name="version.build" value="2.1" />
+	<property name="version.build" value="3.1" />
 	<property name="build.dir" value="${basedir}/../AI-build" />
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
@@ -90,8 +90,8 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/py-sfc/projects/PySFCSample.proj" tofile="${artifact.dir}/projects/PySFCSample.proj" />
-		<copy file="${git.repo}/py-sfc/projects/PySFCSampleGlobal.proj" tofile="${artifact.dir}/projects/PySFCSampleGlobal.proj" />
+		<copy file="${git.repo}/py-sfc/projects/PySFCTest.zip" tofile="${artifact.dir}/projects/PySFCTest.zip" />
+		<copy file="${git.repo}/py-sfc/projects/PySFC.zip" tofile="${artifact.dir}/projects/PySFC.zip" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
@@ -108,7 +108,7 @@
 	<!-- Loads the Installer module in local Ignition gateway. Note that the gateway must be running in developer mode for this to succeed. -->
 	<target name="deploy" depends="build">
 		<echo message="Installing ${module.name} on Ignition Gateway." />
-		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/PySFC/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/PySFC/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 	

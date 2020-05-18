@@ -6,8 +6,8 @@
 	<description>Installer for PY-SFC Demonstration</description>
 	<license></license>
 	<version>1.0.0.0</version>
-	<requiredignitionversion>7.8.3</requiredignitionversion>
-	<requiredframeworkversion>7</requiredframeworkversion>
+	<requiredignitionversion>8.0.10</requiredignitionversion>
+	<requiredframeworkversion>9</requiredframeworkversion>
 
 	<!-- Load in our jars for each scope -->
 	<export scope="G">ils-common.jar</export>
