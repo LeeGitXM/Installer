@@ -137,6 +137,9 @@
 		<artifact name="Data Replay Database Design" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/Data Replay Database Design.pdf</location>
 		</artifact>
+		<artifact name="Data Replay Design Specification" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Data Replay Design Specification.pdf</location>
+		</artifact>
 	</panel>
 	
 	<!-- The conclusion panel must always be displayed, thus no version -->
