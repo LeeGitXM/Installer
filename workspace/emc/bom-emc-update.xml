@@ -149,9 +149,21 @@
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
-		<artifact name="Sequential Control User Manual" type="documentation" subtype="docx" release="0.63">
-			<location>artifacts/doc/SequentialControlUserManual.docx</location>
+		
+		<artifact name="Diagnostic Toolkit User Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.docx</location>
 		</artifact>
+		<artifact name="Diagnostic Toolkit User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.pdf</location>
+		</artifact>
+
+		<artifact name="Sequential Control User Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/ILS_SFC_Users_Guide.docx</location>
+		</artifact>	
+		<artifact name="Sequential Control User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/ILS_SFC_Users_Guide.pdf</location>
+		</artifact>
+
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="7" >

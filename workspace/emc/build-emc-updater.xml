@@ -9,7 +9,7 @@
 	<property name="staging.dir" value="${basedir}/staging" />
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
-	<property name="bom" value="${basedir}/bom-update.xml" />
+	<property name="bom" value="${basedir}/bom-emc-update.xml" />
 	<property name="module.name" value="emc-updater" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/emc-updater-module.xml" />
@@ -83,7 +83,10 @@
 		-->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Diagnostic Toolkit User's Guide.docx" tofile="${artifact.dir}/doc/Diagnostic_Toolkit_Users_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Diagnostic Toolkit User's Guide.pdf"  tofile="${artifact.dir}/doc/Diagnostic_Toolkit_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.docx"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"             tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
