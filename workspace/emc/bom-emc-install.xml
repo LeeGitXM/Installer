@@ -77,6 +77,8 @@
 	</panel>
 	
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
+	<!-- Database scripts are read by the gateway startup scripts -->
+	<!-- The project isn't really used for a full install, but bring it along anyway -->
 	<panel type="file" essential="true" version="010100">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
@@ -95,6 +97,14 @@
 		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
 			<location>artifacts/external/jars</location>
 			<destination>core</destination>
+		</artifact>
+		<artifact name="SQL Update Scripts" type="text" subtype="user-lib">
+			<location>artifacts/database</location>
+			<destination>database</destination>
+		</artifact>
+		<artifact name="Core Ignition Project" type="binary" subtype="user-lib">
+			<location>artifacts/projects</location>
+			<destination>projects</destination>
 		</artifact>
 	</panel>
 	
@@ -238,11 +248,17 @@
 		<artifact name="Database Manager User's Guide" type="documentation" subtype="pdf" release="1.1">
 			<location>artifacts/doc/DBManagerUsersGuide.pdf</location>
 		</artifact>
-		<artifact name="EMC Database Design" type="documentation" subtype="docx" release="1.19">
+		<artifact name="Database Design" type="documentation" subtype="docx" release="1.19">
 			<location>artifacts/doc/EMCDatabaseDesign</location>
 		</artifact>
-		<artifact name="EMC Database E/R Design" type="documentation" subtype="pdf" release="1.19">
+		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
 			<location>artifacts/doc/EMCDatabaseER.pdf</location>
+		</artifact>
+		<artifact name="Diagnostic Toolkit User Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.docx</location>
+		</artifact>
+		<artifact name="Diagnostic Toolkit User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.pdf</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
@@ -253,15 +269,14 @@
 		<artifact name="Recipe Toolkit User's Guide" type="documentation" subtype="pdf" release="1.3">
 			<location>artifacts/doc/RecipeToolkitUsersGuide.pdf</location>
 		</artifact>
-		<artifact name="Sequential Control User's Guide" type="documentation" subtype="pdf" release="0.63">
+		<artifact name="Sequential Control User Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/ILS_SFC_Users_Guide.docx</location>
+		</artifact>
+		<artifact name="Sequential Control User's Guide" type="documentation" subtype="pdf" release="1.2">
 			<location>artifacts/doc/ILSSFCUsersGuide.pdf</location>
 		</artifact>
-		<artifact name="Toolchain Installation Manual" type="documentation" subtype="docx" release="1.1">
-			<location>artifacts/doc/ToolchainInstallationManual.docx</location>
-		</artifact>
-
-		
 	</panel>
+	
 	<panel type="toolkit" essential="true" version="3">
 		<title>Update Toolkit Properties</title>
 		<preamble>Set properties in the internal database of the Gateway.
@@ -304,7 +319,7 @@
 		<preamble>This step installs the test framework module.
 			The test framework is optional and should not be used on a production system.
 			When used on a hybrid Production / Development system then great caution
-			must be used to insure that test data does not leak to the production FCS.
+			must be used to insure that test data does not leak to the production system.
 		</preamble>
 		<artifact name="Testing Framework" type="module">
 			<location>artifacts/modules/TF-module-signed.modl</location>

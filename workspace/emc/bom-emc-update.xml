@@ -81,33 +81,13 @@
 			<location>artifacts/external/jars</location>
 			<destination>core</destination>
 		</artifact>
-	</panel>
-	
-	<panel type="database" essential="true" version="35">
-		<title>Database Update Script for Updating Ignition Applications</title>
-		<preamble>This page provides the opportunity to update an existing instance 
-		to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: alter -->
-		<artifact name="XOM Database" type="sql" subtype="alter">
-			<location>artifacts/database/update.sql</location>
+		<artifact name="SQL Update Scripts" type="text" subtype="user-lib">
+			<location>artifacts/database</location>
+			<destination>database</destination>
 		</artifact>
-	</panel>
-	
-	<panel type="database" essential="true" version="35">
-		<title>Database Update Script for Updating Ignition Applications</title>
-		<preamble>This page provides the opportunity to update an existing instance 
-		to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="isolation"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: alter -->
-		<artifact name="XOM Database" type="sql" subtype="alter">
-			<location>artifacts/database/update.sql</location>
+		<artifact name="Core Ignition Project" type="binary" subtype="user-lib">
+			<location>artifacts/projects</location>
+			<destination>projects</destination>
 		</artifact>
 	</panel>
 	
@@ -129,18 +109,21 @@
 		</artifact>
 	</panel>
 	
+	<!--  UNTIL I GET A PROJECT MERGE TO WORK SKIP THIS AND INSTRUCT THE USER TO MANUALLY MERGE THE PROJECT! PH - 7/3/2020 
+		For projects, artifact subtypes are: full, partial and global
 	<panel type="project" subtype="main" essential="true" version="31">
 		<title>Project Update</title>
 		<preamble>This page merges all of the core project resources into the target project.  
 			This includes windows, templates, project scripts, menues, gateway timer scripts, etc.  
 			It will NOT affect  any site specific windows, diagnostic diagrams, tags, etc.
-			This will preserve any user modifications to sire specific resources since a previous install. <br/>
+			This will preserve any user modifications to site specific resources since a previous install. <br/>
 		</preamble>
-		<!-- For projects, artifact subtypes are: full, partial and global -->
+		
 		<artifact name="XOM" type="project" subtype="partial">
 			<location>artifacts/projects/XOM-Core.proj</location>
 		</artifact>
 	</panel>
+	-->
 	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
@@ -149,21 +132,39 @@
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
-		
+		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
+			<location>artifacts/doc/blt/javadoc.zip</location>
+		</artifact>
+		<artifact name="Database Manager User's Guide" type="documentation" subtype="pdf" release="1.1">
+			<location>artifacts/doc/DBManagerUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Database Design" type="documentation" subtype="docx" release="1.19">
+			<location>artifacts/doc/EMCDatabaseDesign</location>
+		</artifact>
+		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
+			<location>artifacts/doc/EMCDatabaseER.pdf</location>
+		</artifact>
 		<artifact name="Diagnostic Toolkit User Guide (docx)" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.docx</location>
 		</artifact>
 		<artifact name="Diagnostic Toolkit User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.pdf</location>
 		</artifact>
-
+		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
+			<location>artifacts/doc/IODesignSpecification.docx</location>
+		</artifact>
+		<artifact name="Lab Data User's Guide" type="documentation" subtype="pdf" release="1.12">
+			<location>artifacts/doc/LabDataUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Recipe Toolkit User's Guide" type="documentation" subtype="pdf" release="1.3">
+			<location>artifacts/doc/RecipeToolkitUsersGuide.pdf</location>
+		</artifact>
 		<artifact name="Sequential Control User Guide (docx)" type="documentation" subtype="docx" release="1.0">
 			<location>artifacts/doc/ILS_SFC_Users_Guide.docx</location>
 		</artifact>	
 		<artifact name="Sequential Control User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/ILS_SFC_Users_Guide.pdf</location>
 		</artifact>
-
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="7" >
@@ -171,7 +172,7 @@
 		<preamble>This step installs the test framework module.
 			The test framework is optional and should not be used on a production system.
 			When used on a hybrid Production / Development system then great caution
-			must be used to insure that test data does not leak to the production FCS.
+			must be used to insure that test data does not leak to the production system.
 		</preamble>
 		<artifact name="Testing Framework" type="module">
 			<location>artifacts/modules/TF-module-signed.modl</location>
@@ -198,6 +199,9 @@
 		            screen on the Gateway page. Select the "install" option next to the listing of each quarantined module.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
-		            Restart the Gateway, then edit each project setting it to "enabled".</note>
+		            Edit each project setting it to "enabled" and then restart the Gateway.</note>
+		<note name="Manual Merge Projects">The core project resources need to be manually merged using the Ignition Designer.
+					Load your main XOM project and then merge the xom.proj found in user-lib/projects. </note>
+		            
 	</epilog>
 </installer>

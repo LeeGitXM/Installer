@@ -33,6 +33,7 @@
 			<arg value="-module-out=${moduleout}"/>
 		</java>
 	</target>
+	
 	<!-- Clean results of previous runs -->
 	<target name="clean" description="Remove existing archive">
 		<delete dir="${staging.dir}" />
@@ -53,7 +54,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
-
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
 		<mkdir dir="${staging.dir}" />
@@ -64,7 +64,6 @@
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 		
-
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
@@ -79,6 +78,20 @@
 		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${svn.repo}/EMChemicals/Database/create XOM.sql" tofile="${artifact.dir}/database/createDatabase.sql" />
 		<copy file="${svn.repo}/EMChemicals/Database/clearDatabase.sql" tofile="${artifact.dir}/database/clearDatabase.sql" />
+		
+		<!-- Database Update Scripts (probably won't need for the base install, but get them in place for updates) -->
+		<mkdir dir="${artifact.dir}/database" />
+		<copy todir="${artifact.dir}/database">
+			<fileset dir="${svn.repo}/EMChemicals/Database/Update Scripts">
+				<include name="*.sql" />
+			</fileset>
+		</copy>
+		
+		<!-- Project -->
+		<!-- 
+		<mkdir dir="${artifact.dir}/project" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${artifact.dir}/project/XOM.proj" />
+		-->
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -138,6 +151,7 @@
 				<include name="**/*.JPG" />
 			</fileset>
 		</copy>
+		
 		<!-- Copy license file into the artifacts -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/license.html" todir="${artifact.dir}/license/" />
