@@ -692,6 +692,7 @@ public class InstallerDataHandler {
 	 */
 	public File getArtifactAsTemporaryFile(int panelIndex,String artifactName,InstallerData model) {
 		byte[] bytes = null;
+		String extension = ".xml";
 		log.infof("%s.getArtifactAsFile: panel %d, getting %s",CLSS,panelIndex,artifactName);
 		Element panel = getPanelElement(panelIndex,model);
 		if( panel!=null ) {
@@ -707,6 +708,7 @@ public class InstallerDataHandler {
 						Node locationNode = locationNodes.item(index);
 						String internalPath = locationNode.getTextContent();
 						Path path = getPathToModule(model);
+						extension = getFileExtension(path.toFile());
 						bytes = jarUtil.readFileAsBytesFromJar(internalPath,path);
 						log.infof("%s.getArtifactAsTemporaryFile: panel %d:%s %s returned %d bytes",CLSS,panelIndex,artifactName,path.toString(),bytes.length);
 					}
@@ -720,7 +722,7 @@ public class InstallerDataHandler {
 		}
 		File file = null;
 		try {
-			file = File.createTempFile("tagartifacts",".xml");
+			file = File.createTempFile("tagartifacts",extension);
 			Files.write(file.toPath(),bytes,StandardOpenOption.TRUNCATE_EXISTING);
 		}
 		catch(IOException ioe) {
@@ -1050,6 +1052,14 @@ public class InstallerDataHandler {
 		}
     	return "???";
 	}
+	// Return the extension of a file. Include the preceding ".".
+	private String getFileExtension(File file) {
+        String fileName = file.getName();
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+        return fileName.substring(fileName.lastIndexOf("."));
+        else return "";
+    }
+	
 	// Return property name value pairs associated with a particular panel
 	public List<PropertyItem> getFinalNotes(InstallerData model) {
 		List<PropertyItem> notes = new ArrayList<>();
@@ -1222,7 +1232,7 @@ public class InstallerDataHandler {
 	public String getPreference(String key) {
 		return prefs.get(key, "");
 	}
-	
+
 	public String getProductName(InstallerData model) {
 		String productName= model.getProductName();
 		if(productName==null || productName.isEmpty()) {
@@ -1641,7 +1651,7 @@ public class InstallerDataHandler {
 		int count = 1;
 		for( File file: files ) {
 			try {
-				log.infof("%s.loadArtifactAsTags: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
+				log.infof("%s.loadArtifactAsScanClass: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
 				count = count + TAG_CHUNK_SIZE;
 				tagUtil.importGroupsFromFile(file,projectName);
 			}
@@ -1650,7 +1660,7 @@ public class InstallerDataHandler {
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
-				log.warn("InstallerDataHandler.loadArtifactAsTags: "+file.getAbsolutePath()+" EXCEPTION",ex);
+				log.warn("InstallerDataHandler.loadArtifactAsScanClass: "+file.getAbsolutePath()+" EXCEPTION",ex);
 			}
 		}
 
@@ -1697,27 +1707,7 @@ public class InstallerDataHandler {
 		}
 		model.setSiteEntries(entries);
 	}
-	public String loadArtifactAsTags(int panelIndex,String providerName,String artifactName,InstallerData model) {
-		String result = null;
-		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
-		int count = 1;
-		for( File file: files ) {
-			try {
-				log.infof("%s.loadArtifactAsTags: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
-				count = count + TAG_CHUNK_SIZE;
-				tagUtil.importTagsFromFile(file,providerName);
-			}
-			catch( SAXException saxe) {
-				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
-			}
-			catch( Exception ex) {
-				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
-				log.warn("InstallerDataHandler.loadArtifactAsTags: "+file.getAbsolutePath()+" EXCEPTION",ex);
-			}
-		}
 
-		return result;
-	}
 	/*
 	 * UNUSED: TransactionGroups are project resources, not independent ones.
 	 */

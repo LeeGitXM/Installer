@@ -17,6 +17,7 @@ import com.ils.ai.gateway.ApplicationInstallerGatewayHook;
 import com.ils.ai.gateway.InstallerConstants;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
+import com.ils.ai.gateway.model.PersistenceHandler;
 import com.ils.ai.gateway.model.PropertyItem;
 import com.ils.common.persistence.ToolkitProperties;
 import com.ils.common.persistence.ToolkitRecordHandler;

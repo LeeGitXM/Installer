@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">70</property>
+	<property name="version">71</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -32,7 +32,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="33">
+	<panel type="file" essential="true" version="34">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -60,8 +60,8 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="base" >[default]_types_</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
+		<artifact name="UDT Definitions" type="tag" subtype="json">
+			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -160,6 +160,7 @@
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
+	<!--
 	<panel type="module" subtype="production" essential="true" version="2" >
 		<title>Update Custom Modules</title>
 		<preamble>This step updates the ILS custom modules necessary for BatchExpert+
@@ -170,7 +171,8 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="35">
+	-->
+	<panel type="project" subtype="main" essential="true" version="36">
 		<title>Install the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
@@ -210,6 +212,7 @@
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Site Project">The site-specific project currently inherits from a prior version of the Master. Update it to refer to the newly installed Master.</note>
+		<note name="Tag Groups">At this time tag groups are not handled by the installer. They must be imported manually from tag-groups.json. Find this file in the same location as you found the installer.</note>
 		<note name="Gateway Restart">The tags have active components. A Gateway restart is required to accommodate the changes.</note>
 	</epilog>
 </installer>

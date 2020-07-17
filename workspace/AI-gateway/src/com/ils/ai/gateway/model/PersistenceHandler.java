@@ -68,47 +68,6 @@ public class PersistenceHandler {
 	}
 	
 	/**
-	 * Create an alarm journal entry with the given name, but only if it does not already exist.
-	 * Create a private session and run in its own thread.
-	 * @param name
-	 */
-	public void addNamedAlarmJournal(String name) {
-		PersistenceSession session = null;
-		String SQL = "";
-		try {
-			session = context.getLocalPersistenceInterface().getSession();
-			Connection cxn = session.getJdbcConnection();
-			SQL = "SELECT COUNT(*) FROM AlarmJournalSettings WHERE Name = ?" ;
-			PreparedStatement statement = cxn.prepareStatement(SQL);
-			statement.setString(1, name);
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			int rows = rs.getInt(1);   // 1-based
-			rs.close();
-			statement.close();
-
-			if(rows==0) {
-				long id = getDatasourceId(cxn);
-				long rowid = getMaxRowId("AlarmJournalSettings","AlarmJournalSettings_Id",cxn) + 1;
-				SQL = "INSERT INTO AlarmJournalSettings(AlarmJournalSettings_Id,Name,DatasourceId) VALUES(?,?,?)" ;
-				statement = cxn.prepareStatement(SQL);
-				statement.setLong(1,rowid);
-				statement.setString(2,name);
-				statement.setLong(3,id);
-				statement.executeUpdate();
-				statement.close();
-			}
-		}
-		catch(SQLException sqle) {
-			log.warn("\n"+SQL+"\n");
-			log.warn(String.format("%s.addNamedAlarmJournal: Exception (%s)",CLSS,sqle.getMessage()),sqle);
-		}
-		finally {
-			if(session!=null) session.close();
-		}
-
-	}
-	/**
 	 * Create an alarm notification profile entry with the given name, but only if it does not already exist.
 	 * @param name
 	 */
@@ -394,12 +353,12 @@ public class PersistenceHandler {
 	public void setDefaultDatasourceForProject() {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
 		String datasource = toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
-		internalDatabaseHandler.setProjectDatasource(datasource);
+		if( datasource!=null ) internalDatabaseHandler.setProjectDatasource(datasource);
 	}
 	public void setDefaultDatasourceForProvider() {
 		ToolkitRecordHandler toolkitHandler = new ToolkitRecordHandler(context);
 		String datasource = toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE);
-		internalDatabaseHandler.setProviderDatasource(datasource);
+		if( datasource!=null ) internalDatabaseHandler.setProviderDatasource(datasource);
 	}
 	
 	/**

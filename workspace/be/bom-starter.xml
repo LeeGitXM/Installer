@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">69</property>
+	<property name="version">71</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -44,17 +44,17 @@
 	<panel type="tag" subtype="production" essential="true" version="11">
 		<title>Install UDT Definitions</title>
 		<preamble>This page defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
+		          These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="base" >[default]_types_</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
+		<artifact name="UDT Definitions" type="tag" subtype="json">
+			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel>
 	<!-- Python files are copied into the Ignition user-lib/pylib area.
 	     Jar files are copied into lib -->
-	<panel type="file" essential="true" version="33">
+	<panel type="file" essential="true" version="34">
 		<title>Python Extensions for the Batch Expert+</title>
 		<preamble>This page loads custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -71,7 +71,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="11">
+	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
 		         are important in your installation.
@@ -79,11 +79,19 @@
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
 		<property name="base" >[default]</property>
-		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/configurationTags.xml</location>
+		<artifact name="Configuration Tags" type="tag" subtype="json">
+			<location>artifacts/tags/configurationTags.json</location>
 		</artifact>
-		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/udts_new.xml</location>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="12">
+		<title>Folders for Site Tags</title>
+		<preamble>This page creates the default folders for site-specific UDTs
+		</preamble>
+		<property name="provider" type="production">default</property>
+		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]_types_</property>
+		<artifact name="Default Folders for Site UDTs" type="tag" subtype="json">
+			<location>artifacts/tags/udts_new.json</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -213,6 +221,7 @@
 		</artifact>
 	</panel>
 	-->
+	<!--  
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
@@ -223,6 +232,7 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
+	-->
 	<panel type="project" subtype="main" essential="true" version="32">
 		<title>Install the BatchExpert+ Master Project</title>
 		<preamble>The BatchExpert+ &quot;Master&quot; project contains standard
@@ -232,7 +242,7 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="Master" type="project">
+		<artifact name="BatchExpertMaster@RELEASE@" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
 		</artifact>
@@ -246,7 +256,7 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="Site" type="project">
+		<artifact name="BatchExpertSite@RELEASE@" type="project">
 			<location>artifacts/projects/BatchExpertStarter.zip</location>
 			<comment>Install site-specific project template it into the
 			         project which was just installed in the step above.</comment>
@@ -261,24 +271,26 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
+	<!--
 	<panel type="toolkit" essential="true" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set properties in the internal database of the Gateway.
 			In particular, named &quot;Batch Expert&quot; entries are made for alarm journals,
 			alarm pipelines and smtp mail servers. The user is given gateway edit privileges.
 		</preamble>
-		<!--  The property types are critical. If not specified correctly, the properties will simply become
+		-  The property types are critical. If not specified correctly, the properties will simply become
 		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
-		      The SMTP Profile must precede the alarm profile.  -->
+		      The SMTP Profile must precede the alarm profile.  -
 		<property type="smtpprofile">Batch Expert</property>
 		<property type="alarmjournal">Batch_Expert</property>
 		<property type="alarmprofile">Batch Expert</property>
 		<property type="allowuseradmin">True</property>
 		<property type="oncallroster">Batch Expert</property>
-		<!--  Values for these properties are taken from the definition page -->
+		-  Values for these properties are taken from the definition page -
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
+	-->
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>In addition to the release notes, documentation includes a getting started guide.
@@ -304,7 +316,8 @@
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
 		<note name="Master Project">Make sure that the new Master project is "heritable"</note>
-		<note name="Starter Project">Give the starter project with a customer-appropriate name. Make the "Master" project its parent.</note>
+		<note name="Site Project">Give the site project with a customer-appropriate name. Make the "Master" project its parent.</note>
+		<note name="Tag Groups">At this time tag groups are not handled by the installer. They must be imported manually from tag-groups.json, found in the same directory as the installer.</note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>
 </installer>

@@ -89,8 +89,8 @@
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.json" tofile="${artifact.dir}/tags/configurationTags.json" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
@@ -133,7 +133,7 @@
 
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/taggroups" />
-		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
+		<copy file="${git.repo}/batch-expert/tags/tag-groups.json" tofile="${artifact.dir}/taggroups/tag-groups.json" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
@@ -169,7 +169,7 @@
 		<echo message="Copying ${module.name} to Google Drive ..." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
 		<copy file="${git.repo}/batch-expert/release/README.txt" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/README.txt" />
-		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/taggroups.json" />
+		<copy file="${git.repo}/batch-expert/tags/tag-groups.json" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/tag-groups.json" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/BatchExpertMaster.zip" />
 		<copy file="${git.repo}/batch-expert/tags/VisionClientTags.zip" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/VisionClientTags.zip" />
 	</target>

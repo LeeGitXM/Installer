@@ -88,9 +88,9 @@
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
-		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		<copy file="${git.repo}/batch-expert/tags/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<copy file="${git.repo}/batch-expert/tags/udts_new.json" tofile="${artifact.dir}/tags/udts_new.json" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.json" tofile="${artifact.dir}/tags/configurationTags.json" />
 		<copy file="${git.repo}/batch-expert/tags/site_simulation_udts.xml" tofile="${artifact.dir}/tags/simulation_udts.xml" />
 
 		<!-- External -->
@@ -135,7 +135,7 @@
 
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/taggroups" />
-		<copy file="${git.repo}/batch-expert/tags/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
+		<copy file="${git.repo}/batch-expert/tags/tag-groups.json" tofile="${artifact.dir}/taggroups/tag-groups.json" />
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />

@@ -57,36 +57,35 @@ public class TagStep extends BasicInstallerPanel {
 			public void onSubmit() {
 				InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
             	List<String> names = dataHandler.getArtifactNames(index, data);
-	
+
             	StringBuilder success = new StringBuilder("");
             	StringBuilder failure = new StringBuilder("");
-            	
-            	
+
+
             	for(String artifactName:names) {
             		String result = null;
-            		List<File> files = dataHandler.getArtifactAsListOfTagFiles(panelIndex, artifactName, data);
+            		File file = dataHandler.getArtifactAsTemporaryFile(panelIndex, artifactName, data);
             		long count = 0;
             		statusString = String.format("installed ~ %d tags",count);
-            		
-            		for( File file:files ) {
-            			try {
-            				dataHandler.tagUtil.importTagsFromFile(file,base);
-            				count = getTagCount(file.toPath());
-            				statusString = String.format("~ %d tags",count);
-            				
-            				//System.out.println("TagStep: processing status = "+statusString);
-            				
-            				setResponsePage(getPage());    // Supposedly this causes a page refresh()
-            				Thread.yield();
-            			}
-            			catch( SAXException saxe) {
-            				result = String.format( "Error with %s file format after ~%d tags (%s)", artifactName,count,saxe.getLocalizedMessage());
-            			}
-            			catch( Exception ex) {
-            				result = String.format( "Failed to install %s after ~%d tags - see wrapper.log for details", artifactName,count);
-            				statusString = String.format("EXCEPTION: file %s (%s)",file.getAbsolutePath(),ex.getMessage());
-            			}
+
+            		try {
+            			dataHandler.tagUtil.importTagsFromFile(file,base);
+            			count = getTagCount(file.toPath());
+            			statusString = String.format("~ %d tags",count);
+
+            			//System.out.println("TagStep: processing status = "+statusString);
+
+            			setResponsePage(getPage());    // Supposedly this causes a page refresh()
+            			Thread.yield();
             		}
+            		catch( SAXException saxe) {
+            			result = String.format( "Error with %s file format after ~%d tags (%s)", artifactName,count,saxe.getLocalizedMessage());
+            		}
+            		catch( Exception ex) {
+            			result = String.format( "Failed to install %s after ~%d tags - see wrapper.log for details", artifactName,count);
+            			statusString = String.format("EXCEPTION: file %s (%s)",file.getAbsolutePath(),ex.getMessage());
+            		}
+            	
             		if( result==null ) {
             			if(success.length()>0) success.append(", ");
             			success.append(String.format("%s(%s)", artifactName,statusString));
@@ -95,21 +94,24 @@ public class TagStep extends BasicInstallerPanel {
             			if(failure.length()>0) failure.append(", ");
             			failure.append(String.format("%s(%s)", artifactName,result));
             		}
+
+            		if(failure.length()==0 ) {
+            			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
+            			panelData.setCurrentVersion(futureVersion);
+            			info(success.insert(0,"Successfully loaded tags: ").toString());
+            		}
+            		else {
+            			error(failure.insert(0,"Failed to load: ").toString());
+            		}
+            
             	}
-            	if(failure.length()==0 ) {
-            		PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
-            		panelData.setCurrentVersion(futureVersion);
-            		info(success.insert(0,"Successfully loaded tags: ").toString());
-            	}
-            	else {
-            		error(failure.insert(0,"Failed to load: ").toString());
-            	}
-            }
+			}
         });
     }
 	
 	/**
-	 * Analyze the XML file counting <tag> elements.
+	 * Analyze the  file counting <tag> elements for .xml
+	 * or "tagType" for .json.
 	 * @param path
 	 * @return the tag count
 	 */
@@ -117,7 +119,10 @@ public class TagStep extends BasicInstallerPanel {
 		long count = 0;
 		try {
 			Stream<String> lines = Files.lines(path);
-			count = lines.filter(line->line.indexOf("</Tag>")>0).count();
+			count = lines.filter(line->line.indexOf("tagType")>0).count();
+			if( count==0 ) {
+				count = lines.filter(line->line.indexOf("</Tag>")>0).count();
+			}
 			lines.close();
 		}
 		catch(IOException ioe) {

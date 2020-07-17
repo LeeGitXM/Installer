@@ -46,10 +46,7 @@ public class ToolkitStep extends BasicInstallerPanel {
             	for(PropertyItem prop:properties) {
             		String type = prop.getType();
             		String value = prop.getValue();
-            		if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_JOURNAL)) {
-            			dbHandler.addNamedAlarmJournal(value);
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_PROFILE)) {
+            		if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_PROFILE)) {
             			dbHandler.addNamedAlarmProfile(value);
             		}
             		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALLOW_USER_ADMIN)) {
