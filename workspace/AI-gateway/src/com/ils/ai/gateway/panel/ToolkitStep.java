@@ -46,23 +46,8 @@ public class ToolkitStep extends BasicInstallerPanel {
             	for(PropertyItem prop:properties) {
             		String type = prop.getType();
             		String value = prop.getValue();
-            		if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALARM_PROFILE)) {
-            			dbHandler.addNamedAlarmProfile(value);
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALLOW_USER_ADMIN)) {
+            		if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ALLOW_USER_ADMIN)) {
             			dbHandler.setAllowUserAdmin(value);
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ONCALL_ROSTER)) {
-            			dbHandler.addNamedAlarmCallRoster(value);
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_SMTP_PROFILE)) {
-            			dbHandler.addNamedSMTPProfile(value);
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PROJECT_DEFAULT_DATASOURCE)) {
-            			dbHandler.setDefaultDatasourceForProject();
-            		}
-            		else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PROVIDER_DEFAULT_DATASOURCE)) {
-            			dbHandler.setDefaultDatasourceForProvider();
             		}
             		else {
             			toolkitHandler.setToolkitProperty(prop.getName(),value);

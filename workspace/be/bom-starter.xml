@@ -209,22 +209,19 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<!--
 	<panel type="scanclass" essential="true" version="2">
 		<title>Create alternative Tag Groups</title>
 		<preamble>Create tag groups referenced by application tags. 
 				Tag groups determine tag poll rates.
 		</preamble>
-		<property name="provider">default</property>
+		<property name="project">BatchExpertMaster@RELEASE@</property>
 		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
-			<location>artifacts/taggroups/taggroups.json</location>
+			<location>artifacts/taggroups/tag-groups.json</location>
 		</artifact>
 	</panel>
-	-->
-	<!--  
 	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs the ILS custom modules necessary for BatchExpert+
+		<title>Install PySFC Module</title>
+		<preamble>This step installs the ILS custom module necessary for BatchExpert+
 		          installations that include the SFC feature.
 		</preamble>
 		<property name="SFC" type="feature">TRUE</property>
@@ -232,7 +229,25 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	-->
+	<panel type="module" subtype="production" essential="true" version="1" >
+		<title>Install PySFC Module</title>
+		<preamble>This step installs the ILS custom module necessary for BatchExpert+
+		          installations that include the SFC feature.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="production" essential="true" version="1" >
+		<title>Install PySFC project</title>
+		<preamble>This step installs the PySFC project used to hold all PySFC instances.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Python SFC" type="project">
+			<location>artifacts/projects/PySFC.zip</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="main" essential="true" version="32">
 		<title>Install the BatchExpert+ Master Project</title>
 		<preamble>The BatchExpert+ &quot;Master&quot; project contains standard
@@ -271,7 +286,6 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
-	<!--
 	<panel type="toolkit" essential="true" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set properties in the internal database of the Gateway.
@@ -281,16 +295,11 @@
 		-  The property types are critical. If not specified correctly, the properties will simply become
 		      entries in the ILS_TOOLKIT_PROPERTIES table. See com.ils.ai.gateway.InstallerConstants for options. 
 		      The SMTP Profile must precede the alarm profile.  -
-		<property type="smtpprofile">Batch Expert</property>
-		<property type="alarmjournal">Batch_Expert</property>
-		<property type="alarmprofile">Batch Expert</property>
 		<property type="allowuseradmin">True</property>
-		<property type="oncallroster">Batch Expert</property>
 		-  Values for these properties are taken from the definition page -
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
-	-->
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>In addition to the release notes, documentation includes a getting started guide.

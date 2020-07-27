@@ -160,10 +160,19 @@
 			<comment>Update table structures for the latest version of Batch Expert. No action is taken if the schema is current.</comment>
 		</artifact>
 	</panel>
-	<!--
+	<panel type="scanclass" essential="true" version="2">
+		<title>Create alternative Tag Groups</title>
+		<preamble>Create tag groups referenced by application tags. 
+				Tag groups determine tag poll rates.
+		</preamble>
+		<property name="project">BatchExpertMaster@RELEASE@</property>
+		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
+			<location>artifacts/taggroups/tag-groups.json</location>
+		</artifact>
+	</panel>
 	<panel type="module" subtype="production" essential="true" version="2" >
-		<title>Update Custom Modules</title>
-		<preamble>This step updates the ILS custom modules necessary for BatchExpert+
+		<title>Update PySFC Module</title>
+		<preamble>This step installed the ILS custom modules necessary for BatchExpert+
 		          installations that include the SFC feature.
 		</preamble>
 		<property name="SFC" type="feature">TRUE</property>
@@ -171,7 +180,18 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
-	-->
+	<panel type="project" subtype="production" essential="true" version="1" >
+		<title>Install PySFC project</title>
+		<preamble>This step installs the PySFC project used to hold all PySFC instances.
+					WARNING: Install this project only if the PySFC module was just installed
+					for the first time into Ignition 8. If there is an existing PySFC project
+					this step will perform a harmless merge.
+		</preamble>
+		<property name="SFC" type="feature">TRUE</property>
+		<artifact name="Python SFC" type="project">
+			<location>artifacts/projects/PySFC.zip</location>
+		</artifact>
+	</panel>
 	<panel type="project" subtype="main" essential="true" version="36">
 		<title>Install the BatchExpert+ Master Project
 		</title>

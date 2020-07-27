@@ -51,7 +51,7 @@ public class ScanClassStep extends BasicInstallerPanel {
             	List<String> names = dataHandler.getArtifactNames(index, data);
             	
             	for(String name:names) {
-            		String result = dataHandler.loadArtifactAsScanClass(index,project,name,data);
+            		String result = dataHandler.loadArtifactAsTagGroup(index,project,name,data);
             		if( result==null ) {
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             			panelData.setCurrentVersion(futureVersion);

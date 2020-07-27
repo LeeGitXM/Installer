@@ -150,6 +150,7 @@
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.zip" tofile="${artifact.dir}/projects/BatchExpertStarter.zip" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
+		<copy file="${git.repo}/py-sfc/projects/PySFC.zip" tofile="${artifact.dir}/projects/PySFC.zip" />
 		
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />

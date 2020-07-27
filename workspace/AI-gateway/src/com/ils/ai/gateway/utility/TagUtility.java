@@ -41,16 +41,6 @@ public class TagUtility{
         log.info(String.format("%s.importTagsFromFile:%s %s to %s" , CLSS,code,file.toPath().toString(),base));
         context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
 	} 
-	/*
-	public void importTagsFromFile(File file,String base) throws Exception {
-		pyLocals.__setitem__("path", new PyString(file.toPath().toString()));
-        pyLocals.__setitem__("base", new PyString(base));
-        pyLocals.__setitem__("mode", new PyString("o"));   // Overwrite
-        String code = "system.tag.importTags(path, base, mode)";
-        log.info(String.format("%s.importTagsFromFile:%s %s to %s" , CLSS,code,file.toPath().toString(),base));
-        context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
-	}
-*/
 	// Import tag groups (scan classes). These are project-specific.
 	public void importGroupsFromFile(File file,String project) throws Exception {
 		pyLocals.__setitem__("filePath", new PyString(file.toPath().toString()));

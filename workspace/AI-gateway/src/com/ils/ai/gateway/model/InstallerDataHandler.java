@@ -1645,13 +1645,13 @@ public class InstallerDataHandler {
 		return result;
 	}
 	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
-	public String loadArtifactAsScanClass(int panelIndex,String projectName,String artifactName,InstallerData model) {
+	public String loadArtifactAsTagGroup(int panelIndex,String projectName,String artifactName,InstallerData model) {
 		String result = null;
 		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
 		int count = 1;
 		for( File file: files ) {
 			try {
-				log.infof("%s.loadArtifactAsScanClass: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
+				log.infof("%s.loadArtifactAsTagGroup: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
 				count = count + TAG_CHUNK_SIZE;
 				tagUtil.importGroupsFromFile(file,projectName);
 			}
@@ -1660,7 +1660,7 @@ public class InstallerDataHandler {
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
-				log.warn("InstallerDataHandler.loadArtifactAsScanClass: "+file.getAbsolutePath()+" EXCEPTION",ex);
+				log.warn("InstallerDataHandler.loadArtifactAsTagGroup: "+file.getAbsolutePath()+" EXCEPTION",ex);
 			}
 		}
 
@@ -1821,7 +1821,7 @@ public class InstallerDataHandler {
 		return providerName;
 	}
 	/**
-	 * Inspect the properties for the specified panel looking for a "provider" property. If the property
+	 * Inspect the properties for the specified panel looking for a "project" property. If the property
 	 * has no value, return the name specified as a toolkit property.
 	 * @return
 	 */
@@ -1830,7 +1830,7 @@ public class InstallerDataHandler {
         // If the production provider property has a value, use it. Otherwise get the toolkit property
 		List<PropertyItem> properties = getPanelProperties(index, model);
 		for(PropertyItem prop:properties) {
-    		if(prop.getName().equalsIgnoreCase("property")) {
+    		if(prop.getName().equalsIgnoreCase("project")) {
     			projectName = prop.getValue();
     		}
     	}
