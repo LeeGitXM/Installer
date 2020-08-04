@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">71</property>
+	<property name="version">72</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -32,7 +32,7 @@
 		</artifact>
 	</panel>
 	<!--  -->
-	<panel type="file" essential="true" version="34">
+	<panel type="file" essential="true" version="35">
 		<title>Python Extensions for Batch Expert+</title>
 		<preamble>This page loads the custom Python modules that support Batch Expert+. 
 		</preamble>
@@ -53,7 +53,7 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="11">
+	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Install UDT Definitions</title>
 		<preamble>This page defines UDTs for common  controllers.
 		           These definitions are written to the default tag provider.
@@ -192,7 +192,7 @@
 			<location>artifacts/projects/PySFC.zip</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="36">
+	<panel type="project" subtype="main" essential="true" version="37">
 		<title>Install the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
