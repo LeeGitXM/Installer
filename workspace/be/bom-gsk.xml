@@ -10,7 +10,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">64</property>
+	<property name="version">65</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -53,7 +53,6 @@
 			<location>artifacts/tags/udts_new.xml</location>
 		</artifact>
 	</panel>
-	<!-- 
 	<panel type="scanclass" essential="false" version="3">
 		<title>Create alternative Scan Classes</title>
 		<preamble>Create scanclasses referenced by application tags. 
@@ -64,7 +63,6 @@
 			<location>artifacts/scanclass/scanclasses.csv</location>
 		</artifact>
 	</panel>
-	 -->
 	<panel type="definition" essential="true">
 		<title>Define the Database Connection</title>
 		<preamble>Specify the database connection and DBMS-type that 
@@ -195,8 +193,8 @@
 		          The definitions are written to the &quot;default&quot; tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
+		<artifact name="UDT Definitions" type="tag" subtype="json">
+			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="11">
@@ -206,8 +204,8 @@
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="base" >[default]_types_</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
+		<artifact name="UDT Definitions" type="tag" subtype="json">
+			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel>
 	<panel type="tag" subtype="production" essential="true" version="11">
@@ -218,8 +216,8 @@
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
 		<property name="base" >[default]</property>
-		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/configurationTags.xml</location>
+		<artifact name="Configuration Tags" type="tag" subtype="json">
+			<location>artifacts/tags/configurationTags.json</location>
 		</artifact>
 		<artifact name="Default folders for Site Tags" type="tag" subtype="xml">
 			<location>artifacts/tags/udts_new.xml</location>
@@ -234,8 +232,18 @@
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
 		<property name="base" >[default]_types_/Site</property>
-		<artifact name="GSK Unit Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/frg_tags.json</location>
+		<artifact name="GSK Unit Tags" type="tag" subtype="json">
+			<location>artifacts/tags/gsk_tags.json</location>
+		</artifact>
+	</panel>
+	<panel type="scanclass" essential="true" version="2">
+		<title>Create Tag Groups</title>
+		<preamble>Create tag groups referenced by application tags. 
+				Tag groups determine tag poll rates.
+		</preamble>
+		<property name="project">BatchExpertMaster@RELEASE@</property>
+		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
+			<location>artifacts/taggroups/tag-groups.json</location>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="32">

@@ -11,7 +11,7 @@
 	<property name="module.name" value="gsk-3-0-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
-	<property name="sandbox" value="${git.repo}/batch-expert/updates/GSKSandbox" />
+	<property name="sandbox" value="${git.repo}/batch-expert/updates/GSKMDSandbox" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
 
 	<!-- Add the postmodule task. This task can deploy a module to a local Ignition gateway. -->
@@ -122,26 +122,28 @@
 		<!-- Tags - including test tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${git.repo}/batch-expert/tags/VisionClientTags.zip" tofile="${artifact.dir}/tags/client.zip" />
-		<copy file="${sandbox}/DefaultTags.json" tofile="${artifact.dir}/tags/gsk_tags.json" />
-		<copy file="${git.repo}/batch-expert/tags/udts.xml" tofile="${artifact.dir}/tags/udts.xml" />
-		<copy file="${git.repo}/batch-expert/tags/udts_new.xml" tofile="${artifact.dir}/tags/udts_new.xml" />
-		<copy file="${git.repo}/batch-expert/tags/configurationTags.xml" tofile="${artifact.dir}/tags/configurationTags.xml" />
+		<copy file="${sandbox}/tags.json" tofile="${artifact.dir}/tags/gsk_tags.json" />
+		<copy file="${git.repo}/batch-expert/tags/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<copy file="${git.repo}/batch-expert/tags/udts_new.json" tofile="${artifact.dir}/tags/udts_new.json" />
+		<copy file="${git.repo}/batch-expert/tags/configurationTags.json" tofile="${artifact.dir}/tags/configurationTags.json" />
 		
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-j7-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
 		
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database/mysql" />
-		<copy file="${sandbox}/BE2.5-MYSQL_Inserts.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
+		<copy file="${sandbox}/BE2.5_MYSQL_Inserts.sql" tofile="${artifact.dir}/database/mysql/populate.sql" />
 		
 		<!-- Project  		-->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${sandbox}/BatchExpertGSKMD30.zip" tofile="${artifact.dir}/projects/BatchExpertGSK.zip" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
 		<copy file="${git.repo}/batch-expert/projects/BatchExpertAlarmGlobal.proj" tofile="${artifact.dir}/projects/BatchExpertGlobal.proj" />
-		<copy file="${sandbox}/GSK_Global.proj" tofile="${artifact.dir}/projects/BatchExpertSFCGlobal.proj" />
 
+		<!-- Scanclass -->
+		<mkdir dir="${artifact.dir}/taggroups" />
+		<copy file="${git.repo}/batch-expert/tags/tag-groups.json" tofile="${artifact.dir}/taggroups/tag-groups.json" />
+			
 		<!-- Update release and build date in version python file -->
 		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
