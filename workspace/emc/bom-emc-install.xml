@@ -155,7 +155,7 @@
 	
 	<panel type="module" subtype="production" essential="true" version="010100" >
 		<title>Install Custom SFC Module</title>
-		<preamble>This step installs The ILS-SFC module necessary for the EMC applications.
+		<preamble>This step installs the ILS-SFC module necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed these modules on your system, 
 		they will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
 		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of each module.
@@ -235,9 +235,21 @@
 		</artifact>
 	</panel>
 	
+	<panel type="module" subtype="production" essential="true" version="7" >
+		<title>Test Framework Module</title>
+		<preamble>This step installs the test framework module.
+			The test framework is optional and should not be used on a production system.
+			When used on a hybrid Production / Development system then great caution
+			must be used to insure that test data does not leak to the production system.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
-		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
+		<preamble>The list below contains both user-level and design documents. You may download them individually, as needed.
 		</preamble>
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -254,12 +266,6 @@
 		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
 			<location>artifacts/doc/EMCDatabaseER.pdf</location>
 		</artifact>
-		<artifact name="Diagnostic Toolkit User Guide (docx)" type="documentation" subtype="docx" release="1.0">
-			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.docx</location>
-		</artifact>
-		<artifact name="Diagnostic Toolkit User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
-			<location>artifacts/doc/Diagnostic_Toolkit_Users_Guide.pdf</location>
-		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="docx" release="1.7">
 			<location>artifacts/doc/IODesignSpecification.docx</location>
 		</artifact>
@@ -274,6 +280,18 @@
 		</artifact>
 		<artifact name="Sequential Control User's Guide" type="documentation" subtype="pdf" release="1.2">
 			<location>artifacts/doc/ILSSFCUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Symbolic Ai User Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Users_Guide.docx</location>
+		</artifact>
+		<artifact name="Symbolic Ai User Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Users_Guide.pdf</location>
+		</artifact>
+		<artifact name="Symbolic Ai Design Guide (docx)" type="documentation" subtype="docx" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Design_Guide.docx</location>
+		</artifact>
+		<artifact name="Symbolic Ai Design Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Design_Guide.pdf</location>
 		</artifact>
 	</panel>
 	
@@ -314,18 +332,6 @@
 		<property name="SecondaryTimeFactor">1.0</property>
 	</panel>
 	
-	<panel type="module" subtype="production" essential="true" version="7" >
-		<title>Test Framework Module</title>
-		<preamble>This step installs the test framework module.
-			The test framework is optional and should not be used on a production system.
-			When used on a hybrid Production / Development system then great caution
-			must be used to insure that test data does not leak to the production system.
-		</preamble>
-		<artifact name="Testing Framework" type="module">
-			<location>artifacts/modules/TF-module-signed.modl</location>
-		</artifact>
-	</panel>
-	
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
@@ -334,6 +340,7 @@
 			the Gateway internal database.
 		</preamble>
 	</panel>
+	
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
 		<title>Ignition Applications - Installed</title>

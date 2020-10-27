@@ -87,10 +87,17 @@
 		-->
 		<mkdir dir="${artifact.dir}/doc" />
 		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Diagnostic Toolkit User's Guide.docx" tofile="${artifact.dir}/doc/Diagnostic_Toolkit_Users_Guide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Diagnostic Toolkit User's Guide.pdf"  tofile="${artifact.dir}/doc/Diagnostic_Toolkit_Users_Guide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.docx"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"             tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx"                                                     tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf"                                                          tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.docx"       tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.docx"       tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
+		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf"                                   tofile="${artifact.dir}/doc/LabDataUsersGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf"                      tofile="${artifact.dir}/doc/RecipeToolkitUsersGuide.pdf" />		
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.docx"           tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
@@ -134,13 +141,14 @@
 
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
-		<!-- <copy file="${git.repo}/sfc/SFC-module.modl" tofile="${artifact.dir}/modules/SFC-module.modl" />  -->
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
+		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM.proj" tofile="${artifact.dir}/projects/XOM.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/XOM_Update.proj" tofile="${artifact.dir}/projects/XOM_Update.proj" />
+		<copy file="${svn.repo}/EMChemicals/Ignition/DBManager.proj" tofile="${artifact.dir}/projects/DbManager.proj" />
 		
 		<!-- Global Projects (SFCs and Alarm Pipelines) -->
 		<mkdir dir="${artifact.dir}/globals" />

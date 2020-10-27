@@ -100,10 +100,15 @@
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DB Manager User's Guide.pdf"                          tofile="${artifact.dir}/doc/DBManagerUsersGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Database/Database Design.docx"                                                     tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
 		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf"                                                          tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.docx"       tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.docx"       tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.docx" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf"                                   tofile="${artifact.dir}/doc/LabDataUsersGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf"                      tofile="${artifact.dir}/doc/RecipeToolkitUsersGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
+		
 		
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
