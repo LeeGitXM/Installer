@@ -13,6 +13,7 @@
 	<property name="version">19</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
+	
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for AED-RTA</title>
 		<preamble>Welcome to the ILS Automation installer for the Abnormal Event Detection and 
@@ -22,6 +23,7 @@
 			defined tag providers and database connections.
 		</preamble>
 	</panel>
+	
 	<panel type="license" essential="true" version="1">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
@@ -34,6 +36,7 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
+	
 	<panel type="definition" essential="true">
 		<title>Define Tag and Database Providers</title>
 		<preamble>Specify the tag provider and database connection to be used by AED-RTA. 
@@ -42,6 +45,7 @@
 		<property name="database" type="production"></property>
 		<property name="provider" type="production"></property>
 	</panel>	
+	
 	<panel type="icon" essential="true" version="1">
 		<title>Custom Icons for AED-RTA</title>
 		<preamble>Custom icons may be found in many of the user screens. </preamble>
@@ -49,6 +53,7 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
+		
 		<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
 	<panel type="file" essential="true" version="20">
@@ -76,6 +81,7 @@
 			<destination>properties/aed</destination>
 		</artifact>
 	</panel>
+	
 	<panel type="database" essential="true" version="15">
 		<title>Database Create and Alter Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
@@ -97,36 +103,7 @@
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
 	</panel>
- 
-	<panel type="database" essential="false" version="7">
-		<title>Sample Test Data</title>
-		<preamble>These options should NOT be applied to a production database. These are for test systems only.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="ANSI"></property>
-		<property name="debug">false</property>
-		<!-- Recognized subtypes are: clear, create, alter, insert -->
-		<artifact name="Insert test data" type="sql" subtype="insert">
-			<location>artifacts/database/insertAED.sql</location>
-		</artifact>
-	</panel>
-	<panel type="file" essential="false" version="4">
-		<title>Test Models</title>
-		<preamble>This step adds importable XML files to the user's home directory (C: drive for a Windows  system).   
-		          The files contains sample Models of each type and appropriate input files for a data pump. 
-		          An additional file contains tag definitions for the test environment.
-		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.   
-		</preamble>
-		<!-- paths are with respect to the file system root -->
-		<artifact name="Model and Tag Import Files" type="text">
-			<location>artifacts/test/models</location>
-			<destination type="home">.</destination>
-		</artifact>
-		<artifact name="PCA/SLED Input Files" type="text">
-			<location>artifacts/test/inputs</location>
-			<destination type="home">.</destination>
-		</artifact>
-	</panel>
+	
 	<panel type="module" subtype="production" essential="true" version="16" >
 		<title>Install Custom Modules</title>
 		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
@@ -135,7 +112,8 @@
 			<location>artifacts/modules/AED-module-signed.modl</location>
 		</artifact>
 	</panel>
-		<panel type="scanclass" essential="true" version="1">
+	
+	<panel type="scanclass" essential="true" version="1">
 		<title>Create Custom Scan Classes</title>
 		<preamble>Create appropriate scanclasses. 
 				Scanclasses determine tag poll rates.
@@ -145,6 +123,7 @@
 			<location>artifacts/scanclasses/scanclasses.csv</location>
 		</artifact>
 	</panel>
+	
 	<panel type="tag" subtype="production" essential="True" version="2">
 		<title>Install Tags and UDT Definitions</title>
 		<preamble>This page defines UDTs and tags that are needed by the applications
@@ -155,16 +134,7 @@
 			<location>artifacts/tags/UDTs.xml</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="False" version="2">
-		<title>Install Tags for Test Models</title>
-		<preamble>This page defines tags that are referenced by the test models.
-		          These should &lt;b&gt;NOT&lt;/b&gt; be installed on a production system.
-		</preamble>
-		<property name="provider" type="production"></property>
-		<artifact name="Memory Tags to Overwrite OPC" type="tag" subtype="xml">
-			<location>artifacts/test/tags/memoryTags.xml</location>
-		</artifact>
-	</panel>
+	
 	<panel type="project" subtype="main" essential="true" version="16">
 		<title>Install a New AED Project or Merge Changes into an Existing
 			Project
@@ -179,6 +149,7 @@
 			<location>artifacts/projects/AED.proj</location>
 		</artifact>
 	</panel>
+	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
@@ -235,6 +206,7 @@
 			<location>artifacts/doc/VFMUserInterface.docx</location>
 		</artifact>
 	</panel>
+	
 	<!-- The conclusion panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
@@ -243,6 +215,7 @@
 			the Gateway internal database.
 		</preamble>
 	</panel>
+	
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
 		<title>AED-RTA - Installed</title>
@@ -256,4 +229,3 @@
 					into the gateway using the Designer.</note>
 	</epilog>
 </installer>
-
