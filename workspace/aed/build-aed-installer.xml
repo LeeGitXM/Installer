@@ -151,11 +151,11 @@
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/aed/workspace/AED_Build/modules/AED-module-signed.modl" tofile="${artifact.dir}/modules/AED-module-signed.modl" />
+		<copy file="${git.repo}/ils-common/CommonModule_Build/modules/CommonModule-module-signed.modl" tofile="${artifact.dir}/modules/CommonModule-module-signed.modl" />
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
 		<copy file="${svn.repo}/EMRE/Ignition/AED.proj" tofile="${artifact.dir}/projects/AED.proj" />
-
 
 		<!-- Properties -->
 		<mkdir dir="${artifact.dir}/properties" />
@@ -166,6 +166,11 @@
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
 		
+		<!-- logbackfiles -->
+		<mkdir dir="${artifact.dir}/logback" />
+		<copy file="${git.repo}/ils-common/config/logback.xml" tofile="${artifact.dir}/logback/logback.xml" />
+		<copy file="${git.repo}/ils-common/config/ils_logback.xml" tofile="${artifact.dir}/logback/ils_logback.xml" />
+		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />
 		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
@@ -173,8 +178,6 @@
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
-		<copy file="${svn.repo}/EMRE/Ignition/sqlTags.csv" tofile="${artifact.dir}/tags/sqlTags.csv" />
-		
 		
 		<!-- Test -->
 		<mkdir dir="${artifact.dir}/test/inputs" />

@@ -58,9 +58,10 @@
 	     Jar types are copied into lib -->
 	<panel type="file" essential="true" version="20">
 		<title>Python Code for AED-RTA</title>
-		<preamble>This page loads Python code specific to the AED application. The Python
+		<preamble>This page installs Python modules specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
-		A second category consists of Java jar files that are referenced by this Python.<br/>
+		It also installs Java jar files, text translation files, and logger configuration files.  The JAR files are 
+		referenced by Python to access Java functionality.  The text translation files are used by the .<br/>
 		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
 		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
 		</preamble>
@@ -79,6 +80,10 @@
 		<artifact name="Text Translations" type="text" subtype="user-lib">
 			<location>artifacts/properties</location>
 			<destination>properties/aed</destination>
+		</artifact>
+		<artifact name="Logger configuration files (logback.xml)" type="text" subtype="user-lib">
+			<location>artifacts/logback</location>
+			<destination>../data</destination>
 		</artifact>
 	</panel>
 	
@@ -105,11 +110,20 @@
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="16" >
-		<title>Install Custom Modules</title>
-		<preamble>This step installs the model calculation module necessary for the AED-RTA applications.
+		<title>Install Custom AED Modules</title>
+		<preamble>This step installs the AED-RTA model calculation module.
 		</preamble>
 		<artifact name="Model Calculations" type="module">
 			<location>artifacts/modules/AED-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="16" >
+		<title>Install Common Logging Modules</title>
+		<preamble>This step installs the module that extends logging capabilities to include database logging.
+		</preamble>
+		<artifact name="Common Logging Module" type="module">
+			<location>artifacts/modules/CommonModule-module-signed</location>
 		</artifact>
 	</panel>
 	
