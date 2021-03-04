@@ -54,7 +54,6 @@
 		<echo message="Build date: ${build.date}" />
 		<echo message="Build version: ${version.build}" />
 
-
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
 		<mkdir dir="${staging.dir}" />
@@ -64,7 +63,6 @@
 		<!-- Create module.xml and  marker file -->
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
-		
 
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
@@ -78,10 +76,10 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Install/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -102,6 +100,8 @@
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Tag User Interface.docx" tofile="${artifact.dir}/doc/TagUserInterface.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM Performance.docx" tofile="${artifact.dir}/doc/VFMPerformance.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM User Interface.docx" tofile="${artifact.dir}/doc/VFMUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Release/Release Build Manual.docx" tofile="${artifact.dir}/doc/ReleaseBuildManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf" tofile="${artifact.dir}/doc/LoggingUserGuide.pdf" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
@@ -185,6 +185,7 @@
 		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
 		
 		<!-- Test -->
+		<!--
 		<mkdir dir="${artifact.dir}/test/inputs" />
 		<mkdir dir="${artifact.dir}/test/models" />
 		<mkdir dir="${artifact.dir}/test/tags" />
@@ -197,6 +198,7 @@
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/SLED2TagModel.xml" tofile="${artifact.dir}/test/models/SLED2TagModel.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDTags.xml" tofile="${artifact.dir}/test/models/PCASLEDTags.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDBadTagModels.xml" tofile="${artifact.dir}/test/models/PCASLEDBadTagModels.xml" />
+		-->
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />

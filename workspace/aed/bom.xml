@@ -110,7 +110,7 @@
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="16" >
-		<title>Install Custom AED Modules</title>
+		<title>Install AED Modules</title>
 		<preamble>This step installs the AED-RTA model calculation module.
 		</preamble>
 		<artifact name="Model Calculations" type="module">
@@ -119,16 +119,19 @@
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="16" >
-		<title>Install Common Logging Modules</title>
-		<preamble>This step installs the module that extends logging capabilities to include database logging.
+		<title>Install Common Logging Module</title>
+		<preamble>This step installs the common module that provides core common functionality for all ILS modules.  It
+		also extends Ignition logging capabilities to include project specific log files and database logging.<br/>
+		It requires an additional database connection named "Logs".  The logging table will be created automatically, but 
+		the database instance and database connection must be created manually.
 		</preamble>
 		<artifact name="Common Logging Module" type="module">
-			<location>artifacts/modules/CommonModule-module-signed</location>
+			<location>artifacts/modules/CommonModule-module-signed.modl</location>
 		</artifact>
 	</panel>
 	
 	<panel type="scanclass" essential="true" version="1">
-		<title>Create Custom Scan Classes</title>
+		<title>Install Scan Classes</title>
 		<preamble>Create appropriate scanclasses. 
 				Scanclasses determine tag poll rates.
 		</preamble>
@@ -139,9 +142,8 @@
 	</panel>
 	
 	<panel type="tag" subtype="production" essential="True" version="2">
-		<title>Install Tags and UDT Definitions</title>
-		<preamble>This page defines UDTs and tags that are needed by the applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+		<title>Install UDT Definitions</title>
+		<preamble>This page defines UDTs that are needed by AED/RTA.
 		</preamble>
 		<property name="provider" type="production"></property>
 		<artifact name="UDT Definitions" type="tag" subtype="xml">
@@ -150,13 +152,10 @@
 	</panel>
 	
 	<panel type="project" subtype="main" essential="true" version="16">
-		<title>Install a New AED Project or Merge Changes into an Existing
-			Project
+		<title>Install AED Project
 		</title>
 		<preamble>AED is the main Ignition project. This page provides
-			artifacts for a clean, new installation or,
-			alternatively, a merge with an existing version. A merge preserves any user
-			modifications from a previous version.
+			artifacts for a clean, new installation.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="AED" type="project" subtype="full">
@@ -236,10 +235,12 @@
 		<preamble>Now that all of the automated installation and configuration of the EMRE AED-RTA Applications
 		          is complete, there are just a few more manual steps required. </preamble>
 		          
-		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
 		            Restart the Gateway, then edit the project setting it to "enabled".</note>
-		<note name="Language Resources">The English, French and Italian external language resources (XML files) need to be loaded 
-					into the gateway using the Designer.</note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Quarantineed Modules">The AED module or the Common module may be quarantined after install but it may not show up 
+			at all until the gateway has been restarted.  If you do not see the module in the Configure - Modules page, then restart the gateway.
+			After restart, recheck the Configure - Modules page to see if it is quarantined.  If it is, then accept the license and restart the gateway.</note>
 	</epilog>
 </installer>
