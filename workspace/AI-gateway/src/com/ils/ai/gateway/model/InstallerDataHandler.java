@@ -1415,6 +1415,9 @@ public class InstallerDataHandler {
         			else if( type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) return ToolkitProperties.TOOLKIT_PROPERTY_ISOLATION_PROVIDER;
     			}
     		}
+    		else if( property.equalsIgnoreCase(InstallerConstants.LOGGING_DATABASE))  {
+    			return ToolkitProperties.TOOLKIT_PROPERTY_LOGGING_DATABASE;
+    		}
 		}
     	return "???";
 	}

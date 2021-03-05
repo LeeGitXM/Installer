@@ -39,12 +39,16 @@ public class DefinitionStep extends BasicInstallerPanel {
 	private boolean showSecondaryProvider  = false;
 	private boolean showProductionDBMS = false;
 	private boolean showSecondaryDBMS  = false;
+	private boolean showLoggingDBMS  = false;
 	private boolean showProductionDatabase = false;
 	private boolean showSecondaryDatabase  = false;
+	private boolean showLoggingDatabase  = false;
 	private SerializableDatasourceMeta productionDatabase=null;
 	private SerializableDatasourceMeta secondaryDatabase=null;
+	private SerializableDatasourceMeta loggingDatabase=null;
 	private String productionDBMS=null;
 	private String secondaryDBMS=null;
+	private String loggingDBMS=null;
 	private TagProviderMeta productionProvider=null;
 	private TagProviderMeta secondaryProvider=null;
 	private boolean saved = false;
@@ -88,6 +92,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),value);
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),value);
 	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.LOGGING_DATABASE)) {
+	    			toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.LOGGING_DATABASE,true),value);
+	    		}
 			}
 			else {
 				if(prop.getName().equalsIgnoreCase(InstallerConstants.PROPERTY_PROVIDER)) {
@@ -110,6 +117,9 @@ public class DefinitionStep extends BasicInstallerPanel {
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_ISOLATION)) showSecondaryDatabase = true;
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) showProductionDatabase = true;
 	    			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) showProductionDatabase = true;
+	    		}
+	    		else if(prop.getName().equalsIgnoreCase(InstallerConstants.LOGGING_DATABASE)) {
+	    			showLoggingDatabase = true;
 	    		}
 			}
     		
@@ -142,6 +152,14 @@ public class DefinitionStep extends BasicInstallerPanel {
     	DBMSList secondaryDBMSs = new DBMSList("secondaryDBMSs", new PropertyModel<String>(this, "secondaryDBMS"), getDBMSList());
 		add(secondaryDBMSs);
 		
+		// Label loggingDatabaseLabel = new Label("loggingDatabaseLabel",dataHandler.getLabel(properties,false)+" Database: ");
+		Label loggingDatabaseLabel = new Label("loggingDatabaseLabel","Logging Database: ");
+    	add(loggingDatabaseLabel);
+    	SourceList loggingDatabases = new SourceList("loggingDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "loggingDatabase"), getDatasourceList());
+		add(loggingDatabases);
+		DBMSList loggingDBMSs = new DBMSList("loggingDBMSs", new PropertyModel<String>(this, "loggingDBMS"), getDBMSList());
+		add(loggingDBMSs);
+		
 		// Adjust visibility
 		productionDatabaseLabel.setVisible(showProductionDatabase);
 		secondaryDatabaseLabel.setVisible(showSecondaryDatabase);
@@ -152,16 +170,20 @@ public class DefinitionStep extends BasicInstallerPanel {
 		
 		productionDatabases.setVisible(showProductionDatabase);
 		secondaryDatabases.setVisible(showSecondaryDatabase);
+		loggingDatabases.setVisible(showLoggingDatabase);
 		productionDBMSs.setVisible(showProductionDBMS);
 		secondaryDBMSs.setVisible(showSecondaryDBMS);
+		loggingDBMSs.setVisible(showLoggingDBMS);
 		productionProviders.setVisible(showProductionProvider);
 		secondaryProviders.setVisible(showSecondaryProvider);
 		
 		// Select Defaults
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
 		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
+		loggingDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
 		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
 		secondaryDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false)));
+		loggingDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false)));
 		productionProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_PROVIDER));
 		secondaryProvider= getDefaultProvider(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_SECONDARY_PROVIDER));
 		
@@ -169,6 +191,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 		valid = true;
 		if( (showProductionDatabase && productionDatabase==null) ||
 			(showSecondaryDatabase  && secondaryDatabase==null) ||
+			(showLoggingDatabase    && loggingDatabase==null) ||
 			(showProductionDBMS     && productionDBMS==null) ||
 			(showSecondaryDBMS      && secondaryDBMS==null) ||
 			(showProductionProvider && productionProvider==null) ||
@@ -186,19 +209,23 @@ public class DefinitionStep extends BasicInstallerPanel {
 				
 				if( productionDatabase!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true),productionDatabase.getName());
 				if( secondaryDatabase!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false),secondaryDatabase.getName());
+				if( loggingDatabase!=null )    toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.LOGGING_DATABASE,true),loggingDatabase.getName());
 				if( productionDBMS!=null )     toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true),productionDBMS);
 				if( secondaryDBMS!=null )      toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false),secondaryDBMS);
+				if( loggingDBMS!=null )        toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false),loggingDBMS);
 				if( productionProvider!=null ) toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,true),productionProvider.getName());
 				if( secondaryProvider!=null )  toolkitHandler.setToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_PROVIDER,false),secondaryProvider.getName());
 				
 				// Check validity
 				StringBuilder msg = new StringBuilder();
 				if( showProductionDatabase && productionDatabase==null )msg.append("Production database is not defined. ");
-				if( showSecondaryDatabase  && secondaryDatabase==null)  msg.append("secondary database is not defined. ");
+				if( showSecondaryDatabase  && secondaryDatabase==null)  msg.append("Secondary database is not defined. ");
+				if( showLoggingDatabase    && loggingDatabase==null)    msg.append("Logging database is not defined. ");
 				if( showProductionDBMS     && productionDBMS==null)     msg.append("Production DBMS is not defined. ");
-				if( showSecondaryDBMS      && secondaryDBMS==null)      msg.append("secondary DBMS is not defined. ");
+				if( showSecondaryDBMS      && secondaryDBMS==null)      msg.append("Secondary DBMS is not defined. ");
+				if( showLoggingDBMS        && loggingDBMS==null)        msg.append("Logging DBMS is not defined. ");
 				if( showProductionProvider && productionProvider==null) msg.append("Production tag provider is not defined. ");
-				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("secondary tag provider is not defined. ");
+				if( showSecondaryProvider  && secondaryProvider==null)  msg.append("Secondary tag provider is not defined. ");
 				if( msg.length()==0 ) {
 					/*
 					 * We want to allow this in the EMC installation.
@@ -242,6 +269,10 @@ public class DefinitionStep extends BasicInstallerPanel {
 		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_BATCH_EXPERT)) property.setValue(productionDatabase.getName());
 		        			else if(type.equalsIgnoreCase(InstallerConstants.PROPERTY_TYPE_PYSFC)) property.setValue(productionDatabase.getName());
 		        		}
+		        		else if(property.getName().equalsIgnoreCase(InstallerConstants.LOGGING_DATABASE)) {
+		        			property.setValue(loggingDatabase.getName());
+		        		}
+		        		
 		    			String result = dataHandler.executePythonFromProperty(property);
 		    			//System.out.println(String.format("DefinitionStep: Executing script: "+script));
 		    			if( !result.isEmpty()) {

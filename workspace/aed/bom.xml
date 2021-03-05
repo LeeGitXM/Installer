@@ -20,7 +20,12 @@
 		    Real-Time Advisory(AED-RTA) application. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
-			defined tag providers and database connections.
+			defined tag providers and database connections..<br/>.<br/>
+			Prerequisites: .<br/>
+			Before proceeding, please ensure that you have configured the following:.<br/>
+			1) A tag provider for AED UDTs and tags.<br/>
+			2) A Database connection to an empty database for the AED database .<br/>
+			3) A database connection named "Logs" to an empty database for the logging database.<br/>
 		</preamble>
 	</panel>
 	
@@ -43,6 +48,7 @@
 		These values are used by subsequent screens.
 		</preamble>
 		<property name="database" type="production"></property>
+		<property name="loggingDatabase" type="production"></property>
 		<property name="provider" type="production"></property>
 	</panel>	
 	
@@ -88,7 +94,7 @@
 	</panel>
 	
 	<panel type="database" essential="true" version="15">
-		<title>Database Create and Alter Scripts for AED-RTA</title>
+		<title>Clear / Create / Alter AED-RTA Database</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
 		altering an existing instance to accommodate schema corrections. 
 		&lt;b&gt;WARNING:&lt;/b&gt; Do NOT attempt to create a database at an existing AED-RTA installation.
@@ -106,6 +112,22 @@
 		</artifact>
 		<artifact name="Alter AED Database" type="sql" subtype="alter">
 			<location>artifacts/database/alterAED.sql</location>
+		</artifact>
+	</panel>
+	
+	<panel type="database" essential="true" version="15">
+		<title>Clear / Create Logging Database</title>
+		<preamble>This page provides the opportunity for creating a new database instance for
+		the logging extension.
+		</preamble>
+		<property name="database" type="logging"></property>
+		<property name="dbms" type="SQLSERVER"></property>
+		<!-- Recognized subtypes are: clear, create, alter, insert -->
+		<artifact name="Create LOGGING Database" type="sql" subtype="create">
+			<location>artifacts/database/createLogging.sql</location>
+		</artifact>
+		<artifact name="Clear LOGGING Database" type="sql" subtype="clear">
+			<location>artifacts/database/clearAED.sql</location>
 		</artifact>
 	</panel>
 	
@@ -217,6 +239,12 @@
 		</artifact>
 		<artifact name="VFM User Interface" type="documentation" subtype="docx" release="7">
 			<location>artifacts/doc/VFMUserInterface.docx</location>
+		</artifact>
+		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
+			<location>artifacts/doc/LoggingUserGuide.pdf</location>
+		</artifact>
+		<artifact name="Release Build Manual" type="documentation" subtype="docx" release="7">
+			<location>artifacts/doc/ReleaseBuildManual.docx</location>
 		</artifact>
 	</panel>
 	

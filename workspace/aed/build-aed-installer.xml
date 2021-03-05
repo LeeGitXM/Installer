@@ -80,6 +80,7 @@
 		<copy file="${svn.repo}/EMRE/Database/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
+		<copy file="${svn.repo}/EMChemicals/Logging/create_log_table.sql" tofile="${artifact.dir}/database/createLogging.sql" />
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
@@ -109,6 +110,8 @@
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
 				<include name="ils/common/**/*.py" />
 				<include name="ils/dataset/**/*.py" />
+				<include name="ils/log/**/*.py" />
+				<include name="ils/logging/**/*.py" />
 			</fileset>
 		</copy>
 		<mkdir dir="${artifact.dir}/external/xom-python" />
@@ -130,6 +133,7 @@
 		<copy file="${git.repo}/external/lib/poi-ooxml-schemas-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-ooxml-schemas-3.13.jar" />
 		<copy file="${git.repo}/external/lib/stax-api-1.0.1.jar" tofile="${artifact.dir}/external/jars/core/common/stax-api-1.0.1.jar" />
 		<copy file="${git.repo}/external/lib/xmlbeans-2.6.0.jar" tofile="${artifact.dir}/external/jars/core/common/xmlbeans-2.6.0.jar" />
+		<copy file="${git.repo}/external/lib/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
 		
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />

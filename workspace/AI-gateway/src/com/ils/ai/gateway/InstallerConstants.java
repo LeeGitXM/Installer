@@ -21,6 +21,7 @@ public interface InstallerConstants   {
 	public final static String MODULE_MARKER = ".application-installer"; // Name of file that marks the module as "the one"
 	
 	// These are standard properties
+	public final static String LOGGING_DATABASE = "loggingdatabase";
 	public final static String PROPERTY_DATABASE = "database";
 	public final static String PROPERTY_DATE    = "date";
 	public final static String PROPERTY_DBMS    = "DBMS";
