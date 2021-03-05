@@ -180,7 +180,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 		// Select Defaults
 		productionDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,true)));
 		secondaryDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
-		loggingDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DATABASE,false)));
+		loggingDatabase= getDefaultDatasource(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.LOGGING_DATABASE,true)));
 		productionDBMS= getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,true)));
 		secondaryDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false)));
 		loggingDBMS = getDefaultDBMS(toolkitHandler.getToolkitProperty(dataHandler.getToolkitTag(properties,InstallerConstants.PROPERTY_DBMS,false)));
