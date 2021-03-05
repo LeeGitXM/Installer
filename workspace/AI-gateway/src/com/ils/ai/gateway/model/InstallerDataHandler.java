@@ -279,7 +279,7 @@ public class InstallerDataHandler {
     			}
     		}
     		else if (prop.getName().equalsIgnoreCase("loggingdatabase")) {
-    			datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_DATABASE));
+    			datasources.add(toolkitHandler.getToolkitProperty(ToolkitProperties.TOOLKIT_PROPERTY_LOGGING_DATABASE));
     		}
     			
     	}

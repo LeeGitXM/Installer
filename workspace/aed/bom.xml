@@ -20,12 +20,8 @@
 		    Real-Time Advisory(AED-RTA) application. The table below compares the existing installation of
 			this product, if any, with the versions contained in this new
 			installation. Before continuing, please make sure that you have 
-			defined tag providers and database connections..<br/>.<br/>
-			Prerequisites: .<br/>
-			Before proceeding, please ensure that you have configured the following:.<br/>
-			1) A tag provider for AED UDTs and tags.<br/>
-			2) A Database connection to an empty database for the AED database .<br/>
-			3) A database connection named "Logs" to an empty database for the logging database.<br/>
+			defined: 1) a tag provider for AED UDTs and tags, 2) A Database connection for the AED database, 
+			and 3) a database connection named "Logs" for the logging database.
 		</preamble>
 	</panel>
 	
@@ -120,7 +116,7 @@
 		<preamble>This page provides the opportunity for creating a new database instance for
 		the logging extension.
 		</preamble>
-		<property name="database" type="logging"></property>
+		<property name="LoggingDatabase" type="logging"></property>
 		<property name="dbms" type="SQLSERVER"></property>
 		<!-- Recognized subtypes are: clear, create, alter, insert -->
 		<artifact name="Create LOGGING Database" type="sql" subtype="create">
