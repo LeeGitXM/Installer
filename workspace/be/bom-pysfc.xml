@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and sub-type must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+      
+      CAUTION: The version numbers here must coincide with versions in any site-specific
+               installers.
+ -->
+<installer>
+	<title>PySFC</title>
+	<description>Installer for ILS Automation's Batch Expert+</description>
+	<property name="product">BatchExpert+</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">53</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for PySFC</title>
+		<preamble>This is the ILS Automation installer for PySFC.
+			PySFC is SFC module with steps written in Python. This installer is meant to be
+			run as an update to an existing Batch Expert installation. This version 
+			requires Java 8.
+		</preamble>
+	</panel>
+	<panel type="file" essential="true" version="26">
+		<title>Python SFC Extensions for Batch Expert+</title>
+		<preamble>This page loads the external Python modules that support PySFC. 
+		</preamble>
+		<artifact name="ILS jar files for PySFC" type="directory" subtype="lib">
+			<location>artifacts/external/lib</location>
+			<destination>core/common</destination>
+		</artifact>
+		<artifact name="Custom SFC Steps for Batch Expert+" type="directory" subtype="user-lib">
+			<location>artifacts/external/pysfc</location>
+			<destination>pylib/ils/pysfc</destination>
+		</artifact>
+		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
+			<location>artifacts/external/xlsxwriter</location>
+			<destination>pylib/xlsxwriter</destination>
+		</artifact>
+	</panel>
+	<panel type="module" subtype="production" essential="true" version="2" >
+		<title>Update Custom Modules</title>
+		<preamble>This step updates the ILS custom module necessary for PySFC.
+		          installations that include the SFC feature.
+		</preamble>
+		<artifact name="Python SFC" type="module">
+			<location>artifacts/modules/pysfc-module-signed.modl</location>
+		</artifact>
+	</panel>
+	<!-- The summary panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of Batch Expert+ in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
+	<epilog>
+		<title>Installation Complete</title>
+		<preamble>The automated installation and configuration of Batch Expert+
+		          is complete. There are just a one more manual step required. </preamble>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+	</epilog>
+</installer>
+
