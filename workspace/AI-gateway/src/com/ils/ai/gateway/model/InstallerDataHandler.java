@@ -296,6 +296,7 @@ public class InstallerDataHandler {
 		}
 		if( subtype.equalsIgnoreCase("lib"))            prefix = context.getLibDir().getAbsolutePath();
 		else if( subtype.equalsIgnoreCase("user-lib"))  prefix = context.getUserlibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("root"))  	prefix = context.getHome().getAbsolutePath();
 		String destination = artifact.getDestination();
 		Path path = Paths.get(prefix, destination);
 		if( type.equalsIgnoreCase("file") ) {
@@ -1514,6 +1515,8 @@ public class InstallerDataHandler {
 		
 		if( subtype.equalsIgnoreCase("lib"))            toRoot = context.getLibDir().getAbsolutePath();
 		else if( subtype.equalsIgnoreCase("user-lib"))  toRoot = context.getUserlibDir().getAbsolutePath();
+		else if( subtype.equalsIgnoreCase("root"))  	toRoot = context.getHome().getAbsolutePath();
+		log.info(String.format("%s Root directory: %s ", subtype, toRoot));
 		String destination = artifact.getDestination();
 		toRoot = String.format("%s%s%s", toRoot,FILE_SEPARATOR,destination);  // Destination is relative to root
 		log.info(String.format("InstallerDataHandler.loadArtifactAsFiles: %s -> %s",artifact.getLocation(),toRoot));
