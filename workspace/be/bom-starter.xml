@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">73</property>
+	<property name="version">74</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -30,7 +30,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
-	<panel type="license" essential="true" version="3">
+	<panel type="license" essential="true" version="4">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
@@ -51,7 +51,7 @@
 		<artifact name="UDT Definitions" type="tag" subtype="json">
 			<location>artifacts/tags/udts.json</location>
 		</artifact>
-	</panel>
+	</panel> 
 	<!-- Python files are copied into the Ignition user-lib/pylib area.
 	     Jar files are copied into lib -->
 	<panel type="file" essential="true" version="36">
@@ -260,6 +260,17 @@
 		<artifact name="BatchExpertMaster@RELEASE@" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="partial" essential="true" version="1">
+		<title>Install Client Tags</title>
+		<preamble>Client tags for the master project.</preamble>
+		<property name="provider" type="production">Vision Client Tags</property>
+		<!-- For projects, artifact subtypes are: full, partial and global
+		     There can be at most one artifact of each type -->
+		<artifact name="BatchExpertMaster@RELEASE@" type="project">
+			<location>artifacts/tags/ClientTags.zip</location>
+			<comment>Install client tags for BetterGraphs</comment>
 		</artifact>
 	</panel>
 	<panel type="project" subtype="main" essential="true" version="34">

@@ -13,7 +13,7 @@
 	<property name="product">BatchExpert+</property>
 	<property name="release">@RELEASE@</property>
 	<property name="date">@DATE@</property>
-	<property name="version">52</property>
+	<property name="version">53</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
 	<panel type="welcome" essential="true">
@@ -32,7 +32,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
-	<panel type="license" essential="true" version="2">
+	<panel type="license" essential="true" version="4">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
 			permissible use of the software to be installed. Select the checkbox
@@ -65,24 +65,38 @@
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="11">
+	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Install UDT Definitions</title>
 		<preamble>This page defines UDTs for common  controllers.
-		           These definitions are written to the default tag provider.
+		          These definitions are written to the default tag provider.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="UDT Definitions" type="tag" subtype="xml">
-			<location>artifacts/tags/udts.xml</location>
+		<property name="base" >[default]_types_</property>
+		<artifact name="UDT Definitions" type="tag" subtype="json">
+			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="11">
+	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Install Configuration Tags</title>
-		<preamble>This page creates BatchExpert configuration tags.
-		           These definitions are written to the default tag provider.
+		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
+		         are important in your installation.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<artifact name="Configuration Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/configurationTags.xml</location>
+		<property name="historyprovider" type="production"></property>
+		<property name="base" >[default]</property>
+		<artifact name="Configuration Tags" type="tag" subtype="json">
+			<location>artifacts/tags/configurationTags.json</location>
+		</artifact>
+	</panel>
+	<panel type="tag" subtype="production" essential="true" version="1">
+		<title>Install Client Tags</title>
+		<preamble>This page creates BatchExpert client tags.
+		           These are, for the most part, used with Better Graphics.
+		</preamble>
+		<property name="provider" type="production">Vision Client Tags</property>
+		<property name="base" >[Vision Client Tags]</property>
+		<artifact name="Client Tags" type="tag" subtype="xml">
+			<location>artifacts/tags/vision-client-tags.xml</location>
 		</artifact>
 	</panel>
 	<panel type="definition" essential="true">
@@ -183,28 +197,6 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="module" subtype="production" essential="true" version="2" >
-		<title>Update Custom Modules</title>
-		<preamble>This step updates the ILS custom modules necessary for BatchExpert+
-		          installations that include the SFC feature.
-		</preamble>
-		<property name="SFC" type="feature">TRUE</property>
-		<artifact name="Python SFC" type="module">
-			<location>artifacts/modules/pysfc-module-signed.modl</location>
-		</artifact>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
-	</panel>
-	<panel type="module" subtype="production" essential="true" version="1" >
-		<title>Update Custom Modules</title>
-		<preamble>This step updates the ILS custom modules necessary for BatchExpert+.
-		</preamble>
-		<property name="SFC" type="feature">FALSE</property>
-		<artifact name="Rangeslider Component" type="module">
-			<location>artifacts/modules/rangeslider-module-signed.modl</location>
-		</artifact>
-	</panel>
 	<panel type="project" subtype="main" essential="true" version="27">
 		<title>Update the BatchExpert+ Project
 		</title>
@@ -219,6 +211,17 @@
 			<location>artifacts/projects/BatchExpertMaster.proj</location>
 			<comment>Merge the latest BatchExpert+ common resources 
 					 into the selected existing project. </comment>
+		</artifact>
+	</panel>
+	<panel type="project" subtype="partial" essential="true" version="1">
+		<title>Install Client Tags</title>
+		<preamble>Client tags for the master project.</preamble>
+		<property name="provider" type="production">Vision Client Tags</property>
+		<!-- For projects, artifact subtypes are: full, partial and global
+		     There can be at most one artifact of each type -->
+		<artifact name="BatchExpertMaster@RELEASE@" type="project">
+			<location>artifacts/tags/ClientTags.zip</location>
+			<comment>Install client tags for BetterGraphs</comment>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="2">

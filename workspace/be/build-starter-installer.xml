@@ -92,6 +92,7 @@
 		<copy file="${git.repo}/batch-expert/tags/udts_new.json" tofile="${artifact.dir}/tags/udts_new.json" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.json" tofile="${artifact.dir}/tags/configurationTags.json" />
 		<copy file="${git.repo}/batch-expert/tags/site_simulation_udts.xml" tofile="${artifact.dir}/tags/simulation_udts.xml" />
+		<copy file="${git.repo}/batch-expert/tags/ClientTags.zip" tofile="${artifact.dir}/tags/ClientTags.zip" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
