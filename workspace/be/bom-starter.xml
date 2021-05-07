@@ -255,25 +255,13 @@
 			Upon an update this is the project that gets changed.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
+		\
 		<artifact name="BatchExpertMaster@RELEASE@" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="partial" essential="true" version="1">
-		<title>Install Client Tags</title>
-		<preamble>Client tags for the master project.</preamble>
-		<property name="provider" type="production">Vision Client Tags</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
-		<artifact name="BatchExpertMaster@RELEASE@" type="project">
-			<location>artifacts/tags/ClientTags.zip</location>
-			<comment>Install client tags for BetterGraphs</comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="main" essential="true" version="34">
+	<panel type="project" subtype="main" essential="true" version="35">
 		<title>Install the BatchExpert+ Site-specific Project</title>
 		<preamble>The starter project contains examples of windows designed to be
 			customized for a specific site. On a product update, these windows will 

@@ -197,8 +197,8 @@
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
-	<panel type="project" subtype="main" essential="true" version="27">
-		<title>Update the BatchExpert+ Project
+	<panel type="project" subtype="main" essential="true" version="35">
+		<title>Update the BatchExpert+ Master Project
 		</title>
 		<preamble>BatchExpert+ is the main Ignition project. This page provides
 			for an update to an existing project. The update alters only &quot;Master&quot; resources. It preserves any custom
@@ -207,21 +207,10 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
-		<artifact name="BatchExpertMaster" type="project" subtype="partial">
-			<location>artifacts/projects/BatchExpertMaster.proj</location>
+		<artifact name="BatchExpertMaster@RELEASE@" type="project" subtype="main">
+			<location>artifacts/projects/BatchExpertMaster.zip</location>
 			<comment>Merge the latest BatchExpert+ common resources 
 					 into the selected existing project. </comment>
-		</artifact>
-	</panel>
-	<panel type="project" subtype="partial" essential="true" version="1">
-		<title>Install Client Tags</title>
-		<preamble>Client tags for the master project.</preamble>
-		<property name="provider" type="production">Vision Client Tags</property>
-		<!-- For projects, artifact subtypes are: full, partial and global
-		     There can be at most one artifact of each type -->
-		<artifact name="BatchExpertMaster@RELEASE@" type="project">
-			<location>artifacts/tags/ClientTags.zip</location>
-			<comment>Install client tags for BetterGraphs</comment>
 		</artifact>
 	</panel>
 	<panel type="python" essential="true" version="2">
