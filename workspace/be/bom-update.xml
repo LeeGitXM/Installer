@@ -88,17 +88,6 @@
 			<location>artifacts/tags/configurationTags.json</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="1">
-		<title>Install Client Tags</title>
-		<preamble>This page creates BatchExpert client tags.
-		           These are, for the most part, used with Better Graphics.
-		</preamble>
-		<property name="provider" type="production">Vision Client Tags</property>
-		<property name="base" >[Vision Client Tags]</property>
-		<artifact name="Client Tags" type="tag" subtype="xml">
-			<location>artifacts/tags/vision-client-tags.xml</location>
-		</artifact>
-	</panel>
 	<panel type="definition" essential="true">
 		<title>Define the Database Connections</title>
 		<preamble>Specify the database connection and DBMS-type that 
