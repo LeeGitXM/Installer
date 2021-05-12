@@ -167,6 +167,7 @@ public class DefinitionStep extends BasicInstallerPanel {
 		secondaryDBMSLabel.setVisible(showSecondaryDBMS);
 		productionProviderLabel.setVisible(showProductionProvider);
 		secondaryProviderLabel.setVisible(showSecondaryProvider);
+		loggingDatabaseLabel.setVisible(showLoggingDatabase);
 		
 		productionDatabases.setVisible(showProductionDatabase);
 		secondaryDatabases.setVisible(showSecondaryDatabase);

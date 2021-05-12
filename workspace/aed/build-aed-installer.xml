@@ -174,9 +174,12 @@
 		<mkdir dir="${artifact.dir}/logback" />
 		<copy file="${git.repo}/ils-common/config/ils_logback.xml.no.sift" tofile="${artifact.dir}/logback/ils_logback.xml.no.sift" />
 		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter" tofile="${artifact.dir}/logback/ils_logback.xml.project.sifter" />
+		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter.db" tofile="${artifact.dir}/logback/ils_logback.xml.project.sifter.db" />
+		
 		<copy file="${git.repo}/ils-common/config/logback.xml.project.sifter" tofile="${artifact.dir}/logback/logback.xml.project.sifter" />
 		<copy file="${git.repo}/ils-common/config/logback_bare_bones.xml" tofile="${artifact.dir}/logback/logback_bare_bones.xml" />
 		
+		<!-- These are the ones that will become active -->
 		<copy file="${git.repo}/ils-common/config/logback.xml.project.sifter" tofile="${artifact.dir}/logback/logback.xml" />
 		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter" tofile="${artifact.dir}/logback/ils_logback.xml" />
 		
