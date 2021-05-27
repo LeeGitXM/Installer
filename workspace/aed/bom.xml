@@ -92,12 +92,11 @@
 	</panel>
 	
 	<panel type="database" essential="true" version="15">
-		<title>Clear / Create / Alter AED-RTA Database</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. 
+		<title>Clear / Create AED-RTA Database</title>
+		<preamble>This page provides the opportunity for initializing and creating a new database instance.
+		A database update script for upgrading an existing instance may be run outside the scope of this installer. 
 		&lt;b&gt;WARNING:&lt;/b&gt; Do NOT attempt to create a database at an existing AED-RTA installation.
-		The create script will succeed only on a new empty database instance. The &lt;i&gt;alter&lt;/i&gt; script
-		should be used to modify/update existing database instances.
+		The create script will succeed only on a new empty database instance.
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
@@ -108,9 +107,13 @@
 		<artifact name="Clear Database" type="sql" subtype="clear">
 			<location>artifacts/database/clearAED.sql</location>
 		</artifact>
+		
+		<!--  
 		<artifact name="Alter AED Database" type="sql" subtype="alter">
 			<location>artifacts/database/alterAED.sql</location>
 		</artifact>
+		-->
+		
 	</panel>
 	
 <!--
@@ -139,7 +142,9 @@
 			<location>artifacts/modules/AED-module-signed.modl</location>
 		</artifact>
 	</panel>
-	
+
+<!--
+
 	<panel type="module" subtype="production" essential="true" version="16" >
 		<title>Install Common Logging Module</title>
 		<preamble>This page installs the common module that provides core common functionality for all ILS modules.  It
@@ -151,6 +156,7 @@
 			<location>artifacts/modules/CommonModule-module-signed.modl</location>
 		</artifact>
 	</panel>
+-->
 	
 	<panel type="scanclass" essential="true" version="1">
 		<title>Install Scan Classes</title>
@@ -270,5 +276,8 @@
 		<note name="Quarantineed Modules">The AED module or the Common module may be quarantined after install but it may not show up 
 			at all until the gateway has been restarted.  If you do not see the module in the Configure - Modules page, then restart the gateway.
 			After restart, recheck the Configure - Modules page to see if it is quarantined.  If it is, then accept the license and restart the gateway.</note>
+		<note name="Text Translation Resources">AED uses text translation resources to present windows in their native languages.  The resources are installed in 
+			user-lib/properties and must be manually loaded using the Translation Manager in the Ignition Designer. Translations are provided for English, French and Italian. </note>
+			
 	</epilog>
 </installer>

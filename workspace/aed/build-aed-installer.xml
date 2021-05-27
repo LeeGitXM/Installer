@@ -78,13 +78,15 @@
 		<mkdir dir="${artifact.dir}/database" />
 		<copy file="${svn.repo}/EMRE/Database/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<!--
 		<copy file="${svn.repo}/EMRE/Database/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
 		<copy file="${svn.repo}/EMRE/Database/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
 		<copy file="${svn.repo}/EMChemicals/Logging/create_log_table.sql" tofile="${artifact.dir}/database/createLogging.sql" />
-
+		-->
+		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMRE/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMRE/Release/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 6.0 Design Specification.docx" tofile="${artifact.dir}/doc/AedRtaDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/SLED/SLED-DesignSpecification.docx" tofile="${artifact.dir}/doc/SLEDDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 7.0 DB Design Changes.docx" tofile="${artifact.dir}/doc/AedRtaDatabaseDesignChanges.docx" />
