@@ -114,6 +114,7 @@
 				<include name="ils/dataset/**/*.py" />
 				<include name="ils/log/**/*.py" />
 				<include name="ils/logging/**/*.py" />
+				<include name="__init__.py" />
 			</fileset>
 		</copy>
 		<mkdir dir="${artifact.dir}/external/xom-python" />
