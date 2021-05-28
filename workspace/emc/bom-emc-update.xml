@@ -213,6 +213,9 @@
 		<artifact name="Lab Data User's Guide" type="documentation" subtype="pdf" release="1.12">
 			<location>artifacts/doc/LabDataUsersGuide.pdf</location>
 		</artifact>
+		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
+			<location>artifacts/doc/doc/LoggingUsersDesignGuide.pdf</location>
+		</artifact>
 		<artifact name="Recipe Toolkit User's Guide" type="documentation" subtype="pdf" release="1.3">
 			<location>artifacts/doc/RecipeToolkitUsersGuide.pdf</location>
 		</artifact>

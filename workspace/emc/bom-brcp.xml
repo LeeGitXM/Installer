@@ -771,6 +771,9 @@
 		<artifact name="Lab Data User's Guide" type="documentation" subtype="pdf" release="1.12">
 			<location>artifacts/doc/LabDataUsersGuide.pdf</location>
 		</artifact>
+		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
+			<location>artifacts/doc/doc/LoggingUsersDesignGuide.pdf</location>
+		</artifact>
 		<artifact name="Migration Manual" type="documentation" subtype="docx" release="0.11">
 			<location>artifacts/doc/MigrationManual.docx</location>
 		</artifact>

@@ -247,7 +247,7 @@
 			<location>artifacts/doc/VFMUserInterface.docx</location>
 		</artifact>
 		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
-			<location>artifacts/doc/LoggingUserGuide.pdf</location>
+			<location>artifacts/doc/doc/LoggingUsersDesignGuide.pdf</location>
 		</artifact>
 		<artifact name="Release Build Manual" type="documentation" subtype="docx" release="7">
 			<location>artifacts/doc/ReleaseBuildManual.docx</location>

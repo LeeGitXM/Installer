@@ -94,6 +94,7 @@
 		<copy file="${svn.repo}/EMChemicals/Database/Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
 		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
 		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf" tofile="${artifact.dir}/doc/LabDataUsersGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf"                         tofile="${artifact.dir}/doc/LoggingUsersDesignGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf" tofile="${artifact.dir}/doc/RecipeToolkitUsersGuide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf" tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Project Management/SFCStepScorecard.xlsx" tofile="${artifact.dir}/doc/SFCDevelopmentScorecard.xslx" />

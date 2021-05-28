@@ -86,25 +86,25 @@
 		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMRE/Release/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 6.0 Design Specification.docx" tofile="${artifact.dir}/doc/AedRtaDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/SLED/SLED-DesignSpecification.docx" tofile="${artifact.dir}/doc/SLEDDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 7.0 DB Design Changes.docx" tofile="${artifact.dir}/doc/AedRtaDatabaseDesignChanges.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDModuleProgrammersGuide.docx" tofile="${artifact.dir}/doc/AEDModuleProgrammersGuide.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDInstallationManual.docx" tofile="${artifact.dir}/doc/AEDInstallationManual.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-HistoryExpressionOptimization.docx" tofile="${artifact.dir}/doc/AEDHistoryExpressionOptimization.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-RTA Functions Guide.docx" tofile="${artifact.dir}/doc/AEDFunctionsGuide.docx" />
+		<copy file="${svn.repo}/EMRE/Release/Release Notes.pdf"                                                                         tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 6.0 Design Specification.docx"                                            tofile="${artifact.dir}/doc/AedRtaDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/SLED/SLED-DesignSpecification.docx"                                           tofile="${artifact.dir}/doc/SLEDDesignSpecification.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 7.0 DB Design Changes.docx"                                               tofile="${artifact.dir}/doc/AedRtaDatabaseDesignChanges.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDModuleProgrammersGuide.docx"                                               tofile="${artifact.dir}/doc/AEDModuleProgrammersGuide.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AEDInstallationManual.docx"                                                   tofile="${artifact.dir}/doc/AEDInstallationManual.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-HistoryExpressionOptimization.docx"                                       tofile="${artifact.dir}/doc/AEDHistoryExpressionOptimization.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Design/AED-RTA Functions Guide.docx"                                                 tofile="${artifact.dir}/doc/AEDFunctionsGuide.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Common Facilities User Interface.docx" tofile="${artifact.dir}/doc/CommonFacilitiesUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PCA User Interface.docx" tofile="${artifact.dir}/doc/PCAUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PID Performance.docx" tofile="${artifact.dir}/doc/PIDPerformance.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PID User Interface.docx" tofile="${artifact.dir}/doc/PIDUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Rule Performance.docx" tofile="${artifact.dir}/doc/RulePerformance.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Rule User Interface.docx" tofile="${artifact.dir}/doc/RuleUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Tag User Interface.docx" tofile="${artifact.dir}/doc/TagUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM Performance.docx" tofile="${artifact.dir}/doc/VFMPerformance.docx" />
-		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM User Interface.docx" tofile="${artifact.dir}/doc/VFMUserInterface.docx" />
-		<copy file="${svn.repo}/EMRE/Release/Release Build Manual.docx" tofile="${artifact.dir}/doc/ReleaseBuildManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf" tofile="${artifact.dir}/doc/LoggingUserGuide.pdf" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PCA User Interface.docx"               tofile="${artifact.dir}/doc/PCAUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PID Performance.docx"                  tofile="${artifact.dir}/doc/PIDPerformance.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - PID User Interface.docx"               tofile="${artifact.dir}/doc/PIDUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Rule Performance.docx"                 tofile="${artifact.dir}/doc/RulePerformance.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Rule User Interface.docx"              tofile="${artifact.dir}/doc/RuleUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - Tag User Interface.docx"               tofile="${artifact.dir}/doc/TagUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM Performance.docx"                  tofile="${artifact.dir}/doc/VFMPerformance.docx" />
+		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM User Interface.docx"               tofile="${artifact.dir}/doc/VFMUserInterface.docx" />
+		<copy file="${svn.repo}/EMRE/Release/Release Build Manual.docx"                                                                 tofile="${artifact.dir}/doc/ReleaseBuildManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf"                                  tofile="${artifact.dir}/doc/LoggingUsersDesignGuide.pdf" />
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external/ils-python" />
