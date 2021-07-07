@@ -114,9 +114,10 @@
 				<include name="ils/dataset/**/*.py" />
 				<include name="ils/log/**/*.py" />
 				<include name="ils/logging/**/*.py" />
-				<include name="__init__.py" />
+				<include name="ils/__init__.py" />
 			</fileset>
 		</copy>
+		
 		<mkdir dir="${artifact.dir}/external/xom-python" />
 		<copy todir="${artifact.dir}/external/xom-python">
 			<fileset dir="${git.repo}/xom-python/XOM_Python/src/xom">
@@ -124,6 +125,7 @@
 				<include name="__init__.py" />
 			</fileset>
 		</copy>
+		
 		<!-- External jars - needed for the simulator -->
 		<mkdir dir="${artifact.dir}/external/jars/core/common" />
 		<copy file="${git.repo}/external/lib/commons-codec-1.9.jar" tofile="${artifact.dir}/external/jars/core/common/commons-codec-1.9.jar" />

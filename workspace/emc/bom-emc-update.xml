@@ -89,6 +89,10 @@
 			<location>artifacts/projects</location>
 			<destination>projects</destination>
 		</artifact>
+		<artifact name="Logging Configuration Files" type="text" subtype="root">
+			<location>artifacts/logback</location>
+			<destination></destination>
+		</artifact>
 	</panel>
 	
 	<panel type="project" subtype="dbmgr" essential="true" version="010100">
@@ -247,7 +251,9 @@
 		
 		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
 		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"
-		            screen on the Gateway page. Select the "install" option next to the listing of each quarantined module.</note>
+		            screen on the Gateway page. Select the "install" option next to the listing of each quarantined module.
+		            THE MODULE MAY NOT SHOW UP AS QUARANTINED UNTIL THE GATEWAY HAS BEEN RESTARTED, A SECOND RESTART MAY BE 
+		            NEEDED AFTER THE MODULE HAS BEEN INSTALLED. </note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 		<note name="Manual Merge Projects">The core project resources need to be manually merged using the Ignition Designer.
 					Load your main XOM project and then merge the xom_update.proj found in user-lib/projects. </note>
