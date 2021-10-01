@@ -126,19 +126,6 @@
 	</panel>
 	
 	<panel type="module" subtype="production" essential="true" version="7" >
-		<title>Common Module</title>
-		<preamble>This step installs the ILS Common module.
-			The Common module is REQUIRED.  It provides core common functionality for both the
-			Symbolic Ai module and the SFC extension module.  It also provides the common logging
-			framework used by both modules (and AED/RTA).
-		</preamble>
-		<artifact name="ILS Common Module" type="module">
-			<location>artifacts/modules/CommonModule-module-signed.modl</location>
-		</artifact>
-	</panel>
-	
-
-	<panel type="module" subtype="production" essential="true" version="7" >
 		<title>Test Framework Module</title>
 		<preamble>This step installs the test framework module.
 			The test framework is optional and should not be used on a production system.
