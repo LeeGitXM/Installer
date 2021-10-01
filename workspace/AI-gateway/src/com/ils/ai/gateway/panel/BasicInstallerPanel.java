@@ -14,8 +14,6 @@ import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PanelData;
 import com.ils.ai.gateway.model.PanelType;
-import com.ils.common.log.ILSLogger;
-import com.ils.common.log.LogMaker;
 import com.inductiveautomation.ignition.gateway.web.components.wizard.GatewayWizardStep;
 
 
