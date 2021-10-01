@@ -86,31 +86,19 @@
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx" tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/ApplicationTestFramework.docx" tofile="${artifact.dir}/doc/ApplicationTestFramework.docx" />
-		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design/BlockLanguageToolkitDesign.docx" tofile="${artifact.dir}/doc/BlockLanguageToolkitDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Project Management/BlockTestStatus.xlsx" tofile="${artifact.dir}/doc/BlockDevelopmentScorecard.xslx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManagerGuide.docx" tofile="${artifact.dir}/doc/DatabaseManagerGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DBManager Migration.docx" tofile="${artifact.dir}/doc/DatabaseManagerMigrationGuide.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database Design.docx" tofile="${artifact.dir}/doc/EMCDatabaseDesign.docx" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.pdf" tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Database/EMC Database ER.vsd" tofile="${artifact.dir}/doc/EMCDatabaseERDiagrams.vsd" />
-		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.docx" tofile="${artifact.dir}/doc/IODesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Lab Data/Design Specification/Lab Data Design Specification.docx" tofile="${artifact.dir}/doc/LabDataDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/MigrationManual.docx" tofile="${artifact.dir}/doc/MigrationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Design Specification.docx" tofile="${artifact.dir}/doc/RecipeDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/Guide/ILS_SFC_UserManual.docx" tofile="${artifact.dir}/doc/SequentialControlUserManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Project Management/SFCStepScorecard.xlsx" tofile="${artifact.dir}/doc/SFCDevelopmentScorecard.xslx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/BRPO/BRPO Design Specification.docx" tofile="${artifact.dir}/doc/BRPODesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Vistalon/Documentation/Vistalon Design Specification.docx" tofile="${artifact.dir}/doc/VistalonDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Halobutyl/Halobutyl Design Specification.docx" tofile="${artifact.dir}/doc/HalobutylDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/Documentation/Escorez Design Specification.docx" tofile="${artifact.dir}/doc/EscorezDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/Escorez/Documentation/Escorez Migration Specification.docx" tofile="${artifact.dir}/doc/EscorezMigrationSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Design Specification.docx" tofile="${artifact.dir}/doc/GLineDesignSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/Documentation/G-Line Migration Specification.docx" tofile="${artifact.dir}/doc/GLineMigrationSpecification.docx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/BRPP G-Line Migration Score Card.xlsx" tofile="${artifact.dir}/doc/GLineScoreCard.xlsx" />
-		<copy file="${svn.repo}/EMChemicals/Migration/G-Line/G-Line Poly Unit Procedure Score Card.xlsx" tofile="${artifact.dir}/doc/GLinePolySfcScoreCard.xlsx" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf"                                                          tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx"                                          tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DB Manager User's Guide.pdf"                          tofile="${artifact.dir}/doc/DBManagerUsersGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.pdf"                                                      tofile="${artifact.dir}/doc/EMCDatabaseDesign.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf"                                                          tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.pdf"  tofile="${artifact.dir}/doc/IODesignSpecification.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf"                                   tofile="${artifact.dir}/doc/LabDataUsersGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf"                         tofile="${artifact.dir}/doc/LoggingUsersDesignGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf"                      tofile="${artifact.dir}/doc/RecipeToolkitUsersGuide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
+
 		
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
@@ -133,7 +121,6 @@
 		<mkdir dir="${artifact.dir}/external/jars" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/common/ils-common.jar" />
-		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar.pack.gz" tofile="${artifact.dir}/external/jars/common/commons-math3-3.6.1.jar.pack.gz" />
 		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/gateway/block-definition.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/gateway/blt-gateway.jar" />
