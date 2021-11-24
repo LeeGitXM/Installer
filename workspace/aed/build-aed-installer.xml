@@ -63,8 +63,7 @@
 
 		<!-- Create module.xml and  marker file -->
 		<copy file="${module.xml}" tofile="${staging.dir}/module.xml" overwrite="true" />
-		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
-		
+		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />		
 
 		<!-- Copy Core jar files -->
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
@@ -78,14 +77,16 @@
 
 		<!-- Database -->
 		<mkdir dir="${artifact.dir}/database" />
-		<copy file="${svn.repo}/EMRE/Install/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
-		<copy file="${svn.repo}/EMRE/Install/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
-
+		<copy file="${svn.repo}/EMRE/Database/createAED.sql" tofile="${artifact.dir}/database/createAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/clearAED.sql" tofile="${artifact.dir}/database/clearAED.sql" />
+		<!--
+		<copy file="${svn.repo}/EMRE/Database/alterAED.sql" tofile="${artifact.dir}/database/alterAED.sql" />
+		<copy file="${svn.repo}/EMRE/Database/insertData.sql" tofile="${artifact.dir}/database/insertAED.sql" />
+		-->
+		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMRE/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/EMRE/Release/Release Notes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 6.0 Design Specification.docx" tofile="${artifact.dir}/doc/AedRtaDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/SLED/SLED-DesignSpecification.docx" tofile="${artifact.dir}/doc/SLEDDesignSpecification.docx" />
 		<copy file="${svn.repo}/EMRE/Documentation/Design/AED 7.0 DB Design Changes.docx" tofile="${artifact.dir}/doc/AedRtaDatabaseDesignChanges.docx" />
@@ -109,8 +110,10 @@
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
 				<include name="ils/common/**/*.py" />
 				<include name="ils/dataset/**/*.py" />
+				<include name="ils/__init__.py" />
 			</fileset>
 		</copy>
+		
 		<mkdir dir="${artifact.dir}/external/xom-python" />
 		<copy todir="${artifact.dir}/external/xom-python">
 			<fileset dir="${git.repo}/xom-python/XOM_Python/src/xom">
@@ -118,6 +121,7 @@
 				<include name="__init__.py" />
 			</fileset>
 		</copy>
+		
 		<!-- External jars - needed for the simulator -->
 		<mkdir dir="${artifact.dir}/external/jars/core/common" />
 		<copy file="${git.repo}/external/lib/commons-codec-1.9.jar" tofile="${artifact.dir}/external/jars/core/common/commons-codec-1.9.jar" />
@@ -130,6 +134,7 @@
 		<copy file="${git.repo}/external/lib/poi-ooxml-schemas-3.13.jar" tofile="${artifact.dir}/external/jars/core/common/poi-ooxml-schemas-3.13.jar" />
 		<copy file="${git.repo}/external/lib/stax-api-1.0.1.jar" tofile="${artifact.dir}/external/jars/core/common/stax-api-1.0.1.jar" />
 		<copy file="${git.repo}/external/lib/xmlbeans-2.6.0.jar" tofile="${artifact.dir}/external/jars/core/common/xmlbeans-2.6.0.jar" />
+		<copy file="${git.repo}/external/lib/ils-common.jar" tofile="${artifact.dir}/external/jars/core/common/ils-common.jar" />
 		
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
@@ -154,29 +159,31 @@
 
 		<!-- Projects -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${svn.repo}/EMRE/Ignition/AED.proj" tofile="${artifact.dir}/projects/AED.proj" />
-
+		<copy file="${svn.repo}/EMRE/Ignition8/AED.zip" tofile="${artifact.dir}/projects/AED.zip" />
+		<copy file="${svn.repo}/EMRE/Ignition8/AED_Site.zip" tofile="${artifact.dir}/projects/AED_Site.zip" />
 
 		<!-- Properties -->
 		<mkdir dir="${artifact.dir}/properties" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_en.XML" tofile="${artifact.dir}/properties/aed_en.XML" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_fr.XML" tofile="${artifact.dir}/properties/aed_fr.XML" />
-		<copy file="${svn.repo}/EMRE/Ignition/properties/aed_it.XML" tofile="${artifact.dir}/properties/aed_it.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/aed_en.XML" tofile="${artifact.dir}/properties/aed_en.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/aed_fr.XML" tofile="${artifact.dir}/properties/aed_fr.XML" />
+		<copy file="${svn.repo}/EMRE/Translations/aed_it.XML" tofile="${artifact.dir}/properties/aed_it.XML" />
 		<copy file="${svn.repo}/EMRE/Ignition/properties/aed.properties" tofile="${artifact.dir}/properties/aed.properties" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
 		
 		<!-- Scanclass -->
-		<mkdir dir="${artifact.dir}/scanclasses" />
-		<copy file="${svn.repo}/EMRE/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
+		<mkdir dir="${artifact.dir}/taggroups" />
+		<copy file="${svn.repo}/EMRE/Ignition8/taggroups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
 			
-		<!-- Tags -->
+		<!-- UDTs -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${svn.repo}/EMRE/Ignition/udts.xml" tofile="${artifact.dir}/tags/UDTs.xml" />
+		<copy file="${svn.repo}/EMRE/Ignition8/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<!-- 
 		<copy file="${svn.repo}/EMRE/Ignition/sqlTags.csv" tofile="${artifact.dir}/tags/sqlTags.csv" />
-		
+		-->
 		
 		<!-- Test -->
+		<!-- 
 		<mkdir dir="${artifact.dir}/test/inputs" />
 		<mkdir dir="${artifact.dir}/test/models" />
 		<mkdir dir="${artifact.dir}/test/tags" />
@@ -189,7 +196,8 @@
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/SLED2TagModel.xml" tofile="${artifact.dir}/test/models/SLED2TagModel.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDTags.xml" tofile="${artifact.dir}/test/models/PCASLEDTags.xml" />
 		<copy file="${svn.repo}/EMRE/Ignition/unittest/PCASLEDBadTagModels.xml" tofile="${artifact.dir}/test/models/PCASLEDBadTagModels.xml" />
-
+		-->
+		
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
 		
@@ -208,8 +216,8 @@
 	 -->
 	
 	<target name="deploy" depends="build">
-		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
-		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../EMRE-AED/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<echo message="Installing ApplicationInstall module on Ignition Gateway and U: Drive." />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${installer.repo}/${module.name}-${version.build}-signed.modl" />
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
