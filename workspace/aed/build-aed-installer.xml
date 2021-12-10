@@ -112,8 +112,6 @@
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
 				<include name="ils/common/**/*.py" />
 				<include name="ils/dataset/**/*.py" />
-				<include name="ils/log/**/*.py" />
-				<include name="ils/logging/**/*.py" />
 				<include name="ils/__init__.py" />
 			</fileset>
 		</copy>
@@ -174,19 +172,6 @@
 		<copy file="${svn.repo}/EMRE/Ignition/properties/aed.properties" tofile="${artifact.dir}/properties/aed.properties" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@DATE@"    value="${build.date}" />
 		<replace file="${artifact.dir}/properties/aed.properties" token="@RELEASE@" value="${version.build}" />
-		
-		<!-- logbackfiles -->
-		<mkdir dir="${artifact.dir}/logback" />
-		<copy file="${git.repo}/ils-common/config/ils_logback.xml.no.sift" tofile="${artifact.dir}/logback/ils_logback.xml.no.sift" />
-		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter" tofile="${artifact.dir}/logback/ils_logback.xml.project.sifter" />
-		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter.db" tofile="${artifact.dir}/logback/ils_logback.xml.project.sifter.db" />
-		
-		<copy file="${git.repo}/ils-common/config/logback.xml.project.sifter" tofile="${artifact.dir}/logback/logback.xml.project.sifter" />
-		<copy file="${git.repo}/ils-common/config/logback_bare_bones.xml" tofile="${artifact.dir}/logback/logback_bare_bones.xml" />
-		
-		<!-- These are the ones that will become active -->
-		<copy file="${git.repo}/ils-common/config/logback.xml.project.sifter" tofile="${artifact.dir}/logback/logback.xml" />
-		<copy file="${git.repo}/ils-common/config/ils_logback.xml.project.sifter" tofile="${artifact.dir}/logback/ils_logback.xml" />
 		
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/scanclasses" />

@@ -58,16 +58,15 @@
 		</artifact>
 	</panel>
 		
-		<!-- Python types are copied into the Ignition user-lib/pylib area.
+	<!-- Python types are copied into the Ignition user-lib/pylib area.
 	     Jar types are copied into lib -->
+
 	<panel type="file" essential="true" version="20">
 		<title>Python Code for AED-RTA</title>
-		<preamble>This page installs Python modules specific to the AED application. The Python
+		<preamble>This page installs external Python modules specific to the AED application. The Python
 		is stored outside of the AED project in the Ignition installation directory.
-		It also installs Java jar files, text translation files, and logger configuration files.  The JAR files are 
-		referenced by Python to access Java functionality.  The text translation files are used by the .<br/>
-		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
-		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
+		It also installs Java jar files and text translation files.  The JAR files are 
+		referenced by Python to access Java functionality.  
 		</preamble>
 		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
@@ -84,10 +83,6 @@
 		<artifact name="Text Translations" type="text" subtype="user-lib">
 			<location>artifacts/properties</location>
 			<destination>properties/aed</destination>
-		</artifact>
-		<artifact name="Logger configuration files (logback.xml)" type="text" subtype="user-lib">
-			<location>artifacts/logback</location>
-			<destination>../data</destination>
 		</artifact>
 	</panel>
 	
