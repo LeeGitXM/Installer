@@ -177,16 +177,6 @@
 		<!-- Scanclass (if not otherwise specified, use vistalon) -->
 		<mkdir dir="${artifact.dir}/scanclasses" />
 		<copy file="${svn.repo}/EMChemicals/Ignition/scanclasses.csv" tofile="${artifact.dir}/scanclasses/scanclasses.csv" />
-		
-		<!-- Logback Files -->
-		<mkdir dir="${artifact.dir}/logback" />
-		<copy todir="${artifact.dir}/logback">
-			<fileset dir="${git.repo}/ils-common/config">
-				<include name="*" />
-			</fileset>
-		</copy>
-		<copy file="${git.repo}/ils-common/config/ils_logback.xml.standard.ignition" tofile="${artifact.dir}/logback/ils_logback.xml" />
-		<copy file="${git.repo}/ils-common/config/logback_bare_bones.xml" tofile="${artifact.dir}/logback/logback.xml" />
 
 		<!-- Zip it all up -->
 		<zip zipfile="${module.path}/${module.name}-${version.build}-unsigned.modl" basedir="${staging.dir}" />
@@ -204,9 +194,11 @@
 	  2) Onto the Google Drive
 	 -->
 	<target name="deploy" depends="build">
-		<echo message="Installing ApplicationInstall module on Ignition Gateway and Google Drive." />
+		<echo message="Copying Installer module to ${installer.repo}" />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${installer.repo}/${module.name}-${version.build}-signed.modl" />
+		<!--
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
+		-->
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

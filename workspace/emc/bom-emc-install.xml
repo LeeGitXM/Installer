@@ -106,10 +106,6 @@
 			<location>artifacts/projects</location>
 			<destination>projects</destination>
 		</artifact>
-		<artifact name="Logging Configuration Files" type="text" subtype="root">
-			<location>artifacts/logback</location>
-			<destination></destination>
-		</artifact>
 	</panel>
 	
 	<panel type="database" essential="true" version="010100">
