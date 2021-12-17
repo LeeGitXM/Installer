@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For any panel, the type determines the layout and class. The combination of 
+      type and subtype must be unique. If missing, the subtype is taken to be the
+      same as the type. Within a panel, an artifact name/version combination must 
+      be unique. 
+ -->
+<installer>
+	<title>EMC Ignition Updater</title>
+	<description>Installer for Updating EMC Ignition Applications.</description>
+	<property name="product">Ignition Applications</property>
+	<property name="release">@RELEASE@</property>
+	<property name="date">@DATE@</property>
+	<property name="version">0</property>
+	<!-- These entries define the install panels and their order -->
+	<!-- The welcome panel must always be displayed, thus no version -->
+	<panel type="welcome" essential="true">
+		<title>ILS Automation Installer for UPDATING EMC Ignition Applications</title>
+		<preamble>Welcome to the ILS Automation installer for UPDATING EMC Ignition
+			Applications. The table below compares the existing installation of
+			this product on this system, if any, with the versions contained in this new
+			installation. Before continuing, please make sure that you have 
+			defined tag providers and database connections for both production and 
+			isolation-mode (test) environments as appropriate.  Before proceeding please make a gateway backup and a database backup!
+		</preamble>          
+		<artifact name="notes" type="pdf">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+	</panel>
+	
+	<panel type="license" essential="true" version="1">
+		<title>End User License Agreement (EULA)</title>
+		<preamble>Click on the button below to view the license that specifies
+			permissible use of the software to be installed. Select the checkbox
+			to indicate acceptance of the terms.
+			You must accept the license terms before proceeding.
+		</preamble>
+		<artifact name="license" type="html">
+			<location>artifacts/license/license.html</location>
+		</artifact>
+	</panel>
+	
+	<panel type="definition" essential="true">
+		<title>Common interface Definitions</title>
+		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
+		Both production and test mode versions of provider and database must be specified. 
+		The selections here are used by subsequent screens.
+		</preamble>
+		<!--  Allowed names are: database, provider -->
+		<!--  Allowed types are: production, isolation -->
+		<property name="database" type="production"></property>
+		<property name="database" type="isolation"></property>
+		<property name="provider" type="production"></property>
+		<property name="provider" type="isolation"></property>
+	</panel>
+	
+	<panel type="icon" essential="true" version="13">
+		<title>Custom Icons for Ignition Applications</title>
+		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
+		          They are also used on many of the user windows. </preamble>
+		<artifact name="Block Language Toolkit Icons" type="blt" subtype="icon">
+			<location>artifacts/icons/blt</location>
+		</artifact>
+		<artifact name="Application Icons" type="app" subtype="icon">
+			<location>artifacts/icons/custom</location>
+		</artifact>
+	</panel>
+	
+	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
+	<panel type="file" essential="true" version="41">
+		<title>Python Code for Ignition Applications</title>
+		<preamble>This page loads Python code that supports the Ignition Application suite. 
+		The Python is code developed by ILS Automation that is generic and used throughout
+		the toolkits.  The Java jar files that are referenced by the Python.  The installer 
+		DOES NOT overwrite site specific Python in the XOM Python tree.
+		</preamble>
+		<artifact name="External Python - ILS" type="text" subtype="user-lib">
+			<location>artifacts/external/ils-python</location>
+			<destination>pylib</destination>
+		</artifact>
+		<artifact name="Jar Files to Support External Python" type="binary" subtype="lib">
+			<location>artifacts/external/jars</location>
+			<destination>core</destination>
+		</artifact>
+		<artifact name="SQL Update Scripts" type="text" subtype="user-lib">
+			<location>artifacts/database</location>
+			<destination>database</destination>
+		</artifact>
+		<artifact name="Core Ignition Project" type="binary" subtype="user-lib">
+			<location>artifacts/projects</location>
+			<destination>projects</destination>
+		</artifact>
+	</panel>
+	
+	<panel type="project" subtype="dbmgr" essential="true" version="010100">
+		<title>Install the DbManager Project</title>
+		<preamble>DbManager is a utility for maintenance of
+			application databases. It is not generally user-customizable.
+			The action on this page completely replaces any existing copy.
+		</preamble>
+		<!-- For projects, artifact subtypes are: full, partial and global -->
+		<artifact name="DbManager" type="project" subtype="full">
+			<location>artifacts/projects/DbManager.proj</location>
+		</artifact>
+	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="34" >
+		<title>Install Custom BLT Module</title>
+		<preamble>This step installs the latest BLT module.
+		</preamble>
+		<artifact name="Block Language Toolkit" type="module">
+			<location>artifacts/modules/BLT-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="34" >
+		<title>Install Custom SFC Module</title>
+		<preamble>This step installs the latest ILS-SFC module.
+		</preamble>
+		<artifact name="ILS-SFC Enhancements" type="module">
+			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<panel type="module" subtype="production" essential="true" version="7" >
+		<title>Test Framework Module</title>
+		<preamble>This step installs the test framework module.
+			The test framework is optional and should not be used on a production system.
+			When used on a hybrid Production / Development system then great caution
+			must be used to insure that test data does not leak to the production system.
+		</preamble>
+		<artifact name="Testing Framework" type="module">
+			<location>artifacts/modules/TF-module-signed.modl</location>
+		</artifact>
+	</panel>
+	
+	<!--  UNTIL I GET A PROJECT MERGE TO WORK SKIP THIS AND INSTRUCT THE USER TO MANUALLY MERGE THE PROJECT! PH - 7/3/2020 
+		For projects, artifact subtypes are: full, partial and global
+	<panel type="project" subtype="main" essential="true" version="31">
+		<title>Project Update</title>
+		<preamble>This page merges all of the core project resources into the target project.  
+			This includes windows, templates, project scripts, menues, gateway timer scripts, etc.  
+			It will NOT affect  any site specific windows, diagnostic diagrams, tags, etc.
+			This will preserve any user modifications to site specific resources since a previous install. <br/>
+		</preamble>
+		
+		<artifact name="XOM" type="project" subtype="partial">
+			<location>artifacts/projects/XOM-Core.proj</location>
+		</artifact>
+	</panel>
+	-->
+	
+	<panel type="tag" subtype="production" essential="True" version="010100">
+		<title>Install UDT Definitions</title>
+		<preamble>This page installs UDTs that are needed by the applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
+			differ from tag resources in the installer.
+		</preamble>
+		<property name="provider" type="production"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/UDTs.xml</location>
+		</artifact>
+	</panel>
+	
+	<panel type="tag" subtype="isolation" essential="True" version="010100">
+		<title>Install UDT Definitions</title>
+		<preamble>This page installs UDTs that are needed by the applications
+			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
+			are not included in the installer.
+		</preamble>
+		<property name="provider" type="isolation"></property>
+		<artifact name="UDT Definitions" type="tag" subtype="xml">
+			<location>artifacts/tags/IsolationUDTs.xml</location>
+		</artifact>
+	</panel>
+
+	<panel type="documentation" essential="false">
+		<title>Product Documentation</title>
+		<preamble>The list below contains both user-level and design documents. They may be downloaded individually,as needed.
+		</preamble>
+		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
+			<location>artifacts/doc/ReleaseNotes.pdf</location>
+		</artifact>
+		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
+			<location>artifacts/doc/blt/javadoc.zip</location>
+		</artifact>
+		<artifact name="Database Manager User's Guide" type="documentation" subtype="pdf" release="1.1">
+			<location>artifacts/doc/DBManagerUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Database Design" type="documentation" subtype="docx" release="1.19">
+			<location>artifacts/doc/EMCDatabaseDesign</location>
+		</artifact>
+		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
+			<location>artifacts/doc/EMCDatabaseER.pdf</location>
+		</artifact>
+		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="pdf" release="1.7">
+			<location>artifacts/doc/IODesignSpecification.pdf</location>
+		</artifact>
+		<artifact name="Lab Data User's Guide" type="documentation" subtype="pdf" release="1.12">
+			<location>artifacts/doc/LabDataUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
+			<location>artifacts/doc/doc/LoggingUsersDesignGuide.pdf</location>
+		</artifact>
+		<artifact name="Recipe Toolkit User's Guide" type="documentation" subtype="pdf" release="1.3">
+			<location>artifacts/doc/RecipeToolkitUsersGuide.pdf</location>
+		</artifact>
+		<artifact name="Sequential Control User's Guide" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/ILS_SFC_Users_Guide.pdf</location>
+		</artifact>
+		<artifact name="Symbolic Ai User Guide" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Users_Guide.pdf</location>
+		</artifact>
+		<artifact name="Symbolic Ai Design Guide" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Symbolic_Ai_Design_Guide.pdf</location>
+		</artifact>
+	</panel>
+	
+	<!-- The conclusion panel must always be displayed, thus no version -->
+	<panel type="summary" essential="true">
+		<title>Installation Summary</title>
+		<preamble>The list below shows which of the installation steps have been completed.
+		 Selecting "Finish" will record the current version of EMC Ignition Applications in
+			the Gateway internal database.
+		</preamble>
+	</panel>
+	
+	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
+	<epilog>
+		<title>Ignition Applications - Installed</title>
+		<preamble>Now that all of the automated installation and configuration of the ExxonMobil Ignition Applications
+		          is complete, there are just a few more manual steps required. </preamble>
+		
+		<note name="Quarantined Modules">If this is the first time that a particular module has been installed, 
+		            then it will be in a quarantined state at the end of the installation. Navigate to the "Module"
+		            screen on the Gateway page. Select the "install" option next to the listing of each quarantined module.
+		            THE MODULE MAY NOT SHOW UP AS QUARANTINED UNTIL THE GATEWAY HAS BEEN RESTARTED, A SECOND RESTART MAY BE 
+		            NEEDED AFTER THE MODULE HAS BEEN INSTALLED. </note>
+		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+		<note name="Manual Merge Projects">The core project resources need to be manually merged using the Ignition Designer.
+					Load your main XOM project and then merge the xom_update.proj found in user-lib/projects. </note>
+		            
+	</epilog>
+</installer>

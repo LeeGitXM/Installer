@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
 import com.ils.ai.gateway.model.InstallerData;
 import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
+import com.inductiveautomation.ignition.common.util.LogUtil;
+import com.inductiveautomation.ignition.common.util.LoggerEx;
 
 /**
  */
@@ -27,6 +29,8 @@ public class TagStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 5388412865553172897L;
 	private Label providerLabel = null;
 	private String base = "";
+	private String provider = "";
+	private String tagType = "";
 	private String statusString = "";
 
 	public TagStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
@@ -37,7 +41,19 @@ public class TagStep extends BasicInstallerPanel {
 		add(new Label("futureVersion",futureVersionString));
         
         InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-        base = dataHandler.baseNameFromProperties(index, data);
+        provider = dataHandler.providerNameFromProperties(index, data);
+        tagType = dataHandler.getTagTypeFromProperties(index, data);
+        System.out.println("TagStep: processing "+provider+" - "+tagType);
+        
+        // base = dataHandler.baseNameFromProperties(index, data);
+        if (tagType.equalsIgnoreCase("tag")) {
+        	base = "[" + provider + "]";
+        }
+        else {
+        	base = "[" + provider + "]_types_";
+        }
+        
+        //System.out.println("Created Base: "+base);
         providerLabel = new Label("base",base);
 		add(providerLabel);
 		

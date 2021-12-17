@@ -1402,6 +1402,27 @@ public class InstallerDataHandler {
 		}
 		return subtype;
 	}
+	
+	public String getTagTypeFromProperties(int panelIndex,InstallerData model) {
+		/*
+		 * Added by Pete because with Ignition 8, installing UDTs is a little different than adding Tags
+		 * We need to construct  a basePath that for a UDT is [provider]_type_ and for tags is is just [provider]
+		 */
+		
+		String tagtype = "UDT";    // If all else fails, the default is UDT
+		List<PropertyItem> properties = getPanelProperties(panelIndex, model);
+		for(PropertyItem prop:properties) {
+			if(prop.getName().equalsIgnoreCase("tagType")) {
+				tagtype = prop.getType();
+				log.infof("%s.getTagTypeFromProperties: panel %d, found tagType: %s",CLSS,panelIndex,tagtype);
+				return tagtype;
+			}
+		}
+		
+		log.infof("%s.getTagTypeFromProperties: panel %d, tagType not found, using default: %s (chopices are TAG or UDT)",CLSS,panelIndex,tagtype);
+		System.out.println("Using default tag type: "+tagtype);
+		return tagtype;
+	}
 
 	public int getStepVersion(int index,InstallerData model) {
 		Element panel = getPanelElement(index,model);
@@ -1646,12 +1667,17 @@ public class InstallerDataHandler {
 	}
 	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
 	public String loadArtifactAsTagGroup(int panelIndex,String projectName,String artifactName,InstallerData model) {
+		log.infof("%s.loadArtifactAsTagGroup: initializing step: %s",CLSS, artifactName);
 		String result = null;
+		log.infof("Reading file...");
 		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
+		log.infof("Ready to install...");
 		int count = 1;
 		for( File file: files ) {
+			log.infof("Installing a file...");
 			try {
-				log.infof("%s.loadArtifactAsTagGroup: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
+				log.infof("Inside try...");
+				//log.infof("%s.loadArtifactAsTagGroup: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
 				count = count + TAG_CHUNK_SIZE;
 				tagUtil.importGroupsFromFile(file,projectName);
 			}

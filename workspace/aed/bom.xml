@@ -109,7 +109,7 @@
 	
 	<panel type="scanclass" essential="true" version="1">
 		<title>Create Tag Groups </title>
-		<preamble>Create appropriate tag groups which determine tag execution rates. 
+		<preamble>Create tag groups which determine tag execution rates. 
 				(Formerly known as scan classes) 
 		</preamble>
 		<property name="provider" type="production"></property>
