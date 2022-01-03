@@ -13,6 +13,7 @@ public enum PanelType
 			BACKUP,
 			CLEAR,
             DATABASE,
+            DATABASE_DROPDOWN,
             DEFINITION,
             DOCUMENTATION,
             FEATURE, 
@@ -28,6 +29,7 @@ public enum PanelType
             SOURCE,
             SUMMARY,
             TAG,
+            TAG_DROPDOWN,
             TOOLKIT,
             WELCOME
             ;

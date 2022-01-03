@@ -137,6 +137,7 @@ public class DefinitionStep extends BasicInstallerPanel {
     	add(secondaryDatabaseLabel);
     	SourceList secondaryDatabases = new SourceList("secondaryDatabases", new PropertyModel<SerializableDatasourceMeta>(this, "secondaryDatabase"), getDatasourceList());
 		add(secondaryDatabases);
+		
 		Label productionDBMSLabel = new Label("productionDBMSLabel",dataHandler.getLabel(properties,true)+" DBMS: ");
     	add(productionDBMSLabel);
     	DBMSList productionDBMSs = new DBMSList("productionDBMSs", new PropertyModel<String>(this, "productionDBMS"), getDBMSList());

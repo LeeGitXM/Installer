@@ -10,6 +10,7 @@ import com.ils.ai.gateway.panel.BackupStep;
 import com.ils.ai.gateway.panel.BasicInstallerPanel;
 import com.ils.ai.gateway.panel.ClearStep;
 import com.ils.ai.gateway.panel.DatabaseStep;
+import com.ils.ai.gateway.panel.DatabaseWithDropdownStep;
 import com.ils.ai.gateway.panel.DefinitionStep;
 import com.ils.ai.gateway.panel.DocumentationStep;
 import com.ils.ai.gateway.panel.FeatureStep;
@@ -24,6 +25,7 @@ import com.ils.ai.gateway.panel.SiteStep;
 import com.ils.ai.gateway.panel.SourceStep;
 import com.ils.ai.gateway.panel.SummaryStep;
 import com.ils.ai.gateway.panel.TagStep;
+import com.ils.ai.gateway.panel.TagWithDropdownStep;
 import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
 
@@ -52,6 +54,8 @@ public class InstallerPanelFactory  {
 				break;
 			case DATABASE: step = new DatabaseStep(panelIndex,prior,title,model);
 				break;
+			case DATABASE_DROPDOWN: step = new DatabaseWithDropdownStep(panelIndex,prior,title,model);
+				break;
 			case DEFINITION: step = new DefinitionStep(panelIndex,prior,title,model);
 				break;
 			case FEATURE:  step = new FeatureStep(panelIndex,prior,title,model);
@@ -79,6 +83,8 @@ public class InstallerPanelFactory  {
 			case SUMMARY: step = new SummaryStep(panelIndex,prior,title,model);
 				break;
 			case TAG: step = new TagStep(panelIndex,prior,title,model);
+				break;
+			case TAG_DROPDOWN: step = new TagWithDropdownStep(panelIndex,prior,title,model);
 				break;
 			case TOOLKIT: step = new ToolkitStep(panelIndex,prior,title,model);
 				break;

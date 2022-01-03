@@ -234,6 +234,7 @@ public class InstallerDataHandler {
         // If the production provider property has a value, use it. Otherwise get the toolkit property
 		List<PropertyItem> properties = getPanelProperties(index, model);
 		for(PropertyItem prop:properties) {
+			System.out.println("   Getting a "+ prop.getName() + " datasource..." );
     		if(prop.getName().equalsIgnoreCase("database")) {
     			if(prop.getType().equalsIgnoreCase("production")) {
     				datasources = model.getCurrentSiteProductionDatasources();
@@ -1121,6 +1122,7 @@ public class InstallerDataHandler {
 	public PanelData getPanelData(int panelIndex,InstallerData model) {
 		Integer key = panelIndex;
 		PanelData data = model.getPanelMap().get(key);
+		//System.out.println("Getting panel data...");
 		if( data==null ) {
 			data = new PanelData();
 			Element panelElement = getPanelElement(panelIndex,model);
@@ -1193,12 +1195,13 @@ public class InstallerDataHandler {
 			}
 			model.getPanelMap().put(key,data);
 		}
-		
+		//System.out.println("...done");
 		return data;
 	}
 
 	// Return property name value pairs associated with a particular panel
 	public List<PropertyItem> getPanelProperties(int panelIndex,InstallerData model) {
+		//System.out.println("Getting panel properties...");
 		List<PropertyItem> properties = new ArrayList<>();
 		Element panel = getPanelElement(panelIndex,model);
 		if( panel!=null ) {
@@ -1226,6 +1229,7 @@ public class InstallerDataHandler {
 				index++;
 			}
 		}
+		//System.out.println("...done!");
 		return properties;
 	}
 	
@@ -1250,6 +1254,7 @@ public class InstallerDataHandler {
 	// Return property name value pairs
 	// We only want properties that are direct children
 	public List<PropertyItem> getProperties(InstallerData model) {
+		//System.out.println("Getting properties...");
 		List<PropertyItem> properties = new ArrayList<>();
 		Document bom = getBillOfMaterials(model);
 		if( bom!=null ) {
@@ -1282,6 +1287,7 @@ public class InstallerDataHandler {
 				index++;
 			}
 		}
+		//System.out.println("...done!");
 		return properties;
 	}
 	
@@ -1624,16 +1630,16 @@ public class InstallerDataHandler {
 			JarEntry entry = jar.getJarEntry(location);
 			if( entry!=null ) {
 				projectReader = jar.getInputStream(entry);
-				log.infof("%s.loadArtifactAsProject: About to import %s",CLSS,name);
+				//log.infof("%s.loadArtifactAsProject: About to import %s",CLSS,name);
 				ProjectImport importer = ProjectFileUtil.importFromZip(projectReader, name);
-				log.infof("%s.loadArtifactAsProject: IMPORTED!",CLSS);
+				//log.infof("%s.loadArtifactAsProject: IMPORTED!",CLSS);
 				ProjectManager pmgr = getContext().getProjectManager();
 				List<ProjectResource> prlist = new ArrayList<>();
 				for(ProjectResource res:importer.getResources()) {
-					log.infof("%s.loadArtifactAsProject: got resource %s",CLSS,res.getResourceName());
+					//log.infof("%s.loadArtifactAsProject: got resource %s",CLSS,res.getResourceName());
 					prlist.add(res);
 				}
-				log.infof("%s.loadArtifactAsProject: building manifest ...",CLSS);
+				//log.infof("%s.loadArtifactAsProject: building manifest ...",CLSS);
 				ProjectManifest.Builder builder = importer.getManifest().toBuilder();
 				builder.setEnabled(false);
 				builder.setDescription(updateProjectDescription(importer.getManifest().getDescription(),model));

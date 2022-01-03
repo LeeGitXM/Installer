@@ -43,6 +43,7 @@ public class BasicInstallerPanel extends GatewayWizardStep {
 
 	public BasicInstallerPanel(int index,BasicInstallerPanel previous,String title,Model<InstallerData> model) {
 		super(previous,title, model);
+		//System.out.println("Creating a panel with index "+index);
 		this.panelIndex = index;
 		this.prior = previous;
 		this.dataModel = model;

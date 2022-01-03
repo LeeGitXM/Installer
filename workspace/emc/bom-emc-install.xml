@@ -39,20 +39,22 @@
 		</artifact>
 	</panel>
 	
-	
+	<!--  Allowed names are: database, provider -->
+	<!--  Allowed types are: production, isolation -->
+	<!--
 	<panel type="definition" essential="true">
 		<title>Common interface Definitions</title>
 		<preamble>Specify tag provider and database connections as used by various Ignition Applications. 
 		Both production and test mode versions of provider and database must be specified. 
 		The selections here are used by subsequent screens.
 		</preamble>
-		<!--  Allowed names are: database, provider -->
-		<!--  Allowed types are: production, isolation -->
+
 		<property name="database" type="production"></property>
 		<property name="database" type="isolation"></property>
 		<property name="provider" type="production"></property>
 		<property name="provider" type="isolation"></property>
 	</panel>
+	-->	
 	
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
@@ -99,7 +101,8 @@
 			<destination>database</destination>
 		</artifact>
 	</panel>
-	
+
+	<!--  This was the original definition for the database	
 	<panel type="database" essential="true" version="010100">
 		<title>Database Create and Alter Scripts for Ignition Applications</title>
 		<preamble>This page provides the opportunity for either creating a new database instance or
@@ -108,7 +111,7 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: clear, create, alter -->
+
 		<artifact name="XOM Database" type="sql" subtype="create">
 			<location>artifacts/database/createDatabase.sql</location>
 		</artifact>
@@ -116,14 +119,25 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
-	<panel type="database" essential="true" version="010100">
-		<title>Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;ISOLATION&lt;/b&gt; instance.
+	-->	
+
+
+	<!--  This is the new panel that hopefully has a dropdown and can be run over and over  
+			<property name="database" type="isolation"></property>		
+	-->
+	<panel type="database_dropdown" essential="true" version="010100">
+		<title>Database Clear and Create Scripts</title>
+		<preamble>This page provides the opportunity for initializing and creating the Symbolic Ai database schema for the
+		selected database instance.  The production and isolation database schemas are identical so this action can
+		be performed multiple times on different production and isolation database connections.
 		</preamble>
-		<property name="database" type="isolation"></property>
+
+		<property name="database" type="production"></property>
+		<!--
 		<property name="dbms" type="SQLSERVER"></property>
+		<property name="database" type="production"></property>
+		-->
+		
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="XOM Database" type="sql" subtype="create">
 			<location>artifacts/database/createDatabase.sql</location>
@@ -132,6 +146,7 @@
 			<location>artifacts/database/clearDatabase.sql</location>
 		</artifact>
 	</panel>
+	
 	
 	<!--
 	<panel type="module" subtype="production" essential="true" version="010100" >
@@ -198,6 +213,7 @@
 		</artifact>
 	</panel>
 	
+	<!--
 	<panel type="tag" subtype="production" essential="True" version="010100">
 		<title>Install UDT Definitions</title>
 		<preamble>This page installs UDTs that are needed by the applications
@@ -224,6 +240,40 @@
 		</preamble>
 		<property name="provider" type="isolation"></property>
 		<property name="tagType"  type="UDT"></property>
+	
+		<artifact name="UDT Definitions" subtype="json">
+			<location>artifacts/tags/udtsIsolation.json</location>
+		</artifact>
+	</panel>
+	-->
+	
+	<panel type="tag_dropdown" subtype="production" essential="True" version="010100">
+		<title>Install Production UDT Definitions</title>
+		<preamble>This page installs UDTs that are needed by the applications
+			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
+			differ from tag resources in the installer.  It will overwrite UDTs in folders that 
+			are included in the installer.
+		</preamble>
+		<property name="tagType" type="UDT"></property>
+		<property name="provider" type="production"></property>
+		
+		<artifact name="UDT Definitions" subtype="json">
+			<location>artifacts/tags/udts.json</location>
+		</artifact>
+	</panel>
+	
+	<panel type="tag_dropdown" subtype="isolation" essential="True" version="010100">
+		<title>Install Isolation UDT Definitions</title>
+		<preamble>This page installs UDTs that are needed by the applications
+			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
+			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
+			are not included in the installer.  It will overwrite UDTs in folders that 
+			are included in the installer.  Isolation UDTs are different than Production UDTs.  
+			Isolation UDTs replace OPC tags with memory tags in order to isolate production systems.
+		</preamble>
+		<property name="tagType"  type="UDT"></property>
+		<property name="provider" type="isolation"></property>
 	
 		<artifact name="UDT Definitions" subtype="json">
 			<location>artifacts/tags/udtsIsolation.json</location>
@@ -374,7 +424,7 @@
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
 		            Restart the Gateway, then edit each project setting it to "enabled".</note>
 		<note name="Database and Tag Provider Project Defaults">The default database and tag provide must be manually configured for 
-		            the project from the Comfig -> Projects page.</note>
+		            the project from the Config -> Projects page.</note>
 		<note name="Tag Groups (Scan Classes)">There is a bug installing tag groups these must be manually imported from Designer.</note>
 		<note name="Uninstall the Installer">The installer may not automatically uninstall itself.  If it doesn't, you should manually
 		            uninstall it from the Config -> Modules page.</note>            

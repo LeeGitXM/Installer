@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+<wicket:head>
+	<wicket:link>
+		<link href="InstallerStyles.css" rel="stylesheet" />
+	</wicket:link>
+</wicket:head>
+</head>
+<body>
+
+	<wicket:panel>
+		<p wicket:id="preamble">should not appear</p>
+		
+		<div class="version-box">
+				<table class="vers">
+					<thead>
+						<tr>
+							<td class="vers-header" />
+							<td class="vers-header">Installed</td>
+							<td class="vers-header">New</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="vers-header">Version</td>
+							<td class="vers-body"><span wicket:id="currentVersion" /></td>
+							<td class="vers-body"><span wicket:id="futureVersion" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+		<p class="spacer" />
+
+		<table>
+			<tr>
+				<td><span class="label" wicket:id="databaseLabel" /></td>
+				<td><select class="chooser" wicket:id="productionDatabases" /></td>
+			</tr>
+			<tr />
+		</table>
+		
+		<div>
+		
+		<table class="installtable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<td colspan="2">Database</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="clear">
+					<td class="trow-title">Clear instance</td>
+					<td class="trow-body">
+						<form wicket:id="clearForm" action="">
+							<table class="ilsedit">
+								<tr>
+									<td><input style="align: left; background-color: rgb(120, 20, 20)" type="submit" wicket:id="clear"
+										value="Clear" /></td>
+									<td><p>Drop all tables in selected database.</p></td>
+								</tr>
+							</table>
+						</form>
+					</td>
+				</tr>
+				<tr wicket:id="create">
+					<td class="trow-title">Create new database instance</td>
+					<td class="trow-body">
+						<form wicket:id="createForm" action="">
+							<table class="ilsedit">
+								<tr>
+									<td><input style="align: right; background-color: rgb(120, 20, 20)" type="submit"
+										wicket:id="create" value="Create" /></td>
+									<td><p>Create tables in selected database.  The database must be cleared of any existing tables for this to succeed.</p></td>
+								</tr>
+							</table>
+						</form>
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+
+		
+		</div>
+		<p class="spacer" />
+	</wicket:panel>
+
+</body>
+</html>
