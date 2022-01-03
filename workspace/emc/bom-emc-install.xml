@@ -133,8 +133,8 @@
 		</preamble>
 
 		<property name="database" type="production"></property>
-		<!--
 		<property name="dbms" type="SQLSERVER"></property>
+		<!--
 		<property name="database" type="production"></property>
 		-->
 		

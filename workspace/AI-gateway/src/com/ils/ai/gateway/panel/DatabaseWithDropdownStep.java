@@ -101,12 +101,12 @@ public class DatabaseWithDropdownStep extends BasicInstallerPanel {
 			
 
 			public void onSubmit() {
-				System.out.println("Executing CLEAR on "+productionDatabase.getName());
 				StringBuilder failure = new StringBuilder("");
-				if (productionDatabase.getName().equalsIgnoreCase("")) {
+				if (productionDatabase == null) {
 					error(failure.insert(0,"Please select a database from the dropdown").toString());
 				}
 				else {
+					System.out.println("Executing CLEAR on "+productionDatabase.getName());
 					InstallerDataHandler handler = InstallerDataHandler.getInstance();
 					String result = handler.executeSQLFromArtifact(productionDatabase.getName(),index,clearName,data);
 					if( result==null || result.isEmpty()) {
@@ -131,12 +131,12 @@ public class DatabaseWithDropdownStep extends BasicInstallerPanel {
 			private static final long serialVersionUID = 4330778774811578782L;
 
 			public void onSubmit() {
-				System.out.println("Executing CREATE...");
 				StringBuilder failure = new StringBuilder("");
-				if (productionDatabase.getName().equalsIgnoreCase("")) {
+				if (productionDatabase == null) {
 					error(failure.insert(0,"Please select a database from the dropdown").toString());
 				}
 				else {
+					System.out.println("Executing CREATE on "+productionDatabase.getName());
 					InstallerDataHandler handler = InstallerDataHandler.getInstance();
 					String result = handler.executeSQLFromArtifact(productionDatabase.getName(),index,createName,data);
 					if( result==null || result.isEmpty()) {

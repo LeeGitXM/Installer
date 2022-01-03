@@ -349,6 +349,7 @@ public class InstallerDataHandler {
 	public String executeSQLFromArtifact(String datasource,int panelIndex,String artifactName,InstallerData model) {
 		String result = null;
 		boolean debug = false;
+		if( debug ) log.infof("%s.executeSQLFromArtifact()...", CLSS);
 		// Search for DBMS
 		DBMS dbms = DBMS.ANSI;  // Default
 		List<PropertyItem> properties =  getPanelProperties(panelIndex,model);
@@ -375,12 +376,13 @@ public class InstallerDataHandler {
 			while(scanner.hasNextLine()) {
 				// Accumulate until we get to a statement terminator
 				String line = scanner.nextLine();
+				if( debug ) log.infof("%s.read line: %s", CLSS, line);
 				if( line.endsWith("\r")) line = line.substring(0, line.length()-1);
 				
 				// No matter what, a line of "go" is a terminator meaning "execute"
 				if( line.trim().equalsIgnoreCase("go") ) {
 					statements.add(sb.toString());
-					if( debug ) log.info(sb.toString());
+					if( debug ) log.infof("Adding command to buffer: %s", sb.toString());
 					sb.setLength(0);
 				}
 				else if( !dbms.equals(DBMS.SQLSERVER) && line.endsWith(";")) {
