@@ -1,5 +1,5 @@
 /**
- * Copyright 2016. ILS Automation. All rights reserved.
+ * Copyright 2016-2022. ILS Automation. All rights reserved.
  */
 package com.ils.ai.gateway.panel;
 
@@ -16,10 +16,11 @@ import com.ils.ai.gateway.model.InstallerDataHandler;
 import com.ils.ai.gateway.model.PersistenceHandler;
 
 /**
+ * Also known as TagGroup
  */
 public class ScanClassStep extends BasicInstallerPanel {
 	private static final long serialVersionUID = 2204950686203860253L;
-	private String project = "";
+	private String provider = "";
 
 	public ScanClassStep(int index,BasicInstallerPanel previous,String title, Model<InstallerData> dataModel){
         super(index,previous, title, dataModel); 
@@ -29,11 +30,11 @@ public class ScanClassStep extends BasicInstallerPanel {
 		add(new Label("futureVersion",futureVersionString));
         
 		InstallerDataHandler dataHandler = InstallerDataHandler.getInstance();
-        project = dataHandler.projectNameFromProperties(index, data);
-		add(new Label("project",project));
+        provider = dataHandler.providerNameFromProperties(index, data);
+		add(new Label("provider",provider));
 		
-        List<String> scanClasses = dataHandler.getArtifactNames(index, data);
-        add(new ListView<String>("scanclasses", scanClasses) {
+        List<String> tagGroups = dataHandler.getArtifactNames(index, data);
+        add(new ListView<String>("taggroups", tagGroups) {
 			private static final long serialVersionUID = 8682507940096836472L;
 
 			protected void populateItem(ListItem<String> item) {
@@ -52,12 +53,12 @@ public class ScanClassStep extends BasicInstallerPanel {
             	
             	for(String name:names) {
             		System.out.println("ScanClassStep: processing: "+name);
-            		String result = dataHandler.loadArtifactAsTagGroup(index,project,name,data);
+            		String result = dataHandler.loadArtifactAsTagGroup(index,provider,name,data);
             		System.out.println("...result: "+result);
             		if( result==null ) {
             			PersistenceHandler.getInstance().setStepVersion(product, type, subtype, futureVersion);
             			panelData.setCurrentVersion(futureVersion);
-            			info(String.format("Successfully loaded scanclass %s", name));
+            			info(String.format("Successfully loaded tag group %s", name));
             		}
             		else error(result);
             	}
