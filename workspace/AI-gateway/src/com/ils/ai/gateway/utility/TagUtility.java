@@ -2,7 +2,6 @@ package com.ils.ai.gateway.utility;
 
 import java.io.File;
 
-import org.python.core.PyInteger;
 import org.python.core.PyString;
 import org.python.core.PyStringMap;
 
@@ -40,13 +39,5 @@ public class TagUtility{
         String code = "system.tag.importTags(filePath, basePath, collisionPolicy)";
         log.info(String.format("%s.importTagsFromFile:%s %s to %s" , CLSS,code,file.toPath().toString(),base));
         context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
-	} 
-	// Import tag groups (scan classes). These are project-specific.
-	public void importGroupsFromFile(File file,String project) throws Exception {
-		pyLocals.__setitem__("filePath", new PyString(file.toPath().toString()));
-		pyLocals.__setitem__("projectName", new PyString(project));
-		pyLocals.__setitem__("mode", new PyInteger(0));   // Overwrite
-		String code = "system.groups.loadFromFile(filePath, projectName, mode)";
-		context.getScriptManager().runCode(code, pyLocals, pyGlobals, "SDKCode");
 	}    
 }
