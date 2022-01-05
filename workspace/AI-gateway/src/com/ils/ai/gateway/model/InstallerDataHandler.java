@@ -41,6 +41,7 @@ import com.ils.ai.gateway.utility.CSVUtility;
 import com.ils.ai.gateway.utility.FileUtility;
 import com.ils.ai.gateway.utility.JarUtility;
 import com.ils.ai.gateway.utility.PythonUtility;
+import com.ils.ai.gateway.utility.TagGroupUtility;
 import com.ils.ai.gateway.utility.TagUtility;
 import com.ils.ai.gateway.utility.TransactionGroupUtility;
 import com.ils.ai.gateway.utility.XMLUtility;
@@ -55,6 +56,7 @@ import com.inductiveautomation.ignition.common.project.ProjectManifest;
 import com.inductiveautomation.ignition.common.project.RuntimeProject;
 import com.inductiveautomation.ignition.common.project.resource.ProjectResource;
 import com.inductiveautomation.ignition.common.script.JythonExecException;
+import com.inductiveautomation.ignition.common.tags.config.TagGroupConfiguration;
 import com.inductiveautomation.ignition.common.util.LogUtil;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.IgnitionGateway;
@@ -94,6 +96,7 @@ public class InstallerDataHandler {
 	private FileUtility fileUtil;
 	private JarUtility jarUtil = null;
 	private PythonUtility pyUtil = null;
+	public TagGroupUtility tagGroupUtil = null;
 	public TagUtility tagUtil = null;
 	private TransactionGroupUtility transactionUtil = null;
 	private XMLUtility xmlUtil = null;
@@ -1674,28 +1677,24 @@ public class InstallerDataHandler {
 		return result;
 	}
 	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
-	public String loadArtifactAsTagGroup(int panelIndex,String projectName,String artifactName,InstallerData model) {
+	public String loadArtifactAsTagGroup(int panelIndex,String providerName,String artifactName,InstallerData model) {
 		log.infof("%s.loadArtifactAsTagGroup: initializing step: %s",CLSS, artifactName);
 		String result = null;
-		log.infof("Reading file...");
-		List<File> files = getArtifactAsListOfTagFiles(panelIndex,artifactName,model);
-		log.infof("Ready to install...");
-		int count = 1;
-		for( File file: files ) {
-			log.infof("Installing a file...");
+		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
+		if( bytes!=null && bytes.length>0 ) {
 			try {
-				log.infof("Inside try...");
-				//log.infof("%s.loadArtifactAsTagGroup: %s: installing tags %d-%d",CLSS,artifactName,count,count+TAG_CHUNK_SIZE-1);
-				count = count + TAG_CHUNK_SIZE;
-				tagUtil.importGroupsFromFile(file,projectName);
-			}
-			catch( SAXException saxe) {
-				result = String.format( "Error with %s file format (%s)", artifactName,saxe.getLocalizedMessage());
+				log.infof("%s.loadArtifactAsTagGroup: installing %d bytes as %s",CLSS,bytes.length,artifactName);
+				List<TagGroupConfiguration> groups = tagGroupUtil.listFromBytes(providerName,bytes);
+				context.getTagManager().getTagProvider(providerName).saveTagGroupsAsync(groups);				
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
-				log.warn("InstallerDataHandler.loadArtifactAsTagGroup: "+file.getAbsolutePath()+" EXCEPTION",ex);
+				log.warnf("InstallerDataHandler.loadArtifactAsTagGroup: %s (%s)",result,ex.getLocalizedMessage());
 			}
+		}
+		else {
+			result = String.format("Failed to find %s resource in bundle", artifactName);
+			log.warn(result);
 		}
 
 
@@ -1881,6 +1880,7 @@ public class InstallerDataHandler {
 		this.fileUtil = new FileUtility();
 		this.jarUtil  = new JarUtility(context);
 		this.pyUtil   = new PythonUtility(context);
+		this.tagGroupUtil  = new TagGroupUtility();
 		this.tagUtil  = new TagUtility(context);
 		this.transactionUtil = new TransactionGroupUtility(context);
 		this.xmlUtil  = new XMLUtility();

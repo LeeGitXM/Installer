@@ -194,7 +194,6 @@
 		<preamble>Create tag groups (formerly known as scan classes) which determine execution rates for 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
 		</preamble>
-		<property name="project">XOM_Site</property>
 		<property name="provider" type="production">Production_TP</property>
 		<artifact name="Production ScanClasses" type="scanclass" subtype="json">
 			<location>artifacts/tagGroups/tagGroups.json</location>
@@ -206,7 +205,6 @@
 		<preamble>Create tag groups  (formerly known as scan classes) which determine tag execution rates for 
 				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
 		</preamble>
-		<property name="project">XOM_Site</property>
 		<property name="provider" type="isolation">Isolation_TP</property>
 		<artifact name="Isolation ScanClasses" type="scanclass" subtype="json">
 			<location>artifacts/tagGroups/tagGroups.json</location>
