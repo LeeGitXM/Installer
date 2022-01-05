@@ -65,7 +65,7 @@
 		<echo message="${build.date}" file="${staging.dir}/.application-installer" append="false" />
 		
 		<!-- Copy Core jar files -->
-		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${staging.dir}/" />
+		<copy file="${git.repo}/ils-common/ILS_Common/jars/ils-common.jar" todir="${staging.dir}/" />
 		<copy file="${build.dir}/temp_modl/ai-gateway.jar" todir="${staging.dir}/" />
 
 		<!-- Copy staged artifacts into the bundle. Update release and build date -->

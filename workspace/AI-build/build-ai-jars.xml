@@ -56,7 +56,10 @@
 		<mkdir dir="${build.dir}/temp_modl" />
 		
 		<!-- Copy gateway jar -->
+		<!--
 		<copy file="${git.repo}/external/lib/ils-common.jar" todir="${build.dir}/temp_modl/" />
+		-->
+		<copy file="${git.repo}/ils-common/ILS_Common/jars/ils-common.jar" todir="${build.dir}/temp_modl/" />
 		<copy file="${build.dir}/bin/${AIModule.name}_Gateway/dist/ai-gateway.jar" todir="${build.dir}/temp_modl/" />
 		
 	</target>

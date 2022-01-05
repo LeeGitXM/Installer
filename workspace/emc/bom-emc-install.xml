@@ -128,8 +128,8 @@
 	<panel type="database_dropdown" essential="true" version="010100">
 		<title>Database Clear and Create Scripts</title>
 		<preamble>This page provides the opportunity for initializing and creating the Symbolic Ai database schema for the
-		selected database instance.  The production and isolation database schemas are identical so this action can
-		be performed multiple times on different production and isolation database connections.
+		selected database instance.  The production and isolation database schemas are identical so this action should
+		be performed on each production and isolation database connection.
 		</preamble>
 
 		<property name="database" type="production"></property>
