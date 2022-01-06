@@ -21,6 +21,7 @@ import com.ils.ai.gateway.panel.ModuleStep;
 import com.ils.ai.gateway.panel.ProjectStep;
 import com.ils.ai.gateway.panel.PythonStep;
 import com.ils.ai.gateway.panel.ScanClassStep;
+import com.ils.ai.gateway.panel.ScanClassWithDropdownStep;
 import com.ils.ai.gateway.panel.SiteStep;
 import com.ils.ai.gateway.panel.SourceStep;
 import com.ils.ai.gateway.panel.SummaryStep;
@@ -75,6 +76,8 @@ public class InstallerPanelFactory  {
 			case PYTHON: step = new PythonStep(panelIndex,prior,title,model);
 				break;
 			case SCANCLASS: step = new ScanClassStep(panelIndex,prior,title,model);
+				break;
+			case SCANCLASS_DROPDOWN: step = new ScanClassWithDropdownStep(panelIndex,prior,title,model);
 				break;
 			case SITE:      step = new SiteStep(panelIndex,prior,title,model);
 				break;

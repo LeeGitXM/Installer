@@ -25,6 +25,7 @@ public enum PanelType
             PROJECT,       // Replacement or new
             PYTHON,
             SCANCLASS,
+            SCANCLASS_DROPDOWN,
             SITE,
             SOURCE,
             SUMMARY,

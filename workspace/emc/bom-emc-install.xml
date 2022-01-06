@@ -102,28 +102,9 @@
 		</artifact>
 	</panel>
 
-	<!--  This was the original definition for the database	
-	<panel type="database" essential="true" version="010100">
-		<title>Database Create and Alter Scripts for Ignition Applications</title>
-		<preamble>This page provides the opportunity for either creating a new database instance or
-		altering an existing instance to accommodate schema corrections. The actions here are 
-		performed against the &lt;b&gt;PRODUCTION&lt;/b&gt; instance.
-		</preamble>
-		<property name="database" type="production"></property>
-		<property name="dbms" type="SQLSERVER"></property>
-
-		<artifact name="XOM Database" type="sql" subtype="create">
-			<location>artifacts/database/createDatabase.sql</location>
-		</artifact>
-		<artifact name="Clear Database" type="sql" subtype="clear">
-			<location>artifacts/database/clearDatabase.sql</location>
-		</artifact>
-	</panel>
-	-->	
-
-
-	<!--  This is the new panel that hopefully has a dropdown and can be run over and over  
-			<property name="database" type="isolation"></property>		
+	<!--  
+	This is the new panel that has a dropdown and can be run over and over for each database.
+	The database schema is the same for production and isolation.
 	-->
 	<panel type="database_dropdown" essential="true" version="010100">
 		<title>Database Clear and Create Scripts</title>
@@ -134,9 +115,6 @@
 
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<!--
-		<property name="database" type="production"></property>
-		-->
 		
 		<!-- Recognized subtypes are: clear, create, alter -->
 		<artifact name="XOM Database" type="sql" subtype="create">
@@ -189,62 +167,26 @@
 	</panel>
 	-->
 	
-	<panel type="scanclass" essential="true" version="010100">
+	<!--  
+	This is the new panel that has a dropdown of tag providers and can be run over and over for each tag group.
+	The tag groups are the same for production and isolation.
+	-->
+	<panel type="scanclass_dropdown" essential="true" version="010100">
 		<title>Create Tag Groups</title>
 		<preamble>Create tag groups (formerly known as scan classes) which determine execution rates for 
 				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
 		</preamble>
 		<property name="provider" type="production">Production_TP</property>
+		
 		<artifact name="Production ScanClasses" type="scanclass" subtype="json">
 			<location>artifacts/tagGroups/tagGroups.json</location>
 		</artifact>
 	</panel>
 	
-	<panel type="scanclass" essential="true" version="010100">
-		<title>Create Tag Groups</title>
-		<preamble>Create tag groups  (formerly known as scan classes) which determine tag execution rates for 
-				&lt;b&gt;ISOLATION&lt;/b&gt; tags. 
-		</preamble>
-		<property name="provider" type="isolation">Isolation_TP</property>
-		<artifact name="Isolation ScanClasses" type="scanclass" subtype="json">
-			<location>artifacts/tagGroups/tagGroups.json</location>
-		</artifact>
-	</panel>
-	
-	<!--
-	<panel type="tag" subtype="production" essential="True" version="010100">
-		<title>Install UDT Definitions</title>
-		<preamble>This page installs UDTs that are needed by the applications
-			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
-			differ from tag resources in the installer.  It will overwrite UDTs in folders that 
-			are included in the installer.
-		</preamble>
-		<property name="tagType" type="UDT"></property>
-		<property name="provider" type="production"></property>
-		
-		<artifact name="UDT Definitions" subtype="json">
-			<location>artifacts/tags/udts.json</location>
-		</artifact>
-	</panel>
-	
-	<panel type="tag" subtype="isolation" essential="True" version="010100">
-		<title>Install UDT Definitions</title>
-		<preamble>This page installs UDTs that are needed by the applications
-			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
-			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
-			are not included in the installer.  It will overwrite UDTs in folders that 
-			are included in the installer.
-		</preamble>
-		<property name="provider" type="isolation"></property>
-		<property name="tagType"  type="UDT"></property>
-	
-		<artifact name="UDT Definitions" subtype="json">
-			<location>artifacts/tags/udtsIsolation.json</location>
-		</artifact>
-	</panel>
+	<!--  
+	This is the new panel that has a dropdown of tag providers and can be run over and over for each 
+	PRODUCTION tag provider.  The UDTs are different for production and isolation.
 	-->
-	
 	<panel type="tag_dropdown" subtype="production" essential="True" version="010100">
 		<title>Install Production UDT Definitions</title>
 		<preamble>This page installs UDTs that are needed by the applications
@@ -261,6 +203,10 @@
 		</artifact>
 	</panel>
 	
+	<!--  
+	This is the new panel that has a dropdown of tag providers and can be run over and over for each 
+	ISOLATION tag provider.  The UDTs are different for production and isolation.
+	-->
 	<panel type="tag_dropdown" subtype="isolation" essential="True" version="010100">
 		<title>Install Isolation UDT Definitions</title>
 		<preamble>This page installs UDTs that are needed by the applications

@@ -1678,7 +1678,7 @@ public class InstallerDataHandler {
 	}
 	// Assume our installation has only one gateway server. Otherwise the panel will need to list the servers.
 	public String loadArtifactAsTagGroup(int panelIndex,String providerName,String artifactName,InstallerData model) {
-		log.infof("%s.loadArtifactAsTagGroup: initializing step: %s",CLSS, artifactName);
+		log.infof("%s.loadArtifactAsTagGroup: initializing step: %s using tag provider: %s",CLSS, artifactName, providerName);
 		String result = null;
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
 		if( bytes!=null && bytes.length>0 ) {
