@@ -29,6 +29,7 @@ import com.ils.ai.gateway.panel.TagStep;
 import com.ils.ai.gateway.panel.TagWithDropdownStep;
 import com.ils.ai.gateway.panel.ToolkitStep;
 import com.ils.ai.gateway.panel.WelcomeStep;
+import com.ils.ai.gateway.panel.WelcomeWithoutCheckboxesStep;
 
 /**
  *  Given a panel type and data model, create the wizard panel.
@@ -93,6 +94,8 @@ public class InstallerPanelFactory  {
 				break;
 			case WELCOME: step = new WelcomeStep(panelIndex,prior,title,model);
 				break;
+			case WELCOME_WITHOUT_CHECKBOXES: step = new WelcomeWithoutCheckboxesStep(panelIndex,prior,title,model);
+			break;
 		}
 		return step;
 	}

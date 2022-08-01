@@ -32,7 +32,8 @@ public enum PanelType
             TAG,
             TAG_DROPDOWN,
             TOOLKIT,
-            WELCOME
+            WELCOME,
+            WELCOME_WITHOUT_CHECKBOXES
             ;
    
  /**

@@ -949,6 +949,7 @@ public class InstallerDataHandler {
 		int count = getStepCount(data);
 		while(index<count) {
 			PanelData pd = getPanelData(index,data);
+			
 			if( (pd.isEssential() || ignoreOptional==false) &&
 				(pd.getCurrentVersion()!=pd.getVersion() || ignoreCurrent==false ||
 				 pd.getCurrentVersion()==InstallerConstants.UNSET) ) {
