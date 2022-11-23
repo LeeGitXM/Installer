@@ -105,6 +105,7 @@
 		<copy file="${svn.repo}/EMRE/Documentation/Test/AED v6.0 Functional Test Specification - VFM User Interface.docx" tofile="${artifact.dir}/doc/VFMUserInterface.docx" />
 
 		<!-- External -->
+		<!--  AED doesn't require ILS Python.
 		<mkdir dir="${artifact.dir}/external/ils-python" />
 		<copy todir="${artifact.dir}/external/ils-python">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src">
@@ -113,6 +114,7 @@
 				<include name="ils/__init__.py" />
 			</fileset>
 		</copy>
+		-->
 		
 		<mkdir dir="${artifact.dir}/external/xom-python" />
 		<copy todir="${artifact.dir}/external/xom-python">
@@ -216,9 +218,11 @@
 	 -->
 	
 	<target name="deploy" depends="build">
-		<echo message="Installing ApplicationInstall module on Ignition Gateway and U: Drive." />
+		<echo message="Copying the installer to the Installer repository on the U: Drive." />
 		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${installer.repo}/${module.name}-${version.build}-signed.modl" />
+		<!--
 		<postmodule posturl="${local.gateway.url}" modulefile="${module.path}/${module.name}-${version.build}-signed.modl" />
+		-->
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

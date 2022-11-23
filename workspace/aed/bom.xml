@@ -13,7 +13,7 @@
 	<property name="version">19</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
-	<panel type="welcome" essential="true">
+	<panel type="welcome_without_checkboxes" essential="true">
 		<title>ILS Automation Installer for AED-RTA</title>
 		<preamble>Welcome to the ILS Automation installer for the Abnormal Event Detection and 
 		    Real-Time Advisory(AED-RTA) application. The table below compares the existing installation of
@@ -63,10 +63,12 @@
 		Thirdly, property files for Internationalization are then stored in the Gateway installation directory:
 		 &lt;i&gt;properties/aed/aed.property&lt;/i&gt;.
 		</preamble>
+		<!--
 		<artifact name="External Python - ILS" type="text" subtype="user-lib">
 			<location>artifacts/external/ils-python</location>
 			<destination>pylib</destination>
 		</artifact>
+		-->
 		<artifact name="External Python - AED" type="text" subtype="user-lib">
 			<location>artifacts/external/xom-python</location>
 			<destination>pylib/xom</destination>
@@ -81,6 +83,9 @@
 		</artifact>
 	</panel>
 	
+	
+	<!-- Recognized subtypes are: clear, create, alter, insert -->
+	<!-- At Emilies request I removed the database page (4/7/2022 PAH) 
 	<panel type="database" essential="true" version="15">
 		<title>Database Clear and Create Scripts for AED-RTA</title>
 		<preamble>This page provides the opportunity to create a new database instance.
@@ -89,7 +94,6 @@
 		</preamble>
 		<property name="database" type="production"></property>
 		<property name="dbms" type="SQLSERVER"></property>
-		<!-- Recognized subtypes are: clear, create, alter, insert -->
 		<artifact name="Create AED Database" type="sql" subtype="create">
 			<location>artifacts/database/createAED.sql</location>
 		</artifact>
@@ -97,6 +101,7 @@
 			<location>artifacts/database/clearAED.sql</location>
 		</artifact>
 	</panel>
+	-->
 
 	<panel type="module" subtype="production" essential="true" version="16" >
 		<title>Install Custom Modules</title>
@@ -225,8 +230,8 @@
 	<!-- The completion page is displayed "onFinish()". Use it to display post-install instructions. -->
 	<epilog>
 		<title>AED-RTA - Installed</title>
-		<preamble>Now that all of the automated installation and configuration of the EMRE AED-RTA Applications
-		          is complete, there are just a few more manual steps required. </preamble>
+		<preamble>Now that all of the automated installation and configuration of the EMTEC AED-RTA Application
+		          is complete, there are just a few more manual steps that are required. </preamble>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
 		            Restart the Gateway, then edit the project setting it to "enabled".</note>
