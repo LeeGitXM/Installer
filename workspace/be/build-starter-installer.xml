@@ -42,14 +42,13 @@
 		<!-- build.date and version.build are both in GIT Release area, in
 			files VERS and DATE.
 		-->
-		<loadfile property="rawdate" srcFile="${git.repo}/batch-expert/release/DATE"/>
+		<loadfile property="rawdate" srcFile="${svn.repo}/BatchExpert+/Release/DATE"/>
 		<trim input="${rawdate}" property="build.date" />
-		<loadfile property="rawvers" srcFile="${git.repo}/batch-expert/release/VERS"/>
+		<loadfile property="rawvers" srcFile="${svn.repo}/BatchExpert+/Release/VERS"/>
 		<trim input="${rawvers}" property="version.build"/>
 
 		<echo message="Build date:    ${build.date}" />
 		<echo message="Build version: ${version.build}" />
-
 
 		<!-- Create directories -->
 		<echo message="Making ${module.name} modl" />
@@ -70,7 +69,6 @@
 		<copy file="${bom}" tofile="${artifact.dir}/bom.xml" overwrite="true" />
 		<replace file="${artifact.dir}/bom.xml" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/bom.xml" token="@RELEASE@" value="${version.build}" />
-		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
@@ -88,11 +86,14 @@
 
 		<!-- Tags -->
 		<mkdir dir="${artifact.dir}/tags" />
-		<copy file="${git.repo}/batch-expert/tags/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<copy file="${svn.repo}/BatchExpert+/Ignition/udts.json" tofile="${artifact.dir}/tags/udts.json" />
+		<!--
 		<copy file="${git.repo}/batch-expert/tags/udts_new.json" tofile="${artifact.dir}/tags/udts_new.json" />
 		<copy file="${git.repo}/batch-expert/tags/configurationTags.json" tofile="${artifact.dir}/tags/configurationTags.json" />
 		<copy file="${git.repo}/batch-expert/tags/site_simulation_udts.xml" tofile="${artifact.dir}/tags/simulation_udts.xml" />
 		<copy file="${git.repo}/batch-expert/tags/ClientTags.zip" tofile="${artifact.dir}/tags/ClientTags.zip" />
+		-->
+		
 
 		<!-- External -->
 		<mkdir dir="${artifact.dir}/external" />
@@ -106,17 +107,21 @@
 				<include name="xlsxwriter/**/*.py" />
 			</fileset>
 		</copy>
+		<!--  I forked the jChart code and added under BE - PH 11/15/22
 		<mkdir dir="${artifact.dir}/external/ils" />
 		<copy todir="${artifact.dir}/external/ils">
 			<fileset dir="${git.repo}/ils-python/ILS_Python/src/ils">
 				<include name="jChart/*.py" />
 			</fileset>
 		</copy>
+		-->
+		<!--  We no longer want to support PY-SFC (which required a Java module) - PH 11/15/22
 		<copy todir="${artifact.dir}/external/ils">
 			<fileset dir="${git.repo}/py-sfc/pysfc-python/src/ils">
 				<include name="pysfc/**/*.py" />
 			</fileset>
 		</copy>
+		-->
 		<mkdir dir="${artifact.dir}/external/lib" />
 		<copy todir="${artifact.dir}/external/lib">
 			<fileset dir="${git.repo}/external/lib">
@@ -124,6 +129,7 @@
 			</fileset>
 		</copy>
 		<delete file="${artifact.dir}/external/lib/ils-common-j7.jar" />
+
 		<!-- Remove examples -->
 		<delete dir="${artifact.dir}/external/ils/pysfc/example" />
 		<delete dir="${artifact.dir}/external/ils/be/database/customer" />
@@ -131,30 +137,35 @@
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="example*.py" />
 			<fileset dir="${artifact.dir}/external/ils/pysfc/registration" includes="simple*.py" />
 		</delete>
+
 		<!-- Remove obsolete BatchExpert -->
 		<delete dir="${artifact.dir}/external/ils/BatchExpert" />
 
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/taggroups" />
-		<copy file="${git.repo}/batch-expert/tags/tag-groups.json" tofile="${artifact.dir}/taggroups/tag-groups.json" />
+		<copy file="${svn.repo}/BatchExpert+/Ignition/tag-groups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
 
 		<!-- Modules -->
+		<!-- The pysfc module is no longer supported - PH 10/18/11
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
+		-->
 		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${git.repo}/batch-expert/doc/BEGettingStarted.docx" tofile="${artifact.dir}/doc/BEGettingStarted.docx" />
-		<copy file="${git.repo}/batch-expert/release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
+		<copy file="${svn.repo}/BatchExpert+/Documentation/Getting Started/BE+ Getting Started.pdf" tofile="${artifact.dir}/doc/BEGettingStarted.pdf" />
+		<copy file="${svn.repo}/BatchExpert+/Release/ReleaseNotes.pdf" tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
 		
 		<!-- Project -->
 		<mkdir dir="${artifact.dir}/projects" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertStarter.zip" tofile="${artifact.dir}/projects/BatchExpertStarter.zip" />
-		<copy file="${git.repo}/batch-expert/projects/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
+		<copy file="${svn.repo}/BatchExpert+/Ignition/BatchExpertSite.zip" tofile="${artifact.dir}/projects/BatchExpertSite.zip" />
+		<copy file="${svn.repo}/BatchExpert+/Ignition/BatchExpertMaster.zip" tofile="${artifact.dir}/projects/BatchExpertMaster.zip" />
+		<!-- The pysfc module is no longer supported - PH 10/18/11
 		<copy file="${git.repo}/py-sfc/projects/PySFC.zip" tofile="${artifact.dir}/projects/PySFC.zip" />
+		-->
 		
 		<!-- Update release and build date in version python file -->
-		<copy file="${git.repo}/batch-expert/release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
+		<copy file="${svn.repo}/BatchExpert+/Release/version.py" tofile="${artifact.dir}/external/ils/be/version.py" overwrite="true" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@DATE@" value="${build.date}" />
 		<replace file="${artifact.dir}/external/ils/be/version.py" token="@RELEASE@" value="${version.build}" />
 		
@@ -171,8 +182,8 @@
 
 	<!-- Loads the Installer module and sample project to the GoogleDrive. (this does not do an install into the local gateway) -->
 	<target name="deploy" depends="build">
-		<echo message="Copying ${module.name} to Google Drive ..." />
-		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${google.repo}/../../Batch Expert +/Releases/${version.build}/${module.name}-${version.build}-signed.modl" />
+		<echo message="Copying ${module.name} to Network Drive ..." />
+		<copy file="${module.path}/${module.name}-${version.build}-signed.modl" tofile="${be.install.directory}/${module.name}-${version.build}-signed.modl" />
 	</target>
 
 	<!-- macro to trim newlines from a variable -->

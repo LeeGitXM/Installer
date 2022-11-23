@@ -30,6 +30,7 @@
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
 		</artifact>
 	</panel>
+	
 	<panel type="license" essential="true" version="4">
 		<title>End User License Agreement (EULA)</title>
 		<preamble>Click on the button below to view the license that specifies
@@ -41,17 +42,40 @@
 			<location>artifacts/license/license.html</location>
 		</artifact>
 	</panel>
-	<panel type="tag" subtype="production" essential="true" version="12">
-		<title>Install UDT Definitions</title>
-		<preamble>This page defines UDTs for common  controllers.
-		          These definitions are written to the default tag provider.
+
+	<panel type="scanclass_dropdown" essential="true" version="2">
+		<title>Create Tag Groups</title>
+		<preamble>Create tag groups referenced by tags. 
+				Tag groups determine tag poll rates.
 		</preamble>
-		<property name="provider" type="production">default</property>
-		<property name="base" >[default]_types_</property>
+		
+		<!--
+		<property name="project">BatchExpertMaster@RELEASE@</property>
+		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
+			<location>artifacts/taggroups/tag-groups.json</location>
+		</artifact>
+		-->
+		
+		<property name="provider" type="production">Production_TP</property>
+		
+		<artifact name="Production ScanClasses" type="scanclass" subtype="json">
+			<location>artifacts/taggroups/taggroups.json</location>
+		</artifact>	
+	</panel>
+	
+	<panel type="tag_dropdown" subtype="production" essential="true" version="12">
+		<title>Install UDT Definitions</title>
+		<preamble>This page installs UDTs used throughout BatchExpert+.
+		</preamble>
+		
+		<property name="tagType" type="UDT"></property>
+		<property name="provider" type="production"></property>
+		
 		<artifact name="UDT Definitions" type="tag" subtype="json">
 			<location>artifacts/tags/udts.json</location>
 		</artifact>
 	</panel> 
+	
 	<!-- Python files are copied into the Ignition user-lib/pylib area.
 	     Jar files are copied into lib -->
 	<panel type="file" essential="true" version="36">
@@ -62,15 +86,27 @@
 			<location>artifacts/external/ils</location>
 			<destination>pylib/ils</destination>
 		</artifact>
+		<!--
 		<artifact name="ILS jar files for Batch Expert+" type="directory" subtype="lib">
 			<location>artifacts/external/lib</location>
 			<destination>core/common</destination>
 		</artifact>
+		-->
 		<artifact name="XLSXWriter" type="directory" subtype="user-lib">
 			<location>artifacts/external/xlsxwriter</location>
 			<destination>pylib/xlsxwriter</destination>
 		</artifact>
+		<artifact name="UDT Definitions" type="text" subtype="user-lib">
+			<location>artifacts/tags</location>
+			<destination>BatchExpert</destination>
+		</artifact>
+		<artifact name="Tag Groups" type="text" subtype="user-lib">
+			<location>artifacts/taggroups</location>
+			<destination>BatchExpert</destination>
+		</artifact>
 	</panel>
+	
+	<!--
 	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Install Configuration Tags</title>
 		<preamble>This page creates BatchExpert configuration tags that define which batch-tracking parameters 
@@ -83,9 +119,12 @@
 			<location>artifacts/tags/configurationTags.json</location>
 		</artifact>
 	</panel>
+	-->
+	
+	<!--
 	<panel type="tag" subtype="production" essential="true" version="12">
 		<title>Folders for Site Tags</title>
-		<preamble>This page creates the default folders for site-specific UDTs
+		<preamble>This page creates the folder structure for site-specific Instruments, Units, Alarms, and PIDs.
 		</preamble>
 		<property name="provider" type="production">default</property>
 		<property name="historyprovider" type="production"></property>
@@ -94,6 +133,9 @@
 			<location>artifacts/tags/udts_new.json</location>
 		</artifact>
 	</panel>
+	-->
+	
+	<!--
 	<panel type="definition" essential="true">
 		<title>Define Database Connections</title>
 		<preamble>Specify the database connection and DBMS-type that 
@@ -107,6 +149,9 @@
 		</property>
 		<property name="provider" type="production">default</property>
 	</panel>
+	-->
+	
+	<!--
 	<panel type="authentication" essential="false">
 		<title>Verify User Roles</title>
 		<preamble>This is an optional step that provides a check of authentication profiles to verify that at least one of them
@@ -114,12 +159,15 @@
 		</preamble>
 		<role name="Operator">Operator</role>
 	</panel>
+	-->
+	
+	<!-- script defines python to execute on feature installation -->
+	<!--
 	<panel type="feature" essential="true">
 		<title>Batch-Expert Feature Selection</title>
 		<preamble>Configure the Batch-Expert+ installation to include the SFC and other optional features. Note that these
 		          features are record as tag values. These decisions are, therefore, easily reversed. 
 		</preamble>
-		<!-- script defines python to execute on feature installation -->
 		<artifact name="CAMPAIGN">
 			<comment>Configure Batch Expert+ to add campaign as a parameter for batch tracking.</comment>
 			<script>ils.be.configuration.config.setTrackBatchByCamapign</script>
@@ -182,13 +230,17 @@
 			<script>ils.be.configuration.config.setTrackBatchByVessel</script>
 		</artifact>
 	</panel>
+	-->
+	
 	<panel type="icon" essential="true" version="4">
 		<title>Icons</title>
-		<preamble>A small number of custom icons are used in Vision screens. This panel installs them. </preamble>
+		<preamble>Install custom icons used on Vision screens. </preamble>
 		<artifact name="Custom Icons" type="ils" subtype="icon">
 			<location>artifacts/icons</location>
 		</artifact>
 	</panel>
+	
+	<!-- I moved this functionality to Vision where it is easier to debug
 	<panel type="python" essential="true" version="12">
 		<title>Database Create Scripts for Batch Expert+</title>
 		<preamble>This page provides the opportunity for populating the database instance specified
@@ -209,16 +261,9 @@
 			<comment>Populate tables with common choose-list entries.</comment>
 		</artifact>
 	</panel>
-	<panel type="scanclass" essential="true" version="2">
-		<title>Create alternative Tag Groups</title>
-		<preamble>Create tag groups referenced by application tags. 
-				Tag groups determine tag poll rates.
-		</preamble>
-		<property name="project">BatchExpertMaster@RELEASE@</property>
-		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
-			<location>artifacts/taggroups/tag-groups.json</location>
-		</artifact>
-	</panel>
+	-->
+
+	<!--
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install PySFC Module</title>
 		<preamble>This step installs the ILS custom module necessary for BatchExpert+
@@ -229,6 +274,7 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
+	
 	<panel type="module" subtype="production" essential="true" version="1" >
 		<title>Install PySFC Module</title>
 		<preamble>This step installs the ILS custom module necessary for BatchExpert+
@@ -239,6 +285,9 @@
 			<location>artifacts/modules/pysfc-module-signed.modl</location>
 		</artifact>
 	</panel>
+	-->
+	
+	<!--
 	<panel type="project" subtype="production" essential="true" version="1" >
 		<title>Install PySFC project</title>
 		<preamble>This step installs the PySFC project used to hold all PySFC instances.
@@ -248,6 +297,8 @@
 			<location>artifacts/projects/PySFC.zip</location>
 		</artifact>
 	</panel>
+	-->
+	
 	<panel type="project" subtype="main" essential="true" version="38">
 		<title>Install the BatchExpert+ Master Project</title>
 		<preamble>The BatchExpert+ &quot;Master&quot; project contains standard
@@ -255,12 +306,13 @@
 			Upon an update this is the project that gets changed.
 		</preamble>
 		<property name="provider" type="production">default</property>
-		\
-		<artifact name="BatchExpertMaster@RELEASE@" type="project">
+
+		<artifact name="BatchExpertMaster" type="project">
 			<location>artifacts/projects/BatchExpertMaster.zip</location>
-			<comment>Install the latest Master project. It will be loaded with a name that includes the current version.</comment>
+			<comment>Install the Master project.</comment>
 		</artifact>
 	</panel>
+	
 	<panel type="project" subtype="main" essential="true" version="35">
 		<title>Install the BatchExpert+ Site-specific Project</title>
 		<preamble>The starter project contains examples of windows designed to be
@@ -270,12 +322,16 @@
 		<property name="provider" type="production">default</property>
 		<!-- For projects, artifact subtypes are: full, partial and global
 		     There can be at most one artifact of each type -->
+		<!--
 		<artifact name="BatchExpertSite@RELEASE@" type="project">
-			<location>artifacts/projects/BatchExpertStarter.zip</location>
-			<comment>Install site-specific project template it into the
-			         project which was just installed in the step above.</comment>
+		-->
+		<artifact name="BatchExpertSite" type="project">
+			<location>artifacts/projects/BatchExpertSite.zip</location>
+			<comment>Install the site specific (customer) project.</comment>
 		</artifact>
 	</panel>
+	
+	<!--
 	<panel type="python" essential="true" version="2">
 		<title>Configuration Scripts</title>
 		<preamble>This page performs configuration updates that are not database-related for BatchExpert+ 3.0.
@@ -285,6 +341,11 @@
 			<comment>Update the palette of colors used to plot properties of one unit versus another.</comment>
 		</artifact>
 	</panel>
+	-->
+	
+	<!--
+		This panel defines two internal properties.  I don't think we can access these via Python, and we are eliminating Java
+		wherever possible, so I don't think these are used!  Pete 10/25/2022
 	<panel type="toolkit" essential="true" version="5">
 		<title>Set Gateway Defaults</title>
 		<preamble>Set properties in the internal database of the Gateway.
@@ -299,6 +360,8 @@
 		<property type="projectdefaultdatasource"></property>
 		<property type="providerdefaultdatasource"></property>
 	</panel>
+	-->
+	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>In addition to the release notes, documentation includes a getting started guide.
@@ -310,6 +373,7 @@
 			<location>artifacts/doc/BEGettingStarted.docx</location>
 		</artifact>
 	</panel>
+	
 	<!-- The summary panel must always be displayed, thus no version -->
 	<panel type="summary" essential="true">
 		<title>Installation Summary</title>
@@ -318,6 +382,7 @@
 			the Gateway internal database.
 		</preamble>
 	</panel>
+	
 	<!-- The completion page is displayed on finish. Use it to display post-install instructions. -->
 	<epilog>
 		<title>Installation Complete</title>
@@ -329,4 +394,3 @@
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
 	</epilog>
 </installer>
-
