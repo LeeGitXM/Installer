@@ -13,7 +13,7 @@
 	<property name="version">010100</property>
 	<!-- These entries define the install panels and their order -->
 	<!-- The welcome panel must always be displayed, thus no version -->
-	<panel type="welcome" essential="true">
+	<panel type="welcome_without_checkboxes" essential="true">
 		<title>ILS Automation Installer for EMC Ignition Applications</title>
 		<preamble>Welcome to the ILS Automation installer for EMC Ignition
 			Applications. The table below compares the existing installation of
@@ -66,7 +66,7 @@
 		<role name="OE">Operations engineer</role>
 	</panel>
 	
-	<panel type="icon" essential="true" version="010100">
+	<panel type="icon" essential="true" version="220729">
 		<title>Custom Icons for Ignition Applications</title>
 		<preamble>Custom icons are used extensively when drawing blocks in the Block Language Toolkit.
 		          They may also be found in many of the user screens. </preamble>
@@ -81,7 +81,7 @@
 	<!-- Python types are copied into the Ignition user-lib/pylib area. Jar types are copied into lib -->
 	<!-- Database scripts are read by the gateway startup scripts -->
 	<!-- The project isn't really used for a full install, but bring it along anyway -->
-	<panel type="file" essential="true" version="010100">
+	<panel type="file" essential="true" version="220729">
 		<title>Python Code for Ignition Applications</title>
 		<preamble>This page loads Python code that supports the Ignition Application suite. 
 		It installs generic Python developed by ILS Automation that is 
@@ -106,7 +106,7 @@
 	This is the new panel that has a dropdown and can be run over and over for each database.
 	The database schema is the same for production and isolation.
 	-->
-	<panel type="database_dropdown" essential="true" version="010100">
+	<panel type="database_dropdown" essential="true" version="220729">
 		<title>Database Clear and Create Scripts</title>
 		<preamble>This page provides the opportunity for initializing and creating the Symbolic Ai database schema for the
 		selected database instance.  The production and isolation database schemas are identical so this action should
@@ -126,8 +126,7 @@
 	</panel>
 	
 	
-	<!--
-	<panel type="module" subtype="production" essential="true" version="010100" >
+	<panel type="module" subtype="production" essential="true" version="220729" >
 		<title>Install Custom BLT Module</title>
 		<preamble>This step installs the BLT for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this modules on your system, 
@@ -138,43 +137,30 @@
 			<location>artifacts/modules/BLT-module-signed.modl</location>
 		</artifact>
 	</panel>
-	-->
-	
-	<panel type="module" subtype="production" essential="true" version="010100" >
+
+
+	<panel type="module" subtype="production" essential="true" version="220729" >
 		<title>Install Custom SFC Module</title>
 		<preamble>This step installs the ILS-SFC module necessary for the EMC applications.
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; If this is the first time that you have installed this module on your system, 
-		it will be placed in &lt;i&gt;quarantine&lt;/i&gt; mode. To complete the installation, you will have to navigate 
-		to the Modules page and select the &lt;i&gt;install&lt;/i&gt; option next to the listing of the module. 
-		NOTE: THIS ALPHA VERSION OF THE MODULE REQUIRES A PROJECT NAMED global! 
+		it may be placed in &lt;i&gt;quarantine&lt;/i&gt; mode until you explicitly accept the module certificate. 
+		To complete the installation, you may have to navigate to the Modules page and select the &lt;i&gt;install&lt;/i&gt; 
+		option next to the listing of the module.  
 		</preamble>
 		<artifact name="ILS-SFC Enhancements" type="module">
 			<location>artifacts/modules/ILS-SFC-module-signed.modl</location>
 		</artifact>
 	</panel>
 	
-	<!--
-	<panel type="module" subtype="production" essential="true" version="7" >
-		<title>Test Framework Module</title>
-		<preamble>This step installs the test framework module.
-			The test framework is optional and should not be used on a production system.
-			When used on a hybrid Production / Development system then great caution
-			must be used to insure that test data does not leak to the production system.
-		</preamble>
-		<artifact name="Testing Framework" type="module">
-			<location>artifacts/modules/TF-module-signed.modl</location>
-		</artifact>
-	</panel>
-	-->
 	
 	<!--  
 	This is the new panel that has a dropdown of tag providers and can be run over and over for each tag group.
 	The tag groups are the same for production and isolation.
 	-->
-	<panel type="scanclass_dropdown" essential="true" version="010100">
+	<panel type="scanclass_dropdown" essential="true" version="220729">
 		<title>Create Tag Groups</title>
-		<preamble>Create tag groups (formerly known as scan classes) which determine execution rates for 
-				&lt;b&gt;PRODUCTION&lt;/b&gt; tags. 
+		<preamble>Create tag groups (formerly known as scan classes) for each of the tag providers.  The
+			tag groups are the same for Production and Isolation tag providers. 
 		</preamble>
 		<property name="provider" type="production">Production_TP</property>
 		
@@ -187,14 +173,16 @@
 	This is the new panel that has a dropdown of tag providers and can be run over and over for each 
 	PRODUCTION tag provider.  The UDTs are different for production and isolation.
 	-->
-	<panel type="tag_dropdown" subtype="production" essential="True" version="010100">
+	<panel type="tag_dropdown" subtype="production" essential="True" version="220729">
 		<title>Install Production UDT Definitions</title>
+		
 		<preamble>This page installs UDTs that are needed by the applications
 			when running in &lt;b&gt;PRODUCTION&lt;/b&gt; mode.
 			&lt;b&gt;NOTE:&lt;/b&gt; The import does not remove existing UDTs that 
 			differ from tag resources in the installer.  It will overwrite UDTs in folders that 
 			are included in the installer.
 		</preamble>
+		
 		<property name="tagType" type="UDT"></property>
 		<property name="provider" type="production"></property>
 		
@@ -207,7 +195,7 @@
 	This is the new panel that has a dropdown of tag providers and can be run over and over for each 
 	ISOLATION tag provider.  The UDTs are different for production and isolation.
 	-->
-	<panel type="tag_dropdown" subtype="isolation" essential="True" version="010100">
+	<panel type="tag_dropdown" subtype="isolation" essential="True" version="220729">
 		<title>Install Isolation UDT Definitions</title>
 		<preamble>This page installs UDTs that are needed by the applications
 			when running in &lt;b&gt;ISOLATION&lt;/b&gt; mode.
@@ -224,7 +212,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="project" subtype="main" essential="true" version="010100">
+	<panel type="project" subtype="main" essential="true" version="220729">
 		<title>Common Project</title>
 		<preamble>This is the project that is common to all Artie / Symbolic Ai sites. 
 			This project takes advantage of project inheritance which is new in Ignition 8. <br/>
@@ -235,7 +223,7 @@
 		</artifact>
 	</panel>
 	
-	<panel type="project" subtype="main" essential="true" version="010100">
+	<panel type="project" subtype="main" essential="true" version="220729">
 		<title>Site Project Template</title>
 		<preamble>This page handles installation of template for a site specific project.
 			This project specified the common project installed on the previous page as its parent.
@@ -247,59 +235,60 @@
 		</artifact>
 	</panel>
 
-	<!-- For projects, artifact subtypes are: full, partial and global -->
-	<!--
-	<panel type="project" subtype="dbmgr" essential="true" version="010100">
+	<panel type="project" subtype="dbmgr" essential="true" version="220729">
 		<title>Install the DbManager Project</title>
-		<preamble>DbManager is a utility for maintenance of
-			application databases. It is not generally user-customizable.
-			Installing this project completely replaces any existing copy.
+		<preamble>DbManager is a project for maintaining the Process Recipe
+			database. It is not generally user-customizable.
+			Installing this project completely replaces the current version.
 		</preamble>
 		<artifact name="DbManager" type="project" subtype="full">
 			<location>artifacts/projects/DbManager.zip</location>
 		</artifact>
 	</panel>
-	-->
+
 	
 	<panel type="documentation" essential="false">
 		<title>Product Documentation</title>
 		<preamble>The list below contains both user-level and design documents. You may download them individually, as needed.
 		</preamble>
 		<artifact name="Release Notes" type="documentation" subtype="pdf" release="@RELEASE@">
-			<location>artifacts/doc/ReleaseNotes.pdf</location>
+			<location>artifacts/doc/Release_Notes.pdf</location>
 		</artifact>
 		<artifact name="Block Language Toolkit - Scripting Interface" type="documentation" subtype="zip" release="@RELEASE@">
 			<location>artifacts/doc/blt/javadoc.zip</location>
 		</artifact>
 		<artifact name="Database Manager User's Guide" type="documentation" subtype="pdf" release="1.1">
-			<location>artifacts/doc/DBManagerUsersGuide.pdf</location>
+			<location>artifacts/doc/DB_Manager_Users_Guide.pdf</location>
 		</artifact>
-		<artifact name="Database Design" type="documentation" subtype="docx" release="1.19">
-			<location>artifacts/doc/EMCDatabaseDesign</location>
+		<artifact name="Database Design" type="documentation" subtype="pdf" release="1.19">
+			<location>artifacts/doc/Database_Design.pdf</location>
 		</artifact>
 		<artifact name="Database E/R Design" type="documentation" subtype="pdf" release="1.19">
-			<location>artifacts/doc/EMCDatabaseER.pdf</location>
+			<location>artifacts/doc/Database_ER.pdf</location>
 		</artifact>
 		<artifact name="IO Infrastructure Design Spec" type="documentation" subtype="pdf" release="1.7">
-			<location>artifacts/doc/IODesignSpecification.pdf</location>
+			<location>artifacts/doc/IO_Design_Specification.pdf</location>
 		</artifact>
 		<artifact name="Lab Data User's Guide" type="documentation" subtype="pdf" release="1.12">
-			<location>artifacts/doc/LabDataUsersGuide.pdf</location>
+			<location>artifacts/doc/Lab_Data_Users_Guide.pdf</location>
 		</artifact>
 		<artifact name="Logging Extension User Guide" type="documentation" subtype="pdf" release="7">
-			<location>artifacts/doc/doc/LoggingUsersDesignGuide.pdf</location>
+			<location>artifacts/doc/Logging_Users_and_Design_Guide.pdf</location>
 		</artifact>
 		<artifact name="Recipe Toolkit User's Guide" type="documentation" subtype="pdf" release="1.3">
-			<location>artifacts/doc/RecipeToolkitUsersGuide.pdf</location>
+			<location>artifacts/doc/Recipe_Toolkit_Users_Guide.pdf</location>
 		</artifact>
 		<artifact name="Sequential Control User's Guide" type="documentation" subtype="pdf" release="1.2">
-			<location>artifacts/doc/ILSSFCUsersGuide.pdf</location>
+			<location>artifacts/doc/SFC_Users_Guide.pdf</location>
 		</artifact>
 		<artifact name="Symbolic Ai User's Guide" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/Symbolic_Ai_Users_Guide.pdf</location>
 		</artifact>
-		<artifact name="Symbolic Ai Design Guide (pdf)" type="documentation" subtype="pdf" release="1.0">
+		<artifact name="Symbolic Ai Design Guide" type="documentation" subtype="pdf" release="1.0">
 			<location>artifacts/doc/Symbolic_Ai_Design_Guide.pdf</location>
+		</artifact>
+		<artifact name="Toolchain Installation Manual" type="documentation" subtype="pdf" release="1.0">
+			<location>artifacts/doc/Toolchain_Installation_Manual.pdf</location>
 		</artifact>
 	</panel>
 
@@ -365,13 +354,13 @@
 		            THE MODULE MAY NOT SHOW UP AS QUARANTINED UNTIL THE GATEWAY HAS BEEN RESTARTED, A SECOND RESTART MAY BE 
 		            NEEDED AFTER THE MODULE HAS BEEN INSTALLED. </note>
 		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
-		<note name="Disabled Projects">Newly created projects are disabled when they are installed. They must be enabled before use. 
+		<note name="Disabled Projects">Newly installed projects are disabled when they are installed. They must be enabled before use. 
 		            Restart the Gateway, then edit each project setting it to "enabled".</note>
-		<note name="Database and Tag Provider Project Defaults">The default database and tag provide must be manually configured for 
-		            the project from the Config -> Projects page.</note>
-		<note name="Tag Groups (Scan Classes)">There is a bug installing tag groups these must be manually imported from Designer.</note>
+		<note name="Database and Tag Provider Project Defaults">The default database and tag provider must be manually configured for 
+		            both the core and site projects from the Gateway Web page: Config -> Projects.</note>
+		<note name="Production and Isolation Interface Definitions">The production, isolation, and time factor definitions must be manually 
+		            configured from a Vision client.</note>
 		<note name="Uninstall the Installer">The installer may not automatically uninstall itself.  If it doesn't, you should manually
 		            uninstall it from the Config -> Modules page.</note>            
 	</epilog>
 </installer>
-

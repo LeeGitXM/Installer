@@ -89,18 +89,18 @@
 
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />
-		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf"                                                          tofile="${artifact.dir}/doc/ReleaseNotes.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.docx"                                          tofile="${artifact.dir}/doc/ToolchainInstallationManual.docx" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DB Manager User's Guide.pdf"                          tofile="${artifact.dir}/doc/DBManagerUsersGuide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Database/Database Design.pdf"                                                      tofile="${artifact.dir}/doc/EMCDatabaseDesign.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf"                                                          tofile="${artifact.dir}/doc/EMCDatabaseER.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Release/ReleaseNotes.pdf"                                                          tofile="${artifact.dir}/doc/Release_Notes.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/DB Manager User's Guide.pdf"                          tofile="${artifact.dir}/doc/DB_Manager_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database Design.pdf"                                                      tofile="${artifact.dir}/doc/Database_Design.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Database/Database ER.pdf"                                                          tofile="${artifact.dir}/doc/Database_ER.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/User's Guide/Symbolic Ai User's Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Users_Guide.pdf" />
 		<copy file="${svn.repo}/EMChemicals/Diagnostic Toolkit/Documentation/Design Guide/Symbolic Ai Design Guide.pdf"        tofile="${artifact.dir}/doc/Symbolic_Ai_Design_Guide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.pdf"  tofile="${artifact.dir}/doc/IODesignSpecification.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf"                                   tofile="${artifact.dir}/doc/LabDataUsersGuide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf"                         tofile="${artifact.dir}/doc/LoggingUsersDesignGuide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf"                      tofile="${artifact.dir}/doc/RecipeToolkitUsersGuide.pdf" />
-		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/ILS SFC User's Guide.pdf"            tofile="${artifact.dir}/doc/ILS_SFC_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/IO Infrastructure/Documentation/Design Specification/IO Design Specification.pdf"  tofile="${artifact.dir}/doc/IO_Design_Specification.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Lab Data/User's Guide/Lab Data User's Guide.pdf"                                   tofile="${artifact.dir}/doc/Lab_Data_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Logging/Documentation/Logging User's and Design Guide.pdf"                         tofile="${artifact.dir}/doc/Logging_Users_and_Design_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Recipe Toolkit/Documentation/Recipe Toolkit User's Guide.pdf"                      tofile="${artifact.dir}/doc/Recipe_Toolkit_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Sequential Control/Documentation/User's Guide/SFCUsersGuide.pdf"                   tofile="${artifact.dir}/doc/SFC_Users_Guide.pdf" />
+		<copy file="${svn.repo}/EMChemicals/Release/ToolchainInstallationManual.pdf"                                           tofile="${artifact.dir}/doc/Toolchain_Installation_Manual.pdf" />
 
 		<!-- Documentation - javadoc  -->
 		<zip zipfile="${artifact.dir}/doc/blt/javadoc.zip" basedir="${git.repo}/blt/workspace/BLT_Build/doc" />
@@ -121,9 +121,10 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/ils-common.jar" tofile="${artifact.dir}/external/jars/common/ils-common.jar" />
 		
 		<!-- BLT jars -->
-		<!--  Uncomment this once BLT is migrated to Ignition 8
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-common.jar" tofile="${artifact.dir}/external/jars/common/blt-common.jar" />
+		<!--
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar.pack.gz" tofile="${artifact.dir}/external/jars/common/commons-math3-3.6.1.jar.pack.gz" />
+		-->
 		<mkdir dir="${artifact.dir}/external/jars/core/gateway" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/block-definition.jar" tofile="${artifact.dir}/external/jars/gateway/block-definition.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/blt-gateway.jar" tofile="${artifact.dir}/external/jars/gateway/blt-gateway.jar" />
@@ -131,7 +132,6 @@
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/jackson-databind-2.2.3.jar" tofile="${artifact.dir}/external/jars/gateway/jackson-databind-2.2.3.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/jackson-annotations-2.2.3.jar" tofile="${artifact.dir}/external/jars/gateway/jackson-annotations-2.2.3.jar" />
 		<copy file="${git.repo}/blt/workspace/BLT_Build/temp_modl/commons-math3-3.6.1.jar" tofile="${artifact.dir}/external/jars/gateway/commons-math3-3.6.1.jar" />
-		-->
 		
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
@@ -157,8 +157,9 @@
 		<!-- Modules -->
 		<mkdir dir="${artifact.dir}/modules" />
 		<copy file="${git.repo}/sfc/workspace/sfc-build/modules/ILS-SFC-module-signed.modl" tofile="${artifact.dir}/modules/ILS-SFC-module-signed.modl" />
-		<!--  When these are ready for Ignition 8, add them back in.
 		<copy file="${git.repo}/blt/workspace/BLT_Build/modules/BLT-module-signed.modl" tofile="${artifact.dir}/modules/BLT-module-signed.modl" />
+		
+		<!--  I don't think the Test Framework will ever be migrated to Ignition 8. but if it is then add it back in.
 		<copy file="${git.repo}/tools/test-frame/workspace/TF_Build/modules/TF-module-signed.modl" tofile="${artifact.dir}/modules/TF-module-signed.modl" />
 		-->
 
@@ -166,10 +167,6 @@
 		<mkdir dir="${artifact.dir}/projects" />		
 		<copy file="${svn.repo}/EMChemicals/Ignition8/XOM_Common.zip" tofile="${artifact.dir}/projects/XOM_Common.zip" />
 		<copy file="${svn.repo}/EMChemicals/Ignition8/XOM_Site.zip"   tofile="${artifact.dir}/projects/XOM_Site.zip" />
-		
-		<!-- Global Projects (SFCs and Alarm Pipelines) -->
-		<mkdir dir="${artifact.dir}/globals" />
-		<copy file="${svn.repo}/EMChemicals/Ignition/XOM_Global.proj" tofile="${artifact.dir}/projects/global.proj" />
 		
 		<!-- Tags -->		
 		<copy file="${svn.repo}/EMChemicals/Ignition8/udts.json" tofile="${artifact.dir}/tags/udts.json" />
