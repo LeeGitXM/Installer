@@ -110,7 +110,8 @@
 		<title>Database Clear and Create Scripts</title>
 		<preamble>This page provides the opportunity for initializing and creating the Symbolic Ai database schema for the
 		selected database instance.  The production and isolation database schemas are identical so this action should
-		be performed on each production and isolation database connection.
+		be performed on each production and isolation database connection.&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT: SKIP THIS PAGE IF YOU ARE UPDATING AN EXISTING SYSTEM!&lt;/b&gt;
 		</preamble>
 
 		<property name="database" type="production"></property>
@@ -214,8 +215,8 @@
 	
 	<panel type="project" subtype="main" essential="true" version="220729">
 		<title>Common Project</title>
-		<preamble>This is the project that is common to all Artie / Symbolic Ai sites. 
-			This project takes advantage of project inheritance which is new in Ignition 8. <br/>
+		<preamble>This is the common project that is inherited by all site specific projects. 
+			This project takes advantage of project inheritance which is new in Ignition 8.
 		</preamble>
 		<!-- For projects, artifact subtypes are: full, partial and global -->
 		<artifact name="XOM_Common" type="project" subtype="full">

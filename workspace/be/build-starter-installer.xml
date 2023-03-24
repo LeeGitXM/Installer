@@ -8,7 +8,7 @@
 	<property name="artifact.dir" value="${staging.dir}/artifacts" />
 	<property name="deploy.dir" value="${basedir}/modules" />
 	<property name="bom" value="${basedir}/bom-starter.xml" />
-	<property name="module.name" value="batch-expert-starter-installer" />
+	<property name="module.name" value="batch-expert-installer" />
 	<property name="module.path" value="${basedir}/modules" />
 	<property name="module.xml" value="${basedir}/module-batch-expert.xml" />
 	<property name="local.gateway.url" value="http://localhost:8088/main/system/DeveloperModuleLoadingServlet" />
@@ -73,6 +73,21 @@
 		<!-- License -->
 		<mkdir dir="${artifact.dir}/license" />
 		<copy file="${git.repo}/batch-expert/license/license.html" tofile="${artifact.dir}/license/license.html" />
+
+		<!-- Database Update Scripts (probably won't need for the base install, but get them in place for updates) -->
+		<mkdir dir="${artifact.dir}/database" />
+		<mkdir dir="${artifact.dir}/database/sqlServer" />
+		<copy todir="${artifact.dir}/database/sqlServer">
+			<fileset dir="${svn.repo}/BatchExpert+/Database/sqlServer">
+				<include name="*.sql" />
+			</fileset>
+		</copy>
+		<mkdir dir="${artifact.dir}/database/oracle" />
+		<copy todir="${artifact.dir}/database/oracle">
+			<fileset dir="${svn.repo}/BatchExpert+/Database/oracle">
+				<include name="*.sql" />
+			</fileset>
+		</copy>
 
 		<!-- Icons -->
 		<mkdir dir="${artifact.dir}/icons" />
@@ -144,12 +159,6 @@
 		<!-- Scanclass -->
 		<mkdir dir="${artifact.dir}/taggroups" />
 		<copy file="${svn.repo}/BatchExpert+/Ignition/tag-groups.json" tofile="${artifact.dir}/taggroups/taggroups.json" />
-
-		<!-- Modules -->
-		<!-- The pysfc module is no longer supported - PH 10/18/11
-		<mkdir dir="${artifact.dir}/modules" />
-		<copy file="${git.repo}/py-sfc/workspace/pysfc-build/modules/PYSFC-module-signed.modl" tofile="${artifact.dir}/modules/pysfc-module-signed.modl" />
-		-->
 		
 		<!-- Documentation -->
 		<mkdir dir="${artifact.dir}/doc" />

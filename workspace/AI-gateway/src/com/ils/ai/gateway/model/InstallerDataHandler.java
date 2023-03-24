@@ -1684,9 +1684,10 @@ public class InstallerDataHandler {
 		byte[] bytes = getArtifactAsBytes(panelIndex,artifactName,model);
 		if( bytes!=null && bytes.length>0 ) {
 			try {
-				log.infof("%s.loadArtifactAsTagGroup: installing %d bytes as %s",CLSS,bytes.length,artifactName);
+				log.infof("%s.loadArtifactAsTagGroup: converting %d bytes to a list...", CLSS, bytes.length);
 				List<TagGroupConfiguration> groups = tagGroupUtil.listFromBytes(providerName,bytes);
-				context.getTagManager().getTagProvider(providerName).saveTagGroupsAsync(groups);				
+				log.infof("%s.loadArtifactAsTagGroup: saving to the gateway...", CLSS);
+				context.getTagManager().getTagProvider(providerName).saveTagGroupsAsync(groups);
 			}
 			catch( Exception ex) {
 				result = String.format( "Failed to install %s - see wrapper.log for details", artifactName);
@@ -1697,7 +1698,6 @@ public class InstallerDataHandler {
 			result = String.format("Failed to find %s resource in bundle", artifactName);
 			log.warn(result);
 		}
-
 
 		return result;
 	}

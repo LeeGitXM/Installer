@@ -19,12 +19,11 @@
 	<panel type="welcome" essential="true">
 		<title>ILS Automation Installer for Batch Expert+</title>
 		<preamble>Welcome to the ILS Automation installer for Batch Expert+. 
-			This version of the installer is designed for new installations
-			on Ignition 8.
-			It installs a &quot;bare-bones&quot; project along with a collection 
-			of example screens to accelerate configuration.
-			Before continuing, please make sure that you have 
-			defined a database connection, e.g. BEDB, to hold your configuration and results.
+			This installer can be used to install BatchExpert+ on a new site or to upgrade an older version.
+			It installs a Master project, which contains the generic BatchExpert definition, and a Site project,
+			which contains the customer specific definitions and examples to accelerate configuration.
+			Before continuing, please make sure that you have defined a database connection named "BEDB" 
+			and a tag provider named "default".
 		</preamble>
 		<artifact name="notes" type="pdf">
 			<location>artifacts/doc/ReleaseNotes.pdf</location>
@@ -43,25 +42,31 @@
 		</artifact>
 	</panel>
 
+<!--
+Installation of tag groups does not work.  
+Attempting to install them will throw you back to the browser home page, so it is better to remove the 
+page until I can get it working.
+
 	<panel type="scanclass_dropdown" essential="true" version="2">
 		<title>Create Tag Groups</title>
 		<preamble>Create tag groups referenced by tags. 
 				Tag groups determine tag poll rates.
 		</preamble>
-		
+-->		
 		<!--
 		<property name="project">BatchExpertMaster@RELEASE@</property>
 		<artifact name="Production Tag Groups" type="scanclass" subtype="json">
 			<location>artifacts/taggroups/tag-groups.json</location>
 		</artifact>
 		-->
-		
+<!--		
 		<property name="provider" type="production">Production_TP</property>
 		
 		<artifact name="Production ScanClasses" type="scanclass" subtype="json">
 			<location>artifacts/taggroups/taggroups.json</location>
 		</artifact>	
 	</panel>
+-->
 	
 	<panel type="tag_dropdown" subtype="production" essential="true" version="12">
 		<title>Install UDT Definitions</title>
@@ -103,6 +108,10 @@
 		<artifact name="Tag Groups" type="text" subtype="user-lib">
 			<location>artifacts/taggroups</location>
 			<destination>BatchExpert</destination>
+		</artifact>
+		<artifact name="Database Scripts" type="text" subtype="user-lib">
+			<location>artifacts/database</location>
+			<destination>database</destination>
 		</artifact>
 	</panel>
 	
@@ -388,9 +397,12 @@
 		<title>Installation Complete</title>
 		<preamble>The automated installation and configuration of Batch Expert+
 		          is complete. There are just a few more manual steps required. </preamble>
-		<note name="Master Project">Make sure that the new Master project is "heritable"</note>
-		<note name="Site Project">Give the site project with a customer-appropriate name. Make the "Master" project its parent.</note>
-		<note name="Tag Groups">At this time tag groups are not handled by the installer. They must be imported manually from tag-groups.json, found in the same directory as the installer.</note>
-		<note name="Gateway Restart">Several modules with active components have been installed. A Gateway restart is required.</note>
+
+		<note name="Site Project">Copy the site project to a customer specific project. Make the "Master" project its parent.</note>
+		<note name="Enable Projects">Enable both the Master and the customer site project.</note>
+		<note name="Tag Groups">Tag groups must be manually imported from user-lib/BatchExpert/taggroups.json </note>
+		<note name="Gateway Restart">A Gateway restart is required because the gateway startup script will create required configuration tags.</note>
+		<note name="Database Create">For new sites, the database schema can be created from a client using the Admin -> Database tab.</note>
+		<note name="Database Update">For existing sites, the database schema can be updated using the Admin -> Database tabs.</note>
 	</epilog>
 </installer>
